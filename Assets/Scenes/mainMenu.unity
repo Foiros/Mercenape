@@ -3451,20 +3451,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1233860393}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c290de4160cc0fe46b926f3202dfa251, type: 3}
+  m_Script: {fileID: 11500000, guid: e5c9b532f0ca0404cbce32dd7b8c137a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   panels:
   - {fileID: 1776202847}
+  - {fileID: 1540071324}
+  - {fileID: 1049569068}
   - {fileID: 347455469}
   - {fileID: 1331346099}
   - {fileID: 735806637}
-  - {fileID: 1540071324}
-  - {fileID: 1049569068}
   startPos: []
   currentPanel: {fileID: 0}
   previousPanel: {fileID: 0}
-  testNumber: 5
+  testNumber: 0
 --- !u!114 &1233860395
 MonoBehaviour:
   m_ObjectHideFlags: 0
