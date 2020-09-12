@@ -9,18 +9,18 @@ public class EnemySpawnerScript : MonoBehaviour
     [System.Serializable]
     public class Wave
     {
-        public string name;
         public int count;
         public float spawnRate;
     }
 
-    public Wave[] waves;
-    private int nextWave = 0;
+    public List<Wave> waves = new List<Wave>();
 
-    public float timeBetweenWaves = 5f;
+    private int currentWave = 1;
+
+    public float timeBetweenWaves = 3f;
 
     private float waveCountdown;         // Count down to next wave
-    private float searchCountdown = 1f;  // Count down for searching alive enemy
+    private float searchCountdown = 1f;  // Count down for searching any alive enemy
 
     public Transform[] enemies = new Transform[2];
     int randomEnemy;
@@ -29,12 +29,12 @@ public class EnemySpawnerScript : MonoBehaviour
 
     private void Start()
     {
-        waveCountdown = timeBetweenWaves;
-        
+        waveCountdown = timeBetweenWaves;        
     }
 
     private void Update()
     {
+        // When player is fighting a wave
         if (state == SpawnState.Waiting)
         {
             if (!EnemyIsAlive())
@@ -48,12 +48,13 @@ public class EnemySpawnerScript : MonoBehaviour
             }
         }
 
+        // Spawn wave when count down is finished
         if (waveCountdown <= 0)
         {
             if (state != SpawnState.Spawning)
             {
                 // Start spawning wave
-                StartCoroutine(SpawnWave(waves[nextWave]));
+                StartCoroutine(SpawnWave(waves[0]));
             }
         }
         else
@@ -62,24 +63,17 @@ public class EnemySpawnerScript : MonoBehaviour
         }
     }
 
+    // Wave completed and prepare new wave
     void WaveCompleted()
     {
         // Begin a new wave
-        Debug.Log("Wave completed!!");
-
         state = SpawnState.Counting;
         waveCountdown = timeBetweenWaves;
+      
+        currentWave++;
+        waves[0].count++;
 
-        if (nextWave + 1 > waves.Length - 1)
-        {
-            nextWave = 0;
-            Debug.Log("All waves completed! Looping...");
-        }
-        else
-        {
-            nextWave++;
-        }
-        
+        Debug.Log("Wave completed! Going to wave: " + currentWave);
     }
 
     // Check if enemies are still alive
@@ -101,14 +95,17 @@ public class EnemySpawnerScript : MonoBehaviour
     // Spawn enemies one by one with rate
     IEnumerator SpawnWave(Wave _wave)
     {
-        Debug.Log("Spawning wave: " + _wave.name);
+        Debug.Log("Spawning wave: " + currentWave);
         state = SpawnState.Spawning;
 
         // Spawn
         for (int i = 0; i < _wave.count; i++)
         {
             randomEnemy = Random.Range(0, 2);
+            _wave.spawnRate = Random.Range(1.5f, 3.5f);
+
             SpawnEnemy(enemies[randomEnemy]);
+
             yield return new WaitForSeconds(1f / _wave.spawnRate);
         }
 
@@ -117,6 +114,7 @@ public class EnemySpawnerScript : MonoBehaviour
         yield break;
     }
 
+    // Use this in SpawnWave
     void SpawnEnemy(Transform _enemy)
     {
         Instantiate(_enemy, transform.position, transform.rotation);

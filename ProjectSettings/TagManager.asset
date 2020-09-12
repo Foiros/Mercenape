@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Enemy
+  - Killbox
   layers:
   - Default
   - TransparentFX
