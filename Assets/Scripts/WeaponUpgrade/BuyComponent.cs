@@ -20,9 +20,17 @@ public class BuyComponent : MonoBehaviour
     private Image componentImageBuyScreen;
 
     public Image[] componentImagesComponentHolder;
+    public Image[] ownedComponents;
+    
     public Sprite[] notBougtComponentImages;
     public Sprite[] boughtComponentImages;
     public Sprite[] placedComponentImages;
+
+    private bool cantBuy;
+
+    private float counterStart;
+    private float counterEnd;
+    private float originalStart;
 
     
     void Awake()
@@ -41,6 +49,16 @@ public class BuyComponent : MonoBehaviour
         buyComponentScreen.SetActive(false);
 
         componentID = -1;
+
+        originalStart = counterStart;
+    }
+
+    void Update()
+    {
+        if (cantBuy)
+        {
+            CantBuyCounter();
+        }
     }
 
     // Function to create an array of the abstract components.
@@ -101,9 +119,32 @@ public class BuyComponent : MonoBehaviour
         {
             money.ChangeCurrencyAmount(componentCost);
 
-            componentImagesComponentHolder[componentID].sprite = weaponsComponentArray.GetBoughtImage();
+            componentImagesComponentHolder[componentID].enabled = false;
+            ownedComponents[componentID].sprite = weaponsComponentArray.GetBoughtImage();
 
             buyComponentScreen.SetActive(false);
+        }
+        else
+        {
+            cantBuy = true;
+        }
+    }
+
+    // Function that announces, that player can't buy component and keeps this message going for couple of frames. 
+    void CantBuyCounter()
+    {
+        AbstractWeaponComponent weaponsComponentArray = weaponComponents[componentID];
+
+        componentDescription.text = "Don't have enough money for this component";
+
+        counterEnd = 3;
+
+        counterStart += Time.deltaTime;
+        if (counterStart >= counterEnd)
+        {
+            cantBuy = false;
+            componentDescription.text = weaponsComponentArray.GetDescription();
+            counterStart = originalStart;
         }
     }
 
