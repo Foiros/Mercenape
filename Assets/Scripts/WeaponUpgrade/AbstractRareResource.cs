@@ -2,17 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Created by Arttu Paldán 11.9.2020: Abstract used to create the rare resources (for example the blue drop that increases weapon speed). 
 public class AbstractRareResource : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+   
 }

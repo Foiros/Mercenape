@@ -1,51 +1,129 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
-public abstract class AbstractWeaponComponent : MonoBehaviour
-{
-    private int compomnentID;
+// Created by Arttu Paldán 11.9.2020: An abstract used to create weapon components. 
+public abstract class AbstractWeaponComponent
+{ 
+    public string componentName;
+    public string componentDescription;
 
-    private int componentCost;
+    public int compomnentID;
 
-    private SpriteRenderer componentNotBougthImage;
+    public int componentCost;
 
-    private SpriteRenderer componentBoughtImage;
+    public Sprite componentNotBougthImage;
 
-    private SpriteRenderer placedComponentImage;
+    public Sprite componentBoughtImage;
 
-    int GetID(int compID)
+    public Sprite placedComponentImage;
+
+    public string GetName()
     {
-        compomnentID = compID;
+        return componentName;
+    }
+    public string GetDescription()
+    {
+        return componentDescription;
+    }
+
+    public int GetID()
+    {
         return compomnentID;
     }
 
-    int GetCost(int cost)
+    public int GetCost()
     {
-        componentCost = cost;
         return componentCost;
     }
 
-    SpriteRenderer GetNotBoughtImage(SpriteRenderer notBought)
+    public Sprite GetNotBoughtImage()
     {
-        componentNotBougthImage = notBought;
         return componentNotBougthImage;
     }
-
-    SpriteRenderer GetBoughtImage(SpriteRenderer bought)
+    public Sprite GetBoughtImage()
     {
-        componentBoughtImage = bought;
         return componentBoughtImage;
     }
 
-    SpriteRenderer GetPlacedImage(SpriteRenderer placed)
+    public Sprite GetPlacedImage()
     {
-        placedComponentImage = placed;
         return placedComponentImage;
     }
+    public abstract void ComponentEffect();
+}
 
-    public virtual void ComponentEffect()
+public class TestComponent1 : AbstractWeaponComponent
+{   
+    // This is used to create this object in the scripts. 
+    public TestComponent1(string name, string description, int id, int cost, Sprite notBought, Sprite bought, Sprite placed)
     {
+        componentName = name;
+        componentDescription = description;
+        compomnentID = id;
+        componentCost = cost;
+        componentNotBougthImage = notBought;
+        componentBoughtImage = bought;
+        placedComponentImage = placed;
+    }
+
+    // Eventually this will hold the effect the component has on players weapon.
+    public override void ComponentEffect()
+    {
+        throw new System.NotImplementedException();
+    }
+}
+
+public class TestComponent2 : AbstractWeaponComponent
+{
+    public TestComponent2(string name, string description, int id, int cost, Sprite notBought, Sprite bought, Sprite placed)
+    {
+        componentName = name;
+        componentDescription = description;
+        compomnentID = id;
+        componentCost = cost;
+        componentNotBougthImage = notBought;
+        componentBoughtImage = bought;
+        placedComponentImage = placed;
+    }
+    public override void ComponentEffect()
+    {
+        throw new System.NotImplementedException();
+    }
+}
+
+public class TestComponent3 : AbstractWeaponComponent
+{
+    public TestComponent3(string name, string description, int id, int cost, Sprite notBought, Sprite bought, Sprite placed)
+    {
+        componentName = name;
+        componentDescription = description;
+        compomnentID = id;
+        componentCost = cost;
+        componentNotBougthImage = notBought;
+        componentBoughtImage = bought;
+        placedComponentImage = placed;
+    }
+    public override void ComponentEffect()
+    {
+        throw new System.NotImplementedException();
+    }
+}
+
+public class TestComponent4 : AbstractWeaponComponent
+{
+    public TestComponent4(string name, string description, int id, int cost, Sprite notBought, Sprite bought, Sprite placed)
+    {
+        componentName = name;
+        componentDescription = description;
+        compomnentID = id;
+        componentCost = cost;
+        componentNotBougthImage = notBought;
+        componentBoughtImage = bought;
+        placedComponentImage = placed;
+    }
+    public override void ComponentEffect()
+    {
+        throw new System.NotImplementedException();
     }
 }
