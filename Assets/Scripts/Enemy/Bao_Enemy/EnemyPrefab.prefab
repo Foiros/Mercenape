@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3153332247250464737
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4669934860387165151}
+  m_Layer: 0
+  m_Name: RayCast
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4669934860387165151
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3153332247250464737}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.9, y: -1.08, z: -2.3588448}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7237859923948144615}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7237859923948144618
 GameObject:
   m_ObjectHideFlags: 0
@@ -13,6 +43,7 @@ GameObject:
   - component: {fileID: 7237859923948144613}
   - component: {fileID: -5583255050072111067}
   - component: {fileID: 7237859923948144614}
+  - component: {fileID: -5095797288588026960}
   m_Layer: 0
   m_Name: EnemyPrefab
   m_TagString: Enemy
@@ -30,7 +61,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 7.45, y: 1.3, z: -2.6213224}
   m_LocalScale: {x: 0.22235617, y: 0.22235617, z: 0.22235617}
-  m_Children: []
+  m_Children:
+  - {fileID: 4669934860387165151}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -104,7 +136,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &-5583255050072111067
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -140,7 +172,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 7237859923948144618}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8bef6d611fa0934886cce9150c44db6, type: 3}
+  m_Script: {fileID: 11500000, guid: b7abb15fc1da2e142a3dee65f4e52282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 7
+  maxHP: 50
+  currentHP: 0
+  damage: 5
+--- !u!114 &-5095797288588026960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7237859923948144618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97fc7b079337beb4d8c398c01825750a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 1
+  attackRange: 2
+  stoppingDistance: 1.5
+  player: {fileID: 5726407074145170307, guid: d976c8fe587ab7e4f99e7b60688ec0dd, type: 3}
+  rayPos: {fileID: 4669934860387165151}

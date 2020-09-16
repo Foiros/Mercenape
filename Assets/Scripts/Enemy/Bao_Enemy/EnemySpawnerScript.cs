@@ -14,6 +14,7 @@ public class EnemySpawnerScript : MonoBehaviour
     }
 
     public List<Wave> waves = new List<Wave>();
+    [SerializeField] private EnemyStat enemyStats;
 
     private int currentWave = 1;
 
@@ -71,7 +72,7 @@ public class EnemySpawnerScript : MonoBehaviour
         waveCountdown = timeBetweenWaves;
       
         currentWave++;
-        waves[0].count++;
+        IncreaseDifficulty();
 
         Debug.Log("Wave completed! Going to wave: " + currentWave);
     }
@@ -119,5 +120,12 @@ public class EnemySpawnerScript : MonoBehaviour
     {
         Instantiate(_enemy, transform.position, transform.rotation);
         Debug.Log("Spawning Enemy: " + _enemy.name);
+    }
+
+    void IncreaseDifficulty()
+    {
+        waves[0].count++;
+        enemyStats.maxHP += 2;
+        enemyStats.damage += 1;
     }
 }
