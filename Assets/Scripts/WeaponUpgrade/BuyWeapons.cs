@@ -1,0 +1,170 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+// Created by Arttu Paldán 11.9.2020: This script will handle buying or unlocking component pieces.
+public class BuyWeapons : MonoBehaviour
+{
+    private Money money;
+
+    private AbstractWeapon[] weapons;
+
+    private int weaponID;
+    private int weaponCost;
+
+    public GameObject buyWeaponScreen;
+    private Text weaponName;
+    private Text weaponDescription;
+    private Text weaponCostText;
+    private Image weaponImageBuyScreen;
+
+    public Image[] weaponImagesHolder;
+    public Image[] ownedComponents;
+    
+    public Sprite[] notBougtWeaponImages;
+    public Sprite[] boughtWeaponImages;
+
+    private bool cantBuy;
+
+    private float counterStart;
+    private float counterEnd;
+    private float originalStart;
+
+    
+    void Awake()
+    {
+        money = GameObject.FindGameObjectWithTag("Money").GetComponent<Money>();
+
+        weaponName = GameObject.FindGameObjectWithTag("WeaponName").GetComponent<Text>();
+        weaponDescription = GameObject.FindGameObjectWithTag("WeaponDescription").GetComponent<Text>();
+        weaponCostText = GameObject.FindGameObjectWithTag("WeaponCost").GetComponent<Text>();
+        weaponImageBuyScreen = GameObject.FindGameObjectWithTag("BuyScreenWeaponImage").GetComponent<Image>();
+
+        SetUpWeaponsArray();
+        
+        SetWeaponsHolder();
+
+        buyWeaponScreen.SetActive(false);
+
+        weaponID = -1;
+
+        originalStart = counterStart;
+    }
+
+    void Update()
+    {
+        if (cantBuy)
+        {
+            CantBuyCounter();
+        }
+    }
+
+    // Function to create an array of the abstract components.
+    void SetUpWeaponsArray()
+    {
+        TestWeapon1 testWeapon1 = new TestWeapon1("Weapon 1", "Does things", 0, 50, 5, 10, notBougtWeaponImages[0], boughtWeaponImages[0], null);
+        TestWeapon2 testWeapon2 = new TestWeapon2("Weapon 2", "Does things", 1, 25, 1, 20, notBougtWeaponImages[1], boughtWeaponImages[1], null);
+        TestWeapon3 testWeapon3 = new TestWeapon3("Weapon 3", "Does things", 2, 100, 3, 3, notBougtWeaponImages[2], boughtWeaponImages[2], null);
+        TestWeapon4 testWeapon4 = new TestWeapon4("Weapon 4", "Does things", 3, 150, 10, 2, notBougtWeaponImages[3], boughtWeaponImages[3], null);
+
+        weapons = new AbstractWeapon[] { testWeapon1, testWeapon2, testWeapon3, testWeapon4 };
+    }
+
+    void SetWeaponsHolder()
+    {
+        for(int i = 0; i <  weaponImagesHolder.Length; i++)
+        {
+            weaponImagesHolder[i].sprite = weapons[i].weaponNotBougthImage;
+        }
+    }
+
+    // Function to open the buy component screen.
+    public void OpenWeapon()
+    {
+        buyWeaponScreen.SetActive(true);
+
+        SetBuyWeaponScreen();
+    }
+
+    // Function to close the buy component screen.
+    public void CloseWeapon()
+    {
+        buyWeaponScreen.SetActive(false);
+
+        weaponID = -1;
+    }
+
+    // Sets the sprites and texts in the buy screen. These things are gotten from the abstract components
+    void SetBuyWeaponScreen()
+    {
+        AbstractWeapon weaponsArray = weapons[weaponID];
+
+        weaponImageBuyScreen.sprite = weaponsArray.GetNotBoughtImage();
+        weaponName.text = weaponsArray.GetName();
+        weaponDescription.text = weaponsArray.GetDescription();
+        weaponCost = weaponsArray.GetCost();
+        weaponCostText.text = "Cost: " + weaponCost;
+    }
+
+    // Function for buying the components.
+    public void Buy()
+    {
+        AbstractWeapon weaponsArray = weapons[weaponID];
+
+        int currency = money.GetCurrentCurrency();
+
+        if(currency >= weaponCost)
+        {
+            money.ChangeCurrencyAmount(weaponCost);
+           
+            weaponImagesHolder[weaponID].enabled = false;
+            ownedComponents[weaponID].sprite = weaponsArray.GetBoughtImage();
+
+            buyWeaponScreen.SetActive(false);
+        }
+        else
+        {
+            cantBuy = true;
+        }
+    }
+
+    // Function that announces, that player can't buy component and keeps this message going for couple of frames. 
+    void CantBuyCounter()
+    {
+        AbstractWeapon weaponsArray = weapons[weaponID];
+
+        weaponDescription.text = "Don't have enough money for this component";
+
+        counterEnd = 3;
+
+        counterStart += Time.deltaTime;
+        if (counterStart >= counterEnd)
+        {
+            cantBuy = false;
+            weaponDescription.text = weaponsArray.GetDescription();
+            counterStart = originalStart;
+        }
+    }
+
+    // A function I hope I can get rid of in the future. When player pressed one of the components in the screen, this will give us the id of the component, which can then be used by other functions.
+    public void Weapon1Button()
+    {
+        weaponID = weapons[0].GetID();
+    }
+
+    public void Weapon2Button()
+    {
+        weaponID = weapons[1].GetID();
+    }
+
+    public void Weapon3Button()
+    {
+        weaponID = weapons[2].GetID();
+    }
+
+    public void Weapon4Button()
+    {
+        weaponID = weapons[3].GetID();
+    }
+}

@@ -9,11 +9,11 @@ public class Money : MonoBehaviour
     private int currency;
     private int newCurrency;
 
-    public Text currencyHolder;
+    private Text currencyHolder;
 
     void Awake()
     {
-        currencyHolder = GetComponentInChildren<Text>();
+        currencyHolder = GameObject.FindGameObjectWithTag("Money").GetComponentInChildren<Text>();
     }
 
     void Start()
