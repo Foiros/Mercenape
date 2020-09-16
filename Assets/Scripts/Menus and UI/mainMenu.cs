@@ -9,95 +9,112 @@ public class mainMenu : MonoBehaviour
 {
 
     //These vectors point to where each panel except menuCenter goes to when disabled. Sure, it may not be necessary, but I like the filing cabinet aesthetic.
+    public Canvas mainCanvas;
     public GameObject[] panels;
     public Vector2[] startPos;
     public GameObject currentPanel;
-    public GameObject previousPanel;
     public int testNumber;
+    public Button[] inputButtons;
+    public GameObject inputHolder;
+
+    public GameObject selectedButton;
+    bool isSelected = false;
 
     void Start()
     {
-      
+        inputButtons = new Button[GameObject.FindGameObjectsWithTag("inputButton").Length];
+        inputHolder = GameObject.Find("inputHolder");
+        if(inputHolder != null)
+        {
+            inputButtons[0] = GameObject.FindGameObjectWithTag("inputButton").GetComponent<Button>();
+            for(int i = 0; i < inputButtons.Length; i++)
+            {
+                inputButtons[i] = GameObject.FindWithTag("inputButton").gameObject.GetComponent<Button>();
+            }
+        }
+
+        
+        mainCanvas = transform.GetComponent<Canvas>();
         startPos = new Vector2[panels.Length];
         currentPanel = panels[0];
+        
+        //Set the position each panel returns to when not selected.
         for(int i = 0; i < panels.Length; i++)
         {
             startPos[i] = panels[i].transform.position;
             Debug.Log(startPos[i]);           
         }
-        
+        panels[0].transform.position = mainCanvas.transform.position;
     }
+
+    private void Update()
+    {
+        if(isSelected)
+        {
+            if(Input.anyKeyDown)
+            {
+                selectedButton.GetComponentInChildren<Text>().text = Input.inputString;
+                isSelected = false;
+            }
+        }
+    }
+
+
 
     public void switchPanel()
     {
         string buttonName = EventSystem.current.currentSelectedGameObject.name;
-        previousPanel = currentPanel;
         Debug.Log(buttonName);
-        Debug.Log("Looking for panel..");
+        //Find the panel and set it aside...
         for(int i = 0; i < panels.Length; i++)
-        {  
-            if(panels[i].name.Contains(buttonName))
+        {
+            if(currentPanel = panels[i])
             {
-                if(panels[i] != panels[0])
+                //After the old panel is set aside, then place the new panel on the screen.
+                currentPanel.transform.position = startPos[i];
+                for (int j = 0; j < panels.Length; j++)
                 {
-                    panels[0].SetActive(false);
-                } else
-                {
-                    panels[0].SetActive(true);
+                    if (panels[j].name.Contains(buttonName))
+                    {
+                        Debug.Log("Found the next panel, " + panels[j].name);
+                        panels[j].transform.position = mainCanvas.transform.position;
+                        currentPanel = panels[j];
+                        break;
+                    }
                 }
-                Debug.Log("Panel found");
-                panels[i].transform.position = startPos[0];
-                currentPanel = panels[i];
-            }
-            
+                break;
+            }        
         }
     }
 
     public void backButton()
     {
-        //Here we find the parent of the parent of the button. A grand-parent, if you will.
-        GameObject parentPanel = EventSystem.current.currentSelectedGameObject.transform.parent.gameObject;
-        GameObject grandparentPanel = EventSystem.current.currentSelectedGameObject.transform.parent.gameObject.transform.parent.gameObject;;
-        if (parentPanel && grandparentPanel != null)
+        GameObject panelParent = currentPanel.transform.parent.gameObject;
+        Debug.Log(panelParent.name);
+        if (panelParent != null)
         {
-            Debug.Log("Parent: " + parentPanel.name);
-            Debug.Log("Grandparent: " + grandparentPanel.name);
-            //If both are not null, the panel rewind only once
-            for (int i = 0; i > panels.Length; i++)
+            for (int i = 0; i < panels.Length; i++)
             {
-                if (panels[i] == parentPanel)
+                if (currentPanel.name.Contains(panels[i].name))
                 {
-                    parentPanel.transform.position = startPos[i];
-                    grandparentPanel.transform.position = startPos[0];
-                    grandparentPanel.SetActive(true);
-                    currentPanel = grandparentPanel;
-                    parentPanel = null;
-                    grandparentPanel = null;
+                    panelParent.transform.position = mainCanvas.transform.position;
+                    currentPanel.transform.position = startPos[i];
+                    currentPanel = panelParent;
+                    break;
                 }
             }
-        }
-        else if (parentPanel != null && grandparentPanel == null)
-        {
-            Debug.Log("No grandparent found");
-            //If there is no grandparent, then it means that the main panel is next on the line.
-            for(int i = 0; i > panels.Length; i++)
-            {
-                if(parentPanel.name == panels[i].name)
-                {
-                    parentPanel.transform.position = startPos[i];
-                    parentPanel.SetActive(true);
-                    currentPanel = panels[0];
-                    parentPanel = null;
-                    grandparentPanel = null;
-                }
-            }
-            
-        }
-        //Reset the panels for the next Back-button press
-        parentPanel = null;
-        grandparentPanel = null;
+        } 
+    }
+
+    public void changeInput()
+    {
+        selectedButton = EventSystem.current.currentSelectedGameObject;
+        Debug.Log(selectedButton.name);
+        selectedButton.GetComponentInChildren<Text>().text = "Add new input";
+        isSelected = true;
         
     }
+
 
     public void startGame()
     {
