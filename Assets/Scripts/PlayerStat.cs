@@ -11,6 +11,8 @@ public class PlayerStat : MonoBehaviour
     public GameObject player;
     public int PlayerHP;
     public int PlayerMaxHP;
+    public int PlayerDamage;
+
 
     void Start()
     {

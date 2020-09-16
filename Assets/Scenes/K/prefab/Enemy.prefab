@@ -14,9 +14,10 @@ GameObject:
   - component: {fileID: 1614786800004093749}
   - component: {fileID: 1614786800004093748}
   - component: {fileID: 1614786800004093750}
+  - component: {fileID: 720417607}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -98,7 +99,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Enemy: {fileID: 1614786800004093744}
-  KarmaDrop: {fileID: 0}
+  KarmaDrop: {fileID: 450763958401993869, guid: cc456ea0021f3334091f822ddba309f2,
+    type: 3}
+  enemyStats: {fileID: 720417607}
+  PlayerStat: {fileID: 0}
 --- !u!50 &1614786800004093749
 Rigidbody2D:
   serializedVersion: 4
@@ -107,14 +111,14 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1614786800004093744}
-  m_BodyType: 0
+  m_BodyType: 2
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 0.0001
+  m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0
-  m_GravityScale: 0
+  m_GravityScale: 1
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -144,7 +148,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.8, y: 1.2}
+  m_Size: {x: 2, y: 2}
   m_EdgeRadius: 0
 --- !u!114 &1614786800004093750
 MonoBehaviour:
@@ -153,9 +157,23 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1614786800004093744}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9c78a86cec1db354eaace254b92524f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   KarmaSpeed: 3
+--- !u!114 &720417607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1614786800004093744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 913f3efd0788b62459f499a732a5bf30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EnemyHP: 20
+  EnemyMaxHP: 30
