@@ -7,6 +7,8 @@ using UnityEngine.EventSystems;
 // Created by Arttu Paldán 16.9.2020: This script allows the player to place upgrades into his weapon. 
 public class UseUpgrades : MonoBehaviour
 {
+    private WeaponStates weaponStates;
+    
     private AbstractWeapon[] weapons;
     private AbstractUpgrades[] upgrades;
 
@@ -19,13 +21,14 @@ public class UseUpgrades : MonoBehaviour
     public GameObject upgradeMenu;
     public GameObject upgradeComponentScreen;
 
+    public Image[] upgradeImagesHolder;
     public Sprite[] upgradeImages;
     public Sprite[] ownedWeapons;
 
     private Text weaponName;
     private Text weaponDescription;
     private Image weaponImage;
-
+   
     private Text upgradeName;
     private Text upgradeDescription;
     private Image upgradeImage;
@@ -33,18 +36,30 @@ public class UseUpgrades : MonoBehaviour
 
     void Awake()
     {
+        weaponStates = GetComponent<WeaponStates>();
+        
+        weaponName = GameObject.FindGameObjectWithTag("UpgradeScreenWeaponName").GetComponent<Text>();
+        weaponDescription = GameObject.FindGameObjectWithTag("UpgradeScreenWeaponDescription").GetComponent<Text>();
+        weaponImage = GameObject.FindGameObjectWithTag("UpgradeScreenWeaponImage").GetComponent<Image>();
+
+        upgradeName = GameObject.FindGameObjectWithTag("UpgradeName").GetComponent<Text>();
+        upgradeDescription = GameObject.FindGameObjectWithTag("UpgradeDescription").GetComponent<Text>();
+        upgradeImage = GameObject.FindGameObjectWithTag("UpgradeImage").GetComponent<Image>();
+
         upgradeMenu.SetActive(false);
         upgradeComponentScreen.SetActive(false);
 
         SetUpWeaponsArray();
         SetUpUpgradesArray();
     }
+    
+    // Function for setting up the abstract weapons in this script and putting them into an array. 
      void SetUpWeaponsArray()
     {
         TestWeapon1 testWeapon1 = new TestWeapon1("Weapon 1", "Does things", 0, 50, 5, 10, null, null, ownedWeapons[0]);
         TestWeapon2 testWeapon2 = new TestWeapon2("Weapon 2", "Does things", 1, 25, 1, 20, null, null, ownedWeapons[1]);
-        TestWeapon3 testWeapon3 = new TestWeapon3("Weapon 3", "Does things", 2, 100, 3, 3, null, null, ownedWeapons[3]);
-        TestWeapon4 testWeapon4 = new TestWeapon4("Weapon 4", "Does things", 3, 150, 10, 2, null, null, ownedWeapons[4]);
+        TestWeapon3 testWeapon3 = new TestWeapon3("Weapon 3", "Does things", 2, 100, 3, 3, null, null, ownedWeapons[2]);
+        TestWeapon4 testWeapon4 = new TestWeapon4("Weapon 4", "Does things", 3, 150, 10, 2, null, null, ownedWeapons[3]);
 
         weapons = new AbstractWeapon[] { testWeapon1, testWeapon2, testWeapon3, testWeapon4 };
     }
@@ -63,26 +78,29 @@ public class UseUpgrades : MonoBehaviour
     {
         weaponButtonName = EventSystem.current.currentSelectedGameObject.name;
 
-        if(weaponButtonName == "OwnedWeaponA")
+        if(weaponButtonName == "UpgradeButton1" && weaponStates.ownsWeapon1)
         {
             weaponID = weapons[0].GetID();
+            SetUpUpgradeScreen();
         }
-        else if (weaponButtonName == "OwnedWeaponB")
+        else if (weaponButtonName == "UpgradeButton2" && weaponStates.ownsWeapon2)
         {
             weaponID = weapons[1].GetID();
+            SetUpUpgradeScreen();
         }
-        else if (weaponButtonName == "OwnedWeaponC")
+        else if (weaponButtonName == "UpgradeButton3" && weaponStates.ownsWeapon3)
         {
             weaponID = weapons[2].GetID();
+            SetUpUpgradeScreen();
         }
-        else if (weaponButtonName == "OwnedWeaponD")
+        else if (weaponButtonName == "UpgradeButton4" && weaponStates.ownsWeapon4)
         {
             weaponID = weapons[3].GetID();
+            SetUpUpgradeScreen();
         }
-
-        SetUpUpgradeScreen();
     }
-
+    
+    // This function sets up the upgrade screen based on what weapon player has chosen from his owned weapons inventory. 
     void SetUpUpgradeScreen()
     {
         AbstractWeapon weaponsArray = weapons[weaponID];
@@ -92,32 +110,35 @@ public class UseUpgrades : MonoBehaviour
         weaponName.text = weaponsArray.GetName();
         weaponDescription.text = weaponsArray.GetDescription();
         weaponImage.sprite = weaponsArray.GetInUseImage();
+        
+        for(int i = 0; i < upgradeImagesHolder.Length; i++)
+        {
+            upgradeImagesHolder[i].sprite = upgrades[i].GetUpgradeImage();
+        }
     }
 
+    // Button function for opening an screen that will explain, what the upgrade does when put into the weapon. 
     public void OpenUpgradeComponent()
     {
         upgradeButtonName = EventSystem.current.currentSelectedGameObject.name;
 
-        if (upgradeButtonName == "UpgradeButton1")
+        if (upgradeButtonName == "UpgradeComponent1")
         {
             upgradeID = upgrades[0].GetID();
         }
-        else if (upgradeButtonName == "UpgradeButton2")
+        else if (upgradeButtonName == "UpgradeComponent2")
         {
             upgradeID= upgrades[1].GetID();
         }
-        else if (upgradeButtonName == "UpgradeButton3")
+        else if (upgradeButtonName == "UpgradeComponent3")
         {
             upgradeID = upgrades[2].GetID();
         }
-        else if (upgradeButtonName == "UpgradeButton4")
-        {
-            upgradeID = upgrades[3].GetID();
-        }
-
+        
         SetUpUpgradeComponentScreen();
     }
 
+    // Sets up the upgrade explanation screen. 
     void SetUpUpgradeComponentScreen()
     {
         AbstractUpgrades upgradesArray = upgrades[upgradeID];
@@ -129,13 +150,25 @@ public class UseUpgrades : MonoBehaviour
         upgradeImage.sprite = upgradesArray.GetUpgradeImage();
     }
 
-    void ChooseAmount()
+    public void CloseUpgradeMenu()
+    {
+        upgradeMenu.SetActive(false);
+        weaponID = -1;
+    }
+
+    public void CloseUpgradeComponentMenu()
+    {
+        upgradeComponentScreen.SetActive(false);
+        upgradeID = -1;
+    }
+
+    public void ChooseAmount()
     {
 
     }
 
-    void ConfirmUpgrade()
+    public void ConfirmUpgrade()
     {
-
+        weaponStates.weaponHasBeenUpgraded = true;
     }
 }

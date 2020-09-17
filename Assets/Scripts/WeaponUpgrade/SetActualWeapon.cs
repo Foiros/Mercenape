@@ -6,6 +6,8 @@ using UnityEngine.UI;
 // Created by Arttu Paldán 16.9.2020: Script that set ups the weapon in game screen.
 public class SetActualWeapon : MonoBehaviour
 {
+    private WeaponStates weaponStates;
+
     private AbstractWeapon[] weapons;
     private AbstractUpgrades[] upgrades;
 
@@ -27,6 +29,9 @@ public class SetActualWeapon : MonoBehaviour
     
     void awake()
     {
+        weaponStates = GetComponent<WeaponStates>();
+        weaponID = weaponStates.ReturnChosenWeaponID();
+
         SetUpWeaponsArray();
         SetUpUpgradesArray();
         SetUpWeapon();
@@ -78,6 +83,5 @@ public class SetActualWeapon : MonoBehaviour
             actualSpeed = speed;
             actualWeight = weight;
         }
-        
     }
 }

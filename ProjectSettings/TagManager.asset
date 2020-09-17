@@ -12,6 +12,13 @@ TagManager:
   - Killbox
   - Enemy
   - Kill
+  - wall
+  - UpgradeScreenWeaponName
+  - UpgradeScreenWeaponImage
+  - UpgradeName
+  - UpgradeDescription
+  - UpgradeImage
+  - UpgradeScreenWeaponDescription
   layers:
   - Default
   - TransparentFX

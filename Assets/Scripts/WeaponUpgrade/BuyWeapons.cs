@@ -8,6 +8,7 @@ using UnityEngine.EventSystems;
 public class BuyWeapons : MonoBehaviour
 {
     private Money money;
+    private WeaponStates weaponStates;
 
     private AbstractWeapon[] weapons;
 
@@ -37,7 +38,8 @@ public class BuyWeapons : MonoBehaviour
     
     void Awake()
     {
-        money = GameObject.FindGameObjectWithTag("Money").GetComponent<Money>();
+        money = GetComponent<Money>();
+        weaponStates = GetComponent<WeaponStates>();
 
         weaponName = GameObject.FindGameObjectWithTag("WeaponName").GetComponent<Text>();
         weaponDescription = GameObject.FindGameObjectWithTag("WeaponDescription").GetComponent<Text>();
@@ -83,7 +85,7 @@ public class BuyWeapons : MonoBehaviour
     }
 
     // Function to open the buy component screen.
-    public void OpenWeapon()
+    void OpenWeapon()
     {
         buyWeaponScreen.SetActive(true);
 
@@ -120,6 +122,7 @@ public class BuyWeapons : MonoBehaviour
         if(currency >= weaponCost)
         {
             money.ChangeCurrencyAmount(weaponCost);
+            weaponStates.WhatWeaponWasBought(weaponID);
            
             weaponImagesHolder[weaponID].enabled = false;
             ownedWeapons[weaponID].sprite = weaponsArray.GetBoughtImage();
@@ -171,5 +174,7 @@ public class BuyWeapons : MonoBehaviour
         {
             weaponID = weapons[3].GetID();
         }
+
+        OpenWeapon();
     }
 }
