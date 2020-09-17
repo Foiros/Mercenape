@@ -8,7 +8,6 @@ public class EnemyStat : MonoBehaviour
     public int currentHP;
 
     public int damage;
-
     private void Start()
     {
         currentHP = maxHP;
@@ -17,10 +16,12 @@ public class EnemyStat : MonoBehaviour
     public void TakeDamage(int playerDamage)
     {
         currentHP -= playerDamage;
+        Debug.Log("Enemy HP: " + currentHP);
 
         if (currentHP <= 0)
         {
-            Destroy(gameObject, 1);
+            Debug.Log("Enemy dead :D");
+            Destroy(gameObject, 0);
         }
     }
 

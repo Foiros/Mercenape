@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyBehaviour : MonoBehaviour
 {
     public enum EnemyState { Patrol, Chase, Attack }
-
+ 
     [SerializeField] private float speed = 2f;
     [SerializeField] private float attackRange = 1.5f;
     [SerializeField] private float stoppingDistance = 1.5f;
@@ -17,27 +17,37 @@ public class EnemyBehaviour : MonoBehaviour
 
     private EnemyState currentState;
     private Rigidbody2D rb;
+    private EnemyStat enemyStat;
 
     [SerializeField] private GameObject player;
     private Rigidbody2D playerRigid;
+    private PlayerStat playerStat;
+    public int enemyDamage;
 
-    [SerializeField] private int forcePower;
-    [SerializeField] private float startTimeBetweenAttack;
-    [SerializeField ]private float timeBetweenAttack;
+    [SerializeField] private int forcePower; 
+    [SerializeField] private float delayTimeBetweenAttack;
+    [SerializeField] private float timeBetweenAttack;
     
 
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         playerRigid = player.GetComponent<Rigidbody2D>();
+        playerStat = player.GetComponent<PlayerStat>();
 
         rb = this.GetComponent<Rigidbody2D>();
-        
+        enemyStat = this.GetComponent<EnemyStat>();
+        enemyDamage = enemyStat.damage;
+
+        timeBetweenAttack = delayTimeBetweenAttack;
     }
 
     private void Update()
     {
-        Debug.DrawRay(rayPos.position, -transform.right * rayDistance);
+        Debug.DrawRay(rayPos.position, transform.right * rayDistance);
+
+        // Cool down between attacks
+        timeBetweenAttack -= Time.deltaTime;
 
         switch (currentState)
         {
@@ -54,7 +64,7 @@ public class EnemyBehaviour : MonoBehaviour
                     transform.position = Vector2.MoveTowards(transform.position, destination, Time.deltaTime * speed);
 
                     // When get to ray cast range
-                    if (shouldChase())
+                    if (ShouldChase())
                     {
                         currentState = EnemyState.Chase;
                     }
@@ -86,12 +96,21 @@ public class EnemyBehaviour : MonoBehaviour
                 }
             case EnemyState.Attack:
                 {
+                    if (player == null)
+                    {
+                        Debug.Log("There's NO player");
+                        currentState = EnemyState.Patrol;
+                        return;
+                    }
+
+                    
                     // When out of attack range
                     if (Vector2.Distance(transform.position, player.transform.position) > attackRange)
                     {
                         currentState = EnemyState.Chase;                       
                     }
 
+                   
                     EnemyAttack();
 
                     break;
@@ -125,23 +144,24 @@ public class EnemyBehaviour : MonoBehaviour
         // Facing right direction
         if ((destination.x - transform.position.x) > 0)
         {
-            transform.eulerAngles = new Vector2(0, -180);
+            transform.eulerAngles = new Vector2(0, 0);
         }
         else
         {           
-            transform.eulerAngles = new Vector2(0, 0);
+            transform.eulerAngles = new Vector2(0, -180);
         }
     }
 
     // Chase if player is in ray sight
-    private bool shouldChase()
+    private bool ShouldChase()
     {
-        RaycastHit2D ray = Physics2D.Raycast(rayPos.position, -transform.right, rayDistance);
+        RaycastHit2D ray = Physics2D.Raycast(rayPos.position, transform.right, rayDistance);
 
         if (ray.collider)
         {         
-            if (ray.collider.tag == "Player")
-            {           
+            if (ray.collider.gameObject.CompareTag("Player"))
+            {
+                Debug.Log("Player detected!!!");
                 return true;
             }
         }
@@ -153,7 +173,7 @@ public class EnemyBehaviour : MonoBehaviour
     private void GetPlayerDestination()
     {
         // Rage mode
-        transform.localScale = new Vector2(0.5f, 0.5f);
+        transform.localScale = new Vector2(0.3f, 0.3f);
         
         //Debug.Log(player.transform.position.x);
         destination = new Vector2(player.transform.position.x, transform.position.y);      
@@ -161,35 +181,36 @@ public class EnemyBehaviour : MonoBehaviour
         // Facing right direction
         if ((destination.x - transform.position.x) > 0)
         {
-            transform.eulerAngles = new Vector2(0, -180);
+            transform.eulerAngles = new Vector2(0, 0);
         }
         else
         {
-            transform.eulerAngles = new Vector2(0, 0);
+            transform.eulerAngles = new Vector2(0, -180);
         }
     }
 
     private void EnemyAttack()
     {
-        Vector2 force = new Vector2(0, 1000) + ((Vector2)transform.right * -forcePower);
-        Debug.Log(force);
+        Vector2 force = ((Vector2)transform.right * forcePower) + new Vector2(0, 30);      
 
         if (timeBetweenAttack <= 0)
-        {
-            //GetPlayerDestination();
+        {           
+            // Jump to player
+            rb.AddForce(force, ForceMode2D.Impulse);
+                        
+            timeBetweenAttack = delayTimeBetweenAttack;           
+        }        
 
-            playerRigid.AddForce(force);
-            
-           
-            timeBetweenAttack = startTimeBetweenAttack;
-            
-        }
-        else
-        {
-            timeBetweenAttack -= Time.deltaTime;
-            
-        }
-      
+    }
 
+    // Collision
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            rb.AddForce((Vector2)transform.right * (-forcePower), ForceMode2D.Impulse);           
+            playerStat.PlayerTakeDamage(enemyDamage);
+            Debug.Log(playerStat.PlayerHP);            
+        }
     }
 }
