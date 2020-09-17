@@ -9,6 +9,9 @@ TagManager:
   - WeaponDescription
   - BuyScreenWeaponImage
   - WeaponCost
+  - Killbox
+  - Enemy
+  - Kill
   layers:
   - Default
   - TransparentFX
@@ -20,7 +23,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - Enemy
   - 
   - 
   - 

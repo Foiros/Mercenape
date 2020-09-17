@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4669934860387165151}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: RayCast
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3153332247250464737}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.9, y: -1.08, z: -2.3588448}
+  m_LocalPosition: {x: -1.32, y: -0.87, z: -2.3588448}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7237859923948144615}
@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: -5583255050072111067}
   - component: {fileID: 7237859923948144614}
   - component: {fileID: -5095797288588026960}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: EnemyPrefab
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -131,7 +131,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 2
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -150,7 +150,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 1.0041351, y: -0.057614565}
+  m_Offset: {x: 1.0211201, y: -0.11705965}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -161,7 +161,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 4.232048, y: 3.682942}
+  m_Size: {x: 4.130142, y: 3.5640516}
   m_EdgeRadius: 0
 --- !u!114 &7237859923948144614
 MonoBehaviour:
@@ -190,8 +190,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97fc7b079337beb4d8c398c01825750a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
-  attackRange: 2
+  speed: 2
+  attackRange: 4
   stoppingDistance: 1.5
-  player: {fileID: 5726407074145170307, guid: d976c8fe587ab7e4f99e7b60688ec0dd, type: 3}
   rayPos: {fileID: 4669934860387165151}
+  player: {fileID: 8174987084509659711, guid: 94feb3077caf03b44935f25901d89eca, type: 3}
+  forcePower: 5000
+  startTimeBetweenAttack: 1
+  timeBetweenAttack: 0

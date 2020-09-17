@@ -14,7 +14,7 @@ public class EnemySpawnerScript : MonoBehaviour
     }
 
     public List<Wave> waves = new List<Wave>();
-    [SerializeField] private EnemyStat enemyStats;
+    private EnemyStat enemyStats;
 
     private int currentWave = 1;
 
