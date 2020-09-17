@@ -13,7 +13,6 @@ public class PlayerAttackTrigger : MonoBehaviour
     public int PlayerDamage;
 
     public Animator PlayerAnimator;
-    public Collider2D AttackHitBox;
     private bool IsPlayerAttack = false;
     
 
@@ -22,29 +21,37 @@ public class PlayerAttackTrigger : MonoBehaviour
     {
         PlayerAnimator = gameObject.GetComponent<Animator>();
         IsPlayerAttack = false;
+
     }
+
 
     // Update is called once per frame
     void Update()
     {
-        PlayerAttack();
         PlayerAnimator.SetBool("IsPlayerAttack", IsPlayerAttack);
+    }
+    void FixedUpdate()
+    {
+        PlayerAttack();
+ 
     }
 
 
     public void PlayerAttack()
     {
-        if(Input.GetKeyDown(KeyCode.Space)&& !IsPlayerAttack)
+        if(Input.GetKey(KeyCode.Mouse0)&& !IsPlayerAttack)
         {
             IsPlayerAttack = true;
             TimeDelayAttack = PlayerDelayAttackTime;
             Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(Attackpos.position, AttackRange, EnemyLayerMask);
-            Debug.Log("attacking");
+          
            
 
             for (int i = 0; i < enemiesToDamage.Length; i++)
             {
                 enemiesToDamage[i].GetComponent<EnemyStat>().TakeDamage(PlayerDamage);
+                Debug.Log("attacking" + enemiesToDamage[i] + PlayerDamage );
+                Debug.Log(enemiesToDamage[i].GetComponent<EnemyStat>().currentHP);
             }
         }
 
@@ -66,10 +73,5 @@ public class PlayerAttackTrigger : MonoBehaviour
 
 
 
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(Attackpos.position, AttackRange);
-
-    }
+    
 }

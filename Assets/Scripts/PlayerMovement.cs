@@ -9,14 +9,28 @@ public class PlayerMovement : MonoBehaviour
     public float PlayerJumpPow, PlayerDoubleJumpPow; // for jump
     public float MidAirSpeed; // for move left and right while mid air
     [SerializeField] private LayerMask groundlayermask;
+    [SerializeField] private LayerMask walllayermask;
+
 
     private Animator PlayerAnimator;
     private Rigidbody2D PlayerRigid2d;
     private BoxCollider2D PlayerboxCollider2d;
+    
+    
+    
+    bool IsGrounded;
+    public Transform PlayerUnderPos;
     private bool FaceRight = true;
     private bool PlayerDoubleJump;
-  
 
+    public Transform PlayerFrontPos, PlayerBehindPos;
+    public float CheckRadius;
+    
+
+    bool IsTouchingFront;
+    bool IsTouchingBehind;
+    bool IsWallGrab = false;
+    public float PlayerClimbSpeed;
 
 
     void Start()
@@ -28,103 +42,143 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        IsGrounded = Physics2D.OverlapCircle(PlayerUnderPos.position, CheckRadius, groundlayermask);
+        Debug.Log(IsGrounded);
+        IsTouchingFront = Physics2D.OverlapCircle(PlayerFrontPos.position, CheckRadius, walllayermask);
+        IsTouchingBehind = Physics2D.OverlapCircle(PlayerBehindPos.position, CheckRadius, walllayermask);
+        if (IsTouchingFront == true && Input.GetKey(KeyCode.Mouse1)|| IsTouchingBehind == true && Input.GetKey(KeyCode.Mouse1))
+        {IsWallGrab = true;}
+        else { IsWallGrab = false; }
+
         PlayerMove();
         PlayerJump();
         FlipPlayer();
         SetPlayerAnimator();// should have a script for animtor 
         PlayerRigid2d.constraints = RigidbodyConstraints2D.FreezeRotation;
-    }
+        PlayerClimb();
 
+
+    }
    
+
+    void PlayerClimb()
+    {
+       
+        if(IsWallGrab==true)
+        {
+            PlayerRigid2d.gravityScale = 0;
+            PlayerRigid2d.velocity = new Vector2(0, 0);
+           
+        }
+        
+        if (!IsWallGrab)
+        {
+            PlayerRigid2d.gravityScale = 1;
+            
+        }
+
+        if(IsWallGrab && Input.GetKey(KeyCode.W))
+        {
+            PlayerRigid2d.velocity += new Vector2(0, PlayerClimbSpeed);
+
+        }
+        if (IsWallGrab && Input.GetKey(KeyCode.S))
+        {
+            PlayerRigid2d.velocity += new Vector2(0, -PlayerDoubleJumpPow);
+        }
+
+    }
 
     private void PlayerMove()
     {
 
-       
+        
 
-        if (PlayerGrounded()) // if player is move on the ground with normal speed
-        {
-            if (Input.GetKey(KeyCode.D))
+            if (IsGrounded) // if player is move on the ground with normal speed
             {
-                PlayerRigid2d.velocity = new Vector2(PlayerSpeed, PlayerRigid2d.velocity.y); 
-
-            }
-            else
-            {
-                if (Input.GetKey(KeyCode.A))
+                if (Input.GetKey(KeyCode.D))
                 {
-                    PlayerRigid2d.velocity = new Vector2(-PlayerSpeed, PlayerRigid2d.velocity.y);
+                    PlayerRigid2d.velocity = new Vector2(PlayerSpeed, PlayerRigid2d.velocity.y);
 
                 }
                 else
-                {//No key is pressed
-                    PlayerRigid2d.velocity = new Vector2(0, PlayerRigid2d.velocity.y);
-                    PlayerRigid2d.constraints = RigidbodyConstraints2D.FreezePositionX;
-
-                }
-            }
-
-        }
-        else // if player is jumping we can have them some control
-        {
-            if (Input.GetKey(KeyCode.D))
-            {
-                PlayerRigid2d.velocity += new Vector2(PlayerSpeed * MidAirSpeed*Time.deltaTime, 0);
-                PlayerRigid2d.velocity = new Vector2(Mathf.Clamp(PlayerRigid2d.velocity.x, -PlayerSpeed, PlayerSpeed), PlayerRigid2d.velocity.y);
-
-            }
-            else
-            {
-                if (Input.GetKey(KeyCode.A))
                 {
-                    PlayerRigid2d.velocity += new Vector2(-PlayerSpeed * MidAirSpeed * Time.deltaTime, 0);
+                    if (Input.GetKey(KeyCode.A))
+                    {
+                        PlayerRigid2d.velocity = new Vector2(-PlayerSpeed, PlayerRigid2d.velocity.y);
+
+                    }
+                    else
+                    {//No key is pressed
+                        PlayerRigid2d.velocity = new Vector2(0, PlayerRigid2d.velocity.y);
+                        PlayerRigid2d.constraints = RigidbodyConstraints2D.FreezePositionX;
+
+                    }
+                }
+
+            }
+            else // if player is jumping we can have them some control
+            {
+                if (Input.GetKey(KeyCode.D))
+                {
+                    PlayerRigid2d.velocity += new Vector2(PlayerSpeed * MidAirSpeed * Time.deltaTime, 0);
                     PlayerRigid2d.velocity = new Vector2(Mathf.Clamp(PlayerRigid2d.velocity.x, -PlayerSpeed, PlayerSpeed), PlayerRigid2d.velocity.y);
 
                 }
                 else
-                {//No key is pressed
-                    PlayerRigid2d.velocity = new Vector2(0, PlayerRigid2d.velocity.y);
-                    PlayerRigid2d.constraints = RigidbodyConstraints2D.FreezePositionX;
+                {
+                    if (Input.GetKey(KeyCode.A))
+                    {
+                        PlayerRigid2d.velocity += new Vector2(-PlayerSpeed * MidAirSpeed * Time.deltaTime, 0);
+                        PlayerRigid2d.velocity = new Vector2(Mathf.Clamp(PlayerRigid2d.velocity.x, -PlayerSpeed, PlayerSpeed), PlayerRigid2d.velocity.y);
 
+                    }
+                    else
+                    {//No key is pressed
+                        PlayerRigid2d.velocity = new Vector2(0, PlayerRigid2d.velocity.y);
+                        PlayerRigid2d.constraints = RigidbodyConstraints2D.FreezePositionX;
+
+                    
                 }
-            }
+            } 
         }
+       
+        
+        
 
     }
     private void PlayerJump() // both single and double 
         // side note could handle jump power by * with the character height. at the moment the vector in middle of the character so 7pixel long
     {
-        if (PlayerGrounded())
+        if (IsGrounded)
         {
             PlayerDoubleJump = true;
         }
 
         if (Input.GetKeyDown(KeyCode.W))
         {
-            if (PlayerGrounded()) 
+            if (IsGrounded) 
             {
                 PlayerRigid2d.velocity = Vector2.up * PlayerJumpPow;
+
             }
             else
-                if (PlayerDoubleJump)
+
+            if (PlayerDoubleJump==true)
             {
                 PlayerRigid2d.velocity = Vector2.up * PlayerDoubleJumpPow;
                 PlayerDoubleJump = false;
+               
             }
         }
      }
 
     
-    public bool PlayerGrounded() // check if player is on the ground
-    {
-        RaycastHit2D raycastHit2D = Physics2D.BoxCast(PlayerboxCollider2d.bounds.center, PlayerboxCollider2d.bounds.size, 0f, Vector2.down, .1f,groundlayermask);
-       /* Debug.Log(raycastHit2D.collider);*/
-        return raycastHit2D.collider != null;
-    }
+    
 
     private void SetPlayerAnimator()
     {
-        bool IsGrounded = PlayerGrounded();
+        
         PlayerAnimator.SetBool("PlayerGrounded", IsGrounded);
         PlayerAnimator.SetFloat("PlayerSpeed", Mathf.Abs(PlayerRigid2d.velocity.x));
         
@@ -132,21 +186,28 @@ public class PlayerMovement : MonoBehaviour
 
     private void FlipPlayer()
     {
-        if (PlayerRigid2d.velocity.x < 0 && FaceRight == true) { Flip(); }
-        if (PlayerRigid2d.velocity.x > 0 && FaceRight == false) { Flip(); }
+        if (Input.GetKey(KeyCode.A) &&  FaceRight == true) { Flip(); }
+        else if (Input.GetKey(KeyCode.D) && FaceRight == false) { Flip(); }
+        
     }
 
     private void Flip()
     {
         FaceRight = !FaceRight;
-        Vector2 Scale;
-        Scale = transform.localScale;
+        Vector3 Scale= transform.localScale;
         Scale.x *= -1;
         transform.localScale = Scale;
 
     }
 
- 
 
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(PlayerFrontPos.position, CheckRadius);
+
+      
+
+    }
 }
 

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &966909592
+--- !u!1 &128901978
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,72 +8,88 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 966909593}
-  - component: {fileID: 966909594}
-  - component: {fileID: 966909595}
+  - component: {fileID: 128901979}
   m_Layer: 0
-  m_Name: AttackHitBox
-  m_TagString: Killbox
+  m_Name: UnderPlayerPosition
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &966909593
+--- !u!4 &128901979
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 966909592}
+  m_GameObject: {fileID: 128901978}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.68, y: -0.15, z: 0}
-  m_LocalScale: {x: 0.75, y: 0.4, z: 1}
+  m_LocalPosition: {x: 0, y: -0.493, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8174987084509659842}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1508194158
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1508194159}
+  m_Layer: 0
+  m_Name: BehindPlayerPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1508194159
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1508194158}
+  m_LocalRotation: {x: -0, y: -0.038874704, z: -0, w: 0.9992441}
+  m_LocalPosition: {x: -0.266, y: -0.094, z: -0.049}
+  m_LocalScale: {x: 0.39185098, y: 0.29026, z: 0.29026}
+  m_Children: []
+  m_Father: {fileID: 8174987084509659842}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: -4.4560003, z: 0}
+--- !u!1 &1908770294
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1908770295}
+  m_Layer: 0
+  m_Name: FrontPlayerPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1908770295
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1908770294}
+  m_LocalRotation: {x: -0, y: -0.038874704, z: -0, w: 0.9992441}
+  m_LocalPosition: {x: 0.37, y: -0.094, z: 0}
+  m_LocalScale: {x: 0.39185098, y: 0.29026, z: 0.29026}
   m_Children: []
   m_Father: {fileID: 8174987084509659842}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &966909594
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 966909592}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
---- !u!114 &966909595
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 966909592}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35ad6e7f025888b429daf7ef9e0623f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyStats: {fileID: 0}
-  playerstat: {fileID: 8174987084509659846}
-  KarmaDrop: {fileID: 0}
-  Enemy: {fileID: 1614786800004093744, guid: 6bf7f04fc1ba8474f836163d7d64fe7d, type: 3}
+  m_LocalEulerAnglesHint: {x: 0, y: -4.4560003, z: 0}
 --- !u!1 &8174987084509659711
 GameObject:
   m_ObjectHideFlags: 0
@@ -109,7 +125,9 @@ Transform:
   m_LocalPosition: {x: 3.31, y: -0.38, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 966909593}
+  - {fileID: 1908770295}
+  - {fileID: 128901979}
+  - {fileID: 1508194159}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -179,7 +197,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 3
+  m_GravityScale: 1
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -209,7 +227,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.8, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &8174987084509659840
 MonoBehaviour:
@@ -224,15 +242,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerSpeed: 5
-  PlayerMaxSpeed: 3
-  PlayerJumpPow: 10
+  PlayerJumpPow: 7
+  PlayerDoubleJumpPow: 5
+  MidAirSpeed: 3
   groundlayermask:
     serializedVersion: 2
-    m_Bits: 1024
-  PlayerAnimator: {fileID: 475687299}
-  PlayerRigid2d: {fileID: 8174987084509659844}
-  PlayerboxCollider2d: {fileID: 8174987084509659843}
-  FaceRight: 1
+    m_Bits: 2560
+  walllayermask:
+    serializedVersion: 2
+    m_Bits: 2048
+  PlayerUnderPos: {fileID: 128901979}
+  PlayerFrontPos: {fileID: 1908770295}
+  PlayerBehindPos: {fileID: 1508194159}
+  CheckRadius: 0.1
+  PlayerClimbSpeed: 2
 --- !u!114 &8174987084509659845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -246,7 +269,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 8174987084509659711}
-  PlayerKarma: 10
+  PlayerKarma: 70
 --- !u!114 &8174987084509659846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -261,7 +284,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCurrency: {fileID: 8174987084509659845}
   player: {fileID: 8174987084509659711}
-  PlayerHP: 0
+  PlayerHP: 3
   PlayerMaxHP: 10
   PlayerDamage: 10
 --- !u!95 &475687299
@@ -295,7 +318,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a1cd6b92c187704699e85bb498f5224, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttackDelay: 0.3
-  IsPlayerAttack: 0
+  PlayerDelayAttackTime: 0.3
+  Attackpos: {fileID: 1908770295}
+  AttackRange: 1
+  EnemyLayerMask:
+    serializedVersion: 2
+    m_Bits: 1024
+  PlayerDamage: 10
   PlayerAnimator: {fileID: 475687299}
-  AttackHitBox: {fileID: 966909594}
+  AttackHitBox: {fileID: 0}

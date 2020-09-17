@@ -124,8 +124,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Karma: {fileID: 450763958401993869}
+  Enemy: {fileID: 7237859923948144618, guid: d561ebe5499b33446a3ba906ed062674, type: 3}
   KarmaQuantity: 10
-  playerCurrency: {fileID: 0}
+  playerCurrency: {fileID: 8174987084509659845, guid: 94feb3077caf03b44935f25901d89eca,
+    type: 3}
 --- !u!50 &450763958401993856
 Rigidbody2D:
   serializedVersion: 4

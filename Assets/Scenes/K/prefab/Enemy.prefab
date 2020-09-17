@@ -14,8 +14,8 @@ GameObject:
   - component: {fileID: 1614786800004093749}
   - component: {fileID: 1614786800004093748}
   - component: {fileID: 1614786800004093750}
-  - component: {fileID: 720417607}
-  m_Layer: 0
+  - component: {fileID: 557383484}
+  m_Layer: 10
   m_Name: Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -98,11 +98,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e540a446a00712f45b2d53e5aaeec4d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enemy: {fileID: 1614786800004093744}
-  KarmaDrop: {fileID: 450763958401993869, guid: cc456ea0021f3334091f822ddba309f2,
-    type: 3}
-  enemyStats: {fileID: 720417607}
-  PlayerStat: {fileID: 0}
 --- !u!50 &1614786800004093749
 Rigidbody2D:
   serializedVersion: 4
@@ -163,7 +158,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   KarmaSpeed: 3
---- !u!114 &720417607
+--- !u!114 &557383484
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -172,8 +167,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1614786800004093744}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 913f3efd0788b62459f499a732a5bf30, type: 3}
+  m_Script: {fileID: 11500000, guid: b7abb15fc1da2e142a3dee65f4e52282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  EnemyHP: 20
-  EnemyMaxHP: 30
+  maxHP: 20
+  currentHP: 0
+  damage: 0
+  EnemyStartDazedTime: 4
+  EnemyNormalSpeed: 5
+  EnemySpeed: 0
+  Karma: {fileID: 450763958401993869, guid: cc456ea0021f3334091f822ddba309f2, type: 3}

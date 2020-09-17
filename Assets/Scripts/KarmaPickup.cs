@@ -5,6 +5,7 @@ using UnityEngine;
 public class KarmaPickup : MonoBehaviour
 {
     public GameObject Karma;
+    public GameObject Enemy;
     public int KarmaQuantity;
     public PlayerCurrency playerCurrency;
     void OnTriggerEnter2D (Collider2D other)
@@ -12,13 +13,16 @@ public class KarmaPickup : MonoBehaviour
         {
             if (other.name == "Player") {
                 playerCurrency.PlayerKarma += KarmaQuantity;
-                Debug.Log(playerCurrency.PlayerKarma);
+
                 Destroy(gameObject);
             }
             
         }
        
     }
-      
+
+   
+
+
     }
 
