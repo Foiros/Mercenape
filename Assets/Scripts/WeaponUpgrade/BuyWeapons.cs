@@ -122,7 +122,7 @@ public class BuyWeapons : MonoBehaviour
             money.ChangeCurrencyAmount(weaponCost);
            
             weaponImagesHolder[weaponID].enabled = false;
-            ownedComponents[weaponID].sprite = weaponsArray.GetBoughtImage();
+            ownedWeapons[weaponID].sprite = weaponsArray.GetBoughtImage();
 
             buyWeaponScreen.SetActive(false);
         }
