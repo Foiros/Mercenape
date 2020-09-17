@@ -7,9 +7,9 @@ public abstract class AbstractUpgrades
 {
     public string upgradeName;
     public string upgradeDescription;
+    public Sprite upgradeImage;
 
     public int upgradeID;
-    public int upgradeAmount;
     public int upgradedSpeedMult;
     public int UpgradedWeightMult;
 
@@ -24,14 +24,14 @@ public abstract class AbstractUpgrades
         return upgradeDescription;
     }
 
+    public Sprite GetUpgradeImage()
+    {
+        return upgradeImage;
+    }
+
     public int GetID()
     {
         return upgradeID;
-    }
-
-    public int GetAmount()
-    {
-        return upgradeAmount;
     }
 
     public int GetUpgradedSpeed()
@@ -48,26 +48,26 @@ public abstract class AbstractUpgrades
 public class TestUpgrade1 : AbstractUpgrades
 {
     //Constructor for this particular upgradde. 
-    public TestUpgrade1(string name, string description, int id, int amount, int speed, int weight)
+    public TestUpgrade1(string name, string description, int id, int speed, int weight, Sprite upgrade)
     {
         upgradeName = name;
         upgradeDescription = description;
         upgradeID = id;
-        upgradeAmount = amount;
         upgradedSpeedMult = speed;
         UpgradedWeightMult = weight;
+        upgradeImage = upgrade;
     }
 }
 
 public class TestUpgrade2 : AbstractUpgrades
 {
-    public TestUpgrade2(string name, string description, int id, int amount, int speed, int weight)
+    public TestUpgrade2(string name, string description, int id, int speed, int weight, Sprite upgrade)
     {
         upgradeName = name;
         upgradeDescription = description;
         upgradeID = id;
-        upgradeAmount = amount;
         upgradedSpeedMult = speed;
         UpgradedWeightMult = weight;
+        upgradeImage = upgrade;
     }
 }

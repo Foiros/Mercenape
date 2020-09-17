@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 // Created by Arttu Paldán 11.9.2020: This script will handle buying or unlocking component pieces.
 public class BuyWeapons : MonoBehaviour
@@ -20,7 +21,7 @@ public class BuyWeapons : MonoBehaviour
     private Image weaponImageBuyScreen;
 
     public Image[] weaponImagesHolder;
-    public Image[] ownedComponents;
+    public Image[] ownedWeapons;
     
     public Sprite[] notBougtWeaponImages;
     public Sprite[] boughtWeaponImages;
@@ -30,6 +31,8 @@ public class BuyWeapons : MonoBehaviour
     private float counterStart;
     private float counterEnd;
     private float originalStart;
+
+    private string buttonName;
 
     
     void Awake()
@@ -147,24 +150,26 @@ public class BuyWeapons : MonoBehaviour
         }
     }
 
-    // A function I hope I can get rid of in the future. When player pressed one of the components in the screen, this will give us the id of the component, which can then be used by other functions.
-    public void Weapon1Button()
+    // Button function that recognizes, which button has been pressed and based on this gives out the weaponID we need to execute rest of the code. 
+    public void WeaponButton()
     {
-        weaponID = weapons[0].GetID();
-    }
+        buttonName = EventSystem.current.currentSelectedGameObject.name;
 
-    public void Weapon2Button()
-    {
-        weaponID = weapons[1].GetID();
-    }
-
-    public void Weapon3Button()
-    {
-        weaponID = weapons[2].GetID();
-    }
-
-    public void Weapon4Button()
-    {
-        weaponID = weapons[3].GetID();
+        if(buttonName == "WeaponA")
+        {
+            weaponID = weapons[0].GetID();
+        }
+        else if(buttonName == "WeaponB")
+        {
+            weaponID = weapons[1].GetID();
+        }
+        else if(buttonName == "WeaponC")
+        {
+            weaponID = weapons[2].GetID();
+        }
+        else if (buttonName == "WeaponD") 
+        {
+            weaponID = weapons[3].GetID();
+        }
     }
 }

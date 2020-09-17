@@ -46,8 +46,8 @@ public class SetActualWeapon : MonoBehaviour
     // Function to construct the upgrades and put them into an array.
     void SetUpUpgradesArray()
     {
-        TestUpgrade1 testUpgrade1 = new TestUpgrade1("Speed Upgrade", "Increases the speed of your attacks", 0, 1, 2, 0);
-        TestUpgrade2 testUpgrade2 = new TestUpgrade2("Weigh Upgrade", "Increases the weight of your weapon", 1, 1, 0, 2);
+        TestUpgrade1 testUpgrade1 = new TestUpgrade1("Speed Upgrade", "Increases the speed of your attacks", 0, 2, 0, null);
+        TestUpgrade2 testUpgrade2 = new TestUpgrade2("Weigh Upgrade", "Increases the weight of your weapon", 1, 0, 2, null);
 
         upgrades = new AbstractUpgrades[] {testUpgrade1, testUpgrade2 };
     }
