@@ -70,10 +70,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35ad6e7f025888b429daf7ef9e0623f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemystats: {fileID: 0}
+  enemyStats: {fileID: 0}
   playerstat: {fileID: 8174987084509659846}
   KarmaDrop: {fileID: 0}
-  Enemy: {fileID: 0}
+  Enemy: {fileID: 1614786800004093744, guid: 6bf7f04fc1ba8474f836163d7d64fe7d, type: 3}
 --- !u!1 &8174987084509659711
 GameObject:
   m_ObjectHideFlags: 0
@@ -246,7 +246,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 8174987084509659711}
-  PlayerKarma: 0
+  PlayerKarma: 10
 --- !u!114 &8174987084509659846
 MonoBehaviour:
   m_ObjectHideFlags: 0

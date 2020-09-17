@@ -4,58 +4,72 @@ using UnityEngine;
 
 public class PlayerAttackTrigger : MonoBehaviour
 {
-    public float AttackDelay = 0.3f;
-    public bool IsPlayerAttack = false;
-   
+    private float TimeDelayAttack; // to check if there still countdown time untill player can atk again
+    public float PlayerDelayAttackTime; // can exchange to weapon atk rate later
+
+    public Transform Attackpos;
+    public float AttackRange;
+    public LayerMask EnemyLayerMask;
+    public int PlayerDamage;
+
     public Animator PlayerAnimator;
     public Collider2D AttackHitBox;
-
-    private void Awake()
-    {
-        AttackHitBox.enabled = false;
-    }
+    private bool IsPlayerAttack = false;
+    
 
     // Start is called before the first frame update
     void Start()
     {
         PlayerAnimator = gameObject.GetComponent<Animator>();
-
+        IsPlayerAttack = false;
     }
 
     // Update is called once per frame
     void Update()
     {
         PlayerAttack();
-        
+        PlayerAnimator.SetBool("IsPlayerAttack", IsPlayerAttack);
     }
 
 
     public void PlayerAttack()
     {
-
-
-        if (Input.GetKey(KeyCode.Space) && !IsPlayerAttack)
+        if(Input.GetKeyDown(KeyCode.Space)&& !IsPlayerAttack)
         {
             IsPlayerAttack = true;
-            AttackHitBox.enabled = true;
-            AttackDelay = 0.3f;
+            TimeDelayAttack = PlayerDelayAttackTime;
+            Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(Attackpos.position, AttackRange, EnemyLayerMask);
+            Debug.Log("attacking");
+           
+
+            for (int i = 0; i < enemiesToDamage.Length; i++)
+            {
+                enemiesToDamage[i].GetComponent<EnemyStat>().TakeDamage(PlayerDamage);
+            }
         }
 
-        if (IsPlayerAttack == true)
+        if (IsPlayerAttack)
         {
-            if (AttackDelay > 0)
+            if(TimeDelayAttack > 0)
             {
-                AttackDelay -= Time.deltaTime;
+                TimeDelayAttack -= Time.deltaTime;
             }
             else
             {
                 IsPlayerAttack = false;
-                AttackHitBox.enabled = false;
             }
 
-        }
+           
 
-        PlayerAnimator.SetBool("IsPlayerAttack", IsPlayerAttack);
+        }
+    }
+
+
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(Attackpos.position, AttackRange);
 
     }
 }

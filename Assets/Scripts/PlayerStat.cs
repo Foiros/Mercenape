@@ -34,4 +34,14 @@ public class PlayerStat : MonoBehaviour
 
         }
     }
+
+    public void PlayerTakeDamage(int EnemyDamage)
+    {
+        PlayerHP -= EnemyDamage;
+
+        if (PlayerHP <= 0)
+        {
+            Destroy(gameObject, 0);
+        }
+    }
 }
