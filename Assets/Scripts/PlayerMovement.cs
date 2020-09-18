@@ -14,7 +14,6 @@ public class PlayerMovement : MonoBehaviour
 
     private Animator PlayerAnimator;
     private Rigidbody2D PlayerRigid2d;
-    private BoxCollider2D PlayerboxCollider2d;
     
     
     
@@ -37,16 +36,14 @@ public class PlayerMovement : MonoBehaviour
     {
         PlayerRigid2d = transform.GetComponent<Rigidbody2D>();
         PlayerAnimator = gameObject.GetComponent<Animator>();
-        PlayerboxCollider2d = transform.GetComponent<BoxCollider2D>();
     }
 
     void Update()
     {
         IsGrounded = Physics2D.OverlapCircle(PlayerUnderPos.position, CheckRadius, groundlayermask);
-        Debug.Log(IsGrounded);
         IsTouchingFront = Physics2D.OverlapCircle(PlayerFrontPos.position, CheckRadius, walllayermask);
         IsTouchingBehind = Physics2D.OverlapCircle(PlayerBehindPos.position, CheckRadius, walllayermask);
-        if (IsTouchingFront == true && Input.GetKey(KeyCode.Mouse1)|| IsTouchingBehind == true && Input.GetKey(KeyCode.Mouse1))
+        if (IsTouchingFront == true && Input.GetKey(KeyCode.LeftShift)|| IsTouchingBehind == true && Input.GetKey(KeyCode.LeftShift))
         {IsWallGrab = true;}
         else { IsWallGrab = false; }
 
@@ -155,7 +152,7 @@ public class PlayerMovement : MonoBehaviour
             PlayerDoubleJump = true;
         }
 
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             if (IsGrounded) 
             {

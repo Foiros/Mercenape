@@ -15,6 +15,7 @@ public class KarmaPickup : MonoBehaviour
                 playerCurrency.PlayerKarma += KarmaQuantity;
 
                 Destroy(gameObject);
+                Debug.Log(playerCurrency.PlayerKarma);
             }
             
         }
