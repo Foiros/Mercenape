@@ -11,10 +11,11 @@ public class EnemySpawnerScript : MonoBehaviour
     {
         public int count;
         public float spawnRate;
+        public int enemyIncreasedHP;
+        public int enemyIncreasedDamage;
     }
 
     public List<Wave> waves = new List<Wave>();
-    private EnemyStat enemyStats;
 
     private int currentWave = 1;
 
@@ -125,7 +126,7 @@ public class EnemySpawnerScript : MonoBehaviour
     void IncreaseDifficulty()
     {
         waves[0].count++;
-        enemyStats.maxHP += 2;
-        enemyStats.damage += 1;
+        waves[0].enemyIncreasedHP += 2;
+        waves[0].enemyIncreasedDamage += 1;
     }
 }

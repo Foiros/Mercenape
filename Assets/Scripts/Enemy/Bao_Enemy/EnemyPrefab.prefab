@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 7237859923948144613}
   - component: {fileID: -5583255050072111067}
   - component: {fileID: 7237859923948144614}
-  - component: {fileID: -5095797288588026960}
+  - component: {fileID: -7787726167789592485}
   m_Layer: 10
   m_Name: EnemyPrefab
   m_TagString: Enemy
@@ -128,10 +128,10 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 20
+  m_Mass: 10
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 2
+  m_GravityScale: 2.5
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -175,10 +175,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7abb15fc1da2e142a3dee65f4e52282, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHP: 50
   currentHP: 0
+  maxHP: 10
   damage: 5
---- !u!114 &-5095797288588026960
+  karmaDrop: {fileID: 450763958401993869, guid: cc456ea0021f3334091f822ddba309f2,
+    type: 3}
+  karmaDropQuantity: 0
+  karmaPickup: {fileID: 450763958401993868, guid: cc456ea0021f3334091f822ddba309f2,
+    type: 3}
+--- !u!114 &-7787726167789592485
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -187,15 +192,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 7237859923948144618}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97fc7b079337beb4d8c398c01825750a, type: 3}
+  m_Script: {fileID: 11500000, guid: 138ae04a9ca67a24bbe435816373de0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2
   attackRange: 3
   stoppingDistance: 1.5
-  rayPos: {fileID: 4669934860387165151}
   player: {fileID: 8174987084509659711, guid: 94feb3077caf03b44935f25901d89eca, type: 3}
-  enemyDamage: 5
-  forcePower: 180
+  enemyDamage: 0
+  forcePower: 100
   delayTimeBetweenAttack: 2
   timeBetweenAttack: 0

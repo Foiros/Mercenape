@@ -10,30 +10,41 @@ public class EnemyBehaviour : MonoBehaviour
     [SerializeField] private float attackRange = 1.5f;
     [SerializeField] private float stoppingDistance = 1.5f;
 
-    [SerializeField] private Transform rayPos;
+    private Transform rayPos;
     private float rayDistance = 4f;
 
     private Vector2 destination;
 
-    private EnemyState currentState;
-    private Rigidbody2D rb;
+    protected EnemyState currentState;
+    protected Rigidbody2D rb;
     private EnemyStat enemyStat;
 
-    [SerializeField] private GameObject player;
-    private Rigidbody2D playerRigid;
-    private PlayerStat playerStat;
-    public int enemyDamage;
+    [SerializeField] protected GameObject player;
+    protected Rigidbody2D playerRigid;
+    protected PlayerStat playerStat;
+    protected PlayerMovement playerMovement;
+    protected SpriteRenderer playerRenderer;
 
-    [SerializeField] private int forcePower; 
+    [HideInInspector] public int enemyDamage;
+
+    [SerializeField] protected int forcePower; 
     [SerializeField] private float delayTimeBetweenAttack;
     [SerializeField] private float timeBetweenAttack;
     
+    protected bool isPlayerGetKnocked = false;
 
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        playerRigid = player.GetComponent<Rigidbody2D>();
-        playerStat = player.GetComponent<PlayerStat>();
+        if (player != null)
+        {
+            playerRigid = player.GetComponent<Rigidbody2D>();
+            playerStat = player.GetComponent<PlayerStat>();
+            playerMovement = player.GetComponent<PlayerMovement>();
+            playerRenderer = player.GetComponent<SpriteRenderer>();
+        }
+        
+        rayPos = gameObject.transform.GetChild(0).GetComponent<Transform>();
 
         rb = this.GetComponent<Rigidbody2D>();
         enemyStat = this.GetComponent<EnemyStat>();
@@ -48,6 +59,12 @@ public class EnemyBehaviour : MonoBehaviour
 
         // Cool down between attacks
         timeBetweenAttack -= Time.deltaTime;
+
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            playerRigid.AddForce(new Vector2(150, 3), ForceMode2D.Impulse);
+            rb.AddForce(new Vector2(800, 100), ForceMode2D.Impulse);
+        }
 
         switch (currentState)
         {
@@ -81,7 +98,7 @@ public class EnemyBehaviour : MonoBehaviour
                     }
 
                     speed = 4;
-
+                    
                     // Chase player
                     GetPlayerDestination();
                     transform.position = Vector2.MoveTowards(transform.position, destination, Time.deltaTime * speed);                  
@@ -103,16 +120,14 @@ public class EnemyBehaviour : MonoBehaviour
                         return;
                     }
 
-                    
+                    EnemyAttack();                    
+
                     // When out of attack range
                     if (Vector2.Distance(transform.position, player.transform.position) > attackRange)
                     {
                         currentState = EnemyState.Chase;                       
                     }
-
-                   
-                    EnemyAttack();
-
+                                     
                     break;
                 }
         }
@@ -140,7 +155,6 @@ public class EnemyBehaviour : MonoBehaviour
     {
         destination = new Vector2(transform.position.x + Random.Range(-8f, 8f), transform.position.y);
         
-
         // Facing right direction
         if ((destination.x - transform.position.x) > 0)
         {
@@ -173,9 +187,7 @@ public class EnemyBehaviour : MonoBehaviour
     private void GetPlayerDestination()
     {
         // Rage mode
-        transform.localScale = new Vector2(0.3f, 0.3f);
-        
-        //Debug.Log(player.transform.position.x);
+        transform.localScale = new Vector2(0.3f, 0.3f);       
         destination = new Vector2(player.transform.position.x, transform.position.y);      
 
         // Facing right direction
@@ -194,23 +206,16 @@ public class EnemyBehaviour : MonoBehaviour
         Vector2 force = ((Vector2)transform.right * forcePower) + new Vector2(0, 30);      
 
         if (timeBetweenAttack <= 0)
-        {           
+        {
             // Jump to player
             rb.AddForce(force, ForceMode2D.Impulse);
+            //GetPlayerDestination();
+            //transform.position = Vector2.MoveTowards(transform.position, destination, Time.deltaTime * speed * 2);
+            //Debug.Log(destination);
                         
             timeBetweenAttack = delayTimeBetweenAttack;           
         }        
 
     }
-
-    // Collision
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            rb.AddForce((Vector2)transform.right * (-forcePower), ForceMode2D.Impulse);           
-            playerStat.PlayerTakeDamage(enemyDamage);
-            Debug.Log(playerStat.PlayerHP);            
-        }
-    }
+       
 }
