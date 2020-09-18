@@ -23,6 +23,7 @@ public class EnemyBehaviour : MonoBehaviour
     protected Rigidbody2D playerRigid;
     protected PlayerStat playerStat;
     protected PlayerMovement playerMovement;
+    protected PlayerAttackTrigger playerAttack;
     protected SpriteRenderer playerRenderer;
 
     [HideInInspector] public int enemyDamage;
@@ -41,6 +42,7 @@ public class EnemyBehaviour : MonoBehaviour
             playerRigid = player.GetComponent<Rigidbody2D>();
             playerStat = player.GetComponent<PlayerStat>();
             playerMovement = player.GetComponent<PlayerMovement>();
+            playerAttack = player.GetComponent<PlayerAttackTrigger>();
             playerRenderer = player.GetComponent<SpriteRenderer>();
         }
         
@@ -201,21 +203,16 @@ public class EnemyBehaviour : MonoBehaviour
         }
     }
 
-    private void EnemyAttack()
+    protected virtual void EnemyAttack()
     {
-        Vector2 force = ((Vector2)transform.right * forcePower) + new Vector2(0, 30);      
-
+        Vector2 force = ((Vector2)transform.right * forcePower) + new Vector2(0, 30);
+        
         if (timeBetweenAttack <= 0)
         {
             // Jump to player
             rb.AddForce(force, ForceMode2D.Impulse);
-            //GetPlayerDestination();
-            //transform.position = Vector2.MoveTowards(transform.position, destination, Time.deltaTime * speed * 2);
-            //Debug.Log(destination);
                         
             timeBetweenAttack = delayTimeBetweenAttack;           
-        }        
-
+         }   
     }
-       
 }

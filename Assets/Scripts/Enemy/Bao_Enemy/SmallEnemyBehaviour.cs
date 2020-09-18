@@ -8,32 +8,37 @@ public class SmallEnemyBehaviour : EnemyBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
-        {           
-            
-
-            rb.AddForce((Vector2)transform.right * (-forcePower / 1.5f), ForceMode2D.Impulse);
-
-            if (!isPlayerGetKnocked)
+        {
+            if (currentState == EnemyState.Attack)
             {
-                isPlayerGetKnocked = true;
-                StartCoroutine("PlayerStun");
+                rb.AddForce((Vector2)transform.right * (-forcePower / 1.2f), ForceMode2D.Impulse);
+
+                if (!isPlayerGetKnocked)
+                {
+                    isPlayerGetKnocked = true;
+                    StartCoroutine("PlayerStun");
+                }
+
+                playerStat.PlayerTakeDamage(enemyDamage);
+                Debug.Log(playerStat.PlayerHP);
             }
-
-            playerStat.PlayerTakeDamage(enemyDamage);
-            Debug.Log(playerStat.PlayerHP);
-
         }
     }
 
     IEnumerator PlayerStun()
     {
-        //player.transform.position = Vector3.MoveTowards(player.transform.position, player.transform.position + transform.right, Time.deltaTime);
+        playerRigid.drag = 15;
+        playerRigid.mass = 100;
         playerMovement.enabled = false;
+        playerAttack.enabled = false;
         playerRenderer.color = Color.red;
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.5f);
 
+        playerRigid.drag = 1;
+        playerRigid.mass = 1;
         playerMovement.enabled = true;
+        playerAttack.enabled = true;
         playerRenderer.color = Color.white;
 
         isPlayerGetKnocked = false;

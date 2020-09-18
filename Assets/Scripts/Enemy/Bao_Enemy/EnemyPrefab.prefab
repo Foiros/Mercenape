@@ -200,6 +200,6 @@ MonoBehaviour:
   stoppingDistance: 1.5
   player: {fileID: 8174987084509659711, guid: 94feb3077caf03b44935f25901d89eca, type: 3}
   enemyDamage: 0
-  forcePower: 100
+  forcePower: 80
   delayTimeBetweenAttack: 2
   timeBetweenAttack: 0
