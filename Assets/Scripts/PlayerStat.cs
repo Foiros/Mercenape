@@ -13,15 +13,18 @@ public class PlayerStat : MonoBehaviour
     public int PlayerMaxHP;
     public int PlayerDamage;
 
+    public PlayerHealthBar healthBar;
 
     void Start()
     {
         PlayerHP = PlayerMaxHP;
+        healthBar.SetMaxHp(PlayerHP);
         
     }
     void Update()
     {
-        CheckPlayerDeath();    //ineffective should only be called when get damage 
+ 
+        healthBar.SetCurrentHP(PlayerHP);
     }
     void CheckPlayerDeath()
     {
@@ -38,10 +41,10 @@ public class PlayerStat : MonoBehaviour
     public void PlayerTakeDamage(int EnemyDamage)
     {
         PlayerHP -= EnemyDamage;
-
-        if (PlayerHP <= 0)
-        {
-            Destroy(gameObject, 0);
-        }
+        CheckPlayerDeath();    //ineffective should only be called when get damage 
+        
     }
+
+    
+
 }
