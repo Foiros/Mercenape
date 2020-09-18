@@ -13,18 +13,14 @@ public class PlayerStat : MonoBehaviour
     public int PlayerMaxHP;
     public int PlayerDamage;
 
-    public PlayerHealthBar healthBar;
 
     void Start()
     {
         PlayerHP = PlayerMaxHP;
-        healthBar.SetMaxHp(PlayerHP);
         
     }
     void Update()
     {
- 
-        healthBar.SetCurrentHP(PlayerHP);
     }
     void CheckPlayerDeath()
     {

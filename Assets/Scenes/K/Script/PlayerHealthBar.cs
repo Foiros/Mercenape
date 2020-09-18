@@ -9,12 +9,22 @@ public class PlayerHealthBar : MonoBehaviour
     public Slider slider;
     public Gradient gradient;
     public Image fill;
-
-
-    public void SetMaxHp(int HP)
+    [SerializeField] PlayerStat playerStat;
+    
+    private void Start()
     {
-        slider.maxValue = HP;
-        slider.value = HP ;
+         SetMaxHp();
+        
+    }
+    private void Update()
+    {
+        SetCurrentHP(playerStat.PlayerHP);
+    }
+
+    public void SetMaxHp()
+    {
+        slider.maxValue = playerStat.PlayerMaxHP;
+        slider.value =playerStat.PlayerHP ;
         fill.color = gradient.Evaluate(1f);
     }
 
