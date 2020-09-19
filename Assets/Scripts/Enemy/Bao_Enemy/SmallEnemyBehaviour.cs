@@ -27,20 +27,23 @@ public class SmallEnemyBehaviour : EnemyBehaviour
 
     IEnumerator PlayerStun()
     {
-        playerRigid.drag = 15;
-        playerRigid.mass = 100;
-        playerMovement.enabled = false;
-        playerAttack.enabled = false;
-        playerRenderer.color = Color.red;
+        if (player != null)
+        {            
+            playerRigid.drag = 15;
+            playerRigid.mass = 100;
+            playerMovement.enabled = false;
+            playerAttack.enabled = false;
+            playerRenderer.color = Color.red;
 
-        yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(1.5f);
 
-        playerRigid.drag = 1;
-        playerRigid.mass = 1;
-        playerMovement.enabled = true;
-        playerAttack.enabled = true;
-        playerRenderer.color = Color.white;
+            playerRigid.drag = 1;
+            playerRigid.mass = 1;
+            playerMovement.enabled = true;
+            playerAttack.enabled = true;
+            playerRenderer.color = Color.white;
 
-        isPlayerGetKnocked = false;
+            isPlayerGetKnocked = false;
+        }
     }
 }
