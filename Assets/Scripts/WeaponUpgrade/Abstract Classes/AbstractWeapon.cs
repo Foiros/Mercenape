@@ -12,9 +12,8 @@ public abstract class AbstractWeapon
     public int weaponID;
     public int weaponCost;
 
-    public Sprite weaponNotBougthImage;
-    public Sprite weaponBoughtImage;
-    public Sprite weaponInUseImage;
+    public Sprite weaponImage;
+    public Sprite chosenWeaponImage;
 
     // Weapon stats
     public int weaponSpeed;
@@ -41,19 +40,14 @@ public abstract class AbstractWeapon
         return weaponCost;
     }
 
-    public Sprite GetNotBoughtImage()
+    public Sprite GetWeaponImage()
     {
-        return weaponNotBougthImage;
-    }
-    
-    public Sprite GetBoughtImage()
-    {
-        return weaponBoughtImage;
+        return weaponImage;
     }
 
-    public Sprite GetInUseImage()
+    public Sprite GetChosenWeaponImage()
     {
-        return weaponInUseImage;
+        return chosenWeaponImage;
     }
 
     // Fetch functios for stats
@@ -74,7 +68,7 @@ public abstract class AbstractWeapon
 public class TestWeapon1 : AbstractWeapon
 {   
     // This is used to create this object in the scripts. 
-    public TestWeapon1(string name, string description, int id, int cost, int speed, int weight, Sprite notBought, Sprite bought, Sprite inUse)
+    public TestWeapon1(string name, string description, int id, int cost, int speed, int weight, Sprite weapon, Sprite chosenWeapon)
     {
         weaponName = name;
         weaponDescription = description;
@@ -82,9 +76,8 @@ public class TestWeapon1 : AbstractWeapon
         weaponCost = cost;
         weaponSpeed = speed;
         weaponWeight = weight;
-        weaponNotBougthImage = notBought;
-        weaponBoughtImage = bought;
-        weaponInUseImage = inUse;
+        weaponImage = weapon;
+        chosenWeaponImage = chosenWeapon;
     }
 
     // Eventually this will hold the effect the component has on players weapon.
@@ -96,7 +89,7 @@ public class TestWeapon1 : AbstractWeapon
 
 public class TestWeapon2 : AbstractWeapon
 {
-    public TestWeapon2(string name, string description, int id, int cost, int speed, int weight, Sprite notBought, Sprite bought, Sprite inUse)
+    public TestWeapon2(string name, string description, int id, int cost, int speed, int weight, Sprite weapon, Sprite chosenWeapon)
     {
         weaponName = name;
         weaponDescription = description;
@@ -104,9 +97,8 @@ public class TestWeapon2 : AbstractWeapon
         weaponCost = cost;
         weaponSpeed = speed;
         weaponWeight = weight;
-        weaponNotBougthImage = notBought;
-        weaponBoughtImage = bought;
-        weaponInUseImage = inUse;
+        weaponImage = weapon;
+        chosenWeaponImage = chosenWeapon;
     }
     
     public override void WeaponEffect()
@@ -117,7 +109,7 @@ public class TestWeapon2 : AbstractWeapon
 
 public class TestWeapon3 : AbstractWeapon
 {
-    public TestWeapon3(string name, string description, int id, int cost, int speed, int weight, Sprite notBought, Sprite bought, Sprite inUse)
+    public TestWeapon3(string name, string description, int id, int cost, int speed, int weight, Sprite weapon, Sprite chosenWeapon)
     {
         weaponName = name;
         weaponDescription = description;
@@ -125,9 +117,8 @@ public class TestWeapon3 : AbstractWeapon
         weaponCost = cost;
         weaponSpeed = speed;
         weaponWeight = weight;
-        weaponNotBougthImage = notBought;
-        weaponBoughtImage = bought;
-        weaponInUseImage = inUse;
+        weaponImage = weapon;
+        chosenWeaponImage = chosenWeapon;
     }
     
     public override void WeaponEffect()
@@ -138,7 +129,7 @@ public class TestWeapon3 : AbstractWeapon
 
 public class TestWeapon4 : AbstractWeapon
 {
-    public TestWeapon4(string name, string description, int id, int cost, int speed, int weight, Sprite notBought, Sprite bought, Sprite inUse)
+    public TestWeapon4(string name, string description, int id, int cost, int speed, int weight, Sprite weapon, Sprite chosenWeapon)
     {
         weaponName = name;
         weaponDescription = description;
@@ -146,9 +137,8 @@ public class TestWeapon4 : AbstractWeapon
         weaponCost = cost;
         weaponSpeed = speed;
         weaponWeight = weight;
-        weaponNotBougthImage = notBought;
-        weaponBoughtImage = bought;
-        weaponInUseImage = inUse;
+        weaponImage = weapon;
+        chosenWeaponImage = chosenWeapon;
     }
    
     public override void WeaponEffect()

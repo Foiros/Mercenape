@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Arttu_WeaponSystem.unity
+    guid: 6876dfd1f509aa9479da99457334856f
   m_configObjects: {}
