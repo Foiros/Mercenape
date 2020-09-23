@@ -369,15 +369,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 807928a36459de14c864c4a8d71b02e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waves:
-  - count: 1
-    spawnRate: 1
+  wave:
+    count: 1
+    spawnRate: 0
+    mowerCount: 0
     enemyIncreasedHP: 0
     enemyIncreasedDamage: 0
   timeBetweenWaves: 2
   enemies:
   - {fileID: 7237859923948144615, guid: d561ebe5499b33446a3ba906ed062674, type: 3}
-  - {fileID: 7237859923948144615, guid: d561ebe5499b33446a3ba906ed062674, type: 3}
+  - {fileID: 3296232098054200580, guid: 0bf43a7844054ab4b98a0d2d02adb2ba, type: 3}
 --- !u!4 &1552808064
 Transform:
   m_ObjectHideFlags: 0
@@ -386,7 +387,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1552808062}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.31, y: -2.9, z: -4.53094}
+  m_LocalPosition: {x: 11.17, y: -2.8, z: -4.53094}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

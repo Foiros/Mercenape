@@ -5,7 +5,7 @@ using UnityEngine;
 public class ShredBehaviour : MonoBehaviour
 {
     [SerializeField] private float speed = 5f;
-    public int enemyDamage;
+    public int damage;
     private int escapingStunCount = 0;
     [SerializeField] private float bleedChance;
 
@@ -20,8 +20,7 @@ public class ShredBehaviour : MonoBehaviour
 
     private GameObject player;
     private PlayerStat playerStat;
-
-    // Start is called before the first frame update
+   
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -29,13 +28,12 @@ public class ShredBehaviour : MonoBehaviour
         //capsuleCollider = GetComponent<CapsuleCollider2D>();
 
         enemyStat = this.GetComponent<EnemyStat>();
-        enemyDamage = enemyStat.damage;
+        damage = enemyStat.damage;
 
         player = GameObject.FindGameObjectWithTag("Player");
         playerStat = player.GetComponent<PlayerStat>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         // Check direction facing and adjust to velocity according to that
@@ -50,6 +48,11 @@ public class ShredBehaviour : MonoBehaviour
 
         // Check if is stunning
         StunningProcess();
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            Destroy(gameObject);
+        }
     }
 
     // Hit player
@@ -58,12 +61,13 @@ public class ShredBehaviour : MonoBehaviour
         if (col.gameObject.CompareTag("Player"))
         {            
             StartCoroutine("Attacking");
+            playerStat.PlayerTakeDamage(damage);
+
             escapingStunCount = 0;
             isStunning = true;
             
             if (Random.Range(0f, 100f) < bleedChance)
             {
-                print("Start bleeding");
                 StopCoroutine(ApplyBleedDamage(1, 3, 2));
                 StartCoroutine(ApplyBleedDamage(1, 3, 2));
             }
@@ -105,11 +109,9 @@ public class ShredBehaviour : MonoBehaviour
         while(currentCount < damageCount)
         {
             playerStat.PlayerHP -= damageAmount;
-            print("Player HP: " + playerStat.PlayerHP);
             yield return new WaitForSeconds(damageDuration);
             currentCount++;
-        }
-        print("End bleeding");
+        }       
     }
 
     private void StunningProcess()
@@ -129,7 +131,6 @@ public class ShredBehaviour : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             escapingStunCount++;
-            print("Pressed space: " + escapingStunCount);
         }
 
         if (escapingStunCount == 5)

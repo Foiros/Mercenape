@@ -4,18 +4,20 @@ using UnityEngine;
 
 public class EnemySpawnerScript : MonoBehaviour
 {
-    public enum SpawnState { Spawning, Waiting, Counting}
+    public enum SpawnState { Spawning, Waiting, Counting }
 
     [System.Serializable]
     public class Wave
     {
         public int count;
         public float spawnRate;
+        public int mowerCount;
         public int enemyIncreasedHP;
         public int enemyIncreasedDamage;
     }
 
-    public List<Wave> waves = new List<Wave>();
+    public Wave wave = new Wave();
+    //public List<Wave> waves = new List<Wave>();
 
     private int currentWave = 1;
 
@@ -25,7 +27,9 @@ public class EnemySpawnerScript : MonoBehaviour
     private float searchCountdown = 1f;  // Count down for searching any alive enemy
 
     public Transform[] enemies = new Transform[2];
-    int randomEnemy;
+
+    //public delegate void CompleteGroup();
+    //public static event CompleteGroup GroupCompleted;
 
     private SpawnState state = SpawnState.Counting;
 
@@ -56,13 +60,13 @@ public class EnemySpawnerScript : MonoBehaviour
             if (state != SpawnState.Spawning)
             {
                 // Start spawning wave
-                StartCoroutine(SpawnWave(waves[0]));
+                StartCoroutine(SpawnWave(wave));
             }
         }
         else
         {
             waveCountdown -= Time.deltaTime;
-        }
+        }      
     }
 
     // Wave completed and prepare new wave
@@ -71,7 +75,8 @@ public class EnemySpawnerScript : MonoBehaviour
         // Begin a new wave
         state = SpawnState.Counting;
         waveCountdown = timeBetweenWaves;
-      
+
+        wave.mowerCount = 0;
         currentWave++;
         IncreaseDifficulty();
 
@@ -103,10 +108,9 @@ public class EnemySpawnerScript : MonoBehaviour
         // Spawn
         for (int i = 0; i < _wave.count; i++)
         {
-            randomEnemy = Random.Range(0, 2);
-            _wave.spawnRate = Random.Range(1.5f, 3.5f);
-
-            SpawnEnemy(enemies[randomEnemy]);
+            _wave.spawnRate = Random.Range(1.5f, 5f);
+            
+            SpawnEnemy(enemies[RandomEnemyGenerator()]);
 
             yield return new WaitForSeconds(1f / _wave.spawnRate);
         }
@@ -120,13 +124,42 @@ public class EnemySpawnerScript : MonoBehaviour
     void SpawnEnemy(Transform _enemy)
     {
         Instantiate(_enemy, transform.position, transform.rotation);
-        Debug.Log("Spawning Enemy: " + _enemy.name);
     }
 
     void IncreaseDifficulty()
     {
-        waves[0].count++;
-        waves[0].enemyIncreasedHP += 2;
-        waves[0].enemyIncreasedDamage += 1;
+        wave.count++;
+        wave.enemyIncreasedHP += 2;
+        wave.enemyIncreasedDamage += 1;
+    }
+
+    int RandomEnemyGenerator()
+    {
+        if (wave.mowerCount == 2) { return 0; }
+
+        int enemyIndex = 0;
+        
+        int randomRatio = Random.Range(0, 101);
+
+        if (currentWave <= 2)
+        {
+            enemyIndex = 0;
+        }
+        else
+        {           
+            if((randomRatio < 85) && wave.mowerCount == 0)
+            {
+                enemyIndex = 1;
+                wave.mowerCount++;
+            }
+
+            if((randomRatio < 15) && wave.mowerCount == 1)
+            {
+                enemyIndex = 1;
+                wave.mowerCount++;
+            }
+            
+        }
+        return enemyIndex;
     }
 }

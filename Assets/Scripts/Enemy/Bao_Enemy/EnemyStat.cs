@@ -28,8 +28,8 @@ public class EnemyStat : MonoBehaviour
         noKarmaInstantiate = karmaDropQuantity / karmaPickup.KarmaQuantity;
        
         var waveStat = GameObject.Find("EnemySpawner");
-        maxHP = maxHP + waveStat.GetComponent<EnemySpawnerScript>().waves[0].enemyIncreasedHP;
-        damage = damage + waveStat.GetComponent<EnemySpawnerScript>().waves[0].enemyIncreasedDamage;
+        maxHP = maxHP + waveStat.GetComponent<EnemySpawnerScript>().wave.enemyIncreasedHP;
+        damage = damage + waveStat.GetComponent<EnemySpawnerScript>().wave.enemyIncreasedDamage;
         currentHP = maxHP;
         sliderHealth.value = CalculateHealth();
     }
@@ -41,6 +41,8 @@ public class EnemyStat : MonoBehaviour
 
     public void TakeDamage(int playerDamage)
     {
+
+
         currentHP -= playerDamage;      
         sliderHealth.value = CalculateHealth();
         StartCoroutine("HealthBarAnimation");
@@ -50,7 +52,7 @@ public class EnemyStat : MonoBehaviour
 
     private float CalculateHealth()
     {
-        return (float)currentHP / maxHP;
+        return (float) currentHP / maxHP;
     }
 
     IEnumerator HealthBarAnimation()
