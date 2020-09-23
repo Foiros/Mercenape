@@ -23,9 +23,7 @@ public class UpgradeDrop : MonoBehaviour
         {
 
             playerCurrency.playerUpgrade++;
-
             Destroy(gameObject);
-            Debug.Log(PlayerCurrency.playerCurrency.playerUpgrade);
         }
         if (other.tag == "ground")
         {

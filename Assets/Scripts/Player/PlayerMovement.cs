@@ -19,7 +19,7 @@ public class PlayerMovement : MonoBehaviour
     
     bool IsGrounded;
     public Transform PlayerUnderPos;
-    private bool FaceRight = true;
+    public bool FaceRight = true;
     private bool PlayerDoubleJump;
 
     public Transform PlayerFrontPos, PlayerBehindPos;
@@ -31,11 +31,13 @@ public class PlayerMovement : MonoBehaviour
     bool IsWallGrab = false;
     public float PlayerClimbSpeed;
 
+    public bool isPlayerBlock = false;
 
     void Start()
     {
         PlayerRigid2d = transform.GetComponent<Rigidbody2D>();
         PlayerAnimator = gameObject.GetComponent<Animator>();
+       
 
 
     }
@@ -51,17 +53,34 @@ public class PlayerMovement : MonoBehaviour
         {IsWallGrab = true;}
         else { IsWallGrab = false; }
 
+        // check if player click right mouse 
+        if (Input.GetMouseButton(1))
+        {
+            isPlayerBlock = true;
+        }
+        else
+        {
+            isPlayerBlock = false;
+        }
+
+        SetPlayerAnimator();// should have a script for animtor 
+
+
+        PlayerRigid2d.constraints = RigidbodyConstraints2D.FreezeRotation;
+
         PlayerMove();
         PlayerJump();
         FlipPlayer();
-        SetPlayerAnimator();// should have a script for animtor 
-        PlayerRigid2d.constraints = RigidbodyConstraints2D.FreezeRotation;
         PlayerClimb();
+
+    }
+
+    void FixedUpdate()
+    {
+
         
 
     }
-    
-   
 
     void PlayerClimb()
     {
@@ -105,6 +124,8 @@ public class PlayerMovement : MonoBehaviour
         
 
     }
+
+
 
     private void PlayerMove()
     {
@@ -167,7 +188,7 @@ public class PlayerMovement : MonoBehaviour
     private void PlayerJump() // both single and double 
         // side note could handle jump power by * with the character height. at the moment the vector in middle of the character so 7pixel long
     {
-        if (IsGrounded)
+        if (IsGrounded|| IsWallGrab)
         {
             PlayerDoubleJump = true;
         }
@@ -190,7 +211,8 @@ public class PlayerMovement : MonoBehaviour
         }
      }
 
-    void CheckMoveButtonTime()
+    // TODO make a end and start time to check if moving button held more than some sec to increase or decrease move speed
+    /*void CheckMoveButtonTime()
     {
         float endTime, startTime;
 
@@ -199,7 +221,7 @@ public class PlayerMovement : MonoBehaviour
 
 
         }
-    }
+    }*/
     
 
     private void SetPlayerAnimator()
@@ -207,6 +229,7 @@ public class PlayerMovement : MonoBehaviour
         
         PlayerAnimator.SetBool("PlayerGrounded", IsGrounded);
         PlayerAnimator.SetFloat("PlayerSpeed", Mathf.Abs(PlayerRigid2d.velocity.x));
+        PlayerAnimator.SetBool("IsPlayerBlock", isPlayerBlock);
         
     }
 

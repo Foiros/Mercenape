@@ -20,7 +20,8 @@ public class ShredBehaviour : MonoBehaviour
 
     private GameObject player;
     private PlayerStat playerStat;
-   
+    private PlayerMovement playerMovement;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -32,6 +33,8 @@ public class ShredBehaviour : MonoBehaviour
 
         player = GameObject.FindGameObjectWithTag("Player");
         playerStat = player.GetComponent<PlayerStat>();
+        playerMovement = player.GetComponent<PlayerMovement>();
+
     }
 
     void Update()
@@ -53,24 +56,56 @@ public class ShredBehaviour : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+
+
+        
+
+
     }
 
     // Hit player
     private void OnCollisionEnter2D(Collision2D col)
     {
         if (col.gameObject.CompareTag("Player"))
-        {            
-            StartCoroutine("Attacking");
-            playerStat.PlayerTakeDamage(damage);
-
-            escapingStunCount = 0;
-            isStunning = true;
-            
-            if (Random.Range(0f, 100f) < bleedChance)
+        {
+            if (!playerMovement.isPlayerBlock) // if player is not blocking attack player normal
             {
-                StopCoroutine(ApplyBleedDamage(1, 3, 2));
-                StartCoroutine(ApplyBleedDamage(1, 3, 2));
+                StartCoroutine("Attacking");
+                playerStat.PlayerTakeDamage(damage);
+                escapingStunCount = 0;
+                isStunning = true;
+
+                if (Random.Range(0f, 100f) < bleedChance)
+                {
+                    StopCoroutine(ApplyBleedDamage(1, 3, 2));
+                    StartCoroutine(ApplyBleedDamage(1, 3, 2));
+                }
             }
+            else // when player is blocking
+            {
+                if (IsFacingRight() == playerMovement.FaceRight) // if hit player from behind aka both face same direction then atk player normally
+                {
+                    StartCoroutine("Attacking");
+                    playerStat.PlayerTakeDamage(damage);
+                    escapingStunCount = 0;
+                    isStunning = true;
+
+                    if (Random.Range(0f, 100f) < bleedChance)
+                    {
+                        StopCoroutine(ApplyBleedDamage(1, 3, 2));
+                        StartCoroutine(ApplyBleedDamage(1, 3, 2));
+                    }
+                    else
+                    {
+
+                    }
+
+                }
+            }
+            
+           
+            
         }
     }
    
@@ -145,6 +180,8 @@ public class ShredBehaviour : MonoBehaviour
             isStunning = false;
         }
     }
+
+   
 }
 
 
