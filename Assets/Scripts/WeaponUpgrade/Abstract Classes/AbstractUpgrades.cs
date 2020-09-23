@@ -10,49 +10,35 @@ public abstract class AbstractUpgrades
     public Sprite upgradeImage;
 
     public int upgradeID;
+    public int upgradeCost;
     public int upgradedSpeedMult;
     public int UpgradedWeightMult;
 
     // Fetch functions for the variables.
-    public string GetName()
-    {
-        return upgradeName;
-    }
+    public string GetName() { return upgradeName;}
 
-    public string GetDescription()
-    {
-        return upgradeDescription;
-    }
+    public string GetDescription() { return upgradeDescription; }
 
-    public Sprite GetUpgradeImage()
-    {
-        return upgradeImage;
-    }
+    public Sprite GetUpgradeImage() { return upgradeImage;}
 
-    public int GetID()
-    {
-        return upgradeID;
-    }
+    public int GetID() { return upgradeID;}
 
-    public int GetUpgradedSpeed()
-    {
-        return upgradedSpeedMult;
-    }
+    public int GetUpgradeCost() { return upgradeCost; }
 
-    public int GetUpgradedWeight()
-    {
-        return UpgradedWeightMult;
-    }
+    public int GetUpgradedSpeed() {return upgradedSpeedMult;}
+
+    public int GetUpgradedWeight() {return UpgradedWeightMult;}
 }
 
 public class TestUpgrade1 : AbstractUpgrades
 {
     //Constructor for this particular upgradde. 
-    public TestUpgrade1(string name, string description, int id, int speed, int weight, Sprite upgrade)
+    public TestUpgrade1(string name, string description, int id, int cost, int speed, int weight, Sprite upgrade)
     {
         upgradeName = name;
         upgradeDescription = description;
         upgradeID = id;
+        upgradeCost = cost;
         upgradedSpeedMult = speed;
         UpgradedWeightMult = weight;
         upgradeImage = upgrade;
@@ -61,11 +47,12 @@ public class TestUpgrade1 : AbstractUpgrades
 
 public class TestUpgrade2 : AbstractUpgrades
 {
-    public TestUpgrade2(string name, string description, int id, int speed, int weight, Sprite upgrade)
+    public TestUpgrade2(string name, string description, int id, int cost, int speed, int weight, Sprite upgrade)
     {
         upgradeName = name;
         upgradeDescription = description;
         upgradeID = id;
+        upgradeCost = cost;
         upgradedSpeedMult = speed;
         UpgradedWeightMult = weight;
         upgradeImage = upgrade;

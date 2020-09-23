@@ -8,13 +8,13 @@ using UnityEngine;
 public static class SaveManager
 {
     // Function for saving the data we want to save. It uses the binary formatter to save data. 
-    public static void SaveWeapons(WeaponStates weaponStates)
+    public static void SaveWeapons(WeaponStates weaponStates, WeaponStats weaponStats)
     {
         BinaryFormatter formatter = new BinaryFormatter();
         string weaponsPath = Application.persistentDataPath + "/Weapons.data";
         FileStream stream = new FileStream(weaponsPath, FileMode.Create);
 
-        WeaponsData weaponsData = new WeaponsData(weaponStates);
+        WeaponsData weaponsData = new WeaponsData(weaponStates, weaponStats);
 
         formatter.Serialize(stream, weaponsData);
         stream.Close();
@@ -54,23 +54,34 @@ public class WeaponsData
 {
     public int weaponID;
 
-    public bool weaponHasBeenUpgraded;
-    
+    public bool weapon1HasBeenUpgraded;
+    public bool weapon2HasBeenUpgraded;
+    public bool weapon3HasBeenUpgraded;
+    public bool weapon4HasBeenUpgraded;
+
     public bool ownsWeapon1;
     public bool ownsWeapon2;
     public bool ownsWeapon3;
     public bool ownsWeapon4;
 
-    public WeaponsData(WeaponStates weaponStates)
+    public int amountOfWeight;
+    public int amountOfSpeed;
+
+    public WeaponsData(WeaponStates weaponStates, WeaponStats weaponStats)
     {
         weaponID = weaponStates.ReturnChosenWeaponID();
 
-        weaponHasBeenUpgraded = weaponStates.weaponHasBeenUpgraded;
+        weapon1HasBeenUpgraded = weaponStates.weapon1HasBeenUpgraded;
+        weapon2HasBeenUpgraded = weaponStates.weapon1HasBeenUpgraded;
+        weapon3HasBeenUpgraded = weaponStates.weapon1HasBeenUpgraded;
+        weapon4HasBeenUpgraded = weaponStates.weapon1HasBeenUpgraded;
+
         ownsWeapon1 = weaponStates.ownsWeapon1;
         ownsWeapon2 = weaponStates.ownsWeapon2;
         ownsWeapon3 = weaponStates.ownsWeapon3;
         ownsWeapon4 = weaponStates.ownsWeapon4;
+
+        amountOfWeight = weaponStats.amountOfWeight;
+        amountOfSpeed = weaponStats.amountOfSpeed;
     }
 }
-
-

@@ -19,6 +19,12 @@ TagManager:
   - UpgradeDescription
   - UpgradeImage
   - UpgradeScreenWeaponDescription
+  - inputButton
+  - UpgradeCost
+  - WeaponStats
+  - WeaponSpeed
+  - WeaponWeight
+  - ImpactDamage
   layers:
   - Default
   - TransparentFX

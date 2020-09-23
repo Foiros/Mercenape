@@ -9,40 +9,50 @@ public class UseUpgrades : MonoBehaviour
 {
     private WeaponStates weaponStates;
     private AssetManager assetManager;
+    private Money money;
+    private WeaponStats weaponStats;
     
     private AbstractWeapon[] weapons;
     private AbstractUpgrades[] upgrades;
 
-    private int weaponID;
+    public int weaponID;
     private int upgradeID;
-    private int tempUpgradeID1;
-    private int tempUpgradeID2;
-    private int tempUpgradeID3;
+    private int upgradeCost;
 
     private string weaponButtonName;
     private string upgradeButtonName;
-    private string scrollButtonName;
-
-    public Image[] upgradeImagesHolder;
-    public GameObject upgradeMenu;
-    public GameObject upgradeComponentScreen;
+    private string arrowButtonName;
 
     private Text weaponName;
     private Text weaponDescription;
+    private Text weaponSpeedText;
+    private Text weaponWeightText;
+    private Text weaponImpactDamageText;
+    private Text weaponCostText;
     private Image weaponImage;
    
     private Text upgradeName;
     private Text upgradeDescription;
     private Image upgradeImage;
 
+    public Text[] amountTexts;
+    public Image[] upgradeImagesHolder;
+    public GameObject upgradeMenu;
+    public GameObject upgradeComponentScreen;
 
     void Awake()
     {
         weaponStates = GetComponent<WeaponStates>();
         assetManager = GetComponent<AssetManager>();
+        money = GetComponent<Money>();
+        weaponStats = GetComponent<WeaponStats>();
         
         weaponName = GameObject.FindGameObjectWithTag("UpgradeScreenWeaponName").GetComponent<Text>();
         weaponDescription = GameObject.FindGameObjectWithTag("UpgradeScreenWeaponDescription").GetComponent<Text>();
+        weaponSpeedText = GameObject.FindGameObjectWithTag("WeaponSpeed").GetComponent<Text>();
+        weaponWeightText = GameObject.FindGameObjectWithTag("WeaponWeight").GetComponent<Text>();
+        weaponImpactDamageText = GameObject.FindGameObjectWithTag("ImpactDamage").GetComponent<Text>();
+        weaponCostText = GameObject.FindGameObjectWithTag("UpgradeCost").GetComponent<Text>();
         weaponImage = GameObject.FindGameObjectWithTag("UpgradeScreenWeaponImage").GetComponent<Image>();
 
         upgradeName = GameObject.FindGameObjectWithTag("UpgradeName").GetComponent<Text>();
@@ -59,10 +69,10 @@ public class UseUpgrades : MonoBehaviour
     // Function for setting up the abstract weapons in this script and putting them into an array. 
      void SetUpWeaponsArray()
     {
-        TestWeapon1 testWeapon1 = new TestWeapon1("Weapon 1", "Does things", 0, 50, 5, 10, assetManager.weaponImages[0], null);
-        TestWeapon2 testWeapon2 = new TestWeapon2("Weapon 2", "Does things", 1, 25, 1, 20, assetManager.weaponImages[0], null);
-        TestWeapon3 testWeapon3 = new TestWeapon3("Weapon 3", "Does things", 2, 100, 3, 3, assetManager.weaponImages[0], null);
-        TestWeapon4 testWeapon4 = new TestWeapon4("Weapon 4", "Does things", 3, 150, 10, 2, assetManager.weaponImages[0], null);
+        TestWeapon1 testWeapon1 = new TestWeapon1("Weapon 1", "Does things", 0, 50, 5, 10, 20, assetManager.weaponImages[0], null);
+        TestWeapon2 testWeapon2 = new TestWeapon2("Weapon 2", "Does things", 1, 25, 1, 20, 30, assetManager.weaponImages[0], null);
+        TestWeapon3 testWeapon3 = new TestWeapon3("Weapon 3", "Does things", 2, 100, 3, 3, 10, assetManager.weaponImages[0], null);
+        TestWeapon4 testWeapon4 = new TestWeapon4("Weapon 4", "Does things", 3, 150, 10, 2, 20, assetManager.weaponImages[0], null);
 
         weapons = new AbstractWeapon[] { testWeapon1, testWeapon2, testWeapon3, testWeapon4 };
     }
@@ -70,8 +80,8 @@ public class UseUpgrades : MonoBehaviour
     // Function sets up the upgrades array for this script to use.
     void SetUpUpgradesArray()
     {
-        TestUpgrade1 testUpgrade1 = new TestUpgrade1("Speed Upgrade", "Increases the speed of your attacks", 0, 2, 0, assetManager.upgradeImages[0]);
-        TestUpgrade2 testUpgrade2 = new TestUpgrade2("Weigh Upgrade", "Increases the weight of your weapon", 1, 0, 2, assetManager.upgradeImages[1]);
+        TestUpgrade1 testUpgrade1 = new TestUpgrade1("Speed Upgrade", "Increases the speed of your attacks", 0, 25, 2, 0, assetManager.upgradeImages[0]);
+        TestUpgrade2 testUpgrade2 = new TestUpgrade2("Weigh Upgrade", "Increases the weight of your weapon", 1, 25, 0, 2, assetManager.upgradeImages[1]);
 
         upgrades = new AbstractUpgrades[] { testUpgrade1, testUpgrade2 };
     }
@@ -84,6 +94,7 @@ public class UseUpgrades : MonoBehaviour
         if(weaponButtonName == "UpgradeButton1" && weaponStates.ownsWeapon1)
         {
             weaponID = weapons[0].GetID();
+           
             SetUpUpgradeScreen();
         }
         else if (weaponButtonName == "UpgradeButton2" && weaponStates.ownsWeapon2)
@@ -112,6 +123,7 @@ public class UseUpgrades : MonoBehaviour
 
         weaponName.text = weaponsArray.GetName();
         weaponDescription.text = weaponsArray.GetDescription();
+        weaponCostText.text = "Upgrade Cost: " + upgradeCost;
         weaponImage.sprite = weaponsArray.GetWeaponImage();
         
         for(int i = 0; i < upgradeImagesHolder.Length; i++)
@@ -119,9 +131,12 @@ public class UseUpgrades : MonoBehaviour
             upgradeImagesHolder[i].sprite = upgrades[i].GetUpgradeImage();
         }
 
-        tempUpgradeID1 = upgrades[0].GetID();
-        tempUpgradeID2 = upgrades[1].GetID();
-        tempUpgradeID3 = upgrades[2].GetID();
+        for(int i = 0; i < amountTexts.Length; i++)
+        {
+            amountTexts[i].text = "0"; 
+        }
+
+        UpdateWeaponStats();
     }
 
     // Button function for opening an screen that will explain, what the upgrade does when put into the weapon. 
@@ -131,15 +146,11 @@ public class UseUpgrades : MonoBehaviour
 
         if (upgradeButtonName == "UpgradeComponent1")
         {
-            upgradeID = upgrades[tempUpgradeID1].GetID();
+            upgradeID = upgrades[0].GetID();
         }
         else if (upgradeButtonName == "UpgradeComponent2")
         {
-            upgradeID = upgrades[tempUpgradeID2].GetID();
-        }
-        else if (upgradeButtonName == "UpgradeComponent3")
-        {
-            upgradeID = upgrades[tempUpgradeID3].GetID();
+            upgradeID = upgrades[1].GetID();
         }
         
         SetUpUpgradeComponentScreen();
@@ -169,54 +180,85 @@ public class UseUpgrades : MonoBehaviour
         upgradeID = -1;
     }
 
-    public void ScrollUpgrades()
+    public void SelectUpgradeComponentsAmount()
     {
-        scrollButtonName = EventSystem.current.currentSelectedGameObject.name;
+        arrowButtonName = EventSystem.current.currentSelectedGameObject.name;
 
-        if(scrollButtonName == "NextButton1")
+        if (arrowButtonName == "Arrow1")
         {
-            if (tempUpgradeID1 < upgrades.Length)
-            {
-                tempUpgradeID1 = tempUpgradeID1 + 1;
-            }
-            else if (tempUpgradeID1 >= upgrades.Length)
-            {
-                tempUpgradeID1 = tempUpgradeID1 - upgrades.Length;
-            }
-            
-            upgradeImagesHolder[0].sprite = upgrades[tempUpgradeID1].GetUpgradeImage();
-        }
-        else if (scrollButtonName == "NextButton2")
-        {
-            if (tempUpgradeID2 < upgrades.Length)
-            {
-                tempUpgradeID2 = tempUpgradeID2 + 1;
-            }
-            else if (tempUpgradeID2 >= upgrades.Length)
-            {
-                tempUpgradeID2 = tempUpgradeID2 - upgrades.Length;
-            }
+            upgradeID = upgrades[0].GetID();
 
-            upgradeImagesHolder[1].sprite = upgrades[tempUpgradeID2].GetUpgradeImage();
+            weaponStats.amountOfSpeed++;
+            amountTexts[0].text = "" + weaponStats.amountOfSpeed;
+            upgradeCost = upgrades[upgradeID].GetUpgradeCost() * weaponStats.amountOfSpeed;
         }
-        else if (scrollButtonName == "NextButton3")
+        else if (arrowButtonName == "Arrow2")
         {
-            if (tempUpgradeID3 < upgrades.Length)
-            {
-                tempUpgradeID3 = tempUpgradeID3 + 1;
-            }
-            else if (tempUpgradeID1 >= upgrades.Length)
-            {
-                tempUpgradeID3 = tempUpgradeID3 - upgrades.Length;
-            }
+            upgradeID = upgrades[0].GetID();
 
-            upgradeImagesHolder[2].sprite = upgrades[tempUpgradeID3].GetUpgradeImage();
+            weaponStats.amountOfSpeed--;
+            amountTexts[0].text = "" + weaponStats.amountOfSpeed;
+            upgradeCost = upgrades[upgradeID].GetUpgradeCost() * weaponStats.amountOfSpeed;
         }
+        else if (arrowButtonName == "Arrow3")
+        {
+            upgradeID = upgrades[1].GetID();
+
+            weaponStats.amountOfWeight++;
+            amountTexts[1].text = "" + weaponStats.amountOfWeight;
+            upgradeCost = upgrades[upgradeID].GetUpgradeCost() * weaponStats.amountOfWeight;
+        }
+        else if (arrowButtonName == "Arrow4")
+        {
+            upgradeID = upgrades[1].GetID();
+
+            weaponStats.amountOfWeight--;
+            amountTexts[1].text = "" + weaponStats.amountOfWeight;
+            upgradeCost = upgrades[upgradeID].GetUpgradeCost() * weaponStats.amountOfWeight;
+        }
+
+        weaponCostText.text = "Upgrade Cost: " + upgradeCost;
+
+        UpdateWeaponStats();
     }
 
+    void UpdateWeaponStats()
+    {
+        weaponStats.CalculateStats();
+
+        weaponSpeedText.text = "Speed: " + weaponStats.GetSpeed();
+        weaponWeightText.text = " Weight: " + weaponStats.GetWeight();
+        weaponImpactDamageText.text = " Impact Damage: " + weaponStats.GetImpactDamage();
+
+        
+    }
 
     public void ConfirmUpgrade()
     {
-        weaponStates.weaponHasBeenUpgraded = true;
+        int currency = money.GetCurrentCurrency();
+
+        if(currency >= upgradeCost)
+        {
+            money.ChangeCurrencyAmount(upgradeCost);
+            
+            upgradeCost = 0;
+            weaponCostText.text = "Upgrade Cost: " + upgradeCost;
+
+            UpdateWeaponStats();
+            
+            weaponStats.amountOfSpeed = 0;
+            weaponStats.amountOfWeight = 0;
+            
+            weaponStats.SetWeight(0);
+            weaponStats.SetSpeed(0);
+            weaponStats.SetImpactDamage(0);
+
+            for (int i = 0; i < amountTexts.Length; i++)
+            {
+                amountTexts[i].text = "0";
+            }
+
+            weaponStates.WhatWeaponWasUpgraded(weaponID);
+        }
     }
 }

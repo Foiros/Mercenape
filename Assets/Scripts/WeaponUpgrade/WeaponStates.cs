@@ -7,12 +7,18 @@ public class WeaponStates: MonoBehaviour
 {
     private int weaponID;
 
-    public bool weaponHasBeenUpgraded;
+    public bool weapon1HasBeenUpgraded;
+    public bool weapon2HasBeenUpgraded;
+    public bool weapon3HasBeenUpgraded;
+    public bool weapon4HasBeenUpgraded;
 
     public bool ownsWeapon1;
     public bool ownsWeapon2;
     public bool ownsWeapon3;
     public bool ownsWeapon4;
+
+    public int savedWeightAmount;
+    public int savedSpeedAmount;
 
     public void WhatWeaponWasBought(int id)
     {
@@ -38,6 +44,29 @@ public class WeaponStates: MonoBehaviour
         }
     }
 
+    public void WhatWeaponWasUpgraded(int id)
+    {
+        int weaponID = id;
+        
+        switch (weaponID)
+        {
+            case 0:
+                weapon1HasBeenUpgraded = true;
+                break;
+
+            case 1:
+                weapon2HasBeenUpgraded = true;
+                break;
+
+            case 2:
+                weapon3HasBeenUpgraded = true;
+                break;
+
+            case 3:
+                weapon4HasBeenUpgraded = true;
+                break;
+        }
+    }
     public void SetChosenWeaponID(int id)
     {
         weaponID = id;

@@ -30,7 +30,7 @@ public class Money : MonoBehaviour
     // Function to set the starting money.
     void GetStartingCurrency()
     {
-        currency = 100;
+        currency = 200;
 
         currencyHolder.text = "Money: " + currency;
     }

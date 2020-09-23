@@ -18,57 +18,40 @@ public abstract class AbstractWeapon
     // Weapon stats
     public int weaponSpeed;
     public int weaponWeight;
+    public int impactDamage;
+    public int bleedDamage;
+    public int bleedDuration;
 
 
     // Fetch functions for details
-    public string GetName()
-    {
-        return weaponName;
-    }
-    public string GetDescription()
-    {
-        return weaponDescription;
-    }
+    public string GetName() { return weaponName;}
+    public string GetDescription() { return weaponDescription;}
 
-    public int GetID()
-    {
-        return weaponID;
-    }
+    public int GetID() { return weaponID;}
 
-    public int GetCost()
-    {
-        return weaponCost;
-    }
+    public int GetCost() { return weaponCost;}
 
-    public Sprite GetWeaponImage()
-    {
-        return weaponImage;
-    }
+    public Sprite GetWeaponImage(){ return weaponImage;}
 
-    public Sprite GetChosenWeaponImage()
-    {
-        return chosenWeaponImage;
-    }
+    public Sprite GetChosenWeaponImage() { return chosenWeaponImage; }
 
+    
     // Fetch functios for stats
-    public int GetSpeed()
-    {
-        return weaponSpeed;
-    }
+    public int GetSpeed() { return weaponSpeed;}
 
-    public int GetWeight()
-    {
-        return weaponWeight;
-    }
+    public int GetWeight() { return weaponWeight;}
 
-    // Special abilities of the weapons
-    public abstract void WeaponEffect();
+    public int GetImpactDamage() { return impactDamage; }
+
+    public int GetBleedDamage() { return bleedDamage; }
+
+    public int GetBleedDuration() { return bleedDuration; }
 }
 
 public class TestWeapon1 : AbstractWeapon
 {   
     // This is used to create this object in the scripts. 
-    public TestWeapon1(string name, string description, int id, int cost, int speed, int weight, Sprite weapon, Sprite chosenWeapon)
+    public TestWeapon1(string name, string description, int id, int cost, int speed, int weight, int damage, Sprite weapon, Sprite chosenWeapon)
     {
         weaponName = name;
         weaponDescription = description;
@@ -76,20 +59,15 @@ public class TestWeapon1 : AbstractWeapon
         weaponCost = cost;
         weaponSpeed = speed;
         weaponWeight = weight;
+        impactDamage = damage;
         weaponImage = weapon;
         chosenWeaponImage = chosenWeapon;
-    }
-
-    // Eventually this will hold the effect the component has on players weapon.
-    public override void WeaponEffect()
-    {
-        throw new System.NotImplementedException();
     }
 }
 
 public class TestWeapon2 : AbstractWeapon
 {
-    public TestWeapon2(string name, string description, int id, int cost, int speed, int weight, Sprite weapon, Sprite chosenWeapon)
+    public TestWeapon2(string name, string description, int id, int cost, int speed, int weight, int damage, Sprite weapon, Sprite chosenWeapon)
     {
         weaponName = name;
         weaponDescription = description;
@@ -97,19 +75,15 @@ public class TestWeapon2 : AbstractWeapon
         weaponCost = cost;
         weaponSpeed = speed;
         weaponWeight = weight;
+        impactDamage = damage;
         weaponImage = weapon;
         chosenWeaponImage = chosenWeapon;
-    }
-    
-    public override void WeaponEffect()
-    {
-        throw new System.NotImplementedException();
     }
 }
 
 public class TestWeapon3 : AbstractWeapon
 {
-    public TestWeapon3(string name, string description, int id, int cost, int speed, int weight, Sprite weapon, Sprite chosenWeapon)
+    public TestWeapon3(string name, string description, int id, int cost, int speed, int weight, int damage, Sprite weapon, Sprite chosenWeapon)
     {
         weaponName = name;
         weaponDescription = description;
@@ -117,19 +91,15 @@ public class TestWeapon3 : AbstractWeapon
         weaponCost = cost;
         weaponSpeed = speed;
         weaponWeight = weight;
+        impactDamage = damage;
         weaponImage = weapon;
         chosenWeaponImage = chosenWeapon;
-    }
-    
-    public override void WeaponEffect()
-    {
-        throw new System.NotImplementedException();
     }
 }
 
 public class TestWeapon4 : AbstractWeapon
 {
-    public TestWeapon4(string name, string description, int id, int cost, int speed, int weight, Sprite weapon, Sprite chosenWeapon)
+    public TestWeapon4(string name, string description, int id, int cost, int speed, int weight, int damage, Sprite weapon, Sprite chosenWeapon)
     {
         weaponName = name;
         weaponDescription = description;
@@ -137,12 +107,8 @@ public class TestWeapon4 : AbstractWeapon
         weaponCost = cost;
         weaponSpeed = speed;
         weaponWeight = weight;
+        impactDamage = damage;
         weaponImage = weapon;
         chosenWeaponImage = chosenWeapon;
-    }
-   
-    public override void WeaponEffect()
-    {
-        throw new System.NotImplementedException();
     }
 }

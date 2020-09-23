@@ -30,10 +30,10 @@ public class ChooseWeapon : MonoBehaviour
     // As in BuyWeapons script, this function sets up the abstract objects array, which can then be used by the code.
     void SetUpWeaponsArray()
     {
-        TestWeapon1 testWeapon1 = new TestWeapon1("Weapon 1", "Does things", 0, 50, 5, 10, assetManager.weaponImages[0], assetManager.chosenWeaponImages[0]);
-        TestWeapon2 testWeapon2 = new TestWeapon2("Weapon 2", "Does things", 1, 25, 1, 20, assetManager.weaponImages[1], assetManager.chosenWeaponImages[1]);
-        TestWeapon3 testWeapon3 = new TestWeapon3("Weapon 3", "Does things", 2, 100, 3, 3, assetManager.weaponImages[2], assetManager.chosenWeaponImages[2]);
-        TestWeapon4 testWeapon4 = new TestWeapon4("Weapon 4", "Does things", 3, 150, 10, 2, assetManager.weaponImages[3], assetManager.chosenWeaponImages[3]);
+        TestWeapon1 testWeapon1 = new TestWeapon1("Weapon 1", "Does things", 0, 50, 5, 10, 20, assetManager.weaponImages[0], assetManager.chosenWeaponImages[0]);
+        TestWeapon2 testWeapon2 = new TestWeapon2("Weapon 2", "Does things", 1, 25, 1, 20, 30, assetManager.weaponImages[1], assetManager.chosenWeaponImages[1]);
+        TestWeapon3 testWeapon3 = new TestWeapon3("Weapon 3", "Does things", 2, 100, 3, 3, 10, assetManager.weaponImages[2], assetManager.chosenWeaponImages[2]);
+        TestWeapon4 testWeapon4 = new TestWeapon4("Weapon 4", "Does things", 3, 150, 10, 2, 20, assetManager.weaponImages[3], assetManager.chosenWeaponImages[3]);
 
         weapons = new AbstractWeapon[] { testWeapon1, testWeapon2, testWeapon3, testWeapon4 };
     }
