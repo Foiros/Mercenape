@@ -5,17 +5,20 @@ using UnityEngine.SceneManagement;
 
 public class PlayerStat : MonoBehaviour
 {
-    public static PlayerStat playerStat;
-    public PlayerCurrency playerCurrency;
-
+   
+    
     public GameObject player;
+   
     public int PlayerHP;
     public int PlayerMaxHP;
     public int PlayerDamage;
 
+    
+
 
     void Start()
     {
+
         PlayerHP = PlayerMaxHP;
         
     }

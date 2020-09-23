@@ -36,6 +36,8 @@ public class PlayerMovement : MonoBehaviour
     {
         PlayerRigid2d = transform.GetComponent<Rigidbody2D>();
         PlayerAnimator = gameObject.GetComponent<Animator>();
+
+
     }
 
     void Update()

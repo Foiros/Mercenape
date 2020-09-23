@@ -8,9 +8,14 @@ public class KarmaPickup : MonoBehaviour
     public GameObject Karma;
     public int KarmaQuantity;
     public EnemyLootDrop enemyLoot;
-    public PlayerCurrency playerCurrency;
-    
-   
+    private PlayerCurrency playerCurrency;
+
+    private void Start()
+    {
+        playerCurrency = GetComponent<PlayerCurrency>();
+
+        playerCurrency = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCurrency>();
+    }
 
     void OnTriggerEnter2D(Collider2D other)
     {

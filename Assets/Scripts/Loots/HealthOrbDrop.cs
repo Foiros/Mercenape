@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class HealthOrbDrop : MonoBehaviour
 {
-    // Start is called before the first frame update
-    [SerializeField] GameObject healthOrb;
-    public PlayerStat playerStat;
+    [SerializeField] GameObject healthDrop;
+    private PlayerStat playerStat;
     private Rigidbody2D rb;
 
     void Start()
     {
+        playerStat = GetComponent<PlayerStat>();
+
+        playerStat = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStat>();
+
         rb = transform.GetComponent<Rigidbody2D>();
 
     }

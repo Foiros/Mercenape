@@ -6,11 +6,14 @@ public class GoldDrop : MonoBehaviour
 {
     public GameObject Gold;
     int goldQuantity;
+    private PlayerCurrency playerCurrency;
 
-    public EnemyLootDrop enemyLoot;
-    public PlayerCurrency playerCurrency;
+    private void Start()
+    {
+        playerCurrency = GetComponent<PlayerCurrency>();
 
-
+        playerCurrency = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCurrency>();
+    }
 
 
     void OnTriggerEnter2D(Collider2D other)

@@ -6,14 +6,19 @@ using UnityEngine.UI;
 
 public class PlayerHealthBar : MonoBehaviour
 {
+   
     public Slider slider;
     public Gradient gradient;
     public Image fill;
-    [SerializeField] PlayerStat playerStat;
     
+    private PlayerStat playerStat;
+
     private void Start()
     {
-         SetMaxHp();
+        playerStat = GetComponent<PlayerStat>();
+        playerStat = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStat>();
+
+        SetMaxHp();
         
     }
     private void Update()

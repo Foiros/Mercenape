@@ -122,9 +122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82bafa905765ed2419173fb457418c2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthOrb: {fileID: 1894584535332837582}
-  playerStat: {fileID: 8174987084509659846, guid: 94feb3077caf03b44935f25901d89eca,
-    type: 3}
+  healthDrop: {fileID: 0}
 --- !u!50 &6164458280564216032
 Rigidbody2D:
   serializedVersion: 4

@@ -7,7 +7,6 @@ public class PlayerCurrency : MonoBehaviour
     public GameObject Player;
     public static PlayerCurrency playerCurrency;
     public int PlayerKarma;
-
     public int playerGold;
     public int playerUpgrade;
 

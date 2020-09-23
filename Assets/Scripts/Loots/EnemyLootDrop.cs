@@ -11,9 +11,13 @@ public class EnemyLootDrop : MonoBehaviour
     public int KarmaDropQuantity;// to make it dramatic but can also make 1 var  
     public KarmaPickup karmaPickup;
     
-    public GameObject GoldDrop;
-    public GameObject healthOrb;
-   
+    public GameObject goldDrop;
+    
+    public GameObject healthDrop;
+    public int healthChance;
+
+    public GameObject upgradeDrop;
+    public int upgradeChance;
 
     void Start()
     {
@@ -27,6 +31,7 @@ public class EnemyLootDrop : MonoBehaviour
             InstantiateGoldDrop();
             InstantiateKarmaDrop();
             InstantiateHealthOrb();
+            InstantiateUpgrade();
         }
 
     }
@@ -45,7 +50,7 @@ public class EnemyLootDrop : MonoBehaviour
     public void InstantiateGoldDrop()
     {
         
-        Instantiate(GoldDrop, (Vector2)transform.position + new Vector2(Random.Range(-2f, 2f), Random.Range(0f, 10f)), Quaternion.identity);
+        Instantiate(goldDrop, (Vector2)transform.position + new Vector2(Random.Range(-2f, 2f), Random.Range(0f, 10f)), Quaternion.identity);
         
     }
 
@@ -53,10 +58,18 @@ public class EnemyLootDrop : MonoBehaviour
 
     public void InstantiateHealthOrb()
     {
-        int randomSpawn = Random.Range(0, 2);
-        if (randomSpawn > 0) { Instantiate(healthOrb, (Vector2)transform.position + new Vector2(Random.Range(-2f, 2f), Random.Range(0f, 10f)), Quaternion.identity); }
+        int randomSpawn = Random.Range(0, 100);
+        if (randomSpawn < healthChance) { Instantiate(healthDrop, (Vector2)transform.position + new Vector2(Random.Range(-2f, 2f), Random.Range(0f, 10f)), Quaternion.identity); }
        
 
     }
+    public void InstantiateUpgrade()
+    {
+        int randomSpawn = Random.Range(0, 100);
+        if (randomSpawn < upgradeChance)
+        { Instantiate(upgradeDrop, (Vector2)transform.position + new Vector2(Random.Range(-2f, 2f), Random.Range(0f, 10f)), Quaternion.identity); }
+    }
 
-}
+
+
+    }
