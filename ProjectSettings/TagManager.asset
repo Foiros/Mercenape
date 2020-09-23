@@ -19,6 +19,7 @@ TagManager:
   - UpgradeDescription
   - UpgradeImage
   - UpgradeScreenWeaponDescription
+  - ground
   layers:
   - Default
   - TransparentFX
@@ -29,7 +30,7 @@ TagManager:
   - 
   - 
   - Ground
-  - 
+  - wall
   - Enemy
   - 
   - 

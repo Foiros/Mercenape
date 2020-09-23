@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3311384830779390892}
   - component: {fileID: 3311384830779390883}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: Player HP UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -306,6 +306,8 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   fill: {fileID: 3311384832554674095}
+  playerStat: {fileID: 8174987084509659846, guid: 94feb3077caf03b44935f25901d89eca,
+    type: 3}
 --- !u!1 &3311384832554674093
 GameObject:
   m_ObjectHideFlags: 0
