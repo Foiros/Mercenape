@@ -21,17 +21,19 @@ public class PlayerStat : MonoBehaviour
     }
     void Update()
     {
+
+        if (Input.GetKeyDown(KeyCode.X))    
+        {
+            PlayerHP -= 30;
+        }
+
+
     }
+
+
     void CheckPlayerDeath()
     {
-        if (PlayerHP <= 0)
-        {
-            Destroy(gameObject);
-            playerCurrency.PlayerKarma = 0;// could alway set hp and karma at the begining of a sence
-            SceneManager.LoadScene("Thuyet_Test_Karma");
-
-
-        }
+        
     }
 
     public void PlayerTakeDamage(int EnemyDamage)

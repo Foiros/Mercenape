@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class EnemyLootDrop : MonoBehaviour
 {
+    public GameObject player;
+    public GameObject enemy;
     public GameObject KarmaDrop;
     int noKarmaInstantiate;
-    public int KarmaDropQuantity;
+    public int KarmaDropQuantity;// to make it dramatic but can also make 1 var  
     public KarmaPickup karmaPickup;
     
     public GameObject GoldDrop;
-    public int goldQuantity;
-
-    public GameObject Upgrade;
-    public GameObject player;
+    public GameObject healthOrb;
+   
 
     void Start()
     {
@@ -23,7 +23,10 @@ public class EnemyLootDrop : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Z))
         {
+            Destroy(enemy);
             InstantiateGoldDrop();
+            InstantiateKarmaDrop();
+            InstantiateHealthOrb();
         }
 
     }
@@ -41,14 +44,18 @@ public class EnemyLootDrop : MonoBehaviour
 
     public void InstantiateGoldDrop()
     {
-        goldQuantity = Random.Range(10, 100);
-        Instantiate(GoldDrop, (Vector2)transform.position + new Vector2(Random.Range(-2f, 2f),0), Quaternion.identity);
+        
+        Instantiate(GoldDrop, (Vector2)transform.position + new Vector2(Random.Range(-2f, 2f), Random.Range(0f, 10f)), Quaternion.identity);
         
     }
 
-    public void InstantiateUpgrade()
-    {
 
+
+    public void InstantiateHealthOrb()
+    {
+        int randomSpawn = Random.Range(0, 2);
+        if (randomSpawn > 0) { Instantiate(healthOrb, (Vector2)transform.position + new Vector2(Random.Range(-2f, 2f), Random.Range(0f, 10f)), Quaternion.identity); }
+       
 
     }
 

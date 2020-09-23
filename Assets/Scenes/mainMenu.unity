@@ -6525,6 +6525,9 @@ MonoBehaviour:
   - {fileID: 347455469}
   - {fileID: 1331346099}
   - {fileID: 735806637}
+  - {fileID: 142524922}
+  - {fileID: 120136725}
+  - {fileID: 753062136}
   startPos: []
   currentPanel: {fileID: 0}
   selectedButton: {fileID: 0}

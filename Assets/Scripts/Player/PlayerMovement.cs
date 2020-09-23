@@ -41,9 +41,11 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         IsGrounded = Physics2D.OverlapCircle(PlayerUnderPos.position, CheckRadius, groundlayermask);
+        
+        // to check if player collide with the climable surface both front and behind 
         IsTouchingFront = Physics2D.OverlapCircle(PlayerFrontPos.position, CheckRadius, walllayermask);
         IsTouchingBehind = Physics2D.OverlapCircle(PlayerBehindPos.position, CheckRadius, walllayermask);
-        if (IsTouchingFront == true && Input.GetKey(KeyCode.LeftShift)|| IsTouchingBehind == true && Input.GetKey(KeyCode.LeftShift))
+        if ((IsTouchingFront == true )|| IsTouchingBehind == true)
         {IsWallGrab = true;}
         else { IsWallGrab = false; }
 
@@ -56,6 +58,7 @@ public class PlayerMovement : MonoBehaviour
         
 
     }
+    
    
 
     void PlayerClimb()
@@ -63,26 +66,41 @@ public class PlayerMovement : MonoBehaviour
        
         if(IsWallGrab==true)
         {
-            PlayerRigid2d.gravityScale = 0;
-            PlayerRigid2d.velocity = new Vector2(0, 0);
-           
-        }
-        
-        if (!IsWallGrab)
-        {
-            PlayerRigid2d.gravityScale = 1;
+            if (Input.GetKey(KeyCode.E)) {
+                PlayerRigid2d.gravityScale = 0;
+                PlayerRigid2d.MovePosition((Vector2)transform.position + Vector2.up * PlayerClimbSpeed * Time.deltaTime);
+                
+                if (Input.GetKey(KeyCode.A))
+                {
+                    PlayerRigid2d.MovePosition((Vector2)transform.position + Vector2.left * PlayerClimbSpeed * Time.deltaTime);
+                }
+                if (Input.GetKey(KeyCode.D))
+                {
+                    PlayerRigid2d.MovePosition((Vector2)transform.position + Vector2.right * PlayerClimbSpeed * Time.deltaTime);
+                }
+            }
             
-        }
 
-        if(IsWallGrab && Input.GetKey(KeyCode.W))
-        {
-            PlayerRigid2d.velocity += new Vector2(0, PlayerClimbSpeed);
+           else if (!Input.GetKey(KeyCode.E))
+            {
+                PlayerRigid2d.gravityScale = 3;
+                
+                if (Input.GetKey(KeyCode.A))
+                {
+                    PlayerRigid2d.gravityScale = 3;
+                    PlayerRigid2d.MovePosition((Vector2)transform.position + Vector2.left * PlayerSpeed * Time.deltaTime);
+                }
+                if (Input.GetKey(KeyCode.D))
+                {
+                    PlayerRigid2d.gravityScale = 3;
+                    PlayerRigid2d.MovePosition((Vector2)transform.position + Vector2.right * PlayerSpeed * Time.deltaTime);
+                }
+            }
 
         }
-        if (IsWallGrab && Input.GetKey(KeyCode.S))
-        {
-            PlayerRigid2d.velocity += new Vector2(0, -PlayerDoubleJumpPow);
-        }
+        else { PlayerRigid2d.gravityScale = 3; }
+        
+        
 
     }
 
@@ -170,7 +188,16 @@ public class PlayerMovement : MonoBehaviour
         }
      }
 
-    
+    void CheckMoveButtonTime()
+    {
+        float endTime, startTime;
+
+        if (Input.GetKeyDown(KeyCode.A)|| Input.GetKeyDown(KeyCode.D))
+        {
+
+
+        }
+    }
     
 
     private void SetPlayerAnimator()
@@ -183,7 +210,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FlipPlayer()
     {
-        if (Input.GetKey(KeyCode.A) &&  FaceRight == true) { Flip(); }
+        if (Input.GetKey(KeyCode.A)  &&  FaceRight == true) { Flip(); }
         else if (Input.GetKey(KeyCode.D) && FaceRight == false) { Flip(); }
         
     }
