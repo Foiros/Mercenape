@@ -9,29 +9,19 @@ public class mainMenu : MonoBehaviour
 {
 
     //These vectors point to where each panel except menuCenter goes to when disabled. Sure, it may not be necessary, but I like the filing cabinet aesthetic.
+    // I unwittingly made this so compact, that I added the pause menu on the same script. I will chang the name of the script ASAP since it is doing my head in.
+    public bool isPaused = false;
     public Canvas mainCanvas;
     public GameObject[] panels;
     public Vector2[] startPos;
     public GameObject currentPanel;
-    public int testNumber;
-    public Button[] inputButtons;
-    public GameObject inputHolder;
 
     public GameObject selectedButton;
     bool isSelected = false;
 
     void Start()
     {
-        inputButtons = new Button[GameObject.FindGameObjectsWithTag("inputButton").Length];
-        inputHolder = GameObject.Find("inputHolder");
-        if(inputHolder != null)
-        {
-            inputButtons[0] = GameObject.FindGameObjectWithTag("inputButton").GetComponent<Button>();
-            for(int i = 0; i < inputButtons.Length; i++)
-            {
-                inputButtons[i] = GameObject.FindWithTag("inputButton").gameObject.GetComponent<Button>();
-            }
-        }
+        
 
         
         mainCanvas = transform.GetComponent<Canvas>();
@@ -49,6 +39,10 @@ public class mainMenu : MonoBehaviour
 
     private void Update()
     {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            pauseGame();
+        }
         if(isSelected)
         {
             if(Input.anyKeyDown)
@@ -59,28 +53,53 @@ public class mainMenu : MonoBehaviour
         }
     }
 
+    public void pauseGame()
+    {
+        if(!isPaused)
+        {
+            
+            for(int i = 0; i < panels.Length; i++)
+            {
+                if (panels[i].name.Contains("pause"))
+                {
+                    panels[i].transform.position = mainCanvas.transform.position;
+                    currentPanel = panels[i];
+                    isPaused = true;
+                    break;
+                }
+            }
+            Time.timeScale = 0;
+        } else
+        {
+            currentPanel = null;
+            isPaused = false;
+            Time.timeScale = 1;
+        }
+    }
+
 
 
     public void switchPanel()
     {
         string buttonName = EventSystem.current.currentSelectedGameObject.name;
         Debug.Log(buttonName);
-        //Find the panel and set it aside...
+        //Find the the Currentpanel and return it to its starting position.
         for(int i = 0; i < panels.Length; i++)
         {
             if(currentPanel = panels[i])
             {
-                //After the old panel is set aside, then place the new panel on the screen.
+                
                 currentPanel.transform.position = startPos[i];
                 for (int j = 0; j < panels.Length; j++)
                 {
+                    //Then we find the chose panel by the name of the button.
                     if (panels[j].name.Contains(buttonName))
                     {
                         Debug.Log("Found the next panel, " + panels[j].name);
                         panels[j].transform.position = mainCanvas.transform.position;
                         currentPanel = panels[j];
                         break;
-                    }
+                    } else { Debug.LogError("Panel not found!"); }
                 }
                 break;
             }        
@@ -89,10 +108,12 @@ public class mainMenu : MonoBehaviour
 
     public void backButton()
     {
-        GameObject panelParent = currentPanel.transform.parent.gameObject;
-        Debug.Log(panelParent.name);
-        if (panelParent != null)
+        GameObject panelParent;
+
+        if (!isPaused)
         {
+            //This is a bit clucky, but it checks of the pause menu is active.
+            panelParent = currentPanel.transform.parent.gameObject;
             for (int i = 0; i < panels.Length; i++)
             {
                 if (currentPanel.name.Contains(panels[i].name))
@@ -103,7 +124,28 @@ public class mainMenu : MonoBehaviour
                     break;
                 }
             }
-        } 
+
+        } else
+        {
+            //If paused, we'll find the pausepanel and designate it as the "parent". Not really since I want to avoid excess spaghetti.
+            for(int i = 0; i < panels.Length; i++)
+            {
+                if(panels[i].name.Contains("pause"))
+                {
+                    panelParent = panels[i];
+                    for (int j = 0; j < panels.Length; j++)
+                    {
+                        if (currentPanel.name.Contains(panels[i].name))
+                        {
+                            panelParent.transform.position = mainCanvas.transform.position;
+                            currentPanel.transform.position = startPos[j];
+                            currentPanel = panelParent;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public void changeInput()
@@ -113,6 +155,9 @@ public class mainMenu : MonoBehaviour
         selectedButton.GetComponentInChildren<Text>().text = "Add new input";
         isSelected = true;
         
+    }public void changeScene()
+    {
+
     }
 
 
