@@ -5,21 +5,22 @@ using UnityEngine;
 public class GoldDrop : MonoBehaviour
 {
     public GameObject Gold;
+    int goldQuantity;
 
     public EnemyLootDrop enemyLoot;
     public PlayerCurrency playerCurrency;
 
-    private void Update()
-    {
-      
-    }
 
-    void OnCollisionEnter2d(Collision2D col)
+
+
+    void OnTriggerEnter2D(Collider2D other)
     {
-        if (col.gameObject.name == "Player")
+        
+        if (other.name == "Player")
         {
-            playerCurrency.playerGold += 1*enemyLoot.goldQuantity;
-            Destroy(Gold);
+            goldQuantity = Random.Range(10, 100);//TODO: create a range of gold drop for different enemy and put here
+            playerCurrency.playerGold += goldQuantity;
+            Destroy(gameObject);
             Debug.Log(playerCurrency.playerGold);
 
 

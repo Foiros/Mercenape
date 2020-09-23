@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5243515410850218914}
   - component: {fileID: -4044163255480830850}
   - component: {fileID: -6168929696436275880}
+  - component: {fileID: -6299769219585288780}
   m_Layer: 0
   m_Name: Gold
   m_TagString: Untagged
@@ -108,7 +109,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5243515410850218913}
-  m_BodyType: 0
+  m_BodyType: 2
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -131,7 +132,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -145,5 +146,18 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.91, y: 1.73}
+  m_Size: {x: 3, y: 3}
   m_EdgeRadius: 0
+--- !u!114 &-6299769219585288780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5243515410850218913}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c78a86cec1db354eaace254b92524f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  KarmaSpeed: 10

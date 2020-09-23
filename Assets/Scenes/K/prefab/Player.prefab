@@ -109,7 +109,7 @@ GameObject:
   - component: {fileID: 475687300}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -241,21 +241,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7d7318d2b344b64a8acafbf4c1a159c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerSpeed: 5
-  PlayerJumpPow: 7
-  PlayerDoubleJumpPow: 5
-  MidAirSpeed: 3
+  PlayerSpeed: 10
+  PlayerJumpPow: 15
+  PlayerDoubleJumpPow: 10
+  MidAirSpeed: 5
   groundlayermask:
     serializedVersion: 2
-    m_Bits: 2560
+    m_Bits: 256
   walllayermask:
     serializedVersion: 2
-    m_Bits: 2048
+    m_Bits: 512
   PlayerUnderPos: {fileID: 128901979}
   PlayerFrontPos: {fileID: 1908770295}
   PlayerBehindPos: {fileID: 1508194159}
   CheckRadius: 0.1
-  PlayerClimbSpeed: 2
+  PlayerClimbSpeed: 10
 --- !u!114 &8174987084509659845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -269,7 +269,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 8174987084509659711}
-  PlayerKarma: 70
+  PlayerKarma: 28070
+  playerGold: 8121
+  playerUpgrade: 0
 --- !u!114 &8174987084509659846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -284,8 +286,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCurrency: {fileID: 8174987084509659845}
   player: {fileID: 8174987084509659711}
-  PlayerHP: 3
-  PlayerMaxHP: 10
+  PlayerHP: 10
+  PlayerMaxHP: 100
   PlayerDamage: 10
 --- !u!95 &475687299
 Animator:
@@ -326,4 +328,3 @@ MonoBehaviour:
     m_Bits: 1024
   PlayerDamage: 10
   PlayerAnimator: {fileID: 475687299}
-  AttackHitBox: {fileID: 0}

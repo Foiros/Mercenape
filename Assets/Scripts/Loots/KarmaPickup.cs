@@ -9,19 +9,16 @@ public class KarmaPickup : MonoBehaviour
     public int KarmaQuantity;
     public EnemyLootDrop enemyLoot;
     public PlayerCurrency playerCurrency;
-
-
+    
+   
 
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.name == "Player")
         {
-            
                 playerCurrency.PlayerKarma += KarmaQuantity;
                 Destroy(gameObject);
-               
-            
-
+            Debug.Log(playerCurrency.PlayerKarma);
         }
 
     }
