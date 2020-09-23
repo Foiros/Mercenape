@@ -28,7 +28,8 @@ public class SmallEnemyBehaviour : EnemyBehaviour
     IEnumerator PlayerStun()
     {
         if (player != null)
-        {            
+        {
+            //playerRigid.bodyType = RigidbodyType2D.Static;
             playerRigid.drag = 15;
             playerRigid.mass = 100;
             playerMovement.enabled = false;
@@ -37,6 +38,7 @@ public class SmallEnemyBehaviour : EnemyBehaviour
 
             yield return new WaitForSeconds(1.5f);
 
+            //playerRigid.bodyType = RigidbodyType2D.Dynamic;
             playerRigid.drag = 1;
             playerRigid.mass = 1;
             playerMovement.enabled = true;
