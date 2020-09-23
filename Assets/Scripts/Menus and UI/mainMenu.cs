@@ -39,8 +39,9 @@ public class mainMenu : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if(Input.GetKeyDown(KeyCode.P))
         {
+            Debug.Log("Pause pressed");
             pauseGame();
         }
         if(isSelected)
@@ -53,28 +54,70 @@ public class mainMenu : MonoBehaviour
         }
     }
 
+    //This returns the current panel to its starting position when a new panel is put up. 
+    private void returnPanel(GameObject returnPanel)
+    {
+        Debug.Log(returnPanel.name + " is to be returned.");
+        for(int i = 0; i < panels.Length; i++)
+        {
+            if(returnPanel = panels[i])
+            {
+                returnPanel.transform.position = startPos[i];
+                Debug.Log("Panel returned");
+                break;
+            }
+        }
+    }
+
     public void pauseGame()
     {
-        if(!isPaused)
+        if (!isPaused)
         {
-            
+            if (currentPanel != null)
+            {
+                Debug.Log("Currentpanel found");
+                returnPanel(currentPanel);
+                for(int i = 0; i <panels.Length; i++)
+                {
+                    if(panels[i].name.Contains("pause"))
+                    {
+                        panels[i].transform.position = mainCanvas.transform.position;
+                        currentPanel = panels[i];
+                        isPaused = true;
+                        Time.timeScale = 0;
+                        break;
+                    }
+                }
+            } else
+            {
+                Debug.Log("Currentpanel not found");
+                for (int i = 0; i < panels.Length; i++)
+                {
+                    if (panels[i].name.Contains("pause"))
+                    {
+                        panels[i].transform.position = mainCanvas.transform.position;
+                        currentPanel = panels[i];
+                        isPaused = true;
+                        Time.timeScale = 0;
+                        break;
+                    }
+                }
+            }
+        } else
+        {
             for(int i = 0; i < panels.Length; i++)
             {
-                if (panels[i].name.Contains("pause"))
+                if(currentPanel = panels[i])
                 {
-                    panels[i].transform.position = mainCanvas.transform.position;
-                    currentPanel = panels[i];
-                    isPaused = true;
+
+                    currentPanel.transform.position = new Vector2(100,100);
+                    isPaused = false;
+                    Time.timeScale = 1;
                     break;
                 }
             }
-            Time.timeScale = 0;
-        } else
-        {
-            currentPanel = null;
-            isPaused = false;
-            Time.timeScale = 1;
         }
+
     }
 
 
