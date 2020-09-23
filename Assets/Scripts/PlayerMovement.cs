@@ -53,7 +53,7 @@ public class PlayerMovement : MonoBehaviour
         SetPlayerAnimator();// should have a script for animtor 
         PlayerRigid2d.constraints = RigidbodyConstraints2D.FreezeRotation;
         PlayerClimb();
-
+        
 
     }
    
@@ -197,6 +197,7 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
+   
 
     void OnDrawGizmosSelected()
     {
@@ -206,5 +207,7 @@ public class PlayerMovement : MonoBehaviour
       
 
     }
+
+    
 }
 

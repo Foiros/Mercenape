@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 450763958401993857}
   - component: {fileID: 450763958401993858}
   - component: {fileID: 450763958401993859}
-  - component: {fileID: 450763958401993868}
   - component: {fileID: 450763958401993856}
+  - component: {fileID: 450763958401993868}
   - component: {fileID: 1084936500}
   m_Layer: 0
   m_Name: Karma
@@ -111,23 +111,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 8.4, y: 8.59}
   m_EdgeRadius: 0
---- !u!114 &450763958401993868
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 450763958401993869}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33458834100d6ed44a97d57b97f204ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Karma: {fileID: 450763958401993869}
-  Enemy: {fileID: 7237859923948144618, guid: d561ebe5499b33446a3ba906ed062674, type: 3}
-  KarmaQuantity: 10
-  playerCurrency: {fileID: 8174987084509659845, guid: 94feb3077caf03b44935f25901d89eca,
-    type: 3}
 --- !u!50 &450763958401993856
 Rigidbody2D:
   serializedVersion: 4
@@ -149,6 +132,23 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &450763958401993868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 450763958401993869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33458834100d6ed44a97d57b97f204ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Karma: {fileID: 450763958401993869}
+  KarmaQuantity: 10
+  enemyLoot: {fileID: 1116709294, guid: 6bf7f04fc1ba8474f836163d7d64fe7d, type: 3}
+  playerCurrency: {fileID: 8174987084509659845, guid: 94feb3077caf03b44935f25901d89eca,
+    type: 3}
 --- !u!114 &1084936500
 MonoBehaviour:
   m_ObjectHideFlags: 0

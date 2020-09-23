@@ -9,23 +9,21 @@ public class BuyWeapons : MonoBehaviour
 {
     private Money money;
     private WeaponStates weaponStates;
+    private AssetManager assetManager;
 
     private AbstractWeapon[] weapons;
 
     private int weaponID;
     private int weaponCost;
 
+    public Image[] weaponImagesHolder;
+    public Image[] ownedWeapons;
+
     public GameObject buyWeaponScreen;
     private Text weaponName;
     private Text weaponDescription;
     private Text weaponCostText;
     private Image weaponImageBuyScreen;
-
-    public Image[] weaponImagesHolder;
-    public Image[] ownedWeapons;
-    
-    public Sprite[] notBougtWeaponImages;
-    public Sprite[] boughtWeaponImages;
 
     private bool cantBuy;
 
@@ -35,11 +33,11 @@ public class BuyWeapons : MonoBehaviour
 
     private string buttonName;
 
-    
     void Awake()
     {
         money = GetComponent<Money>();
         weaponStates = GetComponent<WeaponStates>();
+        assetManager = GetComponent<AssetManager>();
 
         weaponName = GameObject.FindGameObjectWithTag("WeaponName").GetComponent<Text>();
         weaponDescription = GameObject.FindGameObjectWithTag("WeaponDescription").GetComponent<Text>();
@@ -68,10 +66,10 @@ public class BuyWeapons : MonoBehaviour
     // Function to create an array of the abstract components.
     void SetUpWeaponsArray()
     {
-        TestWeapon1 testWeapon1 = new TestWeapon1("Weapon 1", "Does things", 0, 50, 5, 10, notBougtWeaponImages[0], boughtWeaponImages[0], null);
-        TestWeapon2 testWeapon2 = new TestWeapon2("Weapon 2", "Does things", 1, 25, 1, 20, notBougtWeaponImages[1], boughtWeaponImages[1], null);
-        TestWeapon3 testWeapon3 = new TestWeapon3("Weapon 3", "Does things", 2, 100, 3, 3, notBougtWeaponImages[2], boughtWeaponImages[2], null);
-        TestWeapon4 testWeapon4 = new TestWeapon4("Weapon 4", "Does things", 3, 150, 10, 2, notBougtWeaponImages[3], boughtWeaponImages[3], null);
+        TestWeapon1 testWeapon1 = new TestWeapon1("Weapon 1", "Does things", 0, 50, 5, 10, assetManager.weaponImages[0], null);
+        TestWeapon2 testWeapon2 = new TestWeapon2("Weapon 2", "Does things", 1, 25, 1, 20, assetManager.weaponImages[1], null);
+        TestWeapon3 testWeapon3 = new TestWeapon3("Weapon 3", "Does things", 2, 100, 3, 3, assetManager.weaponImages[2], null);
+        TestWeapon4 testWeapon4 = new TestWeapon4("Weapon 4", "Does things", 3, 150, 10, 2, assetManager.weaponImages[3], null);
 
         weapons = new AbstractWeapon[] { testWeapon1, testWeapon2, testWeapon3, testWeapon4 };
     }
@@ -80,7 +78,7 @@ public class BuyWeapons : MonoBehaviour
     {
         for(int i = 0; i <  weaponImagesHolder.Length; i++)
         {
-            weaponImagesHolder[i].sprite = weapons[i].weaponNotBougthImage;
+            weaponImagesHolder[i].sprite = weapons[i].GetWeaponImage();
         }
     }
 
@@ -105,7 +103,7 @@ public class BuyWeapons : MonoBehaviour
     {
         AbstractWeapon weaponsArray = weapons[weaponID];
 
-        weaponImageBuyScreen.sprite = weaponsArray.GetNotBoughtImage();
+        weaponImageBuyScreen.sprite = weaponsArray.GetWeaponImage();
         weaponName.text = weaponsArray.GetName();
         weaponDescription.text = weaponsArray.GetDescription();
         weaponCost = weaponsArray.GetCost();
@@ -125,7 +123,7 @@ public class BuyWeapons : MonoBehaviour
             weaponStates.WhatWeaponWasBought(weaponID);
            
             weaponImagesHolder[weaponID].enabled = false;
-            ownedWeapons[weaponID].sprite = weaponsArray.GetBoughtImage();
+            ownedWeapons[weaponID].sprite = weaponsArray.GetWeaponImage();
 
             buyWeaponScreen.SetActive(false);
         }

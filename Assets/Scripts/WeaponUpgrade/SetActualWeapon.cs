@@ -7,12 +7,12 @@ using UnityEngine.UI;
 public class SetActualWeapon : MonoBehaviour
 {
     private WeaponStates weaponStates;
+    private AssetManager assetManager;
 
     private AbstractWeapon[] weapons;
     private AbstractUpgrades[] upgrades;
 
     private Image weaponInUseImage;
-    public  Sprite[] possibleWeaponsGallery;
 
     private int weaponID;
     private int upgradeID;
@@ -27,9 +27,11 @@ public class SetActualWeapon : MonoBehaviour
 
     private bool weaponHasBeenUpgraded;
     
-    void awake()
+    void Awake()
     {
         weaponStates = GetComponent<WeaponStates>();
+        assetManager = GetComponent<AssetManager>();
+       
         weaponID = weaponStates.ReturnChosenWeaponID();
 
         SetUpWeaponsArray();
@@ -40,10 +42,10 @@ public class SetActualWeapon : MonoBehaviour
     // As in BuyWeapons script, this function sets up the abstract objects array, which can then be used by the code.
     void SetUpWeaponsArray()
     {
-        TestWeapon1 testWeapon1 = new TestWeapon1("Weapon 1", "Does things", 0, 50, 5, 10, null, null, possibleWeaponsGallery[0]);
-        TestWeapon2 testWeapon2 = new TestWeapon2("Weapon 2", "Does things", 1, 25, 1, 20, null, null, possibleWeaponsGallery[1]);
-        TestWeapon3 testWeapon3 = new TestWeapon3("Weapon 3", "Does things", 2, 100, 3, 3, null, null, possibleWeaponsGallery[2]);
-        TestWeapon4 testWeapon4 = new TestWeapon4("Weapon 4", "Does things", 3, 150, 10, 2, null, null, possibleWeaponsGallery[3]);
+        TestWeapon1 testWeapon1 = new TestWeapon1("Weapon 1", "Does things", 0, 50, 5, 10, assetManager.weaponImages[0], null);
+        TestWeapon2 testWeapon2 = new TestWeapon2("Weapon 2", "Does things", 1, 25, 1, 20, assetManager.weaponImages[0], null);
+        TestWeapon3 testWeapon3 = new TestWeapon3("Weapon 3", "Does things", 2, 100, 3, 3, assetManager.weaponImages[0], null);
+        TestWeapon4 testWeapon4 = new TestWeapon4("Weapon 4", "Does things", 3, 150, 10, 2, assetManager.weaponImages[0], null);
 
         weapons = new AbstractWeapon[] { testWeapon1, testWeapon2, testWeapon3, testWeapon4 };
     }
@@ -65,7 +67,7 @@ public class SetActualWeapon : MonoBehaviour
 
         weaponID = 0;
 
-        weaponInUseImage.sprite = weaponsArray.GetInUseImage();
+        weaponInUseImage.sprite = weaponsArray.GetWeaponImage();
 
         speed = weaponsArray.GetSpeed(); 
         speedMult = upgradesArray.GetUpgradedSpeed();
