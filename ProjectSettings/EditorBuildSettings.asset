@@ -9,6 +9,17 @@ EditorBuildSettings:
     path: Assets/Scenes/Arttu_WeaponSystem.unity
     guid: 6876dfd1f509aa9479da99457334856f
   - enabled: 1
+<<<<<<< Updated upstream
     path: Assets/Scenes/K/Thuyet Character prototype.unity
     guid: b1afe840b2ba8b44681926a37ba2b71a
+=======
+    path: Assets/Scenes/mainMenu.unity
+    guid: 23b579fa9cec788419c734aff303edca
+  - enabled: 1
+    path: Assets/Scenes/Bao_Enemy.unity
+    guid: bf7d2627807eafa45b1579980433a8d3
+  - enabled: 1
+    path: Assets/Scenes/Arttu_WeaponTestArea.unity
+    guid: 42e33e36b5a44bd40b78abe5f0210801
+>>>>>>> Stashed changes
   m_configObjects: {}

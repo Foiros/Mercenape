@@ -15,26 +15,26 @@ public class mainMenu : MonoBehaviour
     public GameObject[] panels;
     public Vector2[] startPos;
     public GameObject currentPanel;
+    public GameObject pausePanel;
 
     public GameObject selectedButton;
     bool isSelected = false;
 
     void Start()
-    {
-        
-
-        
+    {       
         mainCanvas = transform.GetComponent<Canvas>();
-        startPos = new Vector2[panels.Length];
-        currentPanel = panels[0];
-        
+        startPos = new Vector2[panels.Length];  
         //Set the position each panel returns to when not selected.
         for(int i = 0; i < panels.Length; i++)
         {
-            startPos[i] = panels[i].transform.position;
-            Debug.Log(startPos[i]);           
+            if (panels[i].name.Contains("pause"))
+            {
+                pausePanel = panels[i];              
+            }
+            startPos[i] = panels[i].transform.position;         
         }
         panels[0].transform.position = mainCanvas.transform.position;
+        currentPanel = panels[0];
     }
 
     private void Update()
@@ -55,15 +55,13 @@ public class mainMenu : MonoBehaviour
     }
 
     //This returns the current panel to its starting position when a new panel is put up. 
-    private void returnPanel(GameObject returnPanel)
+    private void returnPanel(GameObject panelReturn)
     {
-        Debug.Log(returnPanel.name + " is to be returned.");
         for(int i = 0; i < panels.Length; i++)
         {
-            if(returnPanel = panels[i])
+            if(panels[i] == panelReturn)
             {
-                returnPanel.transform.position = startPos[i];
-                Debug.Log("Panel returned");
+                panelReturn.transform.position = startPos[i];
                 break;
             }
         }
@@ -71,50 +69,30 @@ public class mainMenu : MonoBehaviour
 
     public void pauseGame()
     {
-        if (!isPaused)
+        //First we check if a pausepanel's been assigned.
+        if (pausePanel != null)
         {
-            if (currentPanel != null)
+            if (!isPaused)
             {
-                Debug.Log("Currentpanel found");
-                returnPanel(currentPanel);
-                for(int i = 0; i <panels.Length; i++)
+                //Pause the game
+                if (currentPanel != null)
                 {
-                    if(panels[i].name.Contains("pause"))
-                    {
-                        panels[i].transform.position = mainCanvas.transform.position;
-                        currentPanel = panels[i];
-                        isPaused = true;
-                        Time.timeScale = 0;
-                        break;
-                    }
+                    returnPanel(currentPanel);
                 }
-            } else
-            {
-                Debug.Log("Currentpanel not found");
-                for (int i = 0; i < panels.Length; i++)
-                {
-                    if (panels[i].name.Contains("pause"))
-                    {
-                        panels[i].transform.position = mainCanvas.transform.position;
-                        currentPanel = panels[i];
-                        isPaused = true;
-                        Time.timeScale = 0;
-                        break;
-                    }
-                }
-            }
-        } else
-        {
-            for(int i = 0; i < panels.Length; i++)
-            {
-                if(currentPanel = panels[i])
-                {
+                pausePanel.transform.position = mainCanvas.transform.position;
+                isPaused = true;
+                Time.timeScale = 0;
+                currentPanel = pausePanel;
+                
 
-                    currentPanel.transform.position = new Vector2(100,100);
-                    isPaused = false;
-                    Time.timeScale = 1;
-                    break;
-                }
+            }
+            else
+            {
+                //Resume the game
+                returnPanel(currentPanel);
+                isPaused = false;
+                Time.timeScale = 1;
+                currentPanel = null;
             }
         }
 
@@ -126,67 +104,53 @@ public class mainMenu : MonoBehaviour
     {
         string buttonName = EventSystem.current.currentSelectedGameObject.name;
         Debug.Log(buttonName);
-        //Find the the Currentpanel and return it to its starting position.
-        for(int i = 0; i < panels.Length; i++)
+        //Return the current panel to its startPos.
+        returnPanel(currentPanel);
+        for (int i = 0; i < panels.Length; i++)
         {
-            if(currentPanel = panels[i])
+
+            if (panels[i].name.Contains(buttonName))
             {
-                
-                currentPanel.transform.position = startPos[i];
-                for (int j = 0; j < panels.Length; j++)
+                Debug.Log(panels[i].name + " found.");
+                //If the game is paused, Options and Level select panels are set as Pausepanel's children so that the BackButton() works properly
+                if (panels[i].name.Contains("options") || panels[i].name.Contains("level"))
                 {
-                    //Then we find the chose panel by the name of the button.
-                    if (panels[j].name.Contains(buttonName))
+                    if (!isPaused)
                     {
-                        Debug.Log("Found the next panel, " + panels[j].name);
-                        panels[j].transform.position = mainCanvas.transform.position;
-                        currentPanel = panels[j];
-                        break;
-                    } else { Debug.LogError("Panel not found!"); }
+                        panels[i].transform.SetParent(panels[0].transform, false);
+                        currentPanel = panels[i];
+                    }
+                    else
+                    {
+                        panels[i].transform.SetParent(pausePanel.transform, false);
+                        currentPanel = panels[i];
+                    }
+                
                 }
+                if(panels[i] == panels[0])
+                {
+                    isPaused = false;
+                    Time.timeScale = 1;
+                }
+                panels[i].transform.position = mainCanvas.transform.position;
+                currentPanel = panels[i];
+                Debug.Log("Current panel: " + currentPanel.name);
                 break;
-            }        
+            }
         }
     }
 
     public void backButton()
     {
-        GameObject panelParent;
-
-        if (!isPaused)
+        returnPanel(currentPanel);
+        for(int i = 0; i < panels.Length; i++)
         {
-            //This is a bit clucky, but it checks of the pause menu is active.
-            panelParent = currentPanel.transform.parent.gameObject;
-            for (int i = 0; i < panels.Length; i++)
+            if(panels[i] == currentPanel.transform.parent.gameObject)
             {
-                if (currentPanel.name.Contains(panels[i].name))
-                {
-                    panelParent.transform.position = mainCanvas.transform.position;
-                    currentPanel.transform.position = startPos[i];
-                    currentPanel = panelParent;
-                    break;
-                }
-            }
-
-        } else
-        {
-            //If paused, we'll find the pausepanel and designate it as the "parent". Not really since I want to avoid excess spaghetti.
-            for(int i = 0; i < panels.Length; i++)
-            {
-                if(panels[i].name.Contains("pause"))
-                {
-                    panelParent = panels[i];
-                    for (int j = 0; j < panels.Length; j++)
-                    {
-                        if (currentPanel.name.Contains(panels[i].name))
-                        {
-                            panelParent.transform.position = mainCanvas.transform.position;
-                            currentPanel.transform.position = startPos[j];
-                            currentPanel = panelParent;
-                            break;
-                        }
-                    }
-                }
+                Debug.Log("Panel parent found: " + panels[i]);
+                panels[i].transform.position = mainCanvas.transform.position;            
+                currentPanel = panels[i];
+                break;
             }
         }
     }
@@ -197,13 +161,8 @@ public class mainMenu : MonoBehaviour
         Debug.Log(selectedButton.name);
         selectedButton.GetComponentInChildren<Text>().text = "Add new input";
         isSelected = true;
-        
-    }public void changeScene()
-    {
-
     }
-
-
+        
     public void startGame()
     {
         Debug.Log("Starting game");
