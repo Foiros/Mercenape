@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/Arttu_WeaponSystem.unity
     guid: 6876dfd1f509aa9479da99457334856f
   - enabled: 1
-    path: Assets/Scenes/K/Thuyet Character prototype.unity
-    guid: b1afe840b2ba8b44681926a37ba2b71a
+    path: Assets/Scenes/Bao_Enemy.unity
+    guid: bf7d2627807eafa45b1579980433a8d3
   m_configObjects: {}

@@ -27,6 +27,7 @@ TagManager:
   - ImpactDamage
   - ground
   - WeaponInUse
+  - GameManager
   layers:
   - Default
   - TransparentFX

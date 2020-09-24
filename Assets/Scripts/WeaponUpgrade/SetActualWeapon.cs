@@ -61,4 +61,6 @@ public class SetActualWeapon : MonoBehaviour
     }
 
     public int GetChosenID() { return weaponID; }
+    public int GetWeaponSpeed() { return speed; }
+    public int GetWeaponImpactDamage() { return impactDamage; }
 }

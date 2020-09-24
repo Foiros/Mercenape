@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Arttu Paldán modified on 24.9.2020:
 public class PlayerAttackTrigger : MonoBehaviour
 {
+    private SetActualWeapon setActualWeapon;
+    
     private float TimeDelayAttack; // to check if there still countdown time untill player can atk again
     public float PlayerDelayAttackTime; // can exchange to weapon atk rate later
 
@@ -12,10 +15,17 @@ public class PlayerAttackTrigger : MonoBehaviour
     public LayerMask EnemyLayerMask;
     public int PlayerDamage;
 
+    private int weaponSpeed;
+
     public Animator PlayerAnimator;
     private bool IsPlayerAttack = false;
 
     PlayerMovement playerMovement;
+
+    void Awake()
+    {
+        setActualWeapon = GameObject.FindGameObjectWithTag("GameManager").GetComponent<SetActualWeapon>();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +33,8 @@ public class PlayerAttackTrigger : MonoBehaviour
         PlayerAnimator = gameObject.GetComponent<Animator>();
         IsPlayerAttack = false;
         playerMovement = gameObject.GetComponent<PlayerMovement>();
+
+        SetWeaponStats();
     }
 
 
@@ -36,15 +48,21 @@ public class PlayerAttackTrigger : MonoBehaviour
     {
         if (!playerMovement.isPlayerBlock)
         { PlayerAttack(); }
- 
     }
 
-    bool CheckMouseInput()
+    void SetWeaponStats()
+    {
+        weaponSpeed = setActualWeapon.GetWeaponSpeed();
+        PlayerAnimator.speed = weaponSpeed;
         
+        PlayerDamage = setActualWeapon.GetWeaponImpactDamage();
+    }
+
+    bool CheckMouseInput()    
     {
         return Input.GetKey(KeyCode.Mouse0);
-       
     }
+
     public void PlayerAttack()
     {
         if(CheckMouseInput()&& !IsPlayerAttack)
@@ -53,8 +71,6 @@ public class PlayerAttackTrigger : MonoBehaviour
             TimeDelayAttack = PlayerDelayAttackTime;
             Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(Attackpos.position, AttackRange, EnemyLayerMask);
           
-           
-
             for (int i = 0; i < enemiesToDamage.Length; i++)
             {
                 enemiesToDamage[i].GetComponent<EnemyStat>().TakeDamage(PlayerDamage);
@@ -73,13 +89,12 @@ public class PlayerAttackTrigger : MonoBehaviour
             {
                 IsPlayerAttack = false;
             }
-
-           
-
         }
     }
 
-
-
-    
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawSphere(Attackpos.position, AttackRange);
+    }
 }
