@@ -17,9 +17,17 @@ public class WeaponStates: MonoBehaviour
     public bool ownsWeapon3;
     public bool ownsWeapon4;
 
-    public int savedWeightAmount;
-    public int savedSpeedAmount;
+    public int savedWeightAmount1;
+    public int savedWeightAmount2;
+    public int savedWeightAmount3;
+    public int savedWeightAmount4;
+    
+    public int savedSpeedAmount1;
+    public int savedSpeedAmount2;
+    public int savedSpeedAmount3;
+    public int savedSpeedAmount4;
 
+    // Switch loop function for setting the ownership status of a weapon.
     public void WhatWeaponWasBought(int id)
     {
         int weaponID = id;
@@ -44,6 +52,7 @@ public class WeaponStates: MonoBehaviour
         }
     }
 
+    // Switch loop function for setting the upgrade status of a weapon. 
     public void WhatWeaponWasUpgraded(int id)
     {
         int weaponID = id;
@@ -67,13 +76,8 @@ public class WeaponStates: MonoBehaviour
                 break;
         }
     }
-    public void SetChosenWeaponID(int id)
-    {
-        weaponID = id;
-    }
+   
+    public void SetChosenWeaponID(int id) { weaponID = id;}
 
-    public int ReturnChosenWeaponID()
-    {
-        return weaponID;
-    }
+    public int ReturnChosenWeaponID() { return weaponID;}
 }

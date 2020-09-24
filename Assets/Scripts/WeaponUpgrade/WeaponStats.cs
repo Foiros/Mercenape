@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Created by Arttu Paldán 23.9.2020: 
+// Created by Arttu Paldán 23.9.2020: This script handles weapon stat calculations. 
 public class WeaponStats : MonoBehaviour
 {
     private UseUpgrades useUpgrades;
@@ -11,7 +11,9 @@ public class WeaponStats : MonoBehaviour
     private AbstractWeapon[] weapons;
 
     public int amountOfSpeed;
+    public int savedAmountOfSpeed;
     public int amountOfWeight;
+    public int savedAmountOfWeight;
 
     private int weaponWeight;
     private int weightEffect;
@@ -30,6 +32,7 @@ public class WeaponStats : MonoBehaviour
         SetUpWeaponsArray();
     }
 
+    // Just as everywhere else, this function sets the weapons array.
     void SetUpWeaponsArray()
     {
         TestWeapon1 testWeapon1 = new TestWeapon1("Weapon 1", "Does things", 0, 50, 5, 10, 20, null, null);
@@ -40,6 +43,7 @@ public class WeaponStats : MonoBehaviour
         weapons = new AbstractWeapon[] { testWeapon1, testWeapon2, testWeapon3, testWeapon4 };
     }
 
+    // Public function that other scripts can call to handle the weapon stat calculations.
     public void CalculateStats()
     {
         if(useUpgrades.weaponID == 0 && weaponStates.weapon1HasBeenUpgraded)
@@ -64,23 +68,30 @@ public class WeaponStats : MonoBehaviour
         }
     }
 
+    // Function for calculating stats in situations, where player has upgraded the weapon.
     void CalculateWithSavedStats()
     {
         AbstractWeapon weaponsArray = weapons[useUpgrades.weaponID];
+
+        LoadSaveFiles();
 
         weaponWeight = weaponsArray.GetWeight();
         weaponSpeed = weaponsArray.GetSpeed();
         weaponImpactDamage = weaponsArray.GetImpactDamage();
 
-        actualWeaponWeight = weaponWeight * weaponStates.savedWeightAmount;
+        actualWeaponWeight = weaponWeight * savedAmountOfWeight;
 
         GetWeightEffect();
 
-        actualWeaponSpeed = weaponSpeed * weaponStates.savedSpeedAmount - weightEffect;
+        actualWeaponSpeed = weaponSpeed * savedAmountOfSpeed - weightEffect;
 
         actualWeaponImpactDamage = weaponImpactDamage + weightEffect;
+
+        savedAmountOfWeight = 0;
+        savedAmountOfSpeed = 0;
     }
 
+    // Function for calculating weapon stats when changes have not been made or when player upgrades the weapon.
     void CalculateNormally()
     {
         AbstractWeapon weaponsArray = weapons[useUpgrades.weaponID];
@@ -93,7 +104,6 @@ public class WeaponStats : MonoBehaviour
         if (amountOfWeight > 0)
         {
             actualWeaponWeight = weaponWeight * amountOfWeight;
-            weaponStates.savedWeightAmount = amountOfWeight;
         }
         else
         {
@@ -106,7 +116,6 @@ public class WeaponStats : MonoBehaviour
         if (amountOfSpeed > 0)
         {
             actualWeaponSpeed = weaponSpeed * amountOfSpeed - weightEffect;
-            weaponStates.savedSpeedAmount = amountOfSpeed;
         }
         else
         {
@@ -116,9 +125,10 @@ public class WeaponStats : MonoBehaviour
         actualWeaponImpactDamage =  weaponImpactDamage + weightEffect;
     }
 
+    // Switch lopp function that sets the weight effect. I really need to find a better way to calculate this. The whole math behind this system requires work. 
     void GetWeightEffect()
     {
-        switch (weaponWeight)
+        switch (actualWeaponWeight)
         {
             case 0:
                 weightEffect = 0;
@@ -165,6 +175,62 @@ public class WeaponStats : MonoBehaviour
                 break;
         }
     }
+
+    // Function for saving the amount of upgrades.
+    public void SaveStats()
+    {
+        switch (useUpgrades.weaponID)
+        {
+            case 0:
+                weaponStates.savedWeightAmount1 = weaponStates.savedWeightAmount1 + amountOfWeight;
+                weaponStates.savedSpeedAmount1 = weaponStates.savedSpeedAmount1 + amountOfSpeed;
+                break;
+
+            case 1:
+                weaponStates.savedWeightAmount2 = weaponStates.savedWeightAmount2 + amountOfWeight;
+                weaponStates.savedSpeedAmount2 = weaponStates.savedSpeedAmount2 + amountOfSpeed;
+                break;
+
+            case 2:
+                weaponStates.savedWeightAmount3 = weaponStates.savedWeightAmount3 + amountOfWeight;
+                weaponStates.savedSpeedAmount3 = weaponStates.savedSpeedAmount3 + amountOfSpeed;
+                break;
+
+            case 3:
+                weaponStates.savedWeightAmount4 = weaponStates.savedWeightAmount4 + amountOfWeight;
+                weaponStates.savedSpeedAmount4 = weaponStates.savedSpeedAmount4 + amountOfSpeed;
+                break;
+        }
+    }
+
+    // Function for loading the amount of upgrades. 
+    void LoadSaveFiles()
+    {
+        switch (useUpgrades.weaponID)
+        {
+            case 0:
+                savedAmountOfWeight = weaponStates.savedWeightAmount1;
+                savedAmountOfSpeed = weaponStates.savedSpeedAmount1;
+                break;
+
+            case 1:
+                savedAmountOfWeight = weaponStates.savedWeightAmount2;
+                savedAmountOfSpeed = weaponStates.savedSpeedAmount2;
+                break;
+
+            case 3:
+                savedAmountOfWeight = weaponStates.savedWeightAmount3;
+                savedAmountOfSpeed = weaponStates.savedSpeedAmount3;
+                break;
+
+            case 4:
+                savedAmountOfWeight = weaponStates.savedWeightAmount4;
+                savedAmountOfSpeed = weaponStates.savedSpeedAmount4;
+                break;
+        }
+    }
+
+    // Fetch functions for other scripts to get their hands on these private values.
     public int GetWeight() { return actualWeaponWeight; }
     public int GetSpeed() { return actualWeaponSpeed; }
     public int GetImpactDamage() { return actualWeaponImpactDamage; }

@@ -26,25 +26,16 @@ public abstract class AbstractWeapon
     // Fetch functions for details
     public string GetName() { return weaponName;}
     public string GetDescription() { return weaponDescription;}
-
     public int GetID() { return weaponID;}
-
     public int GetCost() { return weaponCost;}
-
     public Sprite GetWeaponImage(){ return weaponImage;}
-
     public Sprite GetChosenWeaponImage() { return chosenWeaponImage; }
 
-    
     // Fetch functios for stats
     public int GetSpeed() { return weaponSpeed;}
-
     public int GetWeight() { return weaponWeight;}
-
     public int GetImpactDamage() { return impactDamage; }
-
     public int GetBleedDamage() { return bleedDamage; }
-
     public int GetBleedDuration() { return bleedDuration; }
 }
 

@@ -168,18 +168,23 @@ public class UseUpgrades : MonoBehaviour
         upgradeImage.sprite = upgradesArray.GetUpgradeImage();
     }
 
+    // Function for closing the upgrade screen.
     public void CloseUpgradeMenu()
     {
         upgradeMenu.SetActive(false);
         weaponID = -1;
+        weaponStats.savedAmountOfSpeed = 0;
+        weaponStats.savedAmountOfWeight = 0;
     }
 
+    //Function for closing the componentscreen.
     public void CloseUpgradeComponentMenu()
     {
         upgradeComponentScreen.SetActive(false);
         upgradeID = -1;
     }
 
+    // Button function for selecting the amount of upgrades to be inserted into the weapon.
     public void SelectUpgradeComponentsAmount()
     {
         arrowButtonName = EventSystem.current.currentSelectedGameObject.name;
@@ -222,6 +227,7 @@ public class UseUpgrades : MonoBehaviour
         UpdateWeaponStats();
     }
 
+    // Function for updating the info on weapon stats in upgrade screen.
     void UpdateWeaponStats()
     {
         weaponStats.CalculateStats();
@@ -229,10 +235,9 @@ public class UseUpgrades : MonoBehaviour
         weaponSpeedText.text = "Speed: " + weaponStats.GetSpeed();
         weaponWeightText.text = " Weight: " + weaponStats.GetWeight();
         weaponImpactDamageText.text = " Impact Damage: " + weaponStats.GetImpactDamage();
-
-        
     }
 
+    // Confirm button function for confirming the updates. 
     public void ConfirmUpgrade()
     {
         int currency = money.GetCurrentCurrency();
@@ -245,6 +250,7 @@ public class UseUpgrades : MonoBehaviour
             weaponCostText.text = "Upgrade Cost: " + upgradeCost;
 
             UpdateWeaponStats();
+            weaponStats.SaveStats();
             
             weaponStats.amountOfSpeed = 0;
             weaponStats.amountOfWeight = 0;

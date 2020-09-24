@@ -64,8 +64,15 @@ public class WeaponsData
     public bool ownsWeapon3;
     public bool ownsWeapon4;
 
-    public int amountOfWeight;
-    public int amountOfSpeed;
+    public int amountOfWeight1;
+    public int amountOfWeight2;
+    public int amountOfWeight3;
+    public int amountOfWeight4;
+
+    public int amountOfSpeed1;
+    public int amountOfSpeed2;
+    public int amountOfSpeed3;
+    public int amountOfSpeed4;
 
     public WeaponsData(WeaponStates weaponStates, WeaponStats weaponStats)
     {
@@ -81,7 +88,8 @@ public class WeaponsData
         ownsWeapon3 = weaponStates.ownsWeapon3;
         ownsWeapon4 = weaponStates.ownsWeapon4;
 
-        amountOfWeight = weaponStats.amountOfWeight;
-        amountOfSpeed = weaponStats.amountOfSpeed;
+        amountOfWeight1 = weaponStats.amountOfWeight;
+        
+        amountOfSpeed1 = weaponStats.amountOfSpeed;
     }
 }
