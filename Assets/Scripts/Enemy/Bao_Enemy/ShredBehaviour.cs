@@ -3,36 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ShredBehaviour : EnemyStat
-{
-    [SerializeField] private float runningSpeed = 10f;
-    private float speed;
-    private int escapingStunCount = 0;
+{   
+    
     [SerializeField] private float bleedChance;
     [SerializeField] private int knockBackForce;
 
-    bool isStunning = false;        // For player is stunning
-    bool readyToSetStun = true;     // For stunning process
-  
-    private BoxCollider2D boxCollier;
-    //private CapsuleCollider2D capsuleCollider;    // For detecting ground
-
-    private GameObject player;
-    private PlayerStat playerStat;
-    private PlayerMovement playerMovement;
-
     protected override void Start()
     {
-        base.Start();   // Start both EnemyStat and ShredBehaviour
-
-        speed = runningSpeed;
-       
-        boxCollier = GetComponent<BoxCollider2D>();
-        //capsuleCollider = GetComponent<CapsuleCollider2D>();
-
-        player = GameObject.FindGameObjectWithTag("Player");
-        playerStat = player.GetComponent<PlayerStat>();
-        playerMovement = player.GetComponent<PlayerMovement>();
-
+        base.Start();   // Start both EnemyStat and ShredBehaviour       
     }
 
     private void Update()
@@ -44,22 +22,6 @@ public class ShredBehaviour : EnemyStat
         if (Input.GetKeyDown(KeyCode.L))
         {
             Destroy(gameObject);
-        }
-    }
-
-    // Movement
-    void FixedUpdate()
-    {
-        // Check direction facing and adjust to velocity according to that, also rotate Health bar
-        if (IsFacingRight())
-        {
-            rb.velocity = new Vector2(speed, 0f);
-            healthBarUI.transform.localScale = new Vector2(xScaleUI, healthBarUI.transform.localScale.y);
-        }
-        else
-        {
-            rb.velocity = new Vector2(-speed, 0f);
-            healthBarUI.transform.localScale = new Vector2(-xScaleUI, healthBarUI.transform.localScale.y);
         }
     }
 
@@ -85,21 +47,6 @@ public class ShredBehaviour : EnemyStat
                 }
             }           
         }
-    }
-   
-    // Detect if Shred gets out of the ground, turn if yes
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (!collision.gameObject.CompareTag("Player")) // Fix a bug that Shred stick to player when colliding
-        {
-            transform.localScale = new Vector2(-(Mathf.Sign(rb.velocity.x)) * 0.3f, 0.3f);
-        }
-    }
-
-    // Check if facing right direction
-    private bool IsFacingRight()
-    {
-        return transform.localScale.x > 0;
     }
 
     // When Shred attacks and applies damage
@@ -143,44 +90,11 @@ public class ShredBehaviour : EnemyStat
             currentCount++;
         }       
     }
-
-    // Set player movement when being knocked down
-    private void StunningProcess()
-    {
-        if (!isStunning) { return; }
-
-        if (readyToSetStun) // Make sure just to set this one time (for performance and bugs fixing)
-        {
-            readyToSetStun = false;
-
-            player.transform.rotation = Quaternion.Euler(0, 0, Mathf.Sign(transform.localScale.x) * -90);
-            player.GetComponent<PlayerMovement>().enabled = false;
-            player.GetComponent<PlayerAttackTrigger>().enabled = false;
-            player.GetComponent<Animator>().enabled = false;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            escapingStunCount++;
-        }
-
-        if (escapingStunCount == 5)
-        {
-            player.transform.rotation = Quaternion.Euler(0, 0, 0);
-            player.GetComponent<PlayerMovement>().enabled = true;
-            player.GetComponent<PlayerAttackTrigger>().enabled = true;
-            player.GetComponent<Animator>().enabled = true;
-
-            escapingStunCount = 0;
-            readyToSetStun = true;
-            isStunning = false;
-        }
-    }
-
+   
     IEnumerator ImmobilizeShred()
     {
-        player.GetComponent<Rigidbody2D>().AddForce(new Vector2(Mathf.Sign(transform.localScale.x) * knockBackForce, 0));
-        rb.AddForce(new Vector2(-Mathf.Sign(transform.localScale.x) * knockBackForce, 300));
+        //player.GetComponent<Rigidbody2D>().AddForce(new Vector2(Mathf.Sign(transform.localScale.x) * knockBackForce / 50, 0));
+        rb.AddForce(new Vector2(-Mathf.Sign(transform.localScale.x) * knockBackForce, 50));
 
         speed = 0;
         this.GetComponent<SpriteRenderer>().color = Color.red;
@@ -189,6 +103,23 @@ public class ShredBehaviour : EnemyStat
 
         speed = runningSpeed;
         this.GetComponent<SpriteRenderer>().color = Color.white;
+    }
+
+    protected override void StunningProcess()
+    {
+        base.StunningProcess();     // Still normal stun player
+
+        if (escapingStunCount == 5)
+        {
+            player.transform.rotation = Quaternion.Euler(0, 0, 0);
+            playerMovement.enabled = true;
+            player.GetComponent<PlayerAttackTrigger>().enabled = true;
+            player.GetComponent<Animator>().enabled = true;          
+
+            escapingStunCount = 0;
+            readyToSetStun = true;
+            isStunning = false;
+        }
     }
 }
 
