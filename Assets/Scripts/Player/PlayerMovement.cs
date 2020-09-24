@@ -107,7 +107,7 @@ public class PlayerMovement : MonoBehaviour
     void InputHorrizontal()
     {
         inputH = Input.GetAxis("Horizontal");
-        Debug.Log(inputH);
+   
 
     }
    
