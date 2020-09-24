@@ -4,17 +4,17 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
-// Created by Arttu Paldán 17.9.2020: 
+// Created by Arttu Paldán 17.9.2020: Static class that handles the saving of weapon related data. 
 public static class SaveManager
 {
     // Function for saving the data we want to save. It uses the binary formatter to save data. 
-    public static void SaveWeapons(WeaponStates weaponStates, WeaponStats weaponStats)
+    public static void SaveWeapons(WeaponStates weaponStates)
     {
         BinaryFormatter formatter = new BinaryFormatter();
         string weaponsPath = Application.persistentDataPath + "/Weapons.data";
         FileStream stream = new FileStream(weaponsPath, FileMode.Create);
 
-        WeaponsData weaponsData = new WeaponsData(weaponStates, weaponStats);
+        WeaponsData weaponsData = new WeaponsData(weaponStates);
 
         formatter.Serialize(stream, weaponsData);
         stream.Close();
@@ -54,15 +54,15 @@ public class WeaponsData
 {
     public int weaponID;
 
-    public bool weapon1HasBeenUpgraded;
-    public bool weapon2HasBeenUpgraded;
-    public bool weapon3HasBeenUpgraded;
-    public bool weapon4HasBeenUpgraded;
-
     public bool ownsWeapon1;
     public bool ownsWeapon2;
     public bool ownsWeapon3;
     public bool ownsWeapon4;
+
+    public bool weapon1HasBeenUpgraded;
+    public bool weapon2HasBeenUpgraded;
+    public bool weapon3HasBeenUpgraded;
+    public bool weapon4HasBeenUpgraded;
 
     public int amountOfWeight1;
     public int amountOfWeight2;
@@ -74,9 +74,9 @@ public class WeaponsData
     public int amountOfSpeed3;
     public int amountOfSpeed4;
 
-    public WeaponsData(WeaponStates weaponStates, WeaponStats weaponStats)
+    public WeaponsData(WeaponStates weaponStates)
     {
-        weaponID = weaponStates.ReturnChosenWeaponID();
+        weaponID = weaponStates.weaponID;
 
         weapon1HasBeenUpgraded = weaponStates.weapon1HasBeenUpgraded;
         weapon2HasBeenUpgraded = weaponStates.weapon1HasBeenUpgraded;
@@ -88,8 +88,14 @@ public class WeaponsData
         ownsWeapon3 = weaponStates.ownsWeapon3;
         ownsWeapon4 = weaponStates.ownsWeapon4;
 
-        amountOfWeight1 = weaponStats.amountOfWeight;
-        
-        amountOfSpeed1 = weaponStats.amountOfSpeed;
+        amountOfWeight1 = weaponStates.savedWeightAmount1;
+        amountOfWeight2 = weaponStates.savedWeightAmount2;
+        amountOfWeight3 = weaponStates.savedWeightAmount3;
+        amountOfWeight4 = weaponStates.savedWeightAmount4;
+
+        amountOfSpeed1 = weaponStates.savedSpeedAmount1;
+        amountOfSpeed2 = weaponStates.savedSpeedAmount2;
+        amountOfSpeed3 = weaponStates.savedSpeedAmount3;
+        amountOfSpeed4 = weaponStates.savedSpeedAmount4;
     }
 }

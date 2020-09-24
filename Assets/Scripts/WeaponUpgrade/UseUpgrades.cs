@@ -15,7 +15,7 @@ public class UseUpgrades : MonoBehaviour
     private AbstractWeapon[] weapons;
     private AbstractUpgrades[] upgrades;
 
-    public int weaponID;
+    private int weaponID;
     private int upgradeID;
     private int upgradeCost;
 
@@ -80,8 +80,8 @@ public class UseUpgrades : MonoBehaviour
     // Function sets up the upgrades array for this script to use.
     void SetUpUpgradesArray()
     {
-        TestUpgrade1 testUpgrade1 = new TestUpgrade1("Speed Upgrade", "Increases the speed of your attacks", 0, 25, 2, 0, assetManager.upgradeImages[0]);
-        TestUpgrade2 testUpgrade2 = new TestUpgrade2("Weigh Upgrade", "Increases the weight of your weapon", 1, 25, 0, 2, assetManager.upgradeImages[1]);
+        TestUpgrade1 testUpgrade1 = new TestUpgrade1("Speed Upgrade", "Increases the speed of your attacks", 0, 25, assetManager.upgradeImages[0]);
+        TestUpgrade2 testUpgrade2 = new TestUpgrade2("Weigh Upgrade", "Increases the weight of your weapon", 1, 25, assetManager.upgradeImages[1]);
 
         upgrades = new AbstractUpgrades[] { testUpgrade1, testUpgrade2 };
     }
@@ -230,6 +230,7 @@ public class UseUpgrades : MonoBehaviour
     // Function for updating the info on weapon stats in upgrade screen.
     void UpdateWeaponStats()
     {
+        weaponStats.SetRequestFromUpgrades(true);
         weaponStats.CalculateStats();
 
         weaponSpeedText.text = "Speed: " + weaponStats.GetSpeed();
@@ -267,4 +268,6 @@ public class UseUpgrades : MonoBehaviour
             weaponStates.WhatWeaponWasUpgraded(weaponID);
         }
     }
+
+    public int GetWeaponID() { return weaponID; }
 }

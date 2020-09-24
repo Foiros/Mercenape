@@ -25,6 +25,8 @@ TagManager:
   - WeaponSpeed
   - WeaponWeight
   - ImpactDamage
+  - ground
+  - WeaponInUse
   layers:
   - Default
   - TransparentFX

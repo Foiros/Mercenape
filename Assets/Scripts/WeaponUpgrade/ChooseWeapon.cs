@@ -48,29 +48,27 @@ public class ChooseWeapon : MonoBehaviour
             buttonID = 0;
             chosenWeaponID = weapons[0].GetID();
             ChangeWeaponImage();
-            weaponStates.SetChosenWeaponID(chosenWeaponID);
         }
         else if (buttonName == "ChooseButton2" && weaponStates.ownsWeapon2)
         {
             buttonID = 1;
             chosenWeaponID = weapons[1].GetID();
             ChangeWeaponImage();
-            weaponStates.SetChosenWeaponID(chosenWeaponID);
         }
         else if (buttonName == "ChooseButton3" && weaponStates.ownsWeapon3)
         {
             buttonID = 2;
             chosenWeaponID = weapons[2].GetID();
             ChangeWeaponImage();
-            weaponStates.SetChosenWeaponID(chosenWeaponID);
         }
         else if (buttonName == "ChooseButton4" && weaponStates.ownsWeapon4)
         {
             buttonID = 3;
             chosenWeaponID = weapons[3].GetID();
             ChangeWeaponImage();
-            weaponStates.SetChosenWeaponID(chosenWeaponID);
         }
+
+        weaponStates.SetChosenWeaponID(chosenWeaponID);
     }
 
     // Function that simply changes the image of an weapon to indicate, that this one is one the player is equipping. 
@@ -79,18 +77,148 @@ public class ChooseWeapon : MonoBehaviour
         if (buttonName == "ChooseButton1")
         {
             weaponHasBeenChosenHolder[buttonID].sprite = weapons[chosenWeaponID].GetChosenWeaponImage();
+
+            SwitchOtherImages();
         }
         else if (buttonName == "ChooseButton2")
         {
             weaponHasBeenChosenHolder[buttonID].sprite = weapons[chosenWeaponID].GetChosenWeaponImage();
+
+            SwitchOtherImages();
         }
-        else if (buttonName == "ChooseButton3")
+       else if (buttonName == "ChooseButton3")
         {
             weaponHasBeenChosenHolder[buttonID].sprite = weapons[chosenWeaponID].GetChosenWeaponImage();
+
+            SwitchOtherImages();
         }
         else if (buttonName == "ChooseButton4")
         {
             weaponHasBeenChosenHolder[buttonID].sprite = weapons[chosenWeaponID].GetChosenWeaponImage();
+
+            SwitchOtherImages();
+        }
+    }
+
+    void SwitchOtherImages()
+    {
+        switch (chosenWeaponID)
+        {
+            case 0:
+                if (weaponStates.ownsWeapon2)
+                {
+                    weaponHasBeenChosenHolder[1].sprite = weapons[1].GetWeaponImage();
+                }
+                else
+                {
+                    weaponHasBeenChosenHolder[1].sprite = null;
+                }
+                
+                if(weaponStates.ownsWeapon3)
+                {
+                    weaponHasBeenChosenHolder[2].sprite = weapons[2].GetWeaponImage();
+                }
+                else
+                {
+                    weaponHasBeenChosenHolder[2].sprite = null;
+                }
+
+                if (weaponStates.ownsWeapon4)
+                {
+                    weaponHasBeenChosenHolder[3].sprite = weapons[3].GetWeaponImage();
+                }
+                else
+                {
+                    weaponHasBeenChosenHolder[3].sprite = null;
+                }
+                break;
+
+            case 1:
+                if (weaponStates.ownsWeapon1)
+                {
+                    weaponHasBeenChosenHolder[0].sprite = weapons[0].GetWeaponImage();
+                }
+                else
+                {
+                    weaponHasBeenChosenHolder[0].sprite = null;
+                }
+
+                if (weaponStates.ownsWeapon3)
+                {
+                    weaponHasBeenChosenHolder[2].sprite = weapons[2].GetWeaponImage();
+                }
+                else
+                {
+                    weaponHasBeenChosenHolder[2].sprite = null;
+                }
+
+                if (weaponStates.ownsWeapon4)
+                {
+                    weaponHasBeenChosenHolder[3].sprite = weapons[3].GetWeaponImage();
+                }
+                else
+                {
+                    weaponHasBeenChosenHolder[3].sprite = null;
+                }
+                break;
+
+            case 2:
+                if (weaponStates.ownsWeapon1)
+                {
+                    weaponHasBeenChosenHolder[0].sprite = weapons[0].GetWeaponImage();
+                }
+                else
+                {
+                    weaponHasBeenChosenHolder[0].sprite = null;
+                }
+
+                if (weaponStates.ownsWeapon2)
+                {
+                    weaponHasBeenChosenHolder[1].sprite = weapons[1].GetWeaponImage();
+                }
+                else
+                {
+                    weaponHasBeenChosenHolder[1].sprite = null;
+                }
+
+                if (weaponStates.ownsWeapon4)
+                {
+                    weaponHasBeenChosenHolder[3].sprite = weapons[3].GetWeaponImage();
+                }
+                else
+                {
+                    weaponHasBeenChosenHolder[3].sprite = null;
+                }
+                break;
+
+            case 3:
+                if (weaponStates.ownsWeapon1)
+                {
+                    weaponHasBeenChosenHolder[0].sprite = weapons[0].GetWeaponImage();
+                }
+                else
+                {
+                    weaponHasBeenChosenHolder[0].sprite = null;
+                }
+
+                if (weaponStates.ownsWeapon2)
+                {
+                    weaponHasBeenChosenHolder[1].sprite = weapons[1].GetWeaponImage();
+                }
+                else
+                {
+                    weaponHasBeenChosenHolder[1].sprite = null;
+                }
+
+                if (weaponStates.ownsWeapon3)
+                {
+                    weaponHasBeenChosenHolder[2].sprite = weapons[2].GetWeaponImage();
+                }
+                else
+                {
+                    weaponHasBeenChosenHolder[2].sprite = null;
+                }
+                break;
         }
     }
 }

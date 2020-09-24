@@ -7,35 +7,30 @@ using UnityEngine.UI;
 public class SetActualWeapon : MonoBehaviour
 {
     private WeaponStates weaponStates;
+    private WeaponStats weaponStats;
     private AssetManager assetManager;
 
     private AbstractWeapon[] weapons;
-    private AbstractUpgrades[] upgrades;
 
-    private Image weaponInUseImage;
+    private SpriteRenderer weaponInUseImage;
 
     private int weaponID;
-    private int upgradeID;
     
-    private int speed;
-    private int speedMult;
-    private int actualSpeed;
-    
-    private int weight;
-    private int weightMult;
-    private int actualWeight;
-
-    private bool weaponHasBeenUpgraded;
+    [SerializeField] private int speed;
+    [SerializeField] private int weight;
+    [SerializeField] private int impactDamage;
     
     void Awake()
     {
         weaponStates = GetComponent<WeaponStates>();
+        weaponStats = GetComponent<WeaponStats>();
         assetManager = GetComponent<AssetManager>();
+
+        weaponInUseImage = GameObject.FindGameObjectWithTag("WeaponInUse").GetComponent<SpriteRenderer>();
        
-        weaponID = weaponStates.ReturnChosenWeaponID();
+        weaponID = weaponStates.weaponID;
 
         SetUpWeaponsArray();
-        SetUpUpgradesArray();
         SetUpWeapon();
     }
 
@@ -50,40 +45,20 @@ public class SetActualWeapon : MonoBehaviour
         weapons = new AbstractWeapon[] { testWeapon1, testWeapon2, testWeapon3, testWeapon4 };
     }
 
-    // Function to construct the upgrades and put them into an array.
-    void SetUpUpgradesArray()
-    {
-        TestUpgrade1 testUpgrade1 = new TestUpgrade1("Speed Upgrade", "Increases the speed of your attacks", 0, 25, 2, 0, null);
-        TestUpgrade2 testUpgrade2 = new TestUpgrade2("Weigh Upgrade", "Increases the weight of your weapon", 1, 25, 0, 2, null);
-
-        upgrades = new AbstractUpgrades[] {testUpgrade1, testUpgrade2 };
-    }
-
     // Sets up the stats and the image of the object.
     void SetUpWeapon()
     {
         AbstractWeapon weaponsArray = weapons[weaponID];
-        AbstractUpgrades upgradesArray = upgrades[upgradeID];
-
-        weaponID = 0;
 
         weaponInUseImage.sprite = weaponsArray.GetWeaponImage();
 
-        speed = weaponsArray.GetSpeed(); 
-        speedMult = upgradesArray.GetUpgradedSpeed();
-        
-        weight = weaponsArray.GetWeight();
-        weightMult = upgradesArray.GetUpgradedWeight();
+        weaponStats.SetRequestFromActualWeapon(true);
+        weaponStats.CalculateStats();
 
-        if (weaponHasBeenUpgraded)
-        {
-            actualSpeed = speed * speedMult;
-            actualWeight = weight * weightMult;
-        }
-        else
-        {
-            actualSpeed = speed;
-            actualWeight = weight;
-        }
+        speed = weaponStats.GetSpeed();
+        weight = weaponStats.GetWeight();
+        impactDamage = weaponStats.GetImpactDamage();
     }
+
+    public int GetChosenID() { return weaponID; }
 }

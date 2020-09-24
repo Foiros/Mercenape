@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 // Created by Arttu Paldán 11.9.2020: This script will handle buying or unlocking component pieces.
 public class BuyWeapons : MonoBehaviour
@@ -174,5 +175,10 @@ public class BuyWeapons : MonoBehaviour
         }
 
         OpenWeapon();
+    }
+
+    public void ExitForge()
+    {
+        SceneManager.LoadScene("Bao_Enemy");
     }
 }

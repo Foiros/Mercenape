@@ -7,11 +7,18 @@ public class WeaponStats : MonoBehaviour
 {
     private UseUpgrades useUpgrades;
     private WeaponStates weaponStates;
+    private SetActualWeapon setActualWeapon;
     
     private AbstractWeapon[] weapons;
 
+    private bool requestCameFromUseUpgrades;
+    private bool requestCameFromSetActualWeapon;
+    
+    private int weaponID;
+
     public int amountOfSpeed;
     public int savedAmountOfSpeed;
+    
     public int amountOfWeight;
     public int savedAmountOfWeight;
 
@@ -28,6 +35,7 @@ public class WeaponStats : MonoBehaviour
     {
         useUpgrades = GetComponent<UseUpgrades>();
         weaponStates = GetComponent<WeaponStates>();
+        setActualWeapon = GetComponent<SetActualWeapon>();
 
         SetUpWeaponsArray();
     }
@@ -46,19 +54,28 @@ public class WeaponStats : MonoBehaviour
     // Public function that other scripts can call to handle the weapon stat calculations.
     public void CalculateStats()
     {
-        if(useUpgrades.weaponID == 0 && weaponStates.weapon1HasBeenUpgraded)
+        if (requestCameFromUseUpgrades)
+        {
+            weaponID = useUpgrades.GetWeaponID();
+        }
+        else if (requestCameFromSetActualWeapon)
+        {
+            weaponID = setActualWeapon.GetChosenID();
+        }
+        
+        if(weaponID == 0 && weaponStates.weapon1HasBeenUpgraded)
         {
             CalculateWithSavedStats();
         }
-        else if (useUpgrades.weaponID == 1 && weaponStates.weapon2HasBeenUpgraded)
+        else if (weaponID == 1 && weaponStates.weapon2HasBeenUpgraded)
         {
             CalculateWithSavedStats();
         }
-        else if (useUpgrades.weaponID == 2 && weaponStates.weapon3HasBeenUpgraded)
+        else if (weaponID == 2 && weaponStates.weapon3HasBeenUpgraded)
         {
             CalculateWithSavedStats();
         }
-        else if (useUpgrades.weaponID == 3 && weaponStates.weapon4HasBeenUpgraded)
+        else if (weaponID == 3 && weaponStates.weapon4HasBeenUpgraded)
         {
             CalculateWithSavedStats();
         }
@@ -71,7 +88,7 @@ public class WeaponStats : MonoBehaviour
     // Function for calculating stats in situations, where player has upgraded the weapon.
     void CalculateWithSavedStats()
     {
-        AbstractWeapon weaponsArray = weapons[useUpgrades.weaponID];
+        AbstractWeapon weaponsArray = weapons[weaponID];
 
         LoadSaveFiles();
 
@@ -94,7 +111,7 @@ public class WeaponStats : MonoBehaviour
     // Function for calculating weapon stats when changes have not been made or when player upgrades the weapon.
     void CalculateNormally()
     {
-        AbstractWeapon weaponsArray = weapons[useUpgrades.weaponID];
+        AbstractWeapon weaponsArray = weapons[weaponID];
 
         weaponWeight = weaponsArray.GetWeight();
         weaponSpeed = weaponsArray.GetSpeed();
@@ -179,7 +196,7 @@ public class WeaponStats : MonoBehaviour
     // Function for saving the amount of upgrades.
     public void SaveStats()
     {
-        switch (useUpgrades.weaponID)
+        switch (weaponID)
         {
             case 0:
                 weaponStates.savedWeightAmount1 = weaponStates.savedWeightAmount1 + amountOfWeight;
@@ -201,12 +218,14 @@ public class WeaponStats : MonoBehaviour
                 weaponStates.savedSpeedAmount4 = weaponStates.savedSpeedAmount4 + amountOfSpeed;
                 break;
         }
+
+        SaveManager.SaveWeapons(weaponStates);
     }
 
     // Function for loading the amount of upgrades. 
     void LoadSaveFiles()
     {
-        switch (useUpgrades.weaponID)
+        switch (weaponID)
         {
             case 0:
                 savedAmountOfWeight = weaponStates.savedWeightAmount1;
@@ -238,4 +257,7 @@ public class WeaponStats : MonoBehaviour
     public void SetWeight(int weight) { actualWeaponWeight = weight; }
     public void SetSpeed(int speed) { actualWeaponSpeed = speed; }
     public void SetImpactDamage(int damage) { actualWeaponImpactDamage = damage; }
+
+    public void SetRequestFromUpgrades(bool request) { requestCameFromUseUpgrades = request; }
+    public void SetRequestFromActualWeapon(bool request) { requestCameFromSetActualWeapon = request; }
 }
