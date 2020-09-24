@@ -7,11 +7,13 @@ public class EnemyStat : MonoBehaviour
 {
     public Slider sliderHealth;
     public GameObject healthBarUI;
-    private Quaternion rotationUI;
+    protected float xScaleUI;
 
-    public int currentHP;
-    public int maxHP;  
-    public int damage;
+    [HideInInspector] public int currentHP;   // Player is accessing this
+    [SerializeField] protected int maxHP;
+    [SerializeField] protected int damage;
+
+    protected Rigidbody2D rb;
 
     public GameObject karmaDrop;
     public int karmaDropQuantity;
@@ -20,29 +22,25 @@ public class EnemyStat : MonoBehaviour
 
     private void Awake()
     {
-        rotationUI = healthBarUI.transform.rotation;
+        xScaleUI = healthBarUI.transform.localScale.x;
     }
 
-    private void Start()
+    protected virtual void Start()
     {
         noKarmaInstantiate = karmaDropQuantity / karmaPickup.KarmaQuantity;
-       
-        var waveStat = GameObject.Find("EnemySpawner");
-        maxHP = maxHP + waveStat.GetComponent<EnemySpawnerScript>().wave.enemyIncreasedHP;
-        damage = damage + waveStat.GetComponent<EnemySpawnerScript>().wave.enemyIncreasedDamage;
-        currentHP = maxHP;
-        sliderHealth.value = CalculateHealth();
-    }
 
-    private void LateUpdate()
-    {
-        healthBarUI.transform.rotation = rotationUI;
+        rb = GetComponent<Rigidbody2D>();
+
+        var waveStat = GameObject.Find("EnemySpawner");
+        maxHP += waveStat.GetComponent<EnemySpawnerScript>().wave.enemyIncreasedHP;
+        damage += waveStat.GetComponent<EnemySpawnerScript>().wave.enemyIncreasedDamage;
+        currentHP = maxHP;       
+        
+        sliderHealth.value = CalculateHealth();
     }
 
     public void TakeDamage(int playerDamage)
     {
-
-
         currentHP -= playerDamage;      
         sliderHealth.value = CalculateHealth();
         StartCoroutine("HealthBarAnimation");

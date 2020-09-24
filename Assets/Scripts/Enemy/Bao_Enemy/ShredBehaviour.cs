@@ -2,34 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShredBehaviour : MonoBehaviour
+public class ShredBehaviour : EnemyStat
 {
-    [SerializeField] private float speed = 5f;
-    public int damage;
+    [SerializeField] private float runningSpeed = 10f;
+    private float speed;
     private int escapingStunCount = 0;
     [SerializeField] private float bleedChance;
+    [SerializeField] private int knockBackForce;
 
-    bool isStunning = false;    // For player is stunning
-    bool readyToSetStun = true;               // For stunning process
-
-    private Rigidbody2D rb;
+    bool isStunning = false;        // For player is stunning
+    bool readyToSetStun = true;     // For stunning process
+  
     private BoxCollider2D boxCollier;
     //private CapsuleCollider2D capsuleCollider;    // For detecting ground
-
-    private EnemyStat enemyStat;
 
     private GameObject player;
     private PlayerStat playerStat;
     private PlayerMovement playerMovement;
 
-    void Start()
+    protected override void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        base.Start();   // Start both EnemyStat and ShredBehaviour
+
+        speed = runningSpeed;
+       
         boxCollier = GetComponent<BoxCollider2D>();
         //capsuleCollider = GetComponent<CapsuleCollider2D>();
-
-        enemyStat = this.GetComponent<EnemyStat>();
-        damage = enemyStat.damage;
 
         player = GameObject.FindGameObjectWithTag("Player");
         playerStat = player.GetComponent<PlayerStat>();
@@ -37,31 +35,32 @@ public class ShredBehaviour : MonoBehaviour
 
     }
 
-    void Update()
+    private void Update()
     {
-        // Check direction facing and adjust to velocity according to that
-        if (IsFacingRight())
-        {
-            rb.velocity = new Vector2(speed, 0f);
-        }
-        else
-        {
-            rb.velocity = new Vector2(-speed, 0f);
-        }
-
         // Check if is stunning
         StunningProcess();
 
+        // Temporary cheat code to kill all ememy
         if (Input.GetKeyDown(KeyCode.L))
         {
             Destroy(gameObject);
         }
+    }
 
-
-
-        
-
-
+    // Movement
+    void FixedUpdate()
+    {
+        // Check direction facing and adjust to velocity according to that, also rotate Health bar
+        if (IsFacingRight())
+        {
+            rb.velocity = new Vector2(speed, 0f);
+            healthBarUI.transform.localScale = new Vector2(xScaleUI, healthBarUI.transform.localScale.y);
+        }
+        else
+        {
+            rb.velocity = new Vector2(-speed, 0f);
+            healthBarUI.transform.localScale = new Vector2(-xScaleUI, healthBarUI.transform.localScale.y);
+        }
     }
 
     // Hit player
@@ -69,43 +68,22 @@ public class ShredBehaviour : MonoBehaviour
     {
         if (col.gameObject.CompareTag("Player"))
         {
-            if (!playerMovement.isPlayerBlock) // if player is not blocking attack player normal
+            if (!playerMovement.isPlayerBlock) // if player is not blocking, attack player normal
             {
-                StartCoroutine("Attacking");
-                playerStat.PlayerTakeDamage(damage);
-                escapingStunCount = 0;
-                isStunning = true;
-
-                if (Random.Range(0f, 100f) < bleedChance)
-                {
-                    StopCoroutine(ApplyBleedDamage(1, 3, 2));
-                    StartCoroutine(ApplyBleedDamage(1, 3, 2));
-                }
+                ShredAttack();
             }
             else // when player is blocking
             {
                 if (IsFacingRight() == playerMovement.FaceRight) // if hit player from behind aka both face same direction then atk player normally
                 {
-                    StartCoroutine("Attacking");
-                    playerStat.PlayerTakeDamage(damage);
-                    escapingStunCount = 0;
-                    isStunning = true;
-
-                    if (Random.Range(0f, 100f) < bleedChance)
-                    {
-                        StopCoroutine(ApplyBleedDamage(1, 3, 2));
-                        StartCoroutine(ApplyBleedDamage(1, 3, 2));
-                    }
-                    else
-                    {
-
-                    }
-
+                    ShredAttack();
                 }
-            }
-            
-           
-            
+                else
+                {
+                    StopCoroutine("ImmobilizeShred");
+                    StartCoroutine("ImmobilizeShred");
+                }
+            }           
         }
     }
    
@@ -114,7 +92,7 @@ public class ShredBehaviour : MonoBehaviour
     {
         if (!collision.gameObject.CompareTag("Player")) // Fix a bug that Shred stick to player when colliding
         {
-            transform.localScale = new Vector2(-(Mathf.Sign(rb.velocity.x)) * 0.2f, 0.2f);
+            transform.localScale = new Vector2(-(Mathf.Sign(rb.velocity.x)) * 0.3f, 0.3f);
         }
     }
 
@@ -124,19 +102,36 @@ public class ShredBehaviour : MonoBehaviour
         return transform.localScale.x > 0;
     }
 
+    // When Shred attacks and applies damage
+    private void ShredAttack()
+    {
+        StartCoroutine("Attacking");
+        playerStat.PlayerTakeDamage(damage);
+        escapingStunCount = 0;
+        isStunning = true;
+
+        if (Random.Range(0f, 100f) < bleedChance)
+        {
+            StopCoroutine(ApplyBleedDamage(1, 3, 2));
+            StartCoroutine(ApplyBleedDamage(1, 3, 2));
+        }
+    }
+
+    // Make sure Shred pass through player after attaking
     IEnumerator Attacking()
     {
         // Pass through player
         rb.bodyType = RigidbodyType2D.Kinematic;
         boxCollier.isTrigger = true;      
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.0f);
 
         // Return to original states
         boxCollier.isTrigger = false;
         rb.bodyType = RigidbodyType2D.Dynamic;       
     }
 
+    // Do bleed damage (per sec for now)
     IEnumerator ApplyBleedDamage(float damageDuration, int damageCount, int damageAmount)
     {
         int currentCount = 0;
@@ -149,11 +144,12 @@ public class ShredBehaviour : MonoBehaviour
         }       
     }
 
+    // Set player movement when being knocked down
     private void StunningProcess()
     {
         if (!isStunning) { return; }
 
-        if (readyToSetStun) // Make sure just to set this one time (for performance)
+        if (readyToSetStun) // Make sure just to set this one time (for performance and bugs fixing)
         {
             readyToSetStun = false;
 
@@ -181,7 +177,19 @@ public class ShredBehaviour : MonoBehaviour
         }
     }
 
-   
+    IEnumerator ImmobilizeShred()
+    {
+        player.GetComponent<Rigidbody2D>().AddForce(new Vector2(Mathf.Sign(transform.localScale.x) * knockBackForce, 0));
+        rb.AddForce(new Vector2(-Mathf.Sign(transform.localScale.x) * knockBackForce, 300));
+
+        speed = 0;
+        this.GetComponent<SpriteRenderer>().color = Color.red;
+
+        yield return new WaitForSeconds(1f);
+
+        speed = runningSpeed;
+        this.GetComponent<SpriteRenderer>().color = Color.white;
+    }
 }
 
 

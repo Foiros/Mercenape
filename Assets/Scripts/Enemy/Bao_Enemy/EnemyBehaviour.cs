@@ -50,7 +50,7 @@ public class EnemyBehaviour : MonoBehaviour
 
         rb = this.GetComponent<Rigidbody2D>();
         enemyStat = this.GetComponent<EnemyStat>();
-        enemyDamage = enemyStat.damage;
+        //enemyDamage = enemyStat.damage;
 
         timeBetweenAttack = delayTimeBetweenAttack;
     }
