@@ -147,8 +147,6 @@ MonoBehaviour:
   Karma: {fileID: 450763958401993869}
   KarmaQuantity: 10
   enemyLoot: {fileID: 1116709294, guid: 6bf7f04fc1ba8474f836163d7d64fe7d, type: 3}
-  playerCurrency: {fileID: 8174987084509659845, guid: 94feb3077caf03b44935f25901d89eca,
-    type: 3}
 --- !u!114 &1084936500
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,4 +159,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c78a86cec1db354eaace254b92524f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  KarmaSpeed: 3
+  speed: 10

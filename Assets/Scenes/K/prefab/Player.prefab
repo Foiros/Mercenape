@@ -202,7 +202,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &8174987084509659843
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -252,10 +252,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   PlayerUnderPos: {fileID: 128901979}
+  FaceRight: 1
   PlayerFrontPos: {fileID: 1908770295}
   PlayerBehindPos: {fileID: 1508194159}
   CheckRadius: 0.1
   PlayerClimbSpeed: 10
+  isPlayerBlock: 0
 --- !u!114 &8174987084509659845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -284,7 +286,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45adbb9c58f04254782718d9c1916128, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCurrency: {fileID: 8174987084509659845}
   player: {fileID: 8174987084509659711}
   PlayerHP: 100
   PlayerMaxHP: 100

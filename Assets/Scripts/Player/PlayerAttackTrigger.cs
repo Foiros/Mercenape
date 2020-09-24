@@ -14,14 +14,15 @@ public class PlayerAttackTrigger : MonoBehaviour
 
     public Animator PlayerAnimator;
     private bool IsPlayerAttack = false;
-    
+
+    PlayerMovement playerMovement;
 
     // Start is called before the first frame update
     void Start()
     {
         PlayerAnimator = gameObject.GetComponent<Animator>();
         IsPlayerAttack = false;
-
+        playerMovement = gameObject.GetComponent<PlayerMovement>();
     }
 
 
@@ -29,17 +30,24 @@ public class PlayerAttackTrigger : MonoBehaviour
     void Update()
     {
         PlayerAnimator.SetBool("IsPlayerAttack", IsPlayerAttack);
+        CheckMouseInput();
     }
     void FixedUpdate()
     {
-        PlayerAttack();
+        if (!playerMovement.isPlayerBlock)
+        { PlayerAttack(); }
  
     }
 
-
+    bool CheckMouseInput()
+        
+    {
+        return Input.GetKey(KeyCode.Mouse0);
+       
+    }
     public void PlayerAttack()
     {
-        if(Input.GetKey(KeyCode.Mouse0)&& !IsPlayerAttack)
+        if(CheckMouseInput()&& !IsPlayerAttack)
         {
             IsPlayerAttack = true;
             TimeDelayAttack = PlayerDelayAttackTime;

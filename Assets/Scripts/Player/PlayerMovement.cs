@@ -14,11 +14,12 @@ public class PlayerMovement : MonoBehaviour
 
     private Animator PlayerAnimator;
     private Rigidbody2D PlayerRigid2d;
-    
-    
+
+    float inputH; 
     
     bool IsGrounded;
     public Transform PlayerUnderPos;
+    public Transform PlayerAbovePos;
     public bool FaceRight = true;
     private bool PlayerDoubleJump;
 
@@ -44,15 +45,54 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        IsGrounded = Physics2D.OverlapCircle(PlayerUnderPos.position, CheckRadius, groundlayermask);
+        CheckPlayerGrounded();
+        CheckPlayerGrabWall();
+        CheckPlayerBlock();
+        InputHorrizontal();
+        FlipPlayer();
+
+        PlayerRigid2d.constraints = RigidbodyConstraints2D.FreezeRotation;
+        if (!isPlayerBlock) { PlayerJump(); }
+      
+       
+        SetPlayerAnimator();// could change to call animation if needed
+
         
+    }
+
+    void FixedUpdate()
+    {
+
+        if (!isPlayerBlock)// when player is not blocking they can move
+        {
+            PlayerMove();
+            PlayerClimb();
+            PlayerRigid2d.constraints = RigidbodyConstraints2D.FreezeRotation;
+            
+        }
+
+    }
+
+    void CheckPlayerGrounded()
+    {
+        IsGrounded = Physics2D.OverlapCircle(PlayerUnderPos.position, CheckRadius, groundlayermask);
+    }
+
+
+    void CheckPlayerGrabWall()
+    {
         // to check if player collide with the climable surface both front and behind 
         IsTouchingFront = Physics2D.OverlapCircle(PlayerFrontPos.position, CheckRadius, walllayermask);
         IsTouchingBehind = Physics2D.OverlapCircle(PlayerBehindPos.position, CheckRadius, walllayermask);
-        if ((IsTouchingFront == true )|| IsTouchingBehind == true)
-        {IsWallGrab = true;}
+        
+        if ((IsTouchingFront == true) || IsTouchingBehind == true)
+        { IsWallGrab = true; }
         else { IsWallGrab = false; }
+    }
 
+
+    void CheckPlayerBlock()
+    {
         // check if player click right mouse 
         if (Input.GetMouseButton(1))
         {
@@ -62,66 +102,58 @@ public class PlayerMovement : MonoBehaviour
         {
             isPlayerBlock = false;
         }
-
-        SetPlayerAnimator();// should have a script for animtor 
-
-
-        PlayerRigid2d.constraints = RigidbodyConstraints2D.FreezeRotation;
-
-        PlayerMove();
-        PlayerJump();
-        FlipPlayer();
-        PlayerClimb();
-
     }
 
-    void FixedUpdate()
+    void InputHorrizontal()
     {
-
-        
+        inputH = Input.GetAxis("Horizontal");
+        Debug.Log(inputH);
 
     }
+   
 
     void PlayerClimb()
     {
        
         if(IsWallGrab==true)
         {
-            if (Input.GetKey(KeyCode.E)) {
-                PlayerRigid2d.gravityScale = 0;
-                PlayerRigid2d.MovePosition((Vector2)transform.position + Vector2.up * PlayerClimbSpeed * Time.deltaTime);
-                
-                if (Input.GetKey(KeyCode.A))
-                {
-                    PlayerRigid2d.MovePosition((Vector2)transform.position + Vector2.left * PlayerClimbSpeed * Time.deltaTime);
-                }
-                if (Input.GetKey(KeyCode.D))
-                {
-                    PlayerRigid2d.MovePosition((Vector2)transform.position + Vector2.right * PlayerClimbSpeed * Time.deltaTime);
-                }
-            }
             
 
-           else if (!Input.GetKey(KeyCode.E))
+            if (Input.GetKey(KeyCode.E))
+            {
+                PlayerRigid2d.gravityScale=0;
+
+                PlayerRigid2d.MovePosition((Vector2)transform.position + Vector2.up * PlayerClimbSpeed * Time.deltaTime+Vector2.right*inputH*PlayerSpeed*Time.deltaTime);
+
+               
+            }
+            else
             {
                 PlayerRigid2d.gravityScale = 3;
-                
-                if (Input.GetKey(KeyCode.A))
-                {
-                    PlayerRigid2d.gravityScale = 3;
-                    PlayerRigid2d.MovePosition((Vector2)transform.position + Vector2.left * PlayerSpeed * Time.deltaTime);
-                }
-                if (Input.GetKey(KeyCode.D))
-                {
-                    PlayerRigid2d.gravityScale = 3;
-                    PlayerRigid2d.MovePosition((Vector2)transform.position + Vector2.right * PlayerSpeed * Time.deltaTime);
-                }
+            }
+
+            if (Physics2D.OverlapCircle(PlayerUnderPos.position, CheckRadius, walllayermask) == true && (Physics2D.OverlapCircle(PlayerAbovePos.position, CheckRadius, walllayermask) == false))
+            {
+                PlayerRigid2d.gravityScale = 0;
+                PlayerRigid2d.velocity = new Vector2(PlayerRigid2d.velocity.x, 0);
+
+            }
+            else
+            {
+                PlayerRigid2d.gravityScale = 3;
+
             }
 
         }
-        else { PlayerRigid2d.gravityScale = 3; }
-        
-        
+        else
+        {
+            PlayerRigid2d.gravityScale = 3;
+        }
+
+       
+
+
+
 
     }
 
@@ -149,7 +181,7 @@ public class PlayerMovement : MonoBehaviour
                     else
                     {//No key is pressed
                         PlayerRigid2d.velocity = new Vector2(0, PlayerRigid2d.velocity.y);
-                        PlayerRigid2d.constraints = RigidbodyConstraints2D.FreezePositionX;
+                      
 
                     }
                 }
@@ -174,7 +206,6 @@ public class PlayerMovement : MonoBehaviour
                     else
                     {//No key is pressed
                         PlayerRigid2d.velocity = new Vector2(0, PlayerRigid2d.velocity.y);
-                        PlayerRigid2d.constraints = RigidbodyConstraints2D.FreezePositionX;
 
                     
                 }
@@ -188,7 +219,7 @@ public class PlayerMovement : MonoBehaviour
     private void PlayerJump() // both single and double 
         // side note could handle jump power by * with the character height. at the moment the vector in middle of the character so 7pixel long
     {
-        if (IsGrounded|| IsWallGrab)
+        if (IsGrounded || IsWallGrab)
         {
             PlayerDoubleJump = true;
         }
@@ -235,8 +266,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void FlipPlayer()
     {
-        if (Input.GetKey(KeyCode.A)  &&  FaceRight == true) { Flip(); }
-        else if (Input.GetKey(KeyCode.D) && FaceRight == false) { Flip(); }
+        if (inputH <0  &&  FaceRight == true) { Flip(); }
+        else if (inputH > 0 && FaceRight == false) { Flip(); }
         
     }
 

@@ -15,6 +15,8 @@ public class PlayerHealthBar : MonoBehaviour
 
     private void Start()
     {
+        
+        
         playerStat = GetComponent<PlayerStat>();
         playerStat = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStat>();
 
