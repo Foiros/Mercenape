@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -7857217924322281420}
   m_Layer: 0
   m_Name: UpgradeDrop
-  m_TagString: Untagged
+  m_TagString: Loot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -91,7 +91,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6106106539920529169}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
@@ -146,4 +146,4 @@ MonoBehaviour:
   upgradeDrop: {fileID: 6106106539920529169}
   groundlayermask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256

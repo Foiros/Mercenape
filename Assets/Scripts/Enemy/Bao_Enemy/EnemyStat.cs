@@ -27,10 +27,7 @@ public class EnemyStat : MonoBehaviour
     protected PlayerStat playerStat;
     protected PlayerMovement playerMovement;
 
-    public GameObject karmaDrop;
-    public int karmaDropQuantity;
-    int noKarmaInstantiate;
-    [SerializeField] private KarmaPickup karmaPickup;
+    private EnemyLootDrop enemyLoot;
 
     private void Awake()
     {
@@ -38,9 +35,7 @@ public class EnemyStat : MonoBehaviour
     }
 
     protected virtual void Start()
-    {
-        noKarmaInstantiate = karmaDropQuantity / karmaPickup.KarmaQuantity;
-
+    {      
         rb = GetComponent<Rigidbody2D>();
         boxCollier = GetComponent<BoxCollider2D>();
 
@@ -55,6 +50,8 @@ public class EnemyStat : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         playerStat = player.GetComponent<PlayerStat>();
         playerMovement = player.GetComponent<PlayerMovement>();
+
+        enemyLoot = GetComponent<EnemyLootDrop>();
     }
 
     // Movement
@@ -81,7 +78,7 @@ public class EnemyStat : MonoBehaviour
     protected void OnTriggerExit2D(Collider2D collision)
     {
         // Fix a bug that Shred stick to player when colliding
-        //if (collision.gameObject.CompareTag("Loot")) { return; }
+        if (collision.gameObject.CompareTag("Loot")) { return; }
 
         if (!collision.gameObject.CompareTag("Player"))
         {
@@ -144,10 +141,8 @@ public class EnemyStat : MonoBehaviour
         {
             Destroy(gameObject, 0);
 
-            for (int i = 0; i < noKarmaInstantiate; i++) 
-            { 
-                Instantiate(karmaDrop, (Vector2)transform.position + new Vector2(Random.Range(-2f, 2f), Random.Range(-2f, 2f)), Quaternion.identity);
-            }
+            enemyLoot.DropAll();
+
         }
     }
 

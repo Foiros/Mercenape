@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class EnemyLootDrop : MonoBehaviour
 {
-    public GameObject player;
+    private GameObject player;
     public GameObject enemy;
     public GameObject KarmaDrop;
     int noKarmaInstantiate;
     public int KarmaDropQuantity;// to make it dramatic but can also make 1 var  
-    public KarmaPickup karmaPickup;
+    private KarmaPickup karmaPickup;
     
     public GameObject goldDrop;
     
@@ -22,6 +22,7 @@ public class EnemyLootDrop : MonoBehaviour
     void Start()
     {
         player = GameObject.Find("Player");
+        karmaPickup = KarmaDrop.GetComponent<KarmaPickup>();
     }
     private void Update()
     {
@@ -58,18 +59,24 @@ public class EnemyLootDrop : MonoBehaviour
 
     public void InstantiateHealthOrb()
     {
-        int randomSpawn = Random.Range(0, 100);
+        int randomSpawn = Random.Range(0, 101);
         if (randomSpawn < healthChance) { Instantiate(healthDrop, (Vector2)transform.position + new Vector2(Random.Range(-2f, 2f), Random.Range(0f, 10f)), Quaternion.identity); }
        
 
     }
     public void InstantiateUpgrade()
     {
-        int randomSpawn = Random.Range(0, 100);
+        int randomSpawn = Random.Range(0, 101);
         if (randomSpawn < upgradeChance)
         { Instantiate(upgradeDrop, (Vector2)transform.position + new Vector2(Random.Range(-2f, 2f), Random.Range(0f, 10f)), Quaternion.identity); }
     }
 
-
+    public void DropAll()
+    {
+        InstantiateGoldDrop();
+        InstantiateKarmaDrop();
+        InstantiateHealthOrb();
+        InstantiateUpgrade();
+    }
 
     }

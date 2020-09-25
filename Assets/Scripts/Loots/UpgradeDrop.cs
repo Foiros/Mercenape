@@ -7,13 +7,13 @@ public class UpgradeDrop : MonoBehaviour
     [SerializeField] GameObject upgradeDrop;
     [SerializeField] LayerMask groundlayermask;
     private PlayerCurrency playerCurrency;
-    CircleCollider2D collider2D;
+    //CircleCollider2D collider2D;
 
     void Start()
     {
         playerCurrency = GetComponent<PlayerCurrency>();
         playerCurrency = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCurrency>();
-        collider2D = GetComponent<CircleCollider2D>();
+        //collider2D = GetComponent<CircleCollider2D>();
 
     }
 
@@ -26,11 +26,12 @@ public class UpgradeDrop : MonoBehaviour
             transform.Translate(Vector2.down * 3 * Time.deltaTime);
         }
     }
+    
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.name == "Player")
         {
-
+            print("Picking");
             playerCurrency.playerUpgrade++;
             Destroy(gameObject);
         }

@@ -28,6 +28,7 @@ TagManager:
   - ground
   - WeaponInUse
   - GameManager
+  - Loot
   layers:
   - Default
   - TransparentFX
