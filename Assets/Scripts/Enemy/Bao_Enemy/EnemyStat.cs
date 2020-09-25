@@ -45,8 +45,8 @@ public class EnemyStat : MonoBehaviour
         boxCollier = GetComponent<BoxCollider2D>();
 
         var waveStat = GameObject.Find("EnemySpawner");
-        //maxHP += waveStat.GetComponent<EnemySpawnerScript>().wave.enemyIncreasedHP;
-        //damage += waveStat.GetComponent<EnemySpawnerScript>().wave.enemyIncreasedDamage;
+        maxHP += waveStat.GetComponent<EnemySpawnerScript>().wave.enemyIncreasedHP;
+        damage += waveStat.GetComponent<EnemySpawnerScript>().wave.enemyIncreasedDamage;
         currentHP = maxHP;
         speed = runningSpeed;
 
@@ -94,7 +94,8 @@ public class EnemyStat : MonoBehaviour
     // Take damage from player
     public void TakeDamage(int playerDamage)
     {
-        currentHP -= playerDamage;   
+        currentHP -= playerDamage;
+        print("Current HP: " + currentHP);
         
         sliderHealth.value = CalculateHealth();
         StartCoroutine("HealthBarAnimation");

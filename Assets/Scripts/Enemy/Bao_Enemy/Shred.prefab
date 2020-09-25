@@ -1,5 +1,32 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &1798288393630338724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3968059661251793685}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e540a446a00712f45b2d53e5aaeec4d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 8174987084509659711, guid: 94feb3077caf03b44935f25901d89eca, type: 3}
+  enemy: {fileID: 7237859923948144618, guid: d561ebe5499b33446a3ba906ed062674, type: 3}
+  KarmaDrop: {fileID: 450763958401993869, guid: cc456ea0021f3334091f822ddba309f2,
+    type: 3}
+  KarmaDropQuantity: 30
+  karmaPickup: {fileID: 450763958401993868, guid: cc456ea0021f3334091f822ddba309f2,
+    type: 3}
+  goldDrop: {fileID: 5243515410850218913, guid: d65fd8bc710b8774bafdd634afade683,
+    type: 3}
+  healthDrop: {fileID: 1894584535332837582, guid: fd655d8535685a043a4244e1d452097f,
+    type: 3}
+  healthChance: 66
+  upgradeDrop: {fileID: 2829983595303207912, guid: 797e439fd0ca8be4cb8e954e454a4c98,
+    type: 3}
+  upgradeChance: 10
 --- !u!114 &6624577320892276814
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12,10 +39,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 363460aebb4388e4c8c6812c971fcf66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sliderHealth: {fileID: 2028682061959990348, guid: d561ebe5499b33446a3ba906ed062674,
-    type: 3}
-  healthBarUI: {fileID: 6553881401439273509, guid: d561ebe5499b33446a3ba906ed062674,
-    type: 3}
+  sliderHealth: {fileID: 5711753906642114739}
+  healthBarUI: {fileID: 691155298846283482}
   currentHP: 0
   maxHP: 20
   damage: 5
@@ -38,6 +63,31 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2028682061959990348, guid: d561ebe5499b33446a3ba906ed062674,
+        type: 3}
+      propertyPath: m_Value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3597040867487646934, guid: d561ebe5499b33446a3ba906ed062674,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3597040867487646934, guid: d561ebe5499b33446a3ba906ed062674,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3597040867487646934, guid: d561ebe5499b33446a3ba906ed062674,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6553881401439273509, guid: d561ebe5499b33446a3ba906ed062674,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7237859923948144612, guid: d561ebe5499b33446a3ba906ed062674,
         type: 3}
@@ -114,6 +164,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Shred
       objectReference: {fileID: 0}
+    - target: {fileID: 8590214894148000557, guid: d561ebe5499b33446a3ba906ed062674,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: -5133555339526895764, guid: d561ebe5499b33446a3ba906ed062674, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: d561ebe5499b33446a3ba906ed062674, type: 3}
@@ -123,3 +178,21 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 6008763409599780095}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &691155298846283482 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6553881401439273509, guid: d561ebe5499b33446a3ba906ed062674,
+    type: 3}
+  m_PrefabInstance: {fileID: 6008763409599780095}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5711753906642114739 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2028682061959990348, guid: d561ebe5499b33446a3ba906ed062674,
+    type: 3}
+  m_PrefabInstance: {fileID: 6008763409599780095}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
