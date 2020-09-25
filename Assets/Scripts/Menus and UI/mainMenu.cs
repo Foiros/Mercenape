@@ -174,4 +174,9 @@ public class mainMenu : MonoBehaviour
         Debug.Log("Closing game...");
         Application.Quit();
     }
+
+    public void WipeMemory()
+    {
+        SaveManager.DeleteWeapons();
+    }
 }
