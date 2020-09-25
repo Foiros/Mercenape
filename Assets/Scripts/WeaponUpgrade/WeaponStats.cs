@@ -8,6 +8,7 @@ public class WeaponStats : MonoBehaviour
     private UseUpgrades useUpgrades;
     private WeaponStates weaponStates;
     private SetActualWeapon setActualWeapon;
+    private PlayerCurrency playerCurrency;
     
     private AbstractWeapon[] weapons;
 
@@ -36,6 +37,7 @@ public class WeaponStats : MonoBehaviour
         useUpgrades = GetComponent<UseUpgrades>();
         weaponStates = GetComponent<WeaponStates>();
         setActualWeapon = GetComponent<SetActualWeapon>();
+        playerCurrency = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCurrency>();
 
         SetUpWeaponsArray();
     }

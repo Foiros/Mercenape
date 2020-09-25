@@ -46,6 +46,46 @@ public static class SaveManager
         string weaponsPath = Application.persistentDataPath + "/Weapons.data";
         File.Delete(weaponsPath);
     }
+
+    // Function for saving the data we want to save. It uses the binary formatter to save data. 
+    public static void SaveCurrency(PlayerCurrency playerCurrency)
+    {
+        BinaryFormatter formatter = new BinaryFormatter();
+        string currencyPath = Application.persistentDataPath + "/Currency.data";
+        FileStream stream = new FileStream(currencyPath, FileMode.Create);
+
+        CurrencyData currencyData = new CurrencyData(playerCurrency);
+
+        formatter.Serialize(stream, currencyData);
+        stream.Close();
+    }
+
+    // Load function.
+    public static CurrencyData LoadCurrency()
+    {
+        string currencyPath = Application.persistentDataPath + "/Currency.data";
+        if (File.Exists(currencyPath))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(currencyPath, FileMode.Open);
+
+            CurrencyData currencyData = formatter.Deserialize(stream) as CurrencyData;
+            stream.Close();
+
+            return currencyData;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    // Delete data function. 
+    public static void DeleteCurrency()
+    {
+        string currencyPath = Application.persistentDataPath + "/Currency.data";
+        File.Delete(currencyPath);
+    }
 }
 
 // Save data class, which contains the infor we want to save. 
@@ -97,5 +137,20 @@ public class WeaponsData
         amountOfSpeed2 = weaponStates.savedSpeedAmount2;
         amountOfSpeed3 = weaponStates.savedSpeedAmount3;
         amountOfSpeed4 = weaponStates.savedSpeedAmount4;
+    }
+}
+
+[System.Serializable]
+public class CurrencyData
+{
+    public int playerMoney;
+    public int playerKarma;
+    public int speedUpgrades;
+
+    public CurrencyData(PlayerCurrency playerCurrency)
+    {
+        playerMoney = playerCurrency.playerGold;
+        playerKarma = playerCurrency.playerKarma;
+        speedUpgrades = playerCurrency.playerUpgrade;
     }
 }

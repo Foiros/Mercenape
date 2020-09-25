@@ -23,6 +23,6 @@ public class KarmaCount : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        karmaCount.text = playerCurrency.PlayerKarma.ToString();
+        karmaCount.text = playerCurrency.playerKarma.ToString();
     }
 }

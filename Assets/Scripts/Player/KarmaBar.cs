@@ -33,12 +33,12 @@ public class KarmaBar : MonoBehaviour
     void setMaxValue()
     {
         slider.maxValue = lvMaxKarma;
-        slider.value = playerCurrency.PlayerKarma;
+        slider.value = playerCurrency.playerKarma;
 
     }
 
     void setValue()
     {
-        slider.value = playerCurrency.PlayerKarma;
+        slider.value = playerCurrency.playerKarma;
     }
 }

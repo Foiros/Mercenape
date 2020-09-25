@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 // Created by Arttu Paldán 17.9.2020: A script that handles the ownership issues of this system.
 public class WeaponStates: MonoBehaviour
 {
+    private PlayerCurrency playerCurrency;
+
     public int weaponID;
 
     public bool weapon1HasBeenUpgraded;
@@ -29,6 +32,8 @@ public class WeaponStates: MonoBehaviour
 
     void Awake()
     {
+        playerCurrency = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCurrency>();
+
         LoadWeaponData();
     }
 
@@ -86,6 +91,7 @@ public class WeaponStates: MonoBehaviour
         SaveManager.SaveWeapons(this);
     }
 
+    // Function for loading necessary data.
     void LoadWeaponData()
     {
         WeaponsData data = SaveManager.LoadWeapons();

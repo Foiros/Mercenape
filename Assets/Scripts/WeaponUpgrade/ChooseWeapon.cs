@@ -9,6 +9,7 @@ public class ChooseWeapon : MonoBehaviour
 {
     private WeaponStates weaponStates;
     private AssetManager assetManager;
+    private PlayerCurrency playerCurrency;
    
     private AbstractWeapon[] weapons;
 
@@ -23,6 +24,7 @@ public class ChooseWeapon : MonoBehaviour
     {
         weaponStates = GetComponent<WeaponStates>();
         assetManager = GetComponent<AssetManager>();
+        playerCurrency = GetComponent<PlayerCurrency>();
 
         SetUpWeaponsArray();
     }

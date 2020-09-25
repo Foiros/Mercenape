@@ -11,6 +11,7 @@ public class UseUpgrades : MonoBehaviour
     private AssetManager assetManager;
     private Money money;
     private WeaponStats weaponStats;
+    private PlayerCurrency playerCurrency;
     
     private AbstractWeapon[] weapons;
     private AbstractUpgrades[] upgrades;
@@ -30,7 +31,8 @@ public class UseUpgrades : MonoBehaviour
     private Text weaponImpactDamageText;
     private Text weaponCostText;
     private Image weaponImage;
-   
+
+    private Text upgradeHolderUpgradeScreen;
     private Text upgradeName;
     private Text upgradeDescription;
     private Image upgradeImage;
@@ -46,6 +48,7 @@ public class UseUpgrades : MonoBehaviour
         assetManager = GetComponent<AssetManager>();
         money = GetComponent<Money>();
         weaponStats = GetComponent<WeaponStats>();
+        playerCurrency = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCurrency>();
         
         weaponName = GameObject.FindGameObjectWithTag("UpgradeScreenWeaponName").GetComponent<Text>();
         weaponDescription = GameObject.FindGameObjectWithTag("UpgradeScreenWeaponDescription").GetComponent<Text>();
@@ -58,6 +61,7 @@ public class UseUpgrades : MonoBehaviour
         upgradeName = GameObject.FindGameObjectWithTag("UpgradeName").GetComponent<Text>();
         upgradeDescription = GameObject.FindGameObjectWithTag("UpgradeDescription").GetComponent<Text>();
         upgradeImage = GameObject.FindGameObjectWithTag("UpgradeImage").GetComponent<Image>();
+        upgradeHolderUpgradeScreen = GameObject.FindGameObjectWithTag("UpgradesUpgradeScreen").GetComponentInChildren<Text>();
 
         upgradeMenu.SetActive(false);
         upgradeComponentScreen.SetActive(false);
@@ -125,6 +129,8 @@ public class UseUpgrades : MonoBehaviour
         weaponDescription.text = weaponsArray.GetDescription();
         weaponCostText.text = "Upgrade Cost: " + upgradeCost;
         weaponImage.sprite = weaponsArray.GetWeaponImage();
+
+        upgradeHolderUpgradeScreen.text = "Speed Upgrades: " + playerCurrency.playerUpgrade;
         
         for(int i = 0; i < upgradeImagesHolder.Length; i++)
         {
@@ -189,40 +195,47 @@ public class UseUpgrades : MonoBehaviour
     {
         arrowButtonName = EventSystem.current.currentSelectedGameObject.name;
 
-        if (arrowButtonName == "Arrow1")
+        if (arrowButtonName == "Arrow1" && playerCurrency.playerUpgrade > 0)
         {
             upgradeID = upgrades[0].GetID();
 
             weaponStats.amountOfSpeed++;
             amountTexts[0].text = "" + weaponStats.amountOfSpeed;
             upgradeCost = upgrades[upgradeID].GetUpgradeCost() * weaponStats.amountOfSpeed;
+            playerCurrency.playerUpgrade--;
         }
-        else if (arrowButtonName == "Arrow2")
+        else if (arrowButtonName == "Arrow2" && weaponStats.amountOfSpeed > 0)
         {
             upgradeID = upgrades[0].GetID();
 
             weaponStats.amountOfSpeed--;
             amountTexts[0].text = "" + weaponStats.amountOfSpeed;
             upgradeCost = upgrades[upgradeID].GetUpgradeCost() * weaponStats.amountOfSpeed;
+            playerCurrency.playerUpgrade++;
         }
-        else if (arrowButtonName == "Arrow3")
+        else if (arrowButtonName == "Arrow3" && playerCurrency.playerUpgrade > 0)
         {
             upgradeID = upgrades[1].GetID();
 
             weaponStats.amountOfWeight++;
             amountTexts[1].text = "" + weaponStats.amountOfWeight;
             upgradeCost = upgrades[upgradeID].GetUpgradeCost() * weaponStats.amountOfWeight;
+            playerCurrency.playerUpgrade--;
         }
-        else if (arrowButtonName == "Arrow4")
+        else if (arrowButtonName == "Arrow4" && weaponStats.amountOfWeight > 0)
         {
             upgradeID = upgrades[1].GetID();
 
             weaponStats.amountOfWeight--;
             amountTexts[1].text = "" + weaponStats.amountOfWeight;
             upgradeCost = upgrades[upgradeID].GetUpgradeCost() * weaponStats.amountOfWeight;
+            playerCurrency.playerUpgrade++;
         }
 
         weaponCostText.text = "Upgrade Cost: " + upgradeCost;
+
+        money.ChangeUpgradeAmount();
+        upgradeHolderUpgradeScreen.text = "Speed Upgrades: " + playerCurrency.playerUpgrade;
 
         UpdateWeaponStats();
     }
@@ -266,6 +279,8 @@ public class UseUpgrades : MonoBehaviour
             }
 
             weaponStates.WhatWeaponWasUpgraded(weaponID);
+
+            SaveManager.SaveCurrency(playerCurrency);
         }
     }
 
