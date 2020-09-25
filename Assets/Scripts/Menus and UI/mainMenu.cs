@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 
+// Arttu paldán edited 25.9.2020: 
 public class mainMenu : MonoBehaviour
 {
 
@@ -83,8 +84,6 @@ public class mainMenu : MonoBehaviour
                 isPaused = true;
                 Time.timeScale = 0;
                 currentPanel = pausePanel;
-                
-
             }
             else
             {
@@ -166,7 +165,7 @@ public class mainMenu : MonoBehaviour
     public void startGame()
     {
         Debug.Log("Starting game");
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("Bao_Enemy");
         //Load game Scene
     }
 

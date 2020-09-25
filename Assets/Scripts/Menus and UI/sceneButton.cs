@@ -10,6 +10,7 @@ public class sceneButton : MonoBehaviour
     // Start is called before the first frame update
     public void changeScene()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene(Scenetoload.name);
     }
 }
