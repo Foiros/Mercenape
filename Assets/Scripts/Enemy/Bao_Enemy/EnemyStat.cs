@@ -20,18 +20,21 @@ public class EnemyStat : MonoBehaviour
     [SerializeField] protected float runningSpeed = 10f;
     protected float speed;
 
+    private float enemyScale;
     protected Rigidbody2D rb;
     protected BoxCollider2D boxCollier;
 
     protected GameObject player;
     protected PlayerStat playerStat;
     protected PlayerMovement playerMovement;
+    protected Rigidbody2D playerRigid;
 
     private EnemyLootDrop enemyLoot;
 
     private void Awake()
     {
         xScaleUI = healthBarUI.transform.localScale.x;
+        enemyScale = transform.localScale.x;
     }
 
     protected virtual void Start()
@@ -40,8 +43,8 @@ public class EnemyStat : MonoBehaviour
         boxCollier = GetComponent<BoxCollider2D>();
 
         var waveStat = GameObject.Find("EnemySpawner");
-        maxHP += waveStat.GetComponent<EnemySpawnerScript>().wave.enemyIncreasedHP;
-        damage += waveStat.GetComponent<EnemySpawnerScript>().wave.enemyIncreasedDamage;
+        //maxHP += waveStat.GetComponent<EnemySpawnerScript>().wave.enemyIncreasedHP;
+        //damage += waveStat.GetComponent<EnemySpawnerScript>().wave.enemyIncreasedDamage;
         currentHP = maxHP;
         speed = runningSpeed;
 
@@ -50,6 +53,7 @@ public class EnemyStat : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         playerStat = player.GetComponent<PlayerStat>();
         playerMovement = player.GetComponent<PlayerMovement>();
+        playerRigid = player.GetComponent<Rigidbody2D>();
 
         enemyLoot = GetComponent<EnemyLootDrop>();
     }
@@ -75,14 +79,14 @@ public class EnemyStat : MonoBehaviour
     }
 
     // Detect if enemy gets out of the ground, turn if yes and also rotate Health bar
-    protected void OnTriggerExit2D(Collider2D collision)
+    protected virtual void OnTriggerExit2D(Collider2D collision)
     {
         // Fix a bug that Shred stick to player when colliding
         if (collision.gameObject.CompareTag("Loot")) { return; }
 
         if (!collision.gameObject.CompareTag("Player"))
         {
-            transform.localScale = new Vector2(-(Mathf.Sign(rb.velocity.x)) * 0.3f, 0.3f);
+            transform.localScale = new Vector2(-(Mathf.Sign(rb.velocity.x)) * enemyScale, enemyScale);
             healthBarUI.transform.localScale = new Vector2(-(Mathf.Sign(rb.velocity.x)) * xScaleUI, healthBarUI.transform.localScale.y);
         }
 

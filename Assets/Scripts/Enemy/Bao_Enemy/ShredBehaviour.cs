@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ShredBehaviour : EnemyStat
-{   
-    
+{      
     [SerializeField] private float bleedChance;
     [SerializeField] private int knockBackForce;
+
+    private Coroutine co;
 
     protected override void Start()
     {
@@ -59,8 +60,11 @@ public class ShredBehaviour : EnemyStat
 
         if (Random.Range(0f, 100f) < bleedChance)
         {
-            StopCoroutine(ApplyBleedDamage(1, 3, 2));
-            StartCoroutine(ApplyBleedDamage(1, 3, 2));
+            if (co != null)
+            {
+                StopCoroutine(co);
+            }
+            co = StartCoroutine(ApplyBleedDamage(1, 3, 2));
         }
     }
 
@@ -93,7 +97,7 @@ public class ShredBehaviour : EnemyStat
    
     IEnumerator ImmobilizeShred()
     {
-        //player.GetComponent<Rigidbody2D>().AddForce(new Vector2(Mathf.Sign(transform.localScale.x) * knockBackForce / 50, 0));
+        //playerRigid.AddForce(new Vector2(Mathf.Sign(transform.localScale.x) * knockBackForce / 50, 0));
         rb.AddForce(new Vector2(-Mathf.Sign(transform.localScale.x) * knockBackForce, 50));
 
         speed = 0;

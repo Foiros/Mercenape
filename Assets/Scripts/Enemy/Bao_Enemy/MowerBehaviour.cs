@@ -4,37 +4,86 @@ using UnityEngine;
 
 public class MowerBehaviour : EnemyStat
 {
-    private IEnumerator coroutine;
+    private Coroutine coroutine;
+
+    private bool isAttacking = false;
+    private bool isRiding = false;
+
+    private float ridePos;
+
+    private Transform backSide;
 
     protected override void Start()
     {
         base.Start();   // Start both EnemyStat and MowerBehaviour       
 
-        coroutine = ApplyDamage(3, damage);
+        backSide = transform.GetChild(2);
     }
 
     void Update()
     {
         StunningProcess();
+
+        if (isRiding)
+        {
+            player.transform.position = new Vector2(transform.position.x +  ridePos, player.transform.position.y);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D col)
     {
         if (col.gameObject.CompareTag("Player"))
         {
-            MowerAttack();
+            ridePos = player.transform.position.x - transform.position.x;
+            isRiding = true;          
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D col)
+    {
+        if (col.gameObject.CompareTag("Player"))
+        {          
+            isRiding = false;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        if (col.gameObject.CompareTag("Player"))
+        {
+            if (!isAttacking)
+            {
+                isAttacking = true;
+
+                MowerAttack();
+            }
+        }
+    }
+
+    protected override void OnTriggerExit2D(Collider2D collision)
+    {
+        base.OnTriggerExit2D(collision);
+
+        if (!collision.gameObject.CompareTag("Player"))
+        {
+            isRiding = false;
         }
     }
 
     private void MowerAttack()
     {
-        StartCoroutine("Attacking");
+        playerRigid.velocity = Vector2.zero;
 
         escapingStunCount = 0;
         isStunning = true;
 
-        StopCoroutine(coroutine);
-        StartCoroutine(coroutine);
+        StartCoroutine("Attacking");
+        if (coroutine != null)
+        {
+            StopCoroutine(coroutine);
+        }
+
+        coroutine = StartCoroutine(ApplyDamage(3, damage));
     }
 
     protected override void StunningProcess()
@@ -44,13 +93,17 @@ public class MowerBehaviour : EnemyStat
         if (escapingStunCount == 8)
         {
             // Stop dealing damage and get back to original states
-            StopCoroutine(coroutine);
+            if (coroutine != null)
+            {
+                StopCoroutine(coroutine);
+            }
 
             player.transform.rotation = Quaternion.Euler(0, 0, 0);
             playerMovement.enabled = true;
             player.GetComponent<PlayerAttackTrigger>().enabled = true;
             player.GetComponent<Animator>().enabled = true;
-            player.GetComponent<Rigidbody2D>().AddForce(new Vector2(-Mathf.Sign(transform.localScale.x) * 3000, 0));
+
+            playerRigid.AddForce(new Vector2(-Mathf.Sign(transform.localScale.x) * 3000, 0));
 
             escapingStunCount = 0;
             readyToSetStun = true;
@@ -65,6 +118,7 @@ public class MowerBehaviour : EnemyStat
         boxCollier.isTrigger = false;
         rb.bodyType = RigidbodyType2D.Dynamic;
         speed = runningSpeed;
+        isAttacking = false;
     }
 
     IEnumerator Attacking()
@@ -75,7 +129,7 @@ public class MowerBehaviour : EnemyStat
 
         yield return new WaitForSeconds(3f);
 
-        ReturnPhysics();
+        ReturnPhysics();      
     }
 
     // Deal damage
@@ -90,4 +144,5 @@ public class MowerBehaviour : EnemyStat
             currentCount++;
         }
     }
+
 }
