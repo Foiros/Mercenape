@@ -90,6 +90,8 @@ public class WeaponStates: MonoBehaviour
     {
         WeaponsData data = SaveManager.LoadWeapons();
 
+        weaponID = data.weaponID;
+
         weapon1HasBeenUpgraded = data.weapon1HasBeenUpgraded;
         weapon2HasBeenUpgraded = data.weapon1HasBeenUpgraded;
         weapon3HasBeenUpgraded = data.weapon1HasBeenUpgraded;

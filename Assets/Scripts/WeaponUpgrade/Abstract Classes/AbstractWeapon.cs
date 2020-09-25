@@ -22,6 +22,10 @@ public abstract class AbstractWeapon
     public int bleedDamage;
     public int bleedDuration;
 
+    // Weapon reach and hit box
+    public float hitBox;
+    public float hitBoxLocation;
+
 
     // Fetch functions for details
     public string GetName() { return weaponName;}
@@ -40,9 +44,9 @@ public abstract class AbstractWeapon
 }
 
 public class TestWeapon1 : AbstractWeapon
-{   
+{
     // This is used to create this object in the scripts. 
-    public TestWeapon1(string name, string description, int id, int cost, int speed, int weight, int damage, Sprite weapon, Sprite chosenWeapon)
+    public TestWeapon1(string name, string description, int id, int cost, int speed, int weight, int damage, float range, float location, Sprite weapon, Sprite chosenWeapon)
     {
         weaponName = name;
         weaponDescription = description;
@@ -51,6 +55,8 @@ public class TestWeapon1 : AbstractWeapon
         weaponSpeed = speed;
         weaponWeight = weight;
         impactDamage = damage;
+        hitBox = range;
+        hitBoxLocation = location;
         weaponImage = weapon;
         chosenWeaponImage = chosenWeapon;
     }
@@ -58,7 +64,7 @@ public class TestWeapon1 : AbstractWeapon
 
 public class TestWeapon2 : AbstractWeapon
 {
-    public TestWeapon2(string name, string description, int id, int cost, int speed, int weight, int damage, Sprite weapon, Sprite chosenWeapon)
+    public TestWeapon2(string name, string description, int id, int cost, int speed, int weight, int damage, float range, float location, Sprite weapon, Sprite chosenWeapon)
     {
         weaponName = name;
         weaponDescription = description;
@@ -67,6 +73,8 @@ public class TestWeapon2 : AbstractWeapon
         weaponSpeed = speed;
         weaponWeight = weight;
         impactDamage = damage;
+        hitBox = range;
+        hitBoxLocation = location;
         weaponImage = weapon;
         chosenWeaponImage = chosenWeapon;
     }
@@ -74,7 +82,7 @@ public class TestWeapon2 : AbstractWeapon
 
 public class TestWeapon3 : AbstractWeapon
 {
-    public TestWeapon3(string name, string description, int id, int cost, int speed, int weight, int damage, Sprite weapon, Sprite chosenWeapon)
+    public TestWeapon3(string name, string description, int id, int cost, int speed, int weight, int damage, float range, float location, Sprite weapon, Sprite chosenWeapon)
     {
         weaponName = name;
         weaponDescription = description;
@@ -83,6 +91,8 @@ public class TestWeapon3 : AbstractWeapon
         weaponSpeed = speed;
         weaponWeight = weight;
         impactDamage = damage;
+        hitBox = range;
+        hitBoxLocation = location;
         weaponImage = weapon;
         chosenWeaponImage = chosenWeapon;
     }
@@ -90,7 +100,7 @@ public class TestWeapon3 : AbstractWeapon
 
 public class TestWeapon4 : AbstractWeapon
 {
-    public TestWeapon4(string name, string description, int id, int cost, int speed, int weight, int damage, Sprite weapon, Sprite chosenWeapon)
+    public TestWeapon4(string name, string description, int id, int cost, int speed, int weight, int damage, float range, float location, Sprite weapon, Sprite chosenWeapon)
     {
         weaponName = name;
         weaponDescription = description;
@@ -99,6 +109,8 @@ public class TestWeapon4 : AbstractWeapon
         weaponSpeed = speed;
         weaponWeight = weight;
         impactDamage = damage;
+        hitBox = range;
+        hitBoxLocation = location;
         weaponImage = weapon;
         chosenWeaponImage = chosenWeapon;
     }
