@@ -4,11 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
+using System.Security.Cryptography.X509Certificates;
+using UnityEngine.Monetization;
 
 // Arttu paldán edited 25.9.2020: 
 public class mainMenu : MonoBehaviour
 {
-
+    [SerializeField]  
     //These vectors point to where each panel except menuCenter goes to when disabled. Sure, it may not be necessary, but I like the filing cabinet aesthetic.
     // I unwittingly made this so compact, that I added the pause menu on the same script. I will chang the name of the script ASAP since it is doing my head in.
     public bool isPaused = false;
@@ -65,6 +68,7 @@ public class mainMenu : MonoBehaviour
                 panelReturn.transform.position = startPos[i];
                 break;
             }
+
         }
     }
 
@@ -99,45 +103,49 @@ public class mainMenu : MonoBehaviour
 
 
 
-    public void switchPanel()
+    public void switchPanel(GameObject newPanel)
     {
-        string buttonName = EventSystem.current.currentSelectedGameObject.name;
-        Debug.Log(buttonName);
-        //Return the current panel to its startPos.
+        Debug.Log("Changing panel");
         returnPanel(currentPanel);
-        for (int i = 0; i < panels.Length; i++)
-        {
 
-            if (panels[i].name.Contains(buttonName))
+        if (newPanel.name.Contains("options") || newPanel.name.Contains("level"))
+        {
+            GameObject backBtn = newPanel.transform.Find("back").gameObject;
+            menuButton btnScript;
+            if(backBtn != null)
             {
-                Debug.Log(panels[i].name + " found.");
-                //If the game is paused, Options and Level select panels are set as Pausepanel's children so that the BackButton() works properly
-                if (panels[i].name.Contains("options") || panels[i].name.Contains("level"))
+                Debug.Log("Back button found.");
+                btnScript = backBtn.GetComponent<menuButton>();
+                if(btnScript != null)
                 {
-                    if (!isPaused)
+                    Debug.Log("Back script found");
+                    if (isPaused)
                     {
-                        panels[i].transform.SetParent(panels[0].transform, false);
-                        currentPanel = panels[i];
-                    }
-                    else
+                        btnScript.paneltoOpen = panels[1];
+                    } else
                     {
-                        panels[i].transform.SetParent(pausePanel.transform, false);
-                        currentPanel = panels[i];
+                        for(int i = 0; i < panels.Length; i++)
+                        {
+                            if(panels[i].name.Contains("start"))
+                            {
+                                btnScript.paneltoOpen = panels[i];
+                                break;
+                            }
+                        }
                     }
-                
                 }
-                if(panels[i] == panels[0])
-                {
-                    isPaused = false;
-                    Time.timeScale = 1;
-                }
-                panels[i].transform.position = mainCanvas.transform.position;
-                currentPanel = panels[i];
-                Debug.Log("Current panel: " + currentPanel.name);
-                break;
-            }
+            }      
+        }
+        newPanel.transform.position = mainCanvas.transform.position;
+        currentPanel = newPanel;
+        if(currentPanel == panels[0])
+        {
+            isPaused = false;
+            Time.timeScale = 1;
         }
     }
+    
+   
 
     public void backButton()
     {
