@@ -64,6 +64,7 @@ public class PlayerStat : MonoBehaviour
                 // This checks if the player takes fatal damage.
                 PlayerHP = 0;
                 Debug.Log("Dead.");
+                SceneManager.LoadScene("Bao Enemy");
             }
         //Add the new health values to change the fill amount of the healthbar.
             healthBar.updateHealthBar(PlayerMaxHP, PlayerHP);
