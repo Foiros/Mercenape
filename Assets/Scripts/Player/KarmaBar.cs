@@ -9,8 +9,9 @@ public class KarmaBar : MonoBehaviour
     public Slider slider;
     public Image fill;
     private PlayerCurrency playerCurrency;
-    public int lvMaxKarma;
+    
 
+    GameMaster gm;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,8 +19,9 @@ public class KarmaBar : MonoBehaviour
 
         playerCurrency = GetComponent<PlayerCurrency>();
         playerCurrency = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCurrency>();
+        gm = GameObject.FindGameObjectWithTag("gamemaster").GetComponent<GameMaster>();
 
-        setMaxValue();
+        setMaxValue();  
     }
     
 
@@ -32,7 +34,7 @@ public class KarmaBar : MonoBehaviour
 
     void setMaxValue()
     {
-        slider.maxValue = lvMaxKarma;
+        slider.maxValue = gm.lvMaxKarma;
         slider.value = playerCurrency.playerKarma;
 
     }

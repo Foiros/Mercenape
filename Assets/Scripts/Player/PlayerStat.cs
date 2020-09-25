@@ -45,7 +45,7 @@ public class PlayerStat : MonoBehaviour
             updateHealth(-10);
         }
 
-
+        CheckPlayerDeath();
     }
 
     //Ossi's take on player HP change
@@ -64,7 +64,7 @@ public class PlayerStat : MonoBehaviour
                 // This checks if the player takes fatal damage.
                 PlayerHP = 0;
                 Debug.Log("Dead.");
-                SceneManager.LoadScene("Bao Enemy");
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
         //Add the new health values to change the fill amount of the healthbar.
             healthBar.updateHealthBar(PlayerMaxHP, PlayerHP);
@@ -76,7 +76,13 @@ public class PlayerStat : MonoBehaviour
 
     void CheckPlayerDeath()
     {
-        
+        if (PlayerHP <= 0)
+        {
+            // This checks if the player takes fatal damage.
+            PlayerHP = 0;
+            Debug.Log("Dead.");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
 
     public void PlayerTakeDamage(int EnemyDamage)

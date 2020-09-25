@@ -136,6 +136,10 @@ public class PlayerMovement : MonoBehaviour
             {
                 PlayerRigid2d.gravityScale = 0;
                 PlayerRigid2d.velocity = new Vector2(PlayerRigid2d.velocity.x, 0);
+                if (Input.GetKey(KeyCode.Space))
+                {
+                    PlayerRigid2d.velocity = Vector2.up * PlayerJumpPow;
+                }
 
             }
             else
@@ -228,7 +232,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (IsGrounded) 
             {
-                PlayerRigid2d.velocity = Vector2.up * PlayerJumpPow;
+                PlayerRigid2d.velocity =  Vector2.up * PlayerJumpPow;
 
             }
             else

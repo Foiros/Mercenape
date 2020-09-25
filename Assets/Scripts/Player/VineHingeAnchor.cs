@@ -38,7 +38,9 @@ public class VineHingeAnchor : MonoBehaviour
                 player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
                 player.transform.parent = null;
 
-                /* player.GetComponent<Rigidbody2D>().AddForce (new Vector2(player.GetComponent<Rigidbody2D>().velocity.x+ (h * swingSpeed * Time.deltaTime) * 100, player.GetComponent<Rigidbody2D>().velocity.y+20)*100);*/
+                 player.GetComponent<Rigidbody2D>().AddForce (new Vector2(player.GetComponent<Rigidbody2D>().velocity.x+ (h*swingSpeed*10*Time.deltaTime), player.GetComponent<Rigidbody2D>().velocity.y+20)*100 * Time.deltaTimea);
+                
+                
 
             }
 
