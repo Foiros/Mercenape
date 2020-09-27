@@ -34,7 +34,6 @@ public class UpgradeDrop : MonoBehaviour
             print("Picking");
             playerCurrency.playerUpgrade++;
             Destroy(gameObject);
-            SaveManager.SaveCurrency(playerCurrency);
         }
         
     }

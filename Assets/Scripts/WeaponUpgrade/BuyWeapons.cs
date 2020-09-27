@@ -8,11 +8,10 @@ using UnityEngine.SceneManagement;
 // Created by Arttu Paldán 11.9.2020: This script will handle buying or unlocking component pieces.
 public class BuyWeapons : MonoBehaviour
 {
+    private List<AbstractWeapon> weapons;
+
     private Money money;
     private WeaponStates weaponStates;
-    private AssetManager assetManager;
-
-    private AbstractWeapon[] weapons;
 
     private int weaponID;
     private int weaponCost;
@@ -38,15 +37,12 @@ public class BuyWeapons : MonoBehaviour
     {
         money = GetComponent<Money>();
         weaponStates = GetComponent<WeaponStates>();
-        assetManager = GetComponent<AssetManager>();
 
         weaponName = GameObject.FindGameObjectWithTag("WeaponName").GetComponent<Text>();
         weaponDescription = GameObject.FindGameObjectWithTag("WeaponDescription").GetComponent<Text>();
         weaponCostText = GameObject.FindGameObjectWithTag("WeaponCost").GetComponent<Text>();
         weaponImageBuyScreen = GameObject.FindGameObjectWithTag("BuyScreenWeaponImage").GetComponent<Image>();
 
-        SetUpWeaponsArray();
-        
         SetWeaponsHolder();
 
         buyWeaponScreen.SetActive(false);
@@ -64,20 +60,9 @@ public class BuyWeapons : MonoBehaviour
         }
     }
 
-    // Function to create an array of the abstract components.
-    void SetUpWeaponsArray()
-    {
-        TestWeapon1 testWeapon1 = new TestWeapon1("Weapon 1", "Does things", 0, 50, 5, 10, 20, 0.3f, 3f, assetManager.weaponImages[0], null);
-        TestWeapon2 testWeapon2 = new TestWeapon2("Weapon 2", "Does things", 1, 25, 1, 20, 30, 0.3f, 2f, assetManager.weaponImages[1], null);
-        TestWeapon3 testWeapon3 = new TestWeapon3("Weapon 3", "Does things", 2, 100, 3, 3, 10, 0.3f, 1f, assetManager.weaponImages[2], null);
-        TestWeapon4 testWeapon4 = new TestWeapon4("Weapon 4", "Does things", 3, 150, 10, 2, 20, 0.3f, 5f, assetManager.weaponImages[3], null);
-
-        weapons = new AbstractWeapon[] { testWeapon1, testWeapon2, testWeapon3, testWeapon4 };
-    }
-
     void SetWeaponsHolder()
     {
-        for(int i = 0; i <  weaponImagesHolder.Length; i++)
+        for (int i = 0; i < weaponImagesHolder.Length; i++)
         {
             weaponImagesHolder[i].sprite = weapons[i].GetWeaponImage();
         }
@@ -126,6 +111,7 @@ public class BuyWeapons : MonoBehaviour
             weaponImagesHolder[weaponID].enabled = false;
             ownedWeapons[weaponID].sprite = weaponsArray.GetWeaponImage();
 
+            SaveManager.SaveWeapons(weaponStates);
             buyWeaponScreen.SetActive(false);
         }
         else
@@ -176,9 +162,5 @@ public class BuyWeapons : MonoBehaviour
 
         OpenWeapon();
     }
-
-    public void ExitForge()
-    {
-        SceneManager.LoadScene("Bao_Enemy");
-    }
+    public void SetWeaponList(List<AbstractWeapon> list) { weapons = list; }
 }

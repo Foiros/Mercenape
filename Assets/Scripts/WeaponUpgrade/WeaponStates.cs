@@ -6,35 +6,45 @@ using UnityEngine.SceneManagement;
 // Created by Arttu Paldán 17.9.2020: A script that handles the ownership issues of this system.
 public class WeaponStates: MonoBehaviour
 {
-    private PlayerCurrency playerCurrency;
+    private int weaponID;
 
-    public int weaponID;
+    private List<bool> ownedWeaponsList;
+    private List<bool> upgradedWeaponsList;
+    private List<int> savedWeightAmountsList;
+    private List<int> savedSpeedAmountsList;
 
-    public bool weapon1HasBeenUpgraded;
-    public bool weapon2HasBeenUpgraded;
-    public bool weapon3HasBeenUpgraded;
-    public bool weapon4HasBeenUpgraded;
+    private bool ownsWeapon1;
+    private bool ownsWeapon2;
+    private bool ownsWeapon3;
+    private bool ownsWeapon4;
 
-    public bool ownsWeapon1;
-    public bool ownsWeapon2;
-    public bool ownsWeapon3;
-    public bool ownsWeapon4;
+    private bool weapon1HasBeenUpgraded;
+    private bool weapon2HasBeenUpgraded;
+    private bool weapon3HasBeenUpgraded;
+    private bool weapon4HasBeenUpgraded;
 
-    public int savedWeightAmount1;
-    public int savedWeightAmount2;
-    public int savedWeightAmount3;
-    public int savedWeightAmount4;
+    private int savedWeightAmount1;
+    private int savedWeightAmount2;
+    private int savedWeightAmount3;
+    private int savedWeightAmount4;
     
-    public int savedSpeedAmount1;
-    public int savedSpeedAmount2;
-    public int savedSpeedAmount3;
-    public int savedSpeedAmount4;
+    private int savedSpeedAmount1;
+    private int savedSpeedAmount2;
+    private int savedSpeedAmount3;
+    private int savedSpeedAmount4;
 
     void Awake()
     {
-        playerCurrency = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCurrency>();
-
+        SetUpBoolLists();
         LoadWeaponData();
+    }
+
+    void SetUpBoolLists()
+    {
+        ownedWeaponsList = new List<bool>() { ownsWeapon1, ownsWeapon2, ownsWeapon3, ownsWeapon4 };
+        upgradedWeaponsList = new List<bool>() { weapon1HasBeenUpgraded, weapon2HasBeenUpgraded, weapon3HasBeenUpgraded, weapon4HasBeenUpgraded };
+        savedWeightAmountsList = new List<int>() { savedWeightAmount1, savedWeightAmount2, savedWeightAmount3, savedWeightAmount4 };
+        savedSpeedAmountsList = new List<int>() { savedSpeedAmount1, savedSpeedAmount2, savedSpeedAmount3, savedSpeedAmount4 };
     }
 
     // Switch loop function for setting the ownership status of a weapon.
@@ -45,23 +55,21 @@ public class WeaponStates: MonoBehaviour
         switch (weaponID)
         {
             case 0:
-                ownsWeapon1 = true;
+                ownedWeaponsList[0] = true;
                 break;
 
             case 1:
-                ownsWeapon2 = true;
+                ownedWeaponsList[1] = true;
                 break;
 
             case 2:
-                ownsWeapon3 = true;
+                ownedWeaponsList[2] = true;
                 break;
 
             case 3:
-                ownsWeapon4 = true;
+                ownedWeaponsList[3] = true;
                 break;
         }
-
-        SaveManager.SaveWeapons(this);
     }
 
     // Switch loop function for setting the upgrade status of a weapon. 
@@ -72,23 +80,21 @@ public class WeaponStates: MonoBehaviour
         switch (weaponID)
         {
             case 0:
-                weapon1HasBeenUpgraded = true;
+                upgradedWeaponsList[0] = true;
                 break;
 
             case 1:
-                weapon2HasBeenUpgraded = true;
+                upgradedWeaponsList[1] = true;
                 break;
 
             case 2:
-                weapon3HasBeenUpgraded = true;
+                upgradedWeaponsList[2] = true;
                 break;
 
             case 3:
-                weapon4HasBeenUpgraded = true;
+                upgradedWeaponsList[3] = true;
                 break;
         }
-
-        SaveManager.SaveWeapons(this);
     }
 
     // Function for loading necessary data.
@@ -98,26 +104,18 @@ public class WeaponStates: MonoBehaviour
 
         weaponID = data.weaponID;
 
-        weapon1HasBeenUpgraded = data.weapon1HasBeenUpgraded;
-        weapon2HasBeenUpgraded = data.weapon1HasBeenUpgraded;
-        weapon3HasBeenUpgraded = data.weapon1HasBeenUpgraded;
-        weapon4HasBeenUpgraded = data.weapon1HasBeenUpgraded;
-
-        ownsWeapon1 = data.ownsWeapon1;
-        ownsWeapon2 = data.ownsWeapon2;
-        ownsWeapon3 = data.ownsWeapon3;
-        ownsWeapon4 = data.ownsWeapon4;
-
-        savedWeightAmount1 = data.amountOfWeight1;
-        savedWeightAmount2 = data.amountOfWeight2;
-        savedWeightAmount3 = data.amountOfWeight3;
-        savedWeightAmount4 = data.amountOfWeight4;
-
-        savedSpeedAmount1 = data.amountOfSpeed1;
-        savedSpeedAmount2 = data.amountOfSpeed2;
-        savedSpeedAmount3 = data.amountOfSpeed3;
-        savedSpeedAmount4 = data.amountOfSpeed4;
+        ownedWeaponsList = data.ownedWeaponsList;
+        upgradedWeaponsList = data.upgradedWeaponsList;
+        savedWeightAmountsList = data.savedWeightAmountsList;
+        savedSpeedAmountsList = data.savedSpeedAmountsList;
     }
-   
-    public void SetChosenWeaponID(int id) { weaponID = id;}
+
+    public void SetChosenWeaponID(int id) { weaponID = id; }
+    public int GetChosenWeaponID() { return weaponID; }
+
+    public List<bool> GetOwnedWeapons() { return ownedWeaponsList; }
+    public List<bool> GetUpgradedWeapons() { return upgradedWeaponsList; }
+
+    public List<int> GetSavedWeights() { return savedWeightAmountsList; }
+    public List<int> GetSavedSpeeds() { return savedSpeedAmountsList; }
 }

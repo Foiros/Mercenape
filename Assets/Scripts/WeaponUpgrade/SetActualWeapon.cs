@@ -8,9 +8,8 @@ public class SetActualWeapon : MonoBehaviour
 {
     private WeaponStates weaponStates;
     private WeaponStats weaponStats;
-    private AssetManager assetManager;
 
-    private AbstractWeapon[] weapons;
+    private List<AbstractWeapon> weapons;
 
     private SpriteRenderer weaponInUseImage;
 
@@ -23,25 +22,12 @@ public class SetActualWeapon : MonoBehaviour
     {
         weaponStates = GetComponent<WeaponStates>();
         weaponStats = GetComponent<WeaponStats>();
-        assetManager = GetComponent<AssetManager>();
 
         weaponInUseImage = GameObject.FindGameObjectWithTag("WeaponInUse").GetComponent<SpriteRenderer>();
        
-        weaponID = weaponStates.weaponID;
+        weaponID = weaponStates.GetChosenWeaponID();
 
-        SetUpWeaponsArray();
         SetUpWeapon();
-    }
-
-    // As in BuyWeapons script, this function sets up the abstract objects array, which can then be used by the code.
-    void SetUpWeaponsArray()
-    {
-        TestWeapon1 testWeapon1 = new TestWeapon1("Weapon 1", "Does things", 0, 50, 5, 10, 30, 0.3f, 3f, assetManager.weaponImages[0], null);
-        TestWeapon2 testWeapon2 = new TestWeapon2("Weapon 2", "Does things", 1, 25, 1, 20, 20, 0.3f, 2f, assetManager.weaponImages[1], null);
-        TestWeapon3 testWeapon3 = new TestWeapon3("Weapon 3", "Does things", 2, 100, 3, 3, 10, 0.3f, 1f, assetManager.weaponImages[2], null);
-        TestWeapon4 testWeapon4 = new TestWeapon4("Weapon 4", "Does things", 3, 150, 10, 2, 20, 0.3f, 5f, assetManager.weaponImages[3], null);
-
-        weapons = new AbstractWeapon[] { testWeapon1, testWeapon2, testWeapon3, testWeapon4 };
     }
 
     // Sets up the stats and the image of the object.
@@ -61,4 +47,6 @@ public class SetActualWeapon : MonoBehaviour
     public int GetChosenID() { return weaponID; }
     public int GetWeaponSpeed() { return speed; }
     public int GetWeaponImpactDamage() { return impactDamage; }
+
+    public void SetWeaponList(List<AbstractWeapon> list) { weapons = list; }
 }

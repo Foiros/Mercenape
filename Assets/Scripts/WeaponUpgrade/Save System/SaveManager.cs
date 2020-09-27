@@ -94,6 +94,11 @@ public class WeaponsData
 {
     public int weaponID;
 
+    public List<bool> ownedWeaponsList;
+    public List<bool> upgradedWeaponsList;
+    public List<int> savedWeightAmountsList;
+    public List<int> savedSpeedAmountsList;
+
     public bool ownsWeapon1;
     public bool ownsWeapon2;
     public bool ownsWeapon3;
@@ -116,27 +121,12 @@ public class WeaponsData
 
     public WeaponsData(WeaponStates weaponStates)
     {
-        weaponID = weaponStates.weaponID;
+        weaponID = weaponStates.GetChosenWeaponID();
 
-        weapon1HasBeenUpgraded = weaponStates.weapon1HasBeenUpgraded;
-        weapon2HasBeenUpgraded = weaponStates.weapon1HasBeenUpgraded;
-        weapon3HasBeenUpgraded = weaponStates.weapon1HasBeenUpgraded;
-        weapon4HasBeenUpgraded = weaponStates.weapon1HasBeenUpgraded;
-
-        ownsWeapon1 = weaponStates.ownsWeapon1;
-        ownsWeapon2 = weaponStates.ownsWeapon2;
-        ownsWeapon3 = weaponStates.ownsWeapon3;
-        ownsWeapon4 = weaponStates.ownsWeapon4;
-
-        amountOfWeight1 = weaponStates.savedWeightAmount1;
-        amountOfWeight2 = weaponStates.savedWeightAmount2;
-        amountOfWeight3 = weaponStates.savedWeightAmount3;
-        amountOfWeight4 = weaponStates.savedWeightAmount4;
-
-        amountOfSpeed1 = weaponStates.savedSpeedAmount1;
-        amountOfSpeed2 = weaponStates.savedSpeedAmount2;
-        amountOfSpeed3 = weaponStates.savedSpeedAmount3;
-        amountOfSpeed4 = weaponStates.savedSpeedAmount4;
+        ownedWeaponsList = weaponStates.GetOwnedWeapons();
+        upgradedWeaponsList = weaponStates.GetUpgradedWeapons();
+        savedWeightAmountsList = weaponStates.GetSavedWeights();
+        savedSpeedAmountsList = weaponStates.GetSavedSpeeds();
     }
 }
 

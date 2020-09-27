@@ -9,9 +9,8 @@ public class ChooseWeapon : MonoBehaviour
 {
     private WeaponStates weaponStates;
     private AssetManager assetManager;
-    private PlayerCurrency playerCurrency;
    
-    private AbstractWeapon[] weapons;
+    private List<AbstractWeapon> weapons;
 
     private int chosenWeaponID;
     private int buttonID;
@@ -24,20 +23,6 @@ public class ChooseWeapon : MonoBehaviour
     {
         weaponStates = GetComponent<WeaponStates>();
         assetManager = GetComponent<AssetManager>();
-        playerCurrency = GetComponent<PlayerCurrency>();
-
-        SetUpWeaponsArray();
-    }
-
-    // As in BuyWeapons script, this function sets up the abstract objects array, which can then be used by the code.
-    void SetUpWeaponsArray()
-    {
-        TestWeapon1 testWeapon1 = new TestWeapon1("Weapon 1", "Does things", 0, 50, 5, 10, 20, 0.3f, 3f, assetManager.weaponImages[0], assetManager.chosenWeaponImages[0]);
-        TestWeapon2 testWeapon2 = new TestWeapon2("Weapon 2", "Does things", 1, 25, 1, 20, 30, 0.3f, 2f, assetManager.weaponImages[1], assetManager.chosenWeaponImages[1]);
-        TestWeapon3 testWeapon3 = new TestWeapon3("Weapon 3", "Does things", 2, 100, 3, 3, 10, 0.3f, 1f, assetManager.weaponImages[2], assetManager.chosenWeaponImages[2]);
-        TestWeapon4 testWeapon4 = new TestWeapon4("Weapon 4", "Does things", 3, 150, 10, 2, 20, 0.3f, 5f, assetManager.weaponImages[3], assetManager.chosenWeaponImages[3]);
-
-        weapons = new AbstractWeapon[] { testWeapon1, testWeapon2, testWeapon3, testWeapon4 };
     }
 
     // Button function, which detects which button has been pressed and gives us the chosenWeaponID based on that. 
@@ -45,25 +30,27 @@ public class ChooseWeapon : MonoBehaviour
     {
         buttonName = EventSystem.current.currentSelectedGameObject.name;
 
-        if (buttonName == "ChooseButton1" && weaponStates.ownsWeapon1)
+        List<bool> ownedWeaponsList = weaponStates.GetOwnedWeapons();
+
+        if (buttonName == "ChooseButton1" && ownedWeaponsList[0])
         {
             buttonID = 0;
             chosenWeaponID = weapons[0].GetID();
             ChangeWeaponImage();
         }
-        else if (buttonName == "ChooseButton2" && weaponStates.ownsWeapon2)
+        else if (buttonName == "ChooseButton2" && ownedWeaponsList[1])
         {
             buttonID = 1;
             chosenWeaponID = weapons[1].GetID();
             ChangeWeaponImage();
         }
-        else if (buttonName == "ChooseButton3" && weaponStates.ownsWeapon3)
+        else if (buttonName == "ChooseButton3" && ownedWeaponsList[2])
         {
             buttonID = 2;
             chosenWeaponID = weapons[2].GetID();
             ChangeWeaponImage();
         }
-        else if (buttonName == "ChooseButton4" && weaponStates.ownsWeapon4)
+        else if (buttonName == "ChooseButton4" && ownedWeaponsList[3])
         {
             buttonID = 3;
             chosenWeaponID = weapons[3].GetID();
@@ -105,10 +92,13 @@ public class ChooseWeapon : MonoBehaviour
 
     void SwitchOtherImages()
     {
+        List<bool> ownedWeaponsList = weaponStates.GetOwnedWeapons();
+
+
         switch (chosenWeaponID)
         {
             case 0:
-                if (weaponStates.ownsWeapon2)
+                if (ownedWeaponsList[1])
                 {
                     weaponHasBeenChosenHolder[1].sprite = weapons[1].GetWeaponImage();
                 }
@@ -117,7 +107,7 @@ public class ChooseWeapon : MonoBehaviour
                     weaponHasBeenChosenHolder[1].sprite = null;
                 }
                 
-                if(weaponStates.ownsWeapon3)
+                if(ownedWeaponsList[2])
                 {
                     weaponHasBeenChosenHolder[2].sprite = weapons[2].GetWeaponImage();
                 }
@@ -126,7 +116,7 @@ public class ChooseWeapon : MonoBehaviour
                     weaponHasBeenChosenHolder[2].sprite = null;
                 }
 
-                if (weaponStates.ownsWeapon4)
+                if (ownedWeaponsList[3])
                 {
                     weaponHasBeenChosenHolder[3].sprite = weapons[3].GetWeaponImage();
                 }
@@ -137,7 +127,7 @@ public class ChooseWeapon : MonoBehaviour
                 break;
 
             case 1:
-                if (weaponStates.ownsWeapon1)
+                if (ownedWeaponsList[0])
                 {
                     weaponHasBeenChosenHolder[0].sprite = weapons[0].GetWeaponImage();
                 }
@@ -146,7 +136,7 @@ public class ChooseWeapon : MonoBehaviour
                     weaponHasBeenChosenHolder[0].sprite = null;
                 }
 
-                if (weaponStates.ownsWeapon3)
+                if (ownedWeaponsList[2])
                 {
                     weaponHasBeenChosenHolder[2].sprite = weapons[2].GetWeaponImage();
                 }
@@ -155,7 +145,7 @@ public class ChooseWeapon : MonoBehaviour
                     weaponHasBeenChosenHolder[2].sprite = null;
                 }
 
-                if (weaponStates.ownsWeapon4)
+                if (ownedWeaponsList[3])
                 {
                     weaponHasBeenChosenHolder[3].sprite = weapons[3].GetWeaponImage();
                 }
@@ -166,7 +156,7 @@ public class ChooseWeapon : MonoBehaviour
                 break;
 
             case 2:
-                if (weaponStates.ownsWeapon1)
+                if (ownedWeaponsList[0])
                 {
                     weaponHasBeenChosenHolder[0].sprite = weapons[0].GetWeaponImage();
                 }
@@ -175,7 +165,7 @@ public class ChooseWeapon : MonoBehaviour
                     weaponHasBeenChosenHolder[0].sprite = null;
                 }
 
-                if (weaponStates.ownsWeapon2)
+                if (ownedWeaponsList[1])
                 {
                     weaponHasBeenChosenHolder[1].sprite = weapons[1].GetWeaponImage();
                 }
@@ -184,7 +174,7 @@ public class ChooseWeapon : MonoBehaviour
                     weaponHasBeenChosenHolder[1].sprite = null;
                 }
 
-                if (weaponStates.ownsWeapon4)
+                if (ownedWeaponsList[3])
                 {
                     weaponHasBeenChosenHolder[3].sprite = weapons[3].GetWeaponImage();
                 }
@@ -195,7 +185,7 @@ public class ChooseWeapon : MonoBehaviour
                 break;
 
             case 3:
-                if (weaponStates.ownsWeapon1)
+                if (ownedWeaponsList[0])
                 {
                     weaponHasBeenChosenHolder[0].sprite = weapons[0].GetWeaponImage();
                 }
@@ -204,7 +194,7 @@ public class ChooseWeapon : MonoBehaviour
                     weaponHasBeenChosenHolder[0].sprite = null;
                 }
 
-                if (weaponStates.ownsWeapon2)
+                if (ownedWeaponsList[1])
                 {
                     weaponHasBeenChosenHolder[1].sprite = weapons[1].GetWeaponImage();
                 }
@@ -213,7 +203,7 @@ public class ChooseWeapon : MonoBehaviour
                     weaponHasBeenChosenHolder[1].sprite = null;
                 }
 
-                if (weaponStates.ownsWeapon3)
+                if (ownedWeaponsList[2])
                 {
                     weaponHasBeenChosenHolder[2].sprite = weapons[2].GetWeaponImage();
                 }
@@ -224,4 +214,6 @@ public class ChooseWeapon : MonoBehaviour
                 break;
         }
     }
+
+    public void SetWeaponList(List<AbstractWeapon> list) { weapons = list; }
 }

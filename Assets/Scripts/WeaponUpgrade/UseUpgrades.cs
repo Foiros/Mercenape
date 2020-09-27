@@ -8,13 +8,12 @@ using UnityEngine.EventSystems;
 public class UseUpgrades : MonoBehaviour
 {
     private WeaponStates weaponStates;
-    private AssetManager assetManager;
     private Money money;
     private WeaponStats weaponStats;
     private PlayerCurrency playerCurrency;
-    
-    private AbstractWeapon[] weapons;
-    private AbstractUpgrades[] upgrades;
+   
+    private List<AbstractWeapon> weapons;
+    private List<AbstractUpgrades> upgrades;
 
     private int weaponID;
     private int upgradeID;
@@ -39,17 +38,23 @@ public class UseUpgrades : MonoBehaviour
 
     public Text[] amountTexts;
     public Image[] upgradeImagesHolder;
+    
     public GameObject upgradeMenu;
     public GameObject upgradeComponentScreen;
 
     void Awake()
     {
+        GetRequiredObjects();
+        SetScreensInactive();
+    }
+
+    void GetRequiredObjects()
+    {
         weaponStates = GetComponent<WeaponStates>();
-        assetManager = GetComponent<AssetManager>();
         money = GetComponent<Money>();
         weaponStats = GetComponent<WeaponStats>();
         playerCurrency = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCurrency>();
-        
+
         weaponName = GameObject.FindGameObjectWithTag("UpgradeScreenWeaponName").GetComponent<Text>();
         weaponDescription = GameObject.FindGameObjectWithTag("UpgradeScreenWeaponDescription").GetComponent<Text>();
         weaponSpeedText = GameObject.FindGameObjectWithTag("WeaponSpeed").GetComponent<Text>();
@@ -62,32 +67,12 @@ public class UseUpgrades : MonoBehaviour
         upgradeDescription = GameObject.FindGameObjectWithTag("UpgradeDescription").GetComponent<Text>();
         upgradeImage = GameObject.FindGameObjectWithTag("UpgradeImage").GetComponent<Image>();
         upgradeHolderUpgradeScreen = GameObject.FindGameObjectWithTag("UpgradesUpgradeScreen").GetComponentInChildren<Text>();
+    }
 
+    void SetScreensInactive()
+    {
         upgradeMenu.SetActive(false);
         upgradeComponentScreen.SetActive(false);
-
-        SetUpWeaponsArray();
-        SetUpUpgradesArray();
-    }
-    
-    // Function for setting up the abstract weapons in this script and putting them into an array. 
-     void SetUpWeaponsArray()
-    {
-        TestWeapon1 testWeapon1 = new TestWeapon1("Weapon 1", "Does things", 0, 50, 5, 10, 20, 0.3f, 3f, assetManager.weaponImages[0], null);
-        TestWeapon2 testWeapon2 = new TestWeapon2("Weapon 2", "Does things", 1, 25, 1, 20, 30, 0.3f, 2f, assetManager.weaponImages[1], null);
-        TestWeapon3 testWeapon3 = new TestWeapon3("Weapon 3", "Does things", 2, 100, 3, 3, 10, 0.3f, 1f, assetManager.weaponImages[2], null);
-        TestWeapon4 testWeapon4 = new TestWeapon4("Weapon 4", "Does things", 3, 150, 10, 2, 20, 0.3f, 5f, assetManager.weaponImages[3], null);
-
-        weapons = new AbstractWeapon[] { testWeapon1, testWeapon2, testWeapon3, testWeapon4 };
-    }
-
-    // Function sets up the upgrades array for this script to use.
-    void SetUpUpgradesArray()
-    {
-        TestUpgrade1 testUpgrade1 = new TestUpgrade1("Speed Upgrade", "Increases the speed of your attacks", 0, 25, assetManager.upgradeImages[0]);
-        TestUpgrade2 testUpgrade2 = new TestUpgrade2("Weigh Upgrade", "Increases the weight of your weapon", 1, 25, assetManager.upgradeImages[1]);
-
-        upgrades = new AbstractUpgrades[] { testUpgrade1, testUpgrade2 };
     }
 
     // Button function, that detects which button has been pressed and returns ID based on that. 
@@ -95,23 +80,25 @@ public class UseUpgrades : MonoBehaviour
     {
         weaponButtonName = EventSystem.current.currentSelectedGameObject.name;
 
-        if(weaponButtonName == "UpgradeButton1" && weaponStates.ownsWeapon1)
+        List<bool> ownedWeaponsList = weaponStates.GetOwnedWeapons();
+
+        if(weaponButtonName == "UpgradeButton1" && ownedWeaponsList[0])
         {
             weaponID = weapons[0].GetID();
            
             SetUpUpgradeScreen();
         }
-        else if (weaponButtonName == "UpgradeButton2" && weaponStates.ownsWeapon2)
+        else if (weaponButtonName == "UpgradeButton2" && ownedWeaponsList[1])
         {
             weaponID = weapons[1].GetID();
             SetUpUpgradeScreen();
         }
-        else if (weaponButtonName == "UpgradeButton3" && weaponStates.ownsWeapon3)
+        else if (weaponButtonName == "UpgradeButton3" && ownedWeaponsList[2])
         {
             weaponID = weapons[2].GetID();
             SetUpUpgradeScreen();
         }
-        else if (weaponButtonName == "UpgradeButton4" && weaponStates.ownsWeapon4)
+        else if (weaponButtonName == "UpgradeButton4" && ownedWeaponsList[3])
         {
             weaponID = weapons[3].GetID();
             SetUpUpgradeScreen();
@@ -259,6 +246,7 @@ public class UseUpgrades : MonoBehaviour
         if(currency >= upgradeCost)
         {
             money.ChangeCurrencyAmount(upgradeCost);
+            weaponStates.WhatWeaponWasUpgraded(weaponID);
             
             upgradeCost = 0;
             weaponCostText.text = "Upgrade Cost: " + upgradeCost;
@@ -268,7 +256,7 @@ public class UseUpgrades : MonoBehaviour
             
             weaponStats.amountOfSpeed = 0;
             weaponStats.amountOfWeight = 0;
-            
+
             weaponStats.SetWeight(0);
             weaponStats.SetSpeed(0);
             weaponStats.SetImpactDamage(0);
@@ -278,11 +266,13 @@ public class UseUpgrades : MonoBehaviour
                 amountTexts[i].text = "0";
             }
 
-            weaponStates.WhatWeaponWasUpgraded(weaponID);
-
+            SaveManager.SaveWeapons(weaponStates);
             SaveManager.SaveCurrency(playerCurrency);
         }
     }
 
     public int GetWeaponID() { return weaponID; }
+
+    public void SetWeaponList(List<AbstractWeapon> list) { weapons = list; }
+    public void  SetUpgradeList(List<AbstractUpgrades> list) { upgrades = list; }
 }

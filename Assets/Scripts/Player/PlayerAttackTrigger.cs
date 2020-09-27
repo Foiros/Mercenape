@@ -6,9 +6,8 @@ using UnityEngine;
 public class PlayerAttackTrigger : MonoBehaviour
 {
     private SetActualWeapon setActualWeapon;
-    private AssetManager assetManager;
 
-    private AbstractWeapon[] weapons;
+    private List<AbstractWeapon> weapons;
     
     private float TimeDelayAttack; // to check if there still countdown time untill player can atk again
     public float PlayerDelayAttackTime; // can exchange to weapon atk rate later
@@ -31,9 +30,6 @@ public class PlayerAttackTrigger : MonoBehaviour
     void Awake()
     {
         setActualWeapon = GameObject.FindGameObjectWithTag("GameManager").GetComponent<SetActualWeapon>();
-        assetManager = GameObject.FindGameObjectWithTag("GameManager").GetComponent<AssetManager>();
-
-        SetUpWeaponsArray();
     }
 
     // Start is called before the first frame update
@@ -57,15 +53,6 @@ public class PlayerAttackTrigger : MonoBehaviour
     {
         if (!playerMovement.isPlayerBlock)
         { PlayerAttack(); }
-    }
-    void SetUpWeaponsArray()
-    {
-        TestWeapon1 testWeapon1 = new TestWeapon1("Weapon 1", "Does things", 0, 50, 5, 10, 30, 0.3f, 1f, assetManager.weaponImages[0], null);
-        TestWeapon2 testWeapon2 = new TestWeapon2("Weapon 2", "Does things", 1, 25, 1, 20, 20, 0.3f, 2f, assetManager.weaponImages[1], null);
-        TestWeapon3 testWeapon3 = new TestWeapon3("Weapon 3", "Does things", 2, 100, 3, 3, 10, 0.3f, 1f, assetManager.weaponImages[2], null);
-        TestWeapon4 testWeapon4 = new TestWeapon4("Weapon 4", "Does things", 3, 150, 10, 2, 20, 0.3f, 5f, assetManager.weaponImages[3], null);
-
-        weapons = new AbstractWeapon[] { testWeapon1, testWeapon2, testWeapon3, testWeapon4 };
     }
 
     void SetWeaponStats()
@@ -121,4 +108,6 @@ public class PlayerAttackTrigger : MonoBehaviour
         Gizmos.color = Color.green;
         Gizmos.DrawSphere(Attackpos.position, AttackRange);
     }
+
+    public void SetWeaponList(List<AbstractWeapon> list) { weapons = list; }
 }

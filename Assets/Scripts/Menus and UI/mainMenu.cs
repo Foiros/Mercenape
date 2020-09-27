@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
 using System.Security.Cryptography.X509Certificates;
-using UnityEngine.Monetization;
 
 // Arttu paldán edited 25.9.2020: 
 public class mainMenu : MonoBehaviour

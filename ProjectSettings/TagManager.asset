@@ -32,6 +32,9 @@ TagManager:
   - VineAnchor
   - UpgradesMainScreen
   - UpgradesUpgradeScreen
+  - gamemaster
+  - AmountText
+  - UpgradeImageHolder
   layers:
   - Default
   - TransparentFX

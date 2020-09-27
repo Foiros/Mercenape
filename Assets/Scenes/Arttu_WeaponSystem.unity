@@ -467,7 +467,7 @@ GameObject:
   - component: {fileID: 146695948}
   m_Layer: 5
   m_Name: Amount3
-  m_TagString: Untagged
+  m_TagString: AmountText
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1976,8 +1976,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 972304595}
-        m_MethodName: ExitForge
+      - m_Target: {fileID: 972304601}
+        m_MethodName: GoTolevel1
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3357,6 +3357,7 @@ GameObject:
   - component: {fileID: 972304597}
   - component: {fileID: 972304599}
   - component: {fileID: 972304600}
+  - component: {fileID: 972304601}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -3383,6 +3384,7 @@ MonoBehaviour:
   upgradeImagesHolder:
   - {fileID: 1055566471}
   - {fileID: 1772578679}
+  - {fileID: 1854331660}
   upgradeMenu: {fileID: 1895439582}
   upgradeComponentScreen: {fileID: 982684169}
 --- !u!114 &972304594
@@ -3451,23 +3453,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bf9353344ac8204b92a1b8e2cf530d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponID: 0
-  weapon1HasBeenUpgraded: 0
-  weapon2HasBeenUpgraded: 0
-  weapon3HasBeenUpgraded: 0
-  weapon4HasBeenUpgraded: 0
-  ownsWeapon1: 0
-  ownsWeapon2: 0
-  ownsWeapon3: 0
-  ownsWeapon4: 0
-  savedWeightAmount1: 0
-  savedWeightAmount2: 0
-  savedWeightAmount3: 0
-  savedWeightAmount4: 0
-  savedSpeedAmount1: 0
-  savedSpeedAmount2: 0
-  savedSpeedAmount3: 0
-  savedSpeedAmount4: 0
 --- !u!114 &972304598
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3492,9 +3477,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7b2a11342aebd349a926d27c6b6b763, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponImages: []
-  chosenWeaponImages: []
-  upgradeImages: []
 --- !u!114 &972304600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3511,6 +3493,18 @@ MonoBehaviour:
   savedAmountOfSpeed: 0
   amountOfWeight: 0
   savedAmountOfWeight: 0
+--- !u!114 &972304601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 972304592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 642cab6a2db41604ebda80301d23bd52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &982684169
 GameObject:
   m_ObjectHideFlags: 0
@@ -3809,7 +3803,7 @@ GameObject:
   - component: {fileID: 1055566470}
   m_Layer: 5
   m_Name: UpgradeComponent1
-  m_TagString: Untagged
+  m_TagString: UpgradeImageHolder
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4712,7 +4706,7 @@ GameObject:
   - component: {fileID: 1199234947}
   m_Layer: 5
   m_Name: Amount2
-  m_TagString: Untagged
+  m_TagString: AmountText
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5132,7 +5126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 1356145264}
-  PlayerKarma: 0
+  playerKarma: 0
   playerGold: 0
   playerUpgrade: 0
 --- !u!4 &1356145266
@@ -5842,7 +5836,7 @@ GameObject:
   - component: {fileID: 1593333888}
   m_Layer: 5
   m_Name: Amount1
-  m_TagString: Untagged
+  m_TagString: AmountText
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6416,7 +6410,7 @@ GameObject:
   - component: {fileID: 1772578678}
   m_Layer: 5
   m_Name: UpgradeComponent2
-  m_TagString: Untagged
+  m_TagString: UpgradeImageHolder
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6906,7 +6900,7 @@ GameObject:
   - component: {fileID: 1854331659}
   m_Layer: 5
   m_Name: UpgradeComponent3
-  m_TagString: Untagged
+  m_TagString: UpgradeImageHolder
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

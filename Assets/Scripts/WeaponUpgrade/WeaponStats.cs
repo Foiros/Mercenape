@@ -8,9 +8,8 @@ public class WeaponStats : MonoBehaviour
     private UseUpgrades useUpgrades;
     private WeaponStates weaponStates;
     private SetActualWeapon setActualWeapon;
-    private PlayerCurrency playerCurrency;
     
-    private AbstractWeapon[] weapons;
+    private List<AbstractWeapon> weapons;
 
     private bool requestCameFromUseUpgrades;
     private bool requestCameFromSetActualWeapon;
@@ -37,25 +36,13 @@ public class WeaponStats : MonoBehaviour
         useUpgrades = GetComponent<UseUpgrades>();
         weaponStates = GetComponent<WeaponStates>();
         setActualWeapon = GetComponent<SetActualWeapon>();
-        playerCurrency = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCurrency>();
-
-        SetUpWeaponsArray();
-    }
-
-    // Just as everywhere else, this function sets the weapons array.
-    void SetUpWeaponsArray()
-    {
-        TestWeapon1 testWeapon1 = new TestWeapon1("Weapon 1", "Does things", 0, 50, 5, 10, 20, 0.3f, 3f, null, null);
-        TestWeapon2 testWeapon2 = new TestWeapon2("Weapon 2", "Does things", 1, 25, 1, 20, 30, 0.3f, 2f, null, null);
-        TestWeapon3 testWeapon3 = new TestWeapon3("Weapon 3", "Does things", 2, 100, 3, 3, 10, 0.3f, 1f, null, null);
-        TestWeapon4 testWeapon4 = new TestWeapon4("Weapon 4", "Does things", 3, 150, 10, 2, 20, 0.3f, 5f, null, null);
-
-        weapons = new AbstractWeapon[] { testWeapon1, testWeapon2, testWeapon3, testWeapon4 };
     }
 
     // Public function that other scripts can call to handle the weapon stat calculations.
     public void CalculateStats()
     {
+        List<bool> upgradedWeaponsList = weaponStates.GetUpgradedWeapons();
+
         if (requestCameFromUseUpgrades)
         {
             weaponID = useUpgrades.GetWeaponID();
@@ -65,19 +52,19 @@ public class WeaponStats : MonoBehaviour
             weaponID = setActualWeapon.GetChosenID();
         }
         
-        if(weaponID == 0 && weaponStates.weapon1HasBeenUpgraded)
+        if(weaponID == 0 && upgradedWeaponsList[0])
         {
             CalculateWithSavedStats();
         }
-        else if (weaponID == 1 && weaponStates.weapon2HasBeenUpgraded)
+        else if (weaponID == 1 && upgradedWeaponsList[1])
         {
             CalculateWithSavedStats();
         }
-        else if (weaponID == 2 && weaponStates.weapon3HasBeenUpgraded)
+        else if (weaponID == 2 && upgradedWeaponsList[2])
         {
             CalculateWithSavedStats();
         }
-        else if (weaponID == 3 && weaponStates.weapon4HasBeenUpgraded)
+        else if (weaponID == 3 && upgradedWeaponsList[3])
         {
             CalculateWithSavedStats();
         }
@@ -198,55 +185,59 @@ public class WeaponStats : MonoBehaviour
     // Function for saving the amount of upgrades.
     public void SaveStats()
     {
+        List<int> savedWeightsList = weaponStates.GetSavedWeights();
+        List<int> savedSpeedsList = weaponStates.GetSavedSpeeds();
+
         switch (weaponID)
         {
             case 0:
-                weaponStates.savedWeightAmount1 = weaponStates.savedWeightAmount1 + amountOfWeight;
-                weaponStates.savedSpeedAmount1 = weaponStates.savedSpeedAmount1 + amountOfSpeed;
+                savedWeightsList[0] = savedWeightsList[0] + amountOfWeight;
+                savedSpeedsList[0] = savedSpeedsList[0] + amountOfSpeed;
                 break;
 
             case 1:
-                weaponStates.savedWeightAmount2 = weaponStates.savedWeightAmount2 + amountOfWeight;
-                weaponStates.savedSpeedAmount2 = weaponStates.savedSpeedAmount2 + amountOfSpeed;
+                savedWeightsList[1] = savedWeightsList[1] + amountOfWeight;
+                savedSpeedsList[1] = savedSpeedsList[1] + amountOfSpeed;
                 break;
 
             case 2:
-                weaponStates.savedWeightAmount3 = weaponStates.savedWeightAmount3 + amountOfWeight;
-                weaponStates.savedSpeedAmount3 = weaponStates.savedSpeedAmount3 + amountOfSpeed;
+                savedWeightsList[2] = savedWeightsList[2] + amountOfWeight;
+                savedSpeedsList[2] = savedSpeedsList[2] + amountOfSpeed;
                 break;
 
             case 3:
-                weaponStates.savedWeightAmount4 = weaponStates.savedWeightAmount4 + amountOfWeight;
-                weaponStates.savedSpeedAmount4 = weaponStates.savedSpeedAmount4 + amountOfSpeed;
+                savedWeightsList[3] = savedWeightsList[3] + amountOfWeight;
+                savedSpeedsList[3] = savedSpeedsList[3] + amountOfSpeed;
                 break;
         }
-
-        SaveManager.SaveWeapons(weaponStates);
     }
 
     // Function for loading the amount of upgrades. 
     void LoadSaveFiles()
     {
+        List<int> savedWeightsList = weaponStates.GetSavedWeights();
+        List<int> savedSpeedsList = weaponStates.GetSavedSpeeds();
+
         switch (weaponID)
         {
             case 0:
-                savedAmountOfWeight = weaponStates.savedWeightAmount1;
-                savedAmountOfSpeed = weaponStates.savedSpeedAmount1;
+                savedAmountOfWeight = savedWeightsList[0];
+                savedAmountOfSpeed = savedSpeedsList[0];
                 break;
 
             case 1:
-                savedAmountOfWeight = weaponStates.savedWeightAmount2;
-                savedAmountOfSpeed = weaponStates.savedSpeedAmount2;
+                savedAmountOfWeight = savedWeightsList[1];
+                savedAmountOfSpeed = savedSpeedsList[1];
                 break;
 
             case 3:
-                savedAmountOfWeight = weaponStates.savedWeightAmount3;
-                savedAmountOfSpeed = weaponStates.savedSpeedAmount3;
+                savedAmountOfWeight = savedWeightsList[2];
+                savedAmountOfSpeed = savedSpeedsList[2];
                 break;
 
             case 4:
-                savedAmountOfWeight = weaponStates.savedWeightAmount4;
-                savedAmountOfSpeed = weaponStates.savedSpeedAmount4;
+                savedAmountOfWeight = savedWeightsList[3];
+                savedAmountOfSpeed = savedSpeedsList[3];
                 break;
         }
     }
@@ -262,4 +253,6 @@ public class WeaponStats : MonoBehaviour
 
     public void SetRequestFromUpgrades(bool request) { requestCameFromUseUpgrades = request; }
     public void SetRequestFromActualWeapon(bool request) { requestCameFromSetActualWeapon = request; }
+
+    public void SetWeaponList(List<AbstractWeapon> list) { weapons = list; }
 }

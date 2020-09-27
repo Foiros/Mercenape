@@ -25,7 +25,6 @@ public class GoldDrop : MonoBehaviour
             playerCurrency.playerGold += goldQuantity;
             Destroy(gameObject);
             Debug.Log(playerCurrency.playerGold);
-            SaveManager.SaveCurrency(playerCurrency);
         }
 
     }
