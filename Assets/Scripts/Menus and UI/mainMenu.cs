@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
 using System.Security.Cryptography.X509Certificates;
 
-// Arttu paldán edited 25.9.2020: 
+// Arttu paldán edited 25.9.2020: Added functions for wiping the weapons and currency data for testing purposes. 
 public class mainMenu : MonoBehaviour
 {
     [SerializeField]  
@@ -182,8 +182,13 @@ public class mainMenu : MonoBehaviour
         Application.Quit();
     }
 
-    public void WipeMemory()
+    public void WipeWeaponMemory()
     {
         SaveManager.DeleteWeapons();
+    }
+
+    public void WipeCurrencyMemory()
+    {
+        SaveManager.DeleteCurrency();
     }
 }

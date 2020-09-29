@@ -24,22 +24,10 @@ public abstract class AbstractUpgrades
     public int GetUpgradeCost() { return upgradeCost; }
 }
 
-public class TestUpgrade1 : AbstractUpgrades
+public class TestUpgrade : AbstractUpgrades
 {
     //Constructor for this particular upgradde. 
-    public TestUpgrade1(string name, string description, int id, int cost, Sprite upgrade)
-    {
-        upgradeName = name;
-        upgradeDescription = description;
-        upgradeID = id;
-        upgradeCost = cost;
-        upgradeImage = upgrade;
-    }
-}
-
-public class TestUpgrade2 : AbstractUpgrades
-{
-    public TestUpgrade2(string name, string description, int id, int cost, Sprite upgrade)
+    public TestUpgrade(string name, string description, int id, int cost, Sprite upgrade)
     {
         upgradeName = name;
         upgradeDescription = description;

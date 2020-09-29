@@ -3384,7 +3384,6 @@ MonoBehaviour:
   upgradeImagesHolder:
   - {fileID: 1055566471}
   - {fileID: 1772578679}
-  - {fileID: 1854331660}
   upgradeMenu: {fileID: 1895439582}
   upgradeComponentScreen: {fileID: 982684169}
 --- !u!114 &972304594
@@ -3427,6 +3426,9 @@ MonoBehaviour:
   - {fileID: 421540903}
   - {fileID: 328040359}
   buyWeaponScreen: {fileID: 620933339}
+  counterStart: 0
+  counterEnd: 3
+  originalStart: 0
 --- !u!4 &972304596
 Transform:
   m_ObjectHideFlags: 0

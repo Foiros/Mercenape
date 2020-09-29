@@ -99,26 +99,6 @@ public class WeaponsData
     public List<int> savedWeightAmountsList;
     public List<int> savedSpeedAmountsList;
 
-    public bool ownsWeapon1;
-    public bool ownsWeapon2;
-    public bool ownsWeapon3;
-    public bool ownsWeapon4;
-
-    public bool weapon1HasBeenUpgraded;
-    public bool weapon2HasBeenUpgraded;
-    public bool weapon3HasBeenUpgraded;
-    public bool weapon4HasBeenUpgraded;
-
-    public int amountOfWeight1;
-    public int amountOfWeight2;
-    public int amountOfWeight3;
-    public int amountOfWeight4;
-
-    public int amountOfSpeed1;
-    public int amountOfSpeed2;
-    public int amountOfSpeed3;
-    public int amountOfSpeed4;
-
     public WeaponsData(WeaponStates weaponStates)
     {
         weaponID = weaponStates.GetChosenWeaponID();

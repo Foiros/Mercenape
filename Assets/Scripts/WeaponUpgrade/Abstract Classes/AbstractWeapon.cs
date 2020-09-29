@@ -6,27 +6,27 @@ using UnityEngine;
 public abstract class AbstractWeapon
 { 
     // Weapon details
-    public string weaponName;
-    public string weaponDescription;
+    protected string weaponName;
+    protected string weaponDescription;
 
-    public int weaponID;
-    public int weaponCost;
+    protected int weaponID;
+    protected int weaponCost;
 
-    public Sprite weaponImage;
-    public Sprite chosenWeaponImage;
+    protected Sprite weaponImage;
+    protected Sprite chosenWeaponImage;
 
     // Weapon stats
-    public int weaponSpeed;
-    public int weaponWeight;
-    public int impactDamage;
-    public int bleedDamage;
-    public int bleedDuration;
+    protected int weaponSpeed;
+    protected int weaponWeight;
+    protected int impactDamage;
+    protected int bleedDamage;
+    protected int bleedDuration;
 
     // Weapon reach and hit box
-    public float hitBox;
-    public float hitBoxLocation;
+    protected float hitBox;
+    protected float hitBoxLocation;
 
-
+    
     // Fetch functions for details
     public string GetName() { return weaponName;}
     public string GetDescription() { return weaponDescription;}
@@ -41,66 +41,16 @@ public abstract class AbstractWeapon
     public int GetImpactDamage() { return impactDamage; }
     public int GetBleedDamage() { return bleedDamage; }
     public int GetBleedDuration() { return bleedDuration; }
+
+    // Fetch functions for reach and hitbox
+    public float GetHitBox() { return hitBox; }
+    public float GetReach() { return hitBoxLocation; }
 }
 
-public class TestWeapon1 : AbstractWeapon
+public class TestWeapon : AbstractWeapon
 {
     // This is used to create this object in the scripts. 
-    public TestWeapon1(string name, string description, int id, int cost, int speed, int weight, int damage, float range, float location, Sprite weapon, Sprite chosenWeapon)
-    {
-        weaponName = name;
-        weaponDescription = description;
-        weaponID = id;
-        weaponCost = cost;
-        weaponSpeed = speed;
-        weaponWeight = weight;
-        impactDamage = damage;
-        hitBox = range;
-        hitBoxLocation = location;
-        weaponImage = weapon;
-        chosenWeaponImage = chosenWeapon;
-    }
-}
-
-public class TestWeapon2 : AbstractWeapon
-{
-    public TestWeapon2(string name, string description, int id, int cost, int speed, int weight, int damage, float range, float location, Sprite weapon, Sprite chosenWeapon)
-    {
-        weaponName = name;
-        weaponDescription = description;
-        weaponID = id;
-        weaponCost = cost;
-        weaponSpeed = speed;
-        weaponWeight = weight;
-        impactDamage = damage;
-        hitBox = range;
-        hitBoxLocation = location;
-        weaponImage = weapon;
-        chosenWeaponImage = chosenWeapon;
-    }
-}
-
-public class TestWeapon3 : AbstractWeapon
-{
-    public TestWeapon3(string name, string description, int id, int cost, int speed, int weight, int damage, float range, float location, Sprite weapon, Sprite chosenWeapon)
-    {
-        weaponName = name;
-        weaponDescription = description;
-        weaponID = id;
-        weaponCost = cost;
-        weaponSpeed = speed;
-        weaponWeight = weight;
-        impactDamage = damage;
-        hitBox = range;
-        hitBoxLocation = location;
-        weaponImage = weapon;
-        chosenWeaponImage = chosenWeapon;
-    }
-}
-
-public class TestWeapon4 : AbstractWeapon
-{
-    public TestWeapon4(string name, string description, int id, int cost, int speed, int weight, int damage, float range, float location, Sprite weapon, Sprite chosenWeapon)
+    public TestWeapon(string name, string description, int id, int cost, int speed, int weight, int damage, float range, float location, Sprite weapon, Sprite chosenWeapon)
     {
         weaponName = name;
         weaponDescription = description;

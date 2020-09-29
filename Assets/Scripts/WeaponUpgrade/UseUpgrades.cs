@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 // Created by Arttu Paldán 16.9.2020: This script allows the player to place upgrades into his weapon. 
 public class UseUpgrades : MonoBehaviour
@@ -118,18 +117,18 @@ public class UseUpgrades : MonoBehaviour
         weaponImage.sprite = weaponsArray.GetWeaponImage();
 
         upgradeHolderUpgradeScreen.text = "Speed Upgrades: " + playerCurrency.playerUpgrade;
-        
-        for(int i = 0; i < upgradeImagesHolder.Length; i++)
+
+        UpdateWeaponStats();
+
+        for (int i = 0; i < upgradeImagesHolder.Length; i++)
         {
             upgradeImagesHolder[i].sprite = upgrades[i].GetUpgradeImage();
         }
 
-        for(int i = 0; i < amountTexts.Length; i++)
+        for (int i = 0; i < amountTexts.Length; i++)
         {
-            amountTexts[i].text = "0"; 
+            amountTexts[i].text = "0";
         }
-
-        UpdateWeaponStats();
     }
 
     // Button function for opening an screen that will explain, what the upgrade does when put into the weapon. 
