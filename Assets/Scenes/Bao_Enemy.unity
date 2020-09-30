@@ -1335,6 +1335,40 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &775506385 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8174987084509659711, guid: 94feb3077caf03b44935f25901d89eca,
+    type: 3}
+  m_PrefabInstance: {fileID: 1057547088}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &775506394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 775506385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c78a86cec1db354eaace254b92524f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 0
+--- !u!111 &775506395
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 775506385}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: c242c9d32e4d6534488a37eed49bf513, type: 2}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &931473738
 GameObject:
   m_ObjectHideFlags: 0
@@ -1488,6 +1522,14 @@ PrefabInstance:
       propertyPath: frontPlayerPosition
       value: 
       objectReference: {fileID: 1057547091}
+    - target: {fileID: 475687300, guid: 94feb3077caf03b44935f25901d89eca, type: 3}
+      propertyPath: animation
+      value: 
+      objectReference: {fileID: 775506395}
+    - target: {fileID: 475687300, guid: 94feb3077caf03b44935f25901d89eca, type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 775506395}
     - target: {fileID: 1908770294, guid: 94feb3077caf03b44935f25901d89eca, type: 3}
       propertyPath: m_TagString
       value: WeaponInUse
@@ -3085,9 +3127,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7b2a11342aebd349a926d27c6b6b763, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponImages: []
-  chosenWeaponImages: []
-  upgradeImages: []
 --- !u!114 &2003880738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3117,22 +3156,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponID: 0
-  weapon1HasBeenUpgraded: 0
-  weapon2HasBeenUpgraded: 0
-  weapon3HasBeenUpgraded: 0
-  weapon4HasBeenUpgraded: 0
-  ownsWeapon1: 0
-  ownsWeapon2: 0
-  ownsWeapon3: 0
-  ownsWeapon4: 0
-  savedWeightAmount1: 0
-  savedWeightAmount2: 0
-  savedWeightAmount3: 0
-  savedWeightAmount4: 0
-  savedSpeedAmount1: 0
-  savedSpeedAmount2: 0
-  savedSpeedAmount3: 0
-  savedSpeedAmount4: 0
 --- !u!114 &2003880740
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3145,6 +3168,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4293c8cda1a9e164fa11f4b6d1e4c674, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponID: 0
   speed: 0
   impactDamage: 0
 --- !u!4 &2003880741

@@ -23,6 +23,7 @@ public class PlayerAttackTrigger : MonoBehaviour
     private float hitboxDistFromPlayer;
 
     public Animator PlayerAnimator;
+    public Animation anim;
     private bool IsPlayerAttack = false;
 
     PlayerMovement playerMovement;
@@ -64,8 +65,8 @@ public class PlayerAttackTrigger : MonoBehaviour
         AttackRange = weapons[weaponID].GetHitBox();
 
         weaponSpeed = setActualWeapon.GetWeaponSpeed();
-        PlayerAnimator.speed = weaponSpeed;
-        
+        // anim["PlayerAttack"].speed = weaponSpeed;
+
         PlayerDamage = setActualWeapon.GetWeaponImpactDamage();
     }
 
