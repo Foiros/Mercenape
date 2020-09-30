@@ -5,20 +5,14 @@ using UnityEngine.UI;
 
 public class EnemyStat : MonoBehaviour
 {
-    public Slider sliderHealth;
-    public GameObject healthBarUI;
-    protected float xScaleUI;   // For showing right
+    [SerializeField] protected EnemyStats stat;
 
-    [HideInInspector] public int currentHP;   // Player is accessing this
-    [SerializeField] protected int maxHP;
-    [SerializeField] protected int damage;
+    protected float speed;
+    private int currentHP;                    
 
     protected bool isStunning = false;        // For player is stunning
     protected bool readyToSetStun = true;     // For stunning process
     protected int escapingStunCount = 0;      // Current number of pressing space
-
-    [SerializeField] protected float runningSpeed = 10f;
-    protected float speed;
 
     private float enemyScale;
     protected Rigidbody2D rb;
@@ -33,8 +27,10 @@ public class EnemyStat : MonoBehaviour
 
     private void Awake()
     {
-        xScaleUI = healthBarUI.transform.localScale.x;
         enemyScale = transform.localScale.x;
+
+        stat.healthBarUI = gameObject.transform.GetChild(1).gameObject;
+        stat.sliderHealth = stat.healthBarUI.transform.GetChild(0).gameObject;
     }
 
     protected virtual void Start()
@@ -42,13 +38,12 @@ public class EnemyStat : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         boxCollier = GetComponent<BoxCollider2D>();
 
-        var waveStat = GameObject.Find("EnemySpawner");
+        //var waveStat = GameObject.Find("EnemySpawner");
         //maxHP += waveStat.GetComponent<EnemySpawnerScript>().wave.enemyIncreasedHP;
         //damage += waveStat.GetComponent<EnemySpawnerScript>().wave.enemyIncreasedDamage;
-        currentHP = maxHP;
-        speed = runningSpeed;
-
-        sliderHealth.value = CalculateHealth();
+        speed = stat.runningSpeed;                     
+        currentHP = stat.maxHP;
+        stat.UpdateHealthBar(currentHP);
 
         player = GameObject.FindGameObjectWithTag("Player");
         playerStat = player.GetComponent<PlayerStat>();
@@ -86,8 +81,8 @@ public class EnemyStat : MonoBehaviour
 
         if (!collision.gameObject.CompareTag("Player"))
         {
-            transform.localScale = new Vector2(-(Mathf.Sign(rb.velocity.x)) * enemyScale, enemyScale);
-            healthBarUI.transform.localScale = new Vector2(-(Mathf.Sign(rb.velocity.x)) * xScaleUI, healthBarUI.transform.localScale.y);
+            transform.localScale = new Vector2(-(Mathf.Sign(rb.velocity.x)) * enemyScale, enemyScale);            
+            stat.ScaleRightUI(rb);
         }
 
     }
@@ -97,16 +92,11 @@ public class EnemyStat : MonoBehaviour
     {
         currentHP -= playerDamage;
         print("Current HP: " + currentHP);
-        
-        sliderHealth.value = CalculateHealth();
+       
+        stat.UpdateHealthBar(currentHP);
         StartCoroutine("HealthBarAnimation");
-
+        
         CheckEnemydeath();     
-    }
-
-    private float CalculateHealth()
-    {
-        return (float) currentHP / maxHP;
     }
 
     // Set player movement when being knocked down
@@ -132,11 +122,11 @@ public class EnemyStat : MonoBehaviour
 
     IEnumerator HealthBarAnimation()
     {
-        sliderHealth.gameObject.SetActive(true);
+        stat.sliderHealth.gameObject.SetActive(true);
 
         yield return new WaitForSeconds(1f);
 
-        sliderHealth.gameObject.SetActive(false);
+        stat.sliderHealth.gameObject.SetActive(false);
     }
    
     private void CheckEnemydeath()
@@ -146,9 +136,6 @@ public class EnemyStat : MonoBehaviour
             Destroy(gameObject, 0);
 
             enemyLoot.DropAll();
-
         }
-    }
-
-    
+    }   
 }

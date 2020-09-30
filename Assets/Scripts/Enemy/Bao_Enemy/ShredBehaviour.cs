@@ -54,7 +54,7 @@ public class ShredBehaviour : EnemyStat
     private void ShredAttack()
     {
         StartCoroutine("Attacking");
-        playerStat.PlayerTakeDamage(damage);
+        playerStat.PlayerTakeDamage(stat.damage);
         escapingStunCount = 0;
         isStunning = true;
 
@@ -105,7 +105,7 @@ public class ShredBehaviour : EnemyStat
 
         yield return new WaitForSeconds(1f);
 
-        speed = runningSpeed;
+        speed = stat.runningSpeed;
         this.GetComponent<SpriteRenderer>().color = Color.white;
     }
 

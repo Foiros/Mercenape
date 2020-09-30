@@ -87,7 +87,7 @@ public class PlayerAttackTrigger : MonoBehaviour
             {
                 enemiesToDamage[i].GetComponent<EnemyStat>().TakeDamage(PlayerDamage);
                 Debug.Log("attacking" + enemiesToDamage[i] + PlayerDamage );
-                Debug.Log(enemiesToDamage[i].GetComponent<EnemyStat>().currentHP);
+                //Debug.Log(enemiesToDamage[i].GetComponent<EnemyStat>().currentHP);
             }
         }
 

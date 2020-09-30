@@ -18,6 +18,7 @@ public class MowerBehaviour : EnemyStat
         base.Start();   // Start both EnemyStat and MowerBehaviour       
 
         backSide = transform.GetChild(2);
+        
     }
 
     void Update()
@@ -83,7 +84,7 @@ public class MowerBehaviour : EnemyStat
             StopCoroutine(coroutine);
         }
 
-        coroutine = StartCoroutine(ApplyDamage(3, damage));
+        coroutine = StartCoroutine(ApplyDamage(3, stat.damage));
     }
 
     protected override void StunningProcess()
@@ -117,7 +118,7 @@ public class MowerBehaviour : EnemyStat
     {
         boxCollier.isTrigger = false;
         rb.bodyType = RigidbodyType2D.Dynamic;
-        speed = runningSpeed;
+        speed = stat.runningSpeed;
         isAttacking = false;
     }
 
