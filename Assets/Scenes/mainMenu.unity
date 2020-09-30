@@ -4023,7 +4023,7 @@ GameObject:
   - component: {fileID: 749195355}
   - component: {fileID: 749195354}
   m_Layer: 5
-  m_Name: WipeMemoryWeapons (1)
+  m_Name: WipeMemoryCurrency
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7513,7 +7513,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Wipe Weapons Data
+  m_Text: 'Wipe Currency Data
+
+'
 --- !u!222 &1384084201
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 // Created by Arttu Paldán 17.9.2020: A script that handles the ownership issues of this system.
 public class WeaponStates: MonoBehaviour
 {
-    private int weaponID;
+    [SerializeField]private int weaponID;
 
     private List<bool> ownedWeaponsList;
     private List<bool> upgradedWeaponsList;
@@ -36,6 +36,10 @@ public class WeaponStates: MonoBehaviour
     void Awake()
     {
         SetUpBoolLists();
+    }
+
+    void Start()
+    {
         LoadWeaponData();
     }
 

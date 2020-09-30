@@ -13,7 +13,7 @@ public class SetActualWeapon : MonoBehaviour
 
     private SpriteRenderer weaponInUseImage;
 
-    private int weaponID;
+    [SerializeField]private int weaponID;
     
     [SerializeField] private int speed;
     [SerializeField] private int impactDamage;
@@ -24,15 +24,18 @@ public class SetActualWeapon : MonoBehaviour
         weaponStats = GetComponent<WeaponStats>();
 
         weaponInUseImage = GameObject.FindGameObjectWithTag("WeaponInUse").GetComponent<SpriteRenderer>();
-       
-        weaponID = weaponStates.GetChosenWeaponID();
+    }
 
+    void Start()
+    {
         SetUpWeapon();
     }
 
     // Sets up the stats and the image of the object.
     void SetUpWeapon()
     {
+        weaponID = weaponStates.GetChosenWeaponID();
+
         AbstractWeapon weaponsArray = weapons[weaponID];
 
         weaponInUseImage.sprite = weaponsArray.GetWeaponImage();
