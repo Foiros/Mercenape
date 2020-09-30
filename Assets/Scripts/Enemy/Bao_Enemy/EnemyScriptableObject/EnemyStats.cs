@@ -13,11 +13,11 @@ public class EnemyStats : ScriptableObject
     public float runningSpeed;
 
     public GameObject healthBarUI;
-    public GameObject sliderHealth;
+    [HideInInspector] public GameObject sliderHealth;
     private float xScaleUI;
 
     private void OnEnable()
-    {         
+    {                
         xScaleUI = healthBarUI.transform.localScale.x;     
     }
 

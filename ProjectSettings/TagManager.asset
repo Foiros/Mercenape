@@ -35,6 +35,7 @@ TagManager:
   - gamemaster
   - AmountText
   - UpgradeImageHolder
+  - EnemyHealthBar
   layers:
   - Default
   - TransparentFX

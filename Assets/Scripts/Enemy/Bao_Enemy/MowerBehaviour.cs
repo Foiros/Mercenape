@@ -11,17 +11,17 @@ public class MowerBehaviour : EnemyStat
 
     private float ridePos;
 
-    private Transform backSide;
+    private GameObject backSide;
 
     protected override void Start()
     {
-        base.Start();   // Start both EnemyStat and MowerBehaviour       
+        base.Start();   // Start both EnemyStat and MowerBehaviour   
 
-        backSide = transform.GetChild(2);
+        backSide = transform.GetChild(2).gameObject;
         
     }
 
-    void Update()
+    private void Update()
     {
         StunningProcess();
 
@@ -31,6 +31,7 @@ public class MowerBehaviour : EnemyStat
         }
     }
 
+    // When player jump on Mower to ride
     private void OnCollisionEnter2D(Collision2D col)
     {
         if (col.gameObject.CompareTag("Player"))
@@ -40,6 +41,7 @@ public class MowerBehaviour : EnemyStat
         }
     }
 
+    // When player stop riding
     private void OnCollisionExit2D(Collision2D col)
     {
         if (col.gameObject.CompareTag("Player"))
@@ -48,6 +50,7 @@ public class MowerBehaviour : EnemyStat
         }
     }
 
+    // Attack when hit the player in the front side
     private void OnTriggerEnter2D(Collider2D col)
     {
         if (col.gameObject.CompareTag("Player"))
@@ -61,6 +64,7 @@ public class MowerBehaviour : EnemyStat
         }
     }
 
+    // Fix a bug when player auto ride after being attacked
     protected override void OnTriggerExit2D(Collider2D collision)
     {
         base.OnTriggerExit2D(collision);
@@ -110,7 +114,7 @@ public class MowerBehaviour : EnemyStat
             readyToSetStun = true;
             isStunning = false;
 
-            Invoke("ReturnPhysics", 0.5f);
+            Invoke("ReturnPhysics", 0.2f);
         }        
     }
 
@@ -126,7 +130,7 @@ public class MowerBehaviour : EnemyStat
     {
         rb.bodyType = RigidbodyType2D.Kinematic;
         boxCollier.isTrigger = true;
-        speed = 1f;
+        speed = 1.5f;
 
         yield return new WaitForSeconds(3f);
 

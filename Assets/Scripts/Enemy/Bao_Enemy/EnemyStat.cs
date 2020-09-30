@@ -27,14 +27,14 @@ public class EnemyStat : MonoBehaviour
 
     private void Awake()
     {
-        enemyScale = transform.localScale.x;
-
-        stat.healthBarUI = gameObject.transform.GetChild(1).gameObject;
-        stat.sliderHealth = stat.healthBarUI.transform.GetChild(0).gameObject;
+        enemyScale = transform.localScale.x;      
     }
 
     protected virtual void Start()
-    {      
+    {
+        stat.healthBarUI = gameObject.transform.GetChild(1).gameObject;
+        stat.sliderHealth = stat.healthBarUI.transform.GetChild(0).gameObject;
+
         rb = GetComponent<Rigidbody2D>();
         boxCollier = GetComponent<BoxCollider2D>();
 
@@ -78,6 +78,8 @@ public class EnemyStat : MonoBehaviour
     {
         // Fix a bug that Shred stick to player when colliding
         if (collision.gameObject.CompareTag("Loot")) { return; }
+        if (collision.gameObject.CompareTag("wall")) { return; }
+        if (collision.gameObject.CompareTag("VineAnchor")) { return; }
 
         if (!collision.gameObject.CompareTag("Player"))
         {

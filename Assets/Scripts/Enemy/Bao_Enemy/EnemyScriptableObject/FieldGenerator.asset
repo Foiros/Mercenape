@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8ed0327bdfa538e4ca2acaa7c25c6533, type: 3}
-  m_Name: Shred
+  m_Name: FieldGenerator
   m_EditorClassIdentifier: 
-  name: Shred
-  damage: 10
-  maxHP: 50
-  runningSpeed: 8
+  name: Mower's Ass
+  damage: 5
+  maxHP: 20
+  runningSpeed: 0
   healthBarUI: {fileID: 6264346053042711896, guid: 3cf66b509736a8c43abf4fc5cff5cde0,
     type: 3}
   sliderHealth: {fileID: 0}
