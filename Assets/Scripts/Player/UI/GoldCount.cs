@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,22 +9,38 @@ public class GoldCount : MonoBehaviour
 {
     // Start is called before the first frame update
     private PlayerCurrency playerCurrency;
-   Text goldCount;
-    
+    Text text;
+    public GameObject gold;
+    GoldDrop goldDrop;
         void Start()
     {
-        playerCurrency = GetComponent<PlayerCurrency>();
-
         playerCurrency = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCurrency>();
 
-        goldCount = GetComponent<Text>();
+        text = GetComponent<Text>();
+        TextUpdate();
 
 
+        goldDrop = gold.GetComponent<GoldDrop>();
+        goldDrop.OnPlayerColGold += GoldDrop_OnPlayerColGold;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        goldCount.text = playerCurrency.playerGold.ToString();
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            TextUpdate();
+        }
+    }
+    private void GoldDrop_OnPlayerColGold(object sender, EventArgs e)
+    {
+        TextUpdate();
+    }
+
+
+
+    // Update is called once per frame
+    void TextUpdate()
+    {
+        text.text = playerCurrency.playerGold.ToString();
     }
 }

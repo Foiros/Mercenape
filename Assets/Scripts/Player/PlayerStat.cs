@@ -14,16 +14,19 @@ public class PlayerStat : MonoBehaviour
     public int PlayerMaxHP;
     public int PlayerDamage;
 
-    
+    PlayerHealthBar playerHealthBar;
 
 
     void Start()
     {
-        healthBar = GetComponentInChildren<Healthbar_Ossi>();
+        /*healthBar = GetComponentInChildren<Healthbar_Ossi>();
         if(healthBar != null)
         {
             Debug.Log("PlayerHP bar found.");
-        }
+        }*/
+
+        playerHealthBar = transform.Find("PlayerUI").GetComponentInChildren<PlayerHealthBar>();
+
         PlayerHP = PlayerMaxHP;
         
     }
@@ -39,6 +42,7 @@ public class PlayerStat : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Y))
         {
             updateHealth(10);
+           
         }
         if(Input.GetKeyDown(KeyCode.Z))
         {
@@ -66,8 +70,9 @@ public class PlayerStat : MonoBehaviour
                 Debug.Log("Dead.");
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
-        //Add the new health values to change the fill amount of the healthbar.
-            healthBar.updateHealthBar(PlayerMaxHP, PlayerHP);
+            //Add the new health values to change the fill amount of the healthbar.
+            //  healthBar.updateHealthBar(PlayerMaxHP, PlayerHP);
+            playerHealthBar.SetCurrentHP(PlayerHP);
         }    
         
         
@@ -88,6 +93,7 @@ public class PlayerStat : MonoBehaviour
     public void PlayerTakeDamage(int EnemyDamage)
     {
         PlayerHP -= EnemyDamage;
+        playerHealthBar.SetCurrentHP(PlayerHP);
         CheckPlayerDeath();    //ineffective should only be called when get damage 
         
     }

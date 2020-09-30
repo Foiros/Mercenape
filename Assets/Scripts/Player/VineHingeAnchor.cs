@@ -31,15 +31,15 @@ public class VineHingeAnchor : MonoBehaviour
             player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;// no more gravity
             
             rb.AddForce(new Vector2(h * swingSpeed * Time.deltaTime,0), ForceMode2D.Force);
-            
-          if (Input.GetKeyDown(KeyCode.Space)&& isSwing)
+
+            if (Input.GetKeyDown(KeyCode.Space) && isSwing)
             {
                 isSwing = false;
                 player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
                 player.transform.parent = null;
 
-                 player.GetComponent<Rigidbody2D>().AddForce (new Vector2(player.GetComponent<Rigidbody2D>().velocity.x+ (h*swingSpeed*10*Time.deltaTime), player.GetComponent<Rigidbody2D>().velocity.y+20)*100 * Time.deltaTime);
-                
+                player.GetComponent<Rigidbody2D>().AddForce(new Vector2(player.GetComponent<Rigidbody2D>().velocity.x + (h * swingSpeed * 10 * Time.deltaTime), player.GetComponent<Rigidbody2D>().velocity.y + 20) * 100 * Time.deltaTime);
+                player.transform.rotation = Quaternion.Euler(0, 0, 0);
                 
 
             }

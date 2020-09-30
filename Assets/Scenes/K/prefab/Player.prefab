@@ -210,7 +210,7 @@ Transform:
   - {fileID: 128901979}
   - {fileID: 1508194159}
   - {fileID: 9025427508995980396}
-  - {fileID: 2126111021051470694}
+  - {fileID: 1829851223027515112}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -324,9 +324,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7d7318d2b344b64a8acafbf4c1a159c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerSpeed: 10
-  PlayerJumpPow: 15
-  PlayerDoubleJumpPow: 14
+  PlayerSpeed: 30
+  PlayerJumpPow: 30
+  PlayerDoubleJumpPow: 25
   MidAirSpeed: 5
   groundlayermask:
     serializedVersion: 2
@@ -355,7 +355,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 8174987084509659711}
-  PlayerKarma: 0
+  playerKarma: 0
   playerGold: 0
   playerUpgrade: 0
 --- !u!114 &8174987084509659846
@@ -415,7 +415,8 @@ MonoBehaviour:
   PlayerDamage: 5
   frontPlayerPosition: {fileID: 1908770295}
   PlayerAnimator: {fileID: 475687299}
---- !u!1001 &317532033581077980
+  anim: {fileID: 0}
+--- !u!1001 &39829775646640210
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -549,9 +550,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ec01022eb00a404eb858d936bdba09b, type: 3}
---- !u!224 &2126111021051470694 stripped
+--- !u!224 &1829851223027515112 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1867145593168115386, guid: 0ec01022eb00a404eb858d936bdba09b,
     type: 3}
-  m_PrefabInstance: {fileID: 317532033581077980}
+  m_PrefabInstance: {fileID: 39829775646640210}
   m_PrefabAsset: {fileID: 0}

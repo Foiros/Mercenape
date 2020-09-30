@@ -1,21 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class HealthOrbDrop : MonoBehaviour
 {
+    public event EventHandler OnPlayerColHP;
     [SerializeField] GameObject healthDrop;
     [SerializeField] LayerMask groundlayermask;
     private PlayerStat playerStat;
-    CircleCollider2D collider2D;
+  
 
     void Start()
     {
-        playerStat = GetComponent<PlayerStat>();
-
         playerStat = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStat>();
 
-        collider2D = GetComponent<CircleCollider2D>();
+        OnPlayerColHP += UpdateHP;
 
     }
 
@@ -29,20 +29,23 @@ public class HealthOrbDrop : MonoBehaviour
         }
         
     }
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.name == "Player")
         {
-            
-            playerStat.PlayerHP += 30;
-            if (playerStat.PlayerHP> playerStat.PlayerMaxHP)
-            {
-                playerStat.PlayerHP = playerStat.PlayerMaxHP;
-            }
-            Destroy(gameObject);
-         
+            OnPlayerColHP?.Invoke(this, EventArgs.Empty);
         }
-       
     }
 
+
+    void UpdateHP(object sender, EventArgs e)
+    {
+        playerStat.PlayerHP += 30;
+        if (playerStat.PlayerHP > playerStat.PlayerMaxHP)
+        {
+            playerStat.PlayerHP = playerStat.PlayerMaxHP;
+        }
+        Destroy(gameObject);
+    }
 }

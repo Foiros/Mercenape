@@ -1,41 +1,49 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+
+
 
 public class UpgradeDrop : MonoBehaviour
 {
     [SerializeField] GameObject upgradeDrop;
     [SerializeField] LayerMask groundlayermask;
     private PlayerCurrency playerCurrency;
-    //CircleCollider2D collider2D;
+    public event EventHandler OnPlayerColUp;
 
     void Start()
     {
-        playerCurrency = GetComponent<PlayerCurrency>();
-        playerCurrency = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCurrency>();
-        //collider2D = GetComponent<CircleCollider2D>();
 
+        playerCurrency = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCurrency>();
+        OnPlayerColUp += UpdateUpgrade;
     }
 
     void Update()
     {
-       bool grounded = Physics2D.OverlapCircle(transform.position, (0.3f), groundlayermask);
+        bool grounded = Physics2D.OverlapCircle(transform.position, (0.3f), groundlayermask);
 
         if (!grounded)
         {
             transform.Translate(Vector2.down * 3 * Time.deltaTime);
         }
     }
-    
+
+
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.name == "Player")
+        if (other.tag == "Player")
         {
-            print("Picking");
-            playerCurrency.playerUpgrade++;
-            Destroy(gameObject);
-        }
+            OnPlayerColUp?.Invoke(this, EventArgs.Empty);
         
+        }
+
+    }
+
+    void UpdateUpgrade(object sender, EventArgs e)
+    {
+        playerCurrency.playerUpgrade++;
+        Destroy(gameObject);
     }
 }
 

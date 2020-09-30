@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
+
 
 public class KarmaBar : MonoBehaviour
 {
@@ -10,6 +12,8 @@ public class KarmaBar : MonoBehaviour
     public Image fill;
     private PlayerCurrency playerCurrency;
     
+    public GameObject karma;
+    KarmaPickup karmaPickup;
 
     GameMaster gm;
     // Start is called before the first frame update
@@ -21,25 +25,26 @@ public class KarmaBar : MonoBehaviour
         playerCurrency = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCurrency>();
         gm = GameObject.FindGameObjectWithTag("gamemaster").GetComponent<GameMaster>();
 
-        setMaxValue();  
+        SetMaxValue();
+
+        karmaPickup = karma.GetComponent<KarmaPickup>();
+        karmaPickup.OnPlayerColKarma += KarmaPickup_OnPlayerColKarma;
     }
-    
 
-
-    // Update is called once per frame
-    void Update()
+    private void KarmaPickup_OnPlayerColKarma(object sender, EventArgs e)
     {
-        setValue();
+        SetValue();
     }
 
-    void setMaxValue()
+   
+    void SetMaxValue()
     {
         slider.maxValue = gm.lvMaxKarma;
         slider.value = playerCurrency.playerKarma;
 
     }
 
-    void setValue()
+    void SetValue()
     {
         slider.value = playerCurrency.playerKarma;
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class PlayerHealthBar : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class PlayerHealthBar : MonoBehaviour
     
     private PlayerStat playerStat;
 
+    public GameObject hpDrop;
+    HealthOrbDrop healthOrbDrop;
     private void Start()
     {
         
@@ -20,12 +23,13 @@ public class PlayerHealthBar : MonoBehaviour
         playerStat = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStat>();
 
         SetMaxHp();
-        
+        healthOrbDrop = hpDrop.GetComponent<HealthOrbDrop>();
+        healthOrbDrop.OnPlayerColHP += HealthOrbDrop_OnPlayerColHP;
     }
-    private void Update()
+
+    private void HealthOrbDrop_OnPlayerColHP(object sender, EventArgs e)
     {
-        SetCurrentHP(playerStat.PlayerHP);
-    }
+        SetCurrentHP(playerStat.PlayerHP);    }
 
     public void SetMaxHp()
     {
@@ -34,7 +38,7 @@ public class PlayerHealthBar : MonoBehaviour
         fill.color = gradient.Evaluate(1f);
     }
 
-    public void SetCurrentHP(int HP)
+    public void SetCurrentHP(float HP)
     {
 
         slider.value = HP;

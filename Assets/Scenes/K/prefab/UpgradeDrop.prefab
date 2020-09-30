@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6106106539920529261}
   - component: {fileID: 1980276748720250687}
   - component: {fileID: -7857217924322281420}
+  - component: {fileID: -8568385072332679687}
   m_Layer: 0
   m_Name: UpgradeDrop
   m_TagString: Loot
@@ -147,3 +148,19 @@ MonoBehaviour:
   groundlayermask:
     serializedVersion: 2
     m_Bits: 256
+--- !u!58 &-8568385072332679687
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6106106539920529169}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 2.885

@@ -314,6 +314,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8783d1efa057ffe4e91cac089a49364d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  upgrade: {fileID: 6106106539920529169, guid: 372244b7ea842e34ba2a93514a5e82bf, type: 3}
 --- !u!1 &4198811829652823659
 GameObject:
   m_ObjectHideFlags: 0
@@ -479,7 +480,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92f354f772b64094285f95c362c17031, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  karmaBar: {fileID: 5055814070822814492}
+  karma: {fileID: 450763958401993869, guid: cc456ea0021f3334091f822ddba309f2, type: 3}
 --- !u!1 &5504829296793147649
 GameObject:
   m_ObjectHideFlags: 0
@@ -613,6 +614,7 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   fill: {fileID: 2676301727509517213}
+  hpDrop: {fileID: 1894584535332837582, guid: fd655d8535685a043a4244e1d452097f, type: 3}
 --- !u!1 &6414610425729364696
 GameObject:
   m_ObjectHideFlags: 0
@@ -850,6 +852,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1ee209c1ae0ef249afa3289fa2b55f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gold: {fileID: 5243515410850218913, guid: d65fd8bc710b8774bafdd634afade683, type: 3}
 --- !u!1 &7884249610386541826
 GameObject:
   m_ObjectHideFlags: 0
@@ -1066,7 +1069,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 1297255042634926645}
   fill: {fileID: 2676557373168706113}
-  lvMaxKarma: 100
+  karma: {fileID: 450763958401993869, guid: cc456ea0021f3334091f822ddba309f2, type: 3}
 --- !u!1 &9024220001728119610
 GameObject:
   m_ObjectHideFlags: 0
