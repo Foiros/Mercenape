@@ -35,7 +35,7 @@ public class GameMaster : MonoBehaviour
 
         if (buildIndex > 0)
         {
-            lvMaxKarma = buildIndex * 100;
+            lvMaxKarma = buildIndex * 1000;
         }
         else
         {

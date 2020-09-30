@@ -51,6 +51,7 @@ public class mainMenu : MonoBehaviour
         {
             if(Input.anyKeyDown)
             {
+
                 selectedButton.GetComponentInChildren<Text>().text = Input.inputString;
                 isSelected = false;
             }
@@ -120,17 +121,12 @@ public class mainMenu : MonoBehaviour
                     Debug.Log("Back script found");
                     if (isPaused)
                     {
+                        //Back button will now open the Pause Panel (panels[1])
                         btnScript.paneltoOpen = panels[1];
                     } else
                     {
-                        for(int i = 0; i < panels.Length; i++)
-                        {
-                            if(panels[i].name.Contains("start"))
-                            {
-                                btnScript.paneltoOpen = panels[i];
-                                break;
-                            }
-                        }
+                        //Back button will open Main panel, panels[0].
+                        btnScript.paneltoOpen = panels[0];
                     }
                 }
             }      
