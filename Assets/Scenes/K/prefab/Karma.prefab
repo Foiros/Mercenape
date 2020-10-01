@@ -12,11 +12,10 @@ GameObject:
   - component: {fileID: 450763958401993858}
   - component: {fileID: 450763958401993859}
   - component: {fileID: 450763958401993856}
-  - component: {fileID: 450763958401993868}
   - component: {fileID: 1084936500}
   m_Layer: 0
   m_Name: Karma
-  m_TagString: Loot
+  m_TagString: Loot/Karma
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -132,21 +131,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &450763958401993868
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 450763958401993869}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33458834100d6ed44a97d57b97f204ed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Karma: {fileID: 450763958401993869}
-  KarmaQuantity: 10
-  enemyLoot: {fileID: 1116709294, guid: 6bf7f04fc1ba8474f836163d7d64fe7d, type: 3}
 --- !u!114 &1084936500
 MonoBehaviour:
   m_ObjectHideFlags: 0

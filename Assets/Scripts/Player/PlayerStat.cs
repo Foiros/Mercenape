@@ -25,7 +25,7 @@ public class PlayerStat : MonoBehaviour
             Debug.Log("PlayerHP bar found.");
         }*/
 
-        playerHealthBar = transform.Find("PlayerUI").GetComponentInChildren<PlayerHealthBar>();
+        playerHealthBar = transform.Find("PlayerUI").GetComponent<PlayerHealthBar>();
 
         PlayerHP = PlayerMaxHP;
         
@@ -98,6 +98,6 @@ public class PlayerStat : MonoBehaviour
         
     }
 
-    
+  
 
 }

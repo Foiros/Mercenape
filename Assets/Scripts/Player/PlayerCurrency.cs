@@ -8,24 +8,39 @@ public class PlayerCurrency : MonoBehaviour
 {
     public GameMaster gm;
     //public GameObject Player;
-    public Image prompt;
+    //public Image prompt;
     public Text moneyText, upgradeText, karmaText;
     public Slider karmaBar;
     public int playerKarma, playerGold, playerUpgrade;
-
+    Transform playerUI;
     void Awake()
-    {     
+    {
+     
+
         LoadSaveFile();
+       
     }
     private void Start()
     {
+        playerUI = GameObject.FindGameObjectWithTag("Player").transform.Find("PlayerUI");
+    
+
+        moneyText = playerUI.Find("moneyText").GetComponent<Text>();
+
+        upgradeText = playerUI.Find("upgradeText").GetComponent<Text>();
+
+        karmaText = playerUI.Find("karmaBar").Find("karmaText").GetComponent<Text>();
+
+        karmaBar = playerUI.Find("karmaBar").GetComponent<Slider>();
+
         gm = GameObject.FindGameObjectWithTag("gamemaster").GetComponent<GameMaster>();
-        karmaBar.GetComponent<Slider>();
-        karmaBar.maxValue = 1000;
+
+
+        /*karmaBar.maxValue = 1000;
         if (prompt != null)
-        {
-            prompt.enabled = false;
-        }
+         {
+             prompt.enabled = false;
+         }*/
 
     }
 
@@ -48,14 +63,15 @@ public class PlayerCurrency : MonoBehaviour
         {
             playerGold = 0;
         }
-        moneyText.text = playerGold.ToString();
+        
+       // moneyText.text = playerGold.ToString();
     }
 
     public void updateKarma(int amount)
     {
         playerKarma += amount;
-        karmaBar.value = playerKarma;
-        karmaText.text = playerKarma.ToString();
+     //   karmaBar.value = playerKarma;
+      //  karmaText.text = playerKarma.ToString();
     }
 
     public void updateUpgrades(int amount)
@@ -65,7 +81,7 @@ public class PlayerCurrency : MonoBehaviour
         {
             playerUpgrade = 0;
         }
-        upgradeText.text = playerUpgrade.ToString();
+       // upgradeText.text = playerUpgrade.ToString();
 
     }
 }

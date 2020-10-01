@@ -8,44 +8,47 @@ using System;
 public class KarmaBar : MonoBehaviour
 {
 
-    public Slider slider;
-    public Image fill;
+    public Slider karmaBar;
+    public Image karmaFill;
     private PlayerCurrency playerCurrency;
-    
-    public GameObject karma;
-    KarmaPickup karmaPickup;
-
     GameMaster gm;
-    // Start is called before the first frame update
+
+
     void Start()
     {
-        slider = GetComponent<Slider>();
 
-        playerCurrency = GetComponent<PlayerCurrency>();
+        karmaBar = GameObject.FindGameObjectWithTag("Player").transform.Find("PlayerUI").Find("karmaBar").GetComponent<Slider>();
+        karmaFill = GameObject.FindGameObjectWithTag("Player").transform.Find("PlayerUI").Find("karmaBar").Find("karmaFill").GetComponent<Image>();
+
         playerCurrency = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCurrency>();
-        gm = GameObject.FindGameObjectWithTag("gamemaster").GetComponent<GameMaster>();
+        
+       
+        gm = GameObject.FindGameObjectWithTag("Player").GetComponent<GameMaster>();
+        
 
         SetMaxValue();
 
-        karmaPickup = karma.GetComponent<KarmaPickup>();
-        karmaPickup.OnPlayerColKarma += KarmaPickup_OnPlayerColKarma;
+      
     }
 
-    private void KarmaPickup_OnPlayerColKarma(object sender, EventArgs e)
-    {
-        SetValue();
-    }
+ 
 
-   
     void SetMaxValue()
     {
-        slider.maxValue = gm.lvMaxKarma;
-        slider.value = playerCurrency.playerKarma;
+        if (gm.lvMaxKarma != null)
+        {
+            karmaBar.maxValue = gm.lvMaxKarma;
+        }
+        else { 
+        karmaBar.maxValue = 1000;
+        print("cant find gm");
+        }
+        karmaBar.value = playerCurrency.playerKarma;
 
     }
 
-    void SetValue()
+   public void SetValue()
     {
-        slider.value = playerCurrency.playerKarma;
+        karmaBar.value = playerCurrency.playerKarma;
     }
 }

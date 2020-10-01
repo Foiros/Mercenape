@@ -10,13 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 5243515410850218915}
   - component: {fileID: 5243515410850218912}
-  - component: {fileID: 5243515410850218914}
   - component: {fileID: -4044163255480830850}
   - component: {fileID: -6168929696436275880}
   - component: {fileID: -6299769219585288780}
   m_Layer: 0
   m_Name: Gold
-  m_TagString: Loot
+  m_TagString: Loot/Gold
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -85,19 +84,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &5243515410850218914
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5243515410850218913}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f90745d51e224646a1d8413aa8b7bed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Gold: {fileID: 5243515410850218913}
 --- !u!50 &-4044163255480830850
 Rigidbody2D:
   serializedVersion: 4

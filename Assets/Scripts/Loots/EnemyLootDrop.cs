@@ -9,7 +9,7 @@ public class EnemyLootDrop : MonoBehaviour
     public GameObject KarmaDrop;
     int noKarmaInstantiate;
     public int KarmaDropQuantity;// to make it dramatic but can also make 1 var  
-    private KarmaPickup karmaPickup;
+    private PlayerCollisionDectection collisionDectection;
     
     public GameObject goldDrop;
     
@@ -22,7 +22,7 @@ public class EnemyLootDrop : MonoBehaviour
     void Start()
     {
         player = GameObject.Find("Player");
-        karmaPickup = KarmaDrop.GetComponent<KarmaPickup>();
+        collisionDectection = player.GetComponent<PlayerCollisionDectection>();
     }
     private void Update()
     {
@@ -39,7 +39,7 @@ public class EnemyLootDrop : MonoBehaviour
 
     public void InstantiateKarmaDrop()
     {
-        noKarmaInstantiate = KarmaDropQuantity / karmaPickup.KarmaQuantity;
+        noKarmaInstantiate = KarmaDropQuantity / collisionDectection.KarmaQuantity;
 
         for (int i = 0; i < noKarmaInstantiate; i++)
         {

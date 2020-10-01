@@ -36,6 +36,11 @@ TagManager:
   - AmountText
   - UpgradeImageHolder
   - EnemyHealthBar
+  - Ladder
+  - Loot/Gold
+  - Loot/HPDrop
+  - Loot/Karma
+  - Loot/UpgradeDrop
   layers:
   - Default
   - TransparentFX

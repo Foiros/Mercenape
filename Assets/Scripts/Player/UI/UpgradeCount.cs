@@ -8,28 +8,25 @@ using System;
 public class UpgradeCount : MonoBehaviour
 {
     private PlayerCurrency playerCurrency;
-    Text upgradeCount;
-    public GameObject upgrade;
-    UpgradeDrop upgradeDrop;
+    public Text upgradeText;
+
+
     void Start()
     {
         playerCurrency = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCurrency>();
-        upgradeCount = GetComponent<Text>();
-        UpdateText();
+        
+        upgradeText = GameObject.FindGameObjectWithTag("Player").transform.Find("PlayerUI").Find("upgradeText").GetComponent<Text>();
+       
 
-        upgradeDrop = upgrade.GetComponent<UpgradeDrop>();
-        upgradeDrop.OnPlayerColUp += UpgradeDrop_OnPlayerColUp;
+
+        UpdateText();// update the UI when start the game
 
     }
 
-    private void UpgradeDrop_OnPlayerColUp(object sender, EventArgs e)
-    {
-        UpdateText();
-    }
 
     // Update is called once per frame
-    void UpdateText()
+    public void UpdateText()
     {
-        upgradeCount.text = playerCurrency.playerUpgrade.ToString();
+        upgradeText.text = playerCurrency.playerUpgrade.ToString();
     }
 }

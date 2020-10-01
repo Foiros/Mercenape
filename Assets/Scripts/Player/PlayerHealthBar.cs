@@ -7,42 +7,42 @@ using System;
 public class PlayerHealthBar : MonoBehaviour
 {
    
-    public Slider slider;
-    public Gradient gradient;
-    public Image fill;
+    public Slider hpBar;
+    public Gradient hpGradient;
+    public Image hpFill;
     
     private PlayerStat playerStat;
 
-    public GameObject hpDrop;
-    HealthOrbDrop healthOrbDrop;
+
     private void Start()
     {
+
+        hpBar = GameObject.FindGameObjectWithTag("Player").transform.Find("PlayerUI").Find("hpBar").GetComponent<Slider>();
         
-        
-        playerStat = GetComponent<PlayerStat>();
+
+        hpFill = GameObject.FindGameObjectWithTag("Player").transform.Find("PlayerUI").Find("hpBar").Find("hpFill").GetComponent<Image>();
+
         playerStat = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStat>();
 
         SetMaxHp();
-        healthOrbDrop = hpDrop.GetComponent<HealthOrbDrop>();
-        healthOrbDrop.OnPlayerColHP += HealthOrbDrop_OnPlayerColHP;
+
     }
 
-    private void HealthOrbDrop_OnPlayerColHP(object sender, EventArgs e)
-    {
-        SetCurrentHP(playerStat.PlayerHP);    }
+
+   
 
     public void SetMaxHp()
     {
-        slider.maxValue = playerStat.PlayerMaxHP;
-        slider.value =playerStat.PlayerHP ;
-        fill.color = gradient.Evaluate(1f);
+        hpBar.maxValue = playerStat.PlayerMaxHP;
+        hpBar.value =playerStat.PlayerHP ;
+        hpFill.color = hpGradient.Evaluate(1f);
     }
 
     public void SetCurrentHP(float HP)
     {
 
-        slider.value = HP;
-        fill.color = gradient.Evaluate(slider.normalizedValue);
+        hpBar.value = HP;
+        hpFill.color = hpGradient.Evaluate(hpBar.normalizedValue);
     }
 
 }

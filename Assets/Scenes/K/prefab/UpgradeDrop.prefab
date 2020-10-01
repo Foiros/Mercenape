@@ -12,11 +12,11 @@ GameObject:
   - component: {fileID: 6106106539920529168}
   - component: {fileID: 6106106539920529261}
   - component: {fileID: 1980276748720250687}
-  - component: {fileID: -7857217924322281420}
   - component: {fileID: -8568385072332679687}
+  - component: {fileID: 5635507955814971729}
   m_Layer: 0
   m_Name: UpgradeDrop
-  m_TagString: Loot
+  m_TagString: Loot/UpgradeDrop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -132,22 +132,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &-7857217924322281420
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6106106539920529169}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4a240b13769da8419db777fc8e89bdc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  upgradeDrop: {fileID: 6106106539920529169}
-  groundlayermask:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!58 &-8568385072332679687
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -164,3 +148,18 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 2.885
+--- !u!114 &5635507955814971729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6106106539920529169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9068860cc04535641b8fa607fa094de7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groundlayermask:
+    serializedVersion: 2
+    m_Bits: 256

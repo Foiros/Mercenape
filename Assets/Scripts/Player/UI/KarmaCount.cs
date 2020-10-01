@@ -8,28 +8,21 @@ public class KarmaCount : MonoBehaviour
 {
     // Start is called before the first frame update
     private PlayerCurrency playerCurrency;
-    Text karmaCount;
-    public GameObject karma;
-    KarmaPickup karmaPickup;
+    Text karmaText;
+  
     void Start()
     {
        
         playerCurrency = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCurrency>();
-        karmaCount = GetComponent<Text>();
+        karmaText = GameObject.FindGameObjectWithTag("Player").transform.Find("PlayerUI").Find("karmaBar").Find("karmaText").GetComponent<Text>();
         Updatetext();
-        karmaPickup = karma.GetComponent<KarmaPickup>();
-        karmaPickup.OnPlayerColKarma += KarmaPickup_OnPlayerColKarma;
-
+        
     }
+    
 
-    private void KarmaPickup_OnPlayerColKarma(object sender, EventArgs e)
+   
+   public void Updatetext()
     {
-        Updatetext();
-    }
-
-    // Update is called once per frame
-    void Updatetext()
-    {
-        karmaCount.text = playerCurrency.playerKarma.ToString();
+        karmaText.text = playerCurrency.playerKarma.ToString();
     }
 }
