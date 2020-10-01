@@ -281,7 +281,7 @@ Rigidbody2D:
   m_Mass: 30
   m_LinearDrag: 1
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 3
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -335,13 +335,17 @@ MonoBehaviour:
   walllayermask:
     serializedVersion: 2
     m_Bits: 512
-  PlayerUnderPos: {fileID: 128901979}
-  PlayerAbovePos: {fileID: 9025427508995980396}
+  ladderlayermask:
+    serializedVersion: 2
+    m_Bits: 0
   FaceRight: 1
+  PlayerDoubleJump: 0
   PlayerFrontPos: {fileID: 1908770295}
   PlayerBehindPos: {fileID: 1508194159}
+  PlayerUnderPos: {fileID: 128901979}
+  PlayerAbovePos: {fileID: 9025427508995980396}
   CheckRadius: 0.1
-  PlayerClimbSpeed: 10
+  PlayerClimbSpeed: 15
   isPlayerBlock: 0
 --- !u!114 &8174987084509659845
 MonoBehaviour:

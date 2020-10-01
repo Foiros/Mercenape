@@ -8,8 +8,8 @@ public class PlayerMovement : MonoBehaviour
     public float PlayerSpeed; // for move left and right
     public float PlayerJumpPow, PlayerDoubleJumpPow; // for jump
     public float MidAirSpeed; // for move left and right while mid air
-    [SerializeField] private LayerMask groundlayermask;
-    [SerializeField] private LayerMask walllayermask;
+    [SerializeField] private LayerMask groundlayermask, walllayermask, ladderlayermask;
+    
 
 
     private Animator PlayerAnimator;
@@ -18,17 +18,20 @@ public class PlayerMovement : MonoBehaviour
     float inputH; 
     
     bool IsGrounded;
-    public Transform PlayerUnderPos;
-    public Transform PlayerAbovePos;
+    
     public bool FaceRight = true;
-    private bool PlayerDoubleJump;
+    public bool PlayerDoubleJump;
 
     public Transform PlayerFrontPos, PlayerBehindPos;
+    public Transform PlayerUnderPos, PlayerAbovePos;
     public float CheckRadius;
     
 
     bool IsTouchingFront;
     bool IsTouchingBehind;
+    
+    
+    bool isOnTop;
     bool IsWallGrab = false;
     public float PlayerClimbSpeed;
 
@@ -37,7 +40,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         PlayerRigid2d = transform.GetComponent<Rigidbody2D>();
-        PlayerAnimator = gameObject.GetComponent<Animator>();
+        PlayerAnimator = transform.GetComponent<Animator>();
        
 
 
@@ -46,15 +49,22 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         CheckPlayerGrounded();
-        CheckPlayerGrabWall();
+       //CheckPlayerGrabWall();
         CheckPlayerBlock();
-        InputHorrizontal();
+        CheckClimbLadder();
+
+
+       InputHorrizontal();
         FlipPlayer();
 
         PlayerRigid2d.constraints = RigidbodyConstraints2D.FreezeRotation;
-        if (!isPlayerBlock) { PlayerJump(); }
-      
-       
+        if (!isPlayerBlock) { 
+            PlayerJump();
+            
+
+        }
+
+
         SetPlayerAnimator();// could change to call animation if needed
 
         
@@ -66,7 +76,8 @@ public class PlayerMovement : MonoBehaviour
         if (!isPlayerBlock)// when player is not blocking they can move
         {
             PlayerMove();
-            PlayerClimb();
+            PlayerClimbLadder();
+            PlayerClimbWal();
             PlayerRigid2d.constraints = RigidbodyConstraints2D.FreezeRotation;
             
         }
@@ -79,7 +90,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-    void CheckPlayerGrabWall()
+  /*  void CheckPlayerGrabWall()
     {
         // to check if player collide with the climable surface both front and behind 
         IsTouchingFront = Physics2D.OverlapCircle(PlayerFrontPos.position, CheckRadius, walllayermask);
@@ -89,7 +100,7 @@ public class PlayerMovement : MonoBehaviour
         { IsWallGrab = true; }
         else { IsWallGrab = false; }
     }
-
+  */
 
     void CheckPlayerBlock()
     {
@@ -107,60 +118,105 @@ public class PlayerMovement : MonoBehaviour
     void InputHorrizontal()
     {
         inputH = Input.GetAxis("Horizontal");
-   
-
     }
-   
-
-    void PlayerClimb()
+    // check collide with wall 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("wall")&& IsWallGrab==false)
+        {
+            IsWallGrab = true;
+           
+        }
+    }
+    private void OnCollisionExit2D(Collision2D collision)
     {
        
-        if(IsWallGrab==true)
+        if (collision.gameObject.CompareTag("wall") && IsWallGrab == true)
         {
+            IsWallGrab = false;
             
+        }
+    }
+
+    void PlayerClimbWal()
+    {
+        isOnTop = (Physics2D.OverlapCircle(PlayerAbovePos.position, CheckRadius, walllayermask) == false && Physics2D.OverlapCircle(PlayerUnderPos.position, CheckRadius, walllayermask) == true);
+
+        if (IsWallGrab == true)
+        {
+            if (!isOnTop)//if not on top
+            {
+                if (Input.GetKey(KeyCode.E))// climb up
+                {
+                    PlayerRigid2d.MovePosition((Vector2)transform.position + Vector2.up * PlayerClimbSpeed * Time.deltaTime );
+                    if (inputH != 0)
+                    {
+                        PlayerRigid2d.velocity = new Vector2(PlayerSpeed*inputH, PlayerRigid2d.velocity.y);
+
+                    }
+                }
+            }
+        }
+      
+    }
+
+    bool CheckClimbLadder()
+    {
+        return (Physics2D.OverlapCircle(PlayerAbovePos.position, CheckRadius, ladderlayermask)); 
+        
+        
+    }
+    bool CheckOnTopLadder()
+    {
+        return (!Physics2D.OverlapCircle(PlayerAbovePos.position, CheckRadius, ladderlayermask) && (Physics2D.OverlapCircle(PlayerUnderPos.position, CheckRadius, ladderlayermask)));
+           
+
+    }
+
+    void PlayerClimbLadder() { 
+        if(CheckClimbLadder()==true)
+        {
+            PlayerRigid2d.gravityScale = 0;
 
             if (Input.GetKey(KeyCode.E))
             {
-                PlayerRigid2d.gravityScale=0;
-
-                PlayerRigid2d.MovePosition((Vector2)transform.position + Vector2.up * PlayerClimbSpeed * Time.deltaTime+Vector2.right*inputH*PlayerSpeed*Time.deltaTime);
-
-               
+                PlayerRigid2d.MovePosition((Vector2)transform.position + Vector2.up * PlayerClimbSpeed * Time.deltaTime);
+                
             }
-            else
+            if (!IsGrounded)
             {
-                PlayerRigid2d.gravityScale = 3;
-            }
-
-            if (Physics2D.OverlapCircle(PlayerUnderPos.position, CheckRadius, walllayermask) == true && (Physics2D.OverlapCircle(PlayerAbovePos.position, CheckRadius, walllayermask) == false))
-            {
-                PlayerRigid2d.gravityScale = 0;
-                PlayerRigid2d.velocity = new Vector2(PlayerRigid2d.velocity.x, 0);
-                if (Input.GetKey(KeyCode.Space))
+                if (inputH > 0)
                 {
-                    PlayerRigid2d.velocity = Vector2.up * PlayerJumpPow;
+                    PlayerRigid2d.velocity = new Vector2(PlayerSpeed, PlayerRigid2d.velocity.y);
+
                 }
 
+                else if (inputH < 0)
+                {
+                    PlayerRigid2d.velocity = new Vector2(-PlayerSpeed, PlayerRigid2d.velocity.y);
+
+                }
             }
             else
-            {
-                PlayerRigid2d.gravityScale = 3;
+            {//No key is pressed
+                PlayerRigid2d.velocity = new Vector2(0, PlayerRigid2d.velocity.y);
+
 
             }
 
+
+
         }
-        else
+
+        else if(CheckClimbLadder()== false)
         {
             PlayerRigid2d.gravityScale = 3;
+            
         }
+        
 
-       
-
-
-
-
+        print(CheckClimbLadder());
     }
-
 
 
     private void PlayerMove()
@@ -170,14 +226,13 @@ public class PlayerMovement : MonoBehaviour
 
             if (IsGrounded) // if player is move on the ground with normal speed
             {
-                if (Input.GetKey(KeyCode.D))
+                if (inputH>0)
                 {
                     PlayerRigid2d.velocity = new Vector2(PlayerSpeed, PlayerRigid2d.velocity.y);
 
                 }
-                else
-                {
-                    if (Input.GetKey(KeyCode.A))
+
+                  else if (inputH<0)
                     {
                         PlayerRigid2d.velocity = new Vector2(-PlayerSpeed, PlayerRigid2d.velocity.y);
 
@@ -190,8 +245,8 @@ public class PlayerMovement : MonoBehaviour
                     }
                 }
 
-            }
-            else // if player is jumping we can have them some control
+            
+            else if(!IsGrounded)// if player is jumping we can have them some control
             {
                 if (Input.GetKey(KeyCode.D))
                 {
@@ -223,7 +278,11 @@ public class PlayerMovement : MonoBehaviour
     private void PlayerJump() // both single and double 
         // side note could handle jump power by * with the character height. at the moment the vector in middle of the character so 7pixel long
     {
-        if (IsGrounded || IsWallGrab)
+        if (IsGrounded)
+        {
+            PlayerDoubleJump = true;
+        }
+        if (IsWallGrab)
         {
             PlayerDoubleJump = true;
         }
