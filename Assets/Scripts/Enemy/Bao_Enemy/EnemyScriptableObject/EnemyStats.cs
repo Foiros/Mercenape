@@ -9,7 +9,7 @@ public class EnemyStats : ScriptableObject
     public new string name;
 
     public int damage;
-    public int maxHP;
+    public float maxHP;
     public float runningSpeed;
 
     public GameObject healthBarUI;
@@ -21,12 +21,12 @@ public class EnemyStats : ScriptableObject
         xScaleUI = healthBarUI.transform.localScale.x;     
     }
 
-    public void UpdateHealthBar(int currentHP)
+    public void UpdateHealthBar(float currentHP)
     {
         sliderHealth.GetComponent<Slider>().value = CalculateHealth(currentHP);        
     }
 
-    public float CalculateHealth(int currentHP)
+    public float CalculateHealth(float currentHP)
     {
         return (float)currentHP / maxHP;
     }

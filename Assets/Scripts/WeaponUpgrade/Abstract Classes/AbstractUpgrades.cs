@@ -5,12 +5,14 @@ using UnityEngine;
 // Created by Arttu Paldán 16.9.2020: An abstract class for creating weapon upgrades. 
 public abstract class AbstractUpgrades
 {
-    public string upgradeName;
-    public string upgradeDescription;
-    public Sprite upgradeImage;
+    // Upgrade details
+    protected string upgradeName, upgradeDescription;
+   
+    // Upgrade image
+    protected Sprite upgradeImage;
 
-    public int upgradeID;
-    public int upgradeCost;
+    // Upgrade id and cost
+    protected int upgradeID, upgradeCost;
 
     // Fetch functions for the variables.
     public string GetName() { return upgradeName;}

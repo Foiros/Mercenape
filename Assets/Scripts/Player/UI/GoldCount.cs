@@ -19,6 +19,19 @@ public class GoldCount : MonoBehaviour
 
         moneyText = GameObject.FindGameObjectWithTag("Player").transform.Find("PlayerUI").Find("moneyText").GetComponent<Text>();
 
+        // goldDrop = gold.GetComponent<GoldDrop>();
+        // goldDrop.OnPlayerColGold += GoldDrop_OnPlayerColGold;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            TextUpdate();
+        }
+    }
+    private void GoldDrop_OnPlayerColGold(object sender, EventArgs e)
+    {
 
         TextUpdate();
 
@@ -26,7 +39,10 @@ public class GoldCount : MonoBehaviour
     }
 
 
-   public void TextUpdate()
+   // public void TextUpdate()
+    // Update is called once per frame
+    void TextUpdate()
+
     {
         moneyText.text = playerCurrency.playerGold.ToString();
     }

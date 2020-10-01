@@ -5,35 +5,23 @@ using UnityEngine;
 // Created by Arttu Paldán 23.9.2020: This script handles weapon stat calculations. 
 public class WeaponStats : MonoBehaviour
 {
-    private UseUpgrades useUpgrades;
     private WeaponStates weaponStates;
     private SetActualWeapon setActualWeapon;
     
     private List<AbstractWeapon> weapons;
 
-    private bool requestCameFromUseUpgrades;
-    private bool requestCameFromSetActualWeapon;
-    
+    private bool requestCameFromUseUpgrades, requestCameFromSetActualWeapon;
+
     private int weaponID;
 
-    public int amountOfSpeed;
-    public int savedAmountOfSpeed;
-    
-    public int amountOfWeight;
-    public int savedAmountOfWeight;
+    private int amountOfSpeed, savedAmountOfSpeed;
 
-    private int weaponWeight;
-    private int weightEffect;
-    private int weaponSpeed;
-    private int weaponImpactDamage;
+    private float weaponWeight, weaponSpeed, weaponImpactDamage;
 
-    private int actualWeaponWeight;
-    private int actualWeaponSpeed;
-    private int actualWeaponImpactDamage;
+    private float actualWeaponSpeed, actualWeaponImpactDamage;
 
     void Awake()
     {
-        useUpgrades = GetComponent<UseUpgrades>();
         weaponStates = GetComponent<WeaponStates>();
         setActualWeapon = GetComponent<SetActualWeapon>();
     }
@@ -45,11 +33,11 @@ public class WeaponStats : MonoBehaviour
 
         if (requestCameFromUseUpgrades)
         {
-            weaponID = useUpgrades.GetWeaponID();
+            weaponID = weaponStates.GetChosenWeaponID();
         }
         else if (requestCameFromSetActualWeapon)
         {
-            weaponID = setActualWeapon.GetChosenID();
+            weaponID = weaponStates.GetChosenWeaponID();
         }
         
         if(weaponID == 0 && upgradedWeaponsList[0])
@@ -85,15 +73,10 @@ public class WeaponStats : MonoBehaviour
         weaponSpeed = weaponsArray.GetSpeed();
         weaponImpactDamage = weaponsArray.GetImpactDamage();
 
-        actualWeaponWeight = weaponWeight * savedAmountOfWeight;
+        actualWeaponSpeed = weaponSpeed + savedAmountOfSpeed / 10 - weaponWeight / 10;
 
-        GetWeightEffect();
+        actualWeaponImpactDamage = weaponImpactDamage + weaponWeight;
 
-        actualWeaponSpeed = weaponSpeed * savedAmountOfSpeed - weightEffect;
-
-        actualWeaponImpactDamage = weaponImpactDamage + weightEffect;
-
-        savedAmountOfWeight = 0;
         savedAmountOfSpeed = 0;
     }
 
@@ -106,153 +89,87 @@ public class WeaponStats : MonoBehaviour
         weaponSpeed = weaponsArray.GetSpeed();
         weaponImpactDamage = weaponsArray.GetImpactDamage();
 
-
-        if (amountOfWeight > 0)
-        {
-            actualWeaponWeight = weaponWeight * amountOfWeight;
-        }
-        else
-        {
-            actualWeaponWeight = weaponWeight;
-        }
-
-        GetWeightEffect();
-
-        
         if (amountOfSpeed > 0)
         {
-            actualWeaponSpeed = weaponSpeed * amountOfSpeed - weightEffect;
+            actualWeaponSpeed = weaponSpeed + amountOfSpeed / 10 - weaponWeight / 10;
         }
         else
         {
-            actualWeaponSpeed = weaponSpeed - weightEffect;
+            actualWeaponSpeed = weaponSpeed - weaponWeight / 10;
         }
 
-        actualWeaponImpactDamage =  weaponImpactDamage + weightEffect;
-    }
-
-    // Switch lopp function that sets the weight effect. I really need to find a better way to calculate this. The whole math behind this system requires work. 
-    void GetWeightEffect()
-    {
-        switch (actualWeaponWeight)
-        {
-            case 0:
-                weightEffect = 0;
-                break;
-
-            case 10:
-                weightEffect = 10;
-                break;
-
-            case 20:
-                weightEffect = 20;
-                break;
-
-            case 30:
-                weightEffect = 30;
-                break;
-
-            case 40:
-                weightEffect = 40;
-                break;
-
-            case 50:
-                weightEffect = 50;
-                break;
-
-            case 60:
-                weightEffect = 60;
-                break;
-
-            case 70:
-                weightEffect = 70;
-                break;
-
-            case 80:
-                weightEffect = 80;
-                break;
-
-            case 90:
-                weightEffect = 90;
-                break;
-
-            case 100:
-                weightEffect = 100;
-                break;
-        }
+        actualWeaponImpactDamage =  weaponImpactDamage + weaponWeight;
     }
 
     // Function for saving the amount of upgrades.
     public void SaveStats()
     {
-        List<int> savedWeightsList = weaponStates.GetSavedWeights();
         List<int> savedSpeedsList = weaponStates.GetSavedSpeeds();
 
         switch (weaponID)
         {
             case 0:
-                savedWeightsList[0] = savedWeightsList[0] + amountOfWeight;
                 savedSpeedsList[0] = savedSpeedsList[0] + amountOfSpeed;
                 break;
 
             case 1:
-                savedWeightsList[1] = savedWeightsList[1] + amountOfWeight;
                 savedSpeedsList[1] = savedSpeedsList[1] + amountOfSpeed;
                 break;
 
             case 2:
-                savedWeightsList[2] = savedWeightsList[2] + amountOfWeight;
                 savedSpeedsList[2] = savedSpeedsList[2] + amountOfSpeed;
                 break;
 
             case 3:
-                savedWeightsList[3] = savedWeightsList[3] + amountOfWeight;
                 savedSpeedsList[3] = savedSpeedsList[3] + amountOfSpeed;
                 break;
         }
+
+        weaponStates.SetSavedSpeeds(savedSpeedsList);
+        SaveManager.SaveWeapons(weaponStates);
     }
 
     // Function for loading the amount of upgrades. 
     void LoadSaveFiles()
     {
-        List<int> savedWeightsList = weaponStates.GetSavedWeights();
         List<int> savedSpeedsList = weaponStates.GetSavedSpeeds();
 
         switch (weaponID)
         {
             case 0:
-                savedAmountOfWeight = savedWeightsList[0];
                 savedAmountOfSpeed = savedSpeedsList[0];
                 break;
 
             case 1:
-                savedAmountOfWeight = savedWeightsList[1];
                 savedAmountOfSpeed = savedSpeedsList[1];
                 break;
 
             case 3:
-                savedAmountOfWeight = savedWeightsList[2];
                 savedAmountOfSpeed = savedSpeedsList[2];
                 break;
 
             case 4:
-                savedAmountOfWeight = savedWeightsList[3];
                 savedAmountOfSpeed = savedSpeedsList[3];
                 break;
         }
     }
 
     // Fetch functions for other scripts to get their hands on these private values.
-    public int GetWeight() { return actualWeaponWeight; }
-    public int GetSpeed() { return actualWeaponSpeed; }
-    public int GetImpactDamage() { return actualWeaponImpactDamage; }
+    public float GetSpeed() { return actualWeaponSpeed; }
+    public float GetImpactDamage() { return actualWeaponImpactDamage; }
 
-    public void SetWeight(int weight) { actualWeaponWeight = weight; }
-    public void SetSpeed(int speed) { actualWeaponSpeed = speed; }
-    public void SetImpactDamage(int damage) { actualWeaponImpactDamage = damage; }
+    public int GetSpeedAmount() { return amountOfSpeed; }
+    public int GetSavedSpeedAmount() { return savedAmountOfSpeed; }
+
+
+    // Set functions.
+    public void SetWeaponList(List<AbstractWeapon> list) { weapons = list; }
+    public void SetSpeedAmount(int amount) { amountOfSpeed = amount; }
+    public void SetSavedSpeedAmount(int amount) { savedAmountOfSpeed = amount; }
+
+    public void SetSpeed(float speed) { actualWeaponSpeed = speed; }
+    public void SetImpactDamage(float damage) { actualWeaponImpactDamage = damage; }
 
     public void SetRequestFromUpgrades(bool request) { requestCameFromUseUpgrades = request; }
     public void SetRequestFromActualWeapon(bool request) { requestCameFromSetActualWeapon = request; }
-
-    public void SetWeaponList(List<AbstractWeapon> list) { weapons = list; }
 }

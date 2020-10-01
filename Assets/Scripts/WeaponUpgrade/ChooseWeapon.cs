@@ -8,11 +8,11 @@ using UnityEngine.EventSystems;
 public class ChooseWeapon : MonoBehaviour
 {
     private WeaponStates weaponStates;
-    private AssetManager assetManager;
+    private UseUpgrades useUpgrades;
    
     private List<AbstractWeapon> weapons;
 
-    private int chosenWeaponID;
+    [SerializeField] private int chosenWeaponID;
     private int buttonID;
 
     private string buttonName;
@@ -22,8 +22,38 @@ public class ChooseWeapon : MonoBehaviour
     void Awake()
     {
         weaponStates = GetComponent<WeaponStates>();
-        assetManager = GetComponent<AssetManager>();
+        useUpgrades = GetComponent<UseUpgrades>();
     }
+
+    void Start()
+    {
+        SetOwnedWeaponImages();
+    }
+
+    void SetOwnedWeaponImages()
+    {
+        List<bool> ownedWeapons = weaponStates.GetOwnedWeapons();
+
+        chosenWeaponID = weaponStates.GetChosenWeaponID();
+
+        for (int i = 0; i < ownedWeapons.Count; i++)
+        {
+            switch (ownedWeapons[i])
+            {
+                case true:
+                    weaponHasBeenChosenHolder[i].sprite = weapons[i].GetWeaponImage();
+                    break;
+
+                case false:
+                    weaponHasBeenChosenHolder[i].sprite = null;
+                    break;
+            }
+        }
+
+        weaponHasBeenChosenHolder[chosenWeaponID].sprite = weapons[chosenWeaponID].GetChosenWeaponImage();
+    }
+
+
 
     // Button function, which detects which button has been pressed and gives us the chosenWeaponID based on that. 
     public void PlayersChoice()
@@ -59,6 +89,7 @@ public class ChooseWeapon : MonoBehaviour
 
         weaponStates.SetChosenWeaponID(chosenWeaponID);
         SaveManager.SaveWeapons(weaponStates);
+        useUpgrades.SetUpUpgradeScreen();
     }
 
     // Function that simply changes the image of an weapon to indicate, that this one is one the player is equipping. 

@@ -5,6 +5,7 @@ using UnityEngine;
 // Arttu Paldán modified on 24.9.2020:
 public class PlayerAttackTrigger : MonoBehaviour
 {
+    private WeaponStates weaponStates;
     private SetActualWeapon setActualWeapon;
 
     private List<AbstractWeapon> weapons;
@@ -15,11 +16,11 @@ public class PlayerAttackTrigger : MonoBehaviour
     public Transform Attackpos;
     public float AttackRange;
     public LayerMask EnemyLayerMask;
-    public int PlayerDamage;
+    public float PlayerDamage;
 
     public Transform frontPlayerPosition;
     private int weaponID;
-    private int weaponSpeed;
+    private float weaponSpeed;
     private float hitboxDistFromPlayer;
 
     public Animator PlayerAnimator;
@@ -30,6 +31,7 @@ public class PlayerAttackTrigger : MonoBehaviour
 
     void Awake()
     {
+        weaponStates= GameObject.FindGameObjectWithTag("GameManager").GetComponent<WeaponStates>();
         setActualWeapon = GameObject.FindGameObjectWithTag("GameManager").GetComponent<SetActualWeapon>();
     }
 
@@ -58,14 +60,14 @@ public class PlayerAttackTrigger : MonoBehaviour
 
     void SetWeaponStats()
     {
-        weaponID = setActualWeapon.GetChosenID();
+        weaponID = weaponStates.GetChosenWeaponID();
         hitboxDistFromPlayer = weapons[weaponID].GetReach();
 
         frontPlayerPosition.position = new Vector3(Attackpos.position.x + hitboxDistFromPlayer, Attackpos.position.y, 0);
         AttackRange = weapons[weaponID].GetHitBox();
 
         weaponSpeed = setActualWeapon.GetWeaponSpeed();
-        // anim["PlayerAttack"].speed = weaponSpeed;
+        anim["PlayerAttack"].speed = weaponSpeed;
 
         PlayerDamage = setActualWeapon.GetWeaponImpactDamage();
     }

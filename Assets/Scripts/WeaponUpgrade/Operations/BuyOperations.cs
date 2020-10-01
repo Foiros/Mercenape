@@ -71,20 +71,15 @@ public static class BuyOperations
 
         if (button == "WeaponA")
         {
-            id = weapons[0].GetID();
+            id = weapons[1].GetID();
             buy.SetWeaponID(id);
         }
         else if (button== "WeaponB")
         {
-            id = weapons[1].GetID();
-            buy.SetWeaponID(id);
-        }
-        else if (button == "WeaponC")
-        {
             id = weapons[2].GetID();
             buy.SetWeaponID(id);
         }
-        else if (button == "WeaponD")
+        else if (button == "WeaponC")
         {
             id = weapons[3].GetID();
             buy.SetWeaponID(id);

@@ -39,7 +39,7 @@ public class PlayerCollisionDectection : MonoBehaviour
         {
             goldQuantity = UnityEngine.Random.Range(10, 100);//TODO: create a range of gold drop for different enemy and put here
             playerCurrency.playerGold += goldQuantity;
-            goldCount.TextUpdate();
+            // goldCount.TextUpdate();
             Destroy(collision.gameObject);
 
         }

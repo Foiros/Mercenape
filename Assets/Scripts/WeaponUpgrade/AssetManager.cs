@@ -57,13 +57,12 @@ public class AssetManager : MonoBehaviour
     // Constructs weapons and upgrades and adds them to their own lists. 
     void SetUpWeaponsAndUpgrades()
     {
-        weapons.Add(new TestWeapon("Weapon 1", "Does things", 0, 50, 5, 10, 20, 0.3f, 3f, weaponImages[0], chosenWeaponImages[0]));
-        weapons.Add(new TestWeapon("Weapon 2", "Does things", 1, 25, 1, 20, 30, 0.3f, 2f, weaponImages[1], chosenWeaponImages[1]));
-        weapons.Add(new TestWeapon("Weapon 3", "Does things", 2, 100, 3, 3, 10, 0.3f, 1f, weaponImages[2], chosenWeaponImages[2]));
-        weapons.Add(new TestWeapon("Weapon 4", "Does things", 3, 150, 10, 2, 20, 0.3f, 5f, weaponImages[3], chosenWeaponImages[3]));
+        weapons.Add(new TestWeapon("Weapon 1", "Does things", 0, 0, 2.0f, 1, 10, 1f, 3f, weaponImages[0], chosenWeaponImages[0]));
+        weapons.Add(new TestWeapon("Weapon 2", "Does things", 1, 25, 1.0f, 7, 15, 1f, 3f, weaponImages[1], chosenWeaponImages[1]));
+        weapons.Add(new TestWeapon("Weapon 3", "Does things", 2, 100, 1.5f, 3, 13, 1f, 1f, weaponImages[2], chosenWeaponImages[2]));
+        weapons.Add(new TestWeapon("Weapon 4", "Does things", 3, 150, 2.5f, 1, 5, 1f, 5f, weaponImages[3], chosenWeaponImages[3]));
 
         upgrades.Add(new TestUpgrade("Speed Upgrade", "Increases the speed of your attacks", 0, 25, upgradeImages[0]));
-        upgrades.Add(new TestUpgrade("Weigh Upgrade", "Increases the weight of your weapon", 1, 25, upgradeImages[1]));
     }
 
     // Basically this sends the weapons and upgrade lists to the scripts that use them. 

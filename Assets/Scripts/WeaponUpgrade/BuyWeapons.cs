@@ -18,24 +18,25 @@ public class BuyWeapons : MonoBehaviour
     public Image[] ownedWeapons;
 
     public GameObject buyWeaponScreen;
-    private Text weaponName;
-    private Text weaponDescription;
-    private Text weaponCostText;
+    private Text weaponName, weaponDescription, weaponCostText;
     private Image weaponImageBuyScreen;
 
     private bool cantBuy;
 
-    private float counterStart;
-    private float originalStart;
+    private float counterStart, originalStart;
+    
     public float counterEnd;
 
     void Awake()
     {
         BuyOperations.SetUpImportantComponents(this, counterStart);
 
-        SetWeaponsHolder();
-
         buyWeaponScreen.SetActive(false);
+    }
+
+    void Start()
+    {
+        SetWeaponsHolder();
     }
 
     void Update()
@@ -44,14 +45,31 @@ public class BuyWeapons : MonoBehaviour
         {
             CantBuyCounter();
         }
+
+        if (buyWeaponScreen.activeSelf && Input.GetKeyDown(KeyCode.Escape))
+        {
+            CloseWeapon();
+        }
     }
 
     // Function for setting up images in the shop.
     void SetWeaponsHolder()
     {
-        for (int i = 0; i < weaponImagesHolder.Length; i++)
+        List<bool> ownedWeapons = weaponStates.GetOwnedWeapons();
+
+        for (int i = 1; i < weaponImagesHolder.Length; i++)
         {
-            weaponImagesHolder[i].sprite = weapons[i].GetWeaponImage();
+            switch (ownedWeapons[i])
+            {
+                case true:
+                    weaponImagesHolder[i].sprite = null;
+                    weaponImagesHolder[i].enabled = false;
+                    break;
+
+                case false:
+                    weaponImagesHolder[i].sprite = weapons[i].GetWeaponImage();
+                    break;
+            }
         }
     }
 

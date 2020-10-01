@@ -14,37 +14,37 @@ public class UseUpgrades : MonoBehaviour
     private List<AbstractWeapon> weapons;
     private List<AbstractUpgrades> upgrades;
 
-    private int weaponID;
-    private int upgradeID;
-    private int upgradeCost;
+    private int upgradeID, upgradeCost;
 
-    private string weaponButtonName;
-    private string upgradeButtonName;
-    private string arrowButtonName;
+    private string upgradeButtonName, arrowButtonName;
 
-    private Text weaponName;
-    private Text weaponDescription;
-    private Text weaponSpeedText;
-    private Text weaponWeightText;
-    private Text weaponImpactDamageText;
-    private Text weaponCostText;
-    private Image weaponImage;
+    private Text weaponName, weaponDescription, weaponSpeedText, weaponWeightText, weaponImpactDamageText, weaponCostText;
 
-    private Text upgradeHolderUpgradeScreen;
-    private Text upgradeName;
-    private Text upgradeDescription;
-    private Image upgradeImage;
-
+    private Text upgradeHolderUpgradeScreen, upgradeName, upgradeDescription;
+    private Image weaponImage, upgradeImage;
+    
     public Text[] amountTexts;
     public Image[] upgradeImagesHolder;
-    
-    public GameObject upgradeMenu;
+   
     public GameObject upgradeComponentScreen;
 
     void Awake()
     {
         GetRequiredObjects();
         SetScreensInactive();
+    }
+
+    void Start()
+    {
+        SetUpUpgradeScreen();
+    }
+
+    void Update()
+    {
+        if(upgradeComponentScreen.activeSelf && Input.GetKeyDown(KeyCode.Escape))
+        {
+            CloseUpgradeComponentMenu();
+        }
     }
 
     void GetRequiredObjects()
@@ -70,53 +70,22 @@ public class UseUpgrades : MonoBehaviour
 
     void SetScreensInactive()
     {
-        upgradeMenu.SetActive(false);
         upgradeComponentScreen.SetActive(false);
-    }
-
-    // Button function, that detects which button has been pressed and returns ID based on that. 
-    public void OpenUpgradeMenu()
-    {
-        weaponButtonName = EventSystem.current.currentSelectedGameObject.name;
-
-        List<bool> ownedWeaponsList = weaponStates.GetOwnedWeapons();
-
-        if(weaponButtonName == "UpgradeButton1" && ownedWeaponsList[0])
-        {
-            weaponID = weapons[0].GetID();
-           
-            SetUpUpgradeScreen();
-        }
-        else if (weaponButtonName == "UpgradeButton2" && ownedWeaponsList[1])
-        {
-            weaponID = weapons[1].GetID();
-            SetUpUpgradeScreen();
-        }
-        else if (weaponButtonName == "UpgradeButton3" && ownedWeaponsList[2])
-        {
-            weaponID = weapons[2].GetID();
-            SetUpUpgradeScreen();
-        }
-        else if (weaponButtonName == "UpgradeButton4" && ownedWeaponsList[3])
-        {
-            weaponID = weapons[3].GetID();
-            SetUpUpgradeScreen();
-        }
     }
     
     // This function sets up the upgrade screen based on what weapon player has chosen from his owned weapons inventory. 
-    void SetUpUpgradeScreen()
+    public void SetUpUpgradeScreen()
     {
-        AbstractWeapon weaponsArray = weapons[weaponID];
+        int weaponID = weaponStates.GetChosenWeaponID();
 
-        upgradeMenu.SetActive(true);
+        AbstractWeapon weaponsArray = weapons[weaponID];
 
         weaponName.text = weaponsArray.GetName();
         weaponDescription.text = weaponsArray.GetDescription();
         weaponCostText.text = "Upgrade Cost: " + upgradeCost;
         weaponImage.sprite = weaponsArray.GetWeaponImage();
 
-        upgradeHolderUpgradeScreen.text = "Speed Upgrades: " + playerCurrency.playerUpgrade;
+        upgradeHolderUpgradeScreen.text = "" + playerCurrency.playerUpgrade;
 
         UpdateWeaponStats();
 
@@ -140,10 +109,6 @@ public class UseUpgrades : MonoBehaviour
         {
             upgradeID = upgrades[0].GetID();
         }
-        else if (upgradeButtonName == "UpgradeComponent2")
-        {
-            upgradeID = upgrades[1].GetID();
-        }
         
         SetUpUpgradeComponentScreen();
     }
@@ -160,15 +125,6 @@ public class UseUpgrades : MonoBehaviour
         upgradeImage.sprite = upgradesArray.GetUpgradeImage();
     }
 
-    // Function for closing the upgrade screen.
-    public void CloseUpgradeMenu()
-    {
-        upgradeMenu.SetActive(false);
-        weaponID = -1;
-        weaponStats.savedAmountOfSpeed = 0;
-        weaponStats.savedAmountOfWeight = 0;
-    }
-
     //Function for closing the componentscreen.
     public void CloseUpgradeComponentMenu()
     {
@@ -181,65 +137,53 @@ public class UseUpgrades : MonoBehaviour
     {
         arrowButtonName = EventSystem.current.currentSelectedGameObject.name;
 
+        int speedAmount = weaponStats.GetSpeedAmount();
+
         if (arrowButtonName == "Arrow1" && playerCurrency.playerUpgrade > 0)
         {
             upgradeID = upgrades[0].GetID();
 
-            weaponStats.amountOfSpeed++;
-            amountTexts[0].text = "" + weaponStats.amountOfSpeed;
-            upgradeCost = upgrades[upgradeID].GetUpgradeCost() * weaponStats.amountOfSpeed;
+            speedAmount++;
+            amountTexts[0].text = "" + speedAmount;
+            upgradeCost = upgrades[upgradeID].GetUpgradeCost() * speedAmount;
             playerCurrency.playerUpgrade--;
         }
-        else if (arrowButtonName == "Arrow2" && weaponStats.amountOfSpeed > 0)
+        else if (arrowButtonName == "Arrow2" && speedAmount > 0)
         {
             upgradeID = upgrades[0].GetID();
 
-            weaponStats.amountOfSpeed--;
-            amountTexts[0].text = "" + weaponStats.amountOfSpeed;
-            upgradeCost = upgrades[upgradeID].GetUpgradeCost() * weaponStats.amountOfSpeed;
-            playerCurrency.playerUpgrade++;
-        }
-        else if (arrowButtonName == "Arrow3" && playerCurrency.playerUpgrade > 0)
-        {
-            upgradeID = upgrades[1].GetID();
-
-            weaponStats.amountOfWeight++;
-            amountTexts[1].text = "" + weaponStats.amountOfWeight;
-            upgradeCost = upgrades[upgradeID].GetUpgradeCost() * weaponStats.amountOfWeight;
-            playerCurrency.playerUpgrade--;
-        }
-        else if (arrowButtonName == "Arrow4" && weaponStats.amountOfWeight > 0)
-        {
-            upgradeID = upgrades[1].GetID();
-
-            weaponStats.amountOfWeight--;
-            amountTexts[1].text = "" + weaponStats.amountOfWeight;
-            upgradeCost = upgrades[upgradeID].GetUpgradeCost() * weaponStats.amountOfWeight;
+            speedAmount--;
+            amountTexts[0].text = "" + speedAmount;
+            upgradeCost = upgrades[upgradeID].GetUpgradeCost() * speedAmount;
             playerCurrency.playerUpgrade++;
         }
 
         weaponCostText.text = "Upgrade Cost: " + upgradeCost;
 
         money.ChangeUpgradeAmount();
-        upgradeHolderUpgradeScreen.text = "Speed Upgrades: " + playerCurrency.playerUpgrade;
+        upgradeHolderUpgradeScreen.text = "" + playerCurrency.playerUpgrade;
 
+        weaponStats.SetSpeedAmount(speedAmount);
         UpdateWeaponStats();
     }
 
     // Function for updating the info on weapon stats in upgrade screen.
     void UpdateWeaponStats()
     {
+        int weaponID = weaponStates.GetChosenWeaponID();
+
         weaponStats.SetRequestFromUpgrades(true);
         weaponStats.CalculateStats();
 
         weaponSpeedText.text = "Speed: " + weaponStats.GetSpeed();
-        weaponWeightText.text = " Weight: " + weaponStats.GetWeight();
+        weaponWeightText.text = " Weight: " + weapons[weaponID].GetWeight();
         weaponImpactDamageText.text = " Impact Damage: " + weaponStats.GetImpactDamage();
     }
 
     // Confirm button function for confirming the updates. 
     public void ConfirmUpgrade()
     {
+        int weaponID = weaponStates.GetChosenWeaponID();
         int currency = money.GetCurrentCurrency();
 
         if(currency >= upgradeCost)
@@ -253,10 +197,7 @@ public class UseUpgrades : MonoBehaviour
             UpdateWeaponStats();
             weaponStats.SaveStats();
             
-            weaponStats.amountOfSpeed = 0;
-            weaponStats.amountOfWeight = 0;
-
-            weaponStats.SetWeight(0);
+            weaponStats.SetSpeedAmount(0);
             weaponStats.SetSpeed(0);
             weaponStats.SetImpactDamage(0);
 
@@ -269,8 +210,6 @@ public class UseUpgrades : MonoBehaviour
             SaveManager.SaveCurrency(playerCurrency);
         }
     }
-
-    public int GetWeaponID() { return weaponID; }
 
     public void SetWeaponList(List<AbstractWeapon> list) { weapons = list; }
     public void  SetUpgradeList(List<AbstractUpgrades> list) { upgrades = list; }

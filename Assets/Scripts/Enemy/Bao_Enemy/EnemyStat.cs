@@ -8,7 +8,7 @@ public class EnemyStat : MonoBehaviour
     [SerializeField] protected EnemyStats stat;
 
     protected float speed;
-    private int currentHP;                    
+    private float currentHP;                    
 
     protected bool isStunning = false;        // For player is stunning
     protected bool readyToSetStun = true;     // For stunning process
@@ -90,7 +90,7 @@ public class EnemyStat : MonoBehaviour
     }
 
     // Take damage from player
-    public void TakeDamage(int playerDamage)
+    public void TakeDamage(float playerDamage)
     {
         currentHP -= playerDamage;
         print("Current HP: " + currentHP);

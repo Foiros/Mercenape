@@ -3,16 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-// Created by Arttu Paldán 11.9.2020: This is just a temprory script for testing purposes. I need to have some kinda of temporary currency in place to test buying part of the component unlocking. 
+// Created by Arttu Paldán 11.9.2020: This is just a temporary script for testing purposes. I need to have some kinda of temporary currency in place to test buying part of the component unlocking. 
 public class Money : MonoBehaviour
 {
     private PlayerCurrency playerCurrency;
     
-    private int currency;
-    private int newCurrency;
+    private int currency, newCurrency;
 
-    private Text currencyHolder;
-    private Text upgradeHolderMainScreen;
+    private Text currencyHolder, upgradeHolderMainScreen;
     
 
     void Awake()
@@ -29,10 +27,7 @@ public class Money : MonoBehaviour
     }
 
     // Public function for the other scripts to get how much player has money.
-    public int GetCurrentCurrency()
-    {
-        return currency;
-    }
+    public int GetCurrentCurrency(){ return currency;}
 
     // Function to set the starting money.
     void SetStartingCurrency()

@@ -42,6 +42,9 @@ public class PlayerCurrency : MonoBehaviour
              prompt.enabled = false;
          }*/
 
+        {
+            // prompt.enabled = false;
+        }
     }
 
     void LoadSaveFile()
@@ -51,6 +54,7 @@ public class PlayerCurrency : MonoBehaviour
         playerKarma = data.playerKarma;
         playerGold = data.playerMoney;
         playerUpgrade = data.speedUpgrades;
+
         updateCurrency(playerGold);
         updateKarma(playerKarma);
         updateUpgrades(playerUpgrade);
@@ -82,6 +86,8 @@ public class PlayerCurrency : MonoBehaviour
             playerUpgrade = 0;
         }
        // upgradeText.text = playerUpgrade.ToString();
+
+        upgradeText.text = playerUpgrade.ToString();
 
     }
 }

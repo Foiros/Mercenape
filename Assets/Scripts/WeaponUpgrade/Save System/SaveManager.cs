@@ -94,9 +94,7 @@ public class WeaponsData
 {
     public int weaponID;
 
-    public List<bool> ownedWeaponsList;
-    public List<bool> upgradedWeaponsList;
-    public List<int> savedWeightAmountsList;
+    public List<bool> ownedWeaponsList, upgradedWeaponsList;
     public List<int> savedSpeedAmountsList;
 
     public WeaponsData(WeaponStates weaponStates)
@@ -105,7 +103,6 @@ public class WeaponsData
 
         ownedWeaponsList = weaponStates.GetOwnedWeapons();
         upgradedWeaponsList = weaponStates.GetUpgradedWeapons();
-        savedWeightAmountsList = weaponStates.GetSavedWeights();
         savedSpeedAmountsList = weaponStates.GetSavedSpeeds();
     }
 }
@@ -113,9 +110,7 @@ public class WeaponsData
 [System.Serializable]
 public class CurrencyData
 {
-    public int playerMoney;
-    public int playerKarma;
-    public int speedUpgrades;
+    public int playerMoney, playerKarma, speedUpgrades;
 
     public CurrencyData(PlayerCurrency playerCurrency)
     {

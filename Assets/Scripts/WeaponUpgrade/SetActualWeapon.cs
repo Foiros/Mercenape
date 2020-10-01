@@ -13,10 +13,7 @@ public class SetActualWeapon : MonoBehaviour
 
     private SpriteRenderer weaponInUseImage;
 
-    [SerializeField]private int weaponID;
-    
-    [SerializeField] private int speed;
-    [SerializeField] private int impactDamage;
+    [SerializeField] private float speed, impactDamage;
     
     void Awake()
     {
@@ -34,7 +31,7 @@ public class SetActualWeapon : MonoBehaviour
     // Sets up the stats and the image of the object.
     void SetUpWeapon()
     {
-        weaponID = weaponStates.GetChosenWeaponID();
+        int weaponID = weaponStates.GetChosenWeaponID();
 
         AbstractWeapon weaponsArray = weapons[weaponID];
 
@@ -47,9 +44,7 @@ public class SetActualWeapon : MonoBehaviour
         impactDamage = weaponStats.GetImpactDamage();
     }
 
-    public int GetChosenID() { return weaponID; }
-    public int GetWeaponSpeed() { return speed; }
-    public int GetWeaponImpactDamage() { return impactDamage; }
-
     public void SetWeaponList(List<AbstractWeapon> list) { weapons = list; }
+    public float GetWeaponSpeed() { return speed; }
+    public float GetWeaponImpactDamage() { return impactDamage; }
 }

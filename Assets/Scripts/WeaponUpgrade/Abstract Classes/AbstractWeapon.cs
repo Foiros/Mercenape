@@ -6,27 +6,21 @@ using UnityEngine;
 public abstract class AbstractWeapon
 { 
     // Weapon details
-    protected string weaponName;
-    protected string weaponDescription;
+    protected string weaponName, weaponDescription;
 
-    protected int weaponID;
-    protected int weaponCost;
+    // Weapon id and cost
+    protected int weaponID, weaponCost;
 
-    protected Sprite weaponImage;
-    protected Sprite chosenWeaponImage;
+    // Weapon images
+    protected Sprite weaponImage, chosenWeaponImage;
 
     // Weapon stats
-    protected int weaponSpeed;
-    protected int weaponWeight;
-    protected int impactDamage;
-    protected int bleedDamage;
-    protected int bleedDuration;
+    protected float weaponSpeed, weaponWeight, impactDamage, bleedDamage, bleedDuration;
 
     // Weapon reach and hit box
-    protected float hitBox;
-    protected float hitBoxLocation;
+    protected float hitBox, hitBoxLocation;
 
-    
+
     // Fetch functions for details
     public string GetName() { return weaponName;}
     public string GetDescription() { return weaponDescription;}
@@ -36,11 +30,11 @@ public abstract class AbstractWeapon
     public Sprite GetChosenWeaponImage() { return chosenWeaponImage; }
 
     // Fetch functios for stats
-    public int GetSpeed() { return weaponSpeed;}
-    public int GetWeight() { return weaponWeight;}
-    public int GetImpactDamage() { return impactDamage; }
-    public int GetBleedDamage() { return bleedDamage; }
-    public int GetBleedDuration() { return bleedDuration; }
+    public float GetSpeed() { return weaponSpeed;}
+    public float GetWeight() { return weaponWeight;}
+    public float GetImpactDamage() { return impactDamage; }
+    public float GetBleedDamage() { return bleedDamage; }
+    public float GetBleedDuration() { return bleedDuration; }
 
     // Fetch functions for reach and hitbox
     public float GetHitBox() { return hitBox; }
@@ -50,7 +44,7 @@ public abstract class AbstractWeapon
 public class TestWeapon : AbstractWeapon
 {
     // This is used to create this object in the scripts. 
-    public TestWeapon(string name, string description, int id, int cost, int speed, int weight, int damage, float range, float location, Sprite weapon, Sprite chosenWeapon)
+    public TestWeapon(string name, string description, int id, int cost, float speed, float weight, float damage, float range, float location, Sprite weapon, Sprite chosenWeapon)
     {
         weaponName = name;
         weaponDescription = description;
