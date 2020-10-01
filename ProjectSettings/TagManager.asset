@@ -41,6 +41,7 @@ TagManager:
   - Loot/HPDrop
   - Loot/Karma
   - Loot/UpgradeDrop
+  - MoneyUpgrade
   layers:
   - Default
   - TransparentFX

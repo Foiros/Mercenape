@@ -16,7 +16,7 @@ public class LoadScene : MonoBehaviour
     public void GoTolevel1()
     {
         Time.timeScale = 1;
-        SceneManager.LoadScene("Bao_Enemy");
+        SceneManager.LoadScene("LV1");
     }
 
     public void GoToForge()

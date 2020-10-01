@@ -1380,6 +1380,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.22
       objectReference: {fileID: 0}
+    - target: {fileID: 588748821927944240, guid: 94feb3077caf03b44935f25901d89eca,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 922743850546462142, guid: 94feb3077caf03b44935f25901d89eca,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -1396,6 +1401,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5914999136744952643, guid: 94feb3077caf03b44935f25901d89eca,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6265585890331086541, guid: 94feb3077caf03b44935f25901d89eca,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6265585890331086541, guid: 94feb3077caf03b44935f25901d89eca,
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2966,9 +2981,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7b2a11342aebd349a926d27c6b6b763, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponImages: []
-  chosenWeaponImages: []
-  upgradeImages: []
 --- !u!114 &2003880738
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2981,10 +2993,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9495335238a314c45ac2a582f2f2b169, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amountOfSpeed: 0
-  savedAmountOfSpeed: 0
-  amountOfWeight: 0
-  savedAmountOfWeight: 0
 --- !u!114 &2003880739
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2998,22 +3006,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponID: 0
-  weapon1HasBeenUpgraded: 0
-  weapon2HasBeenUpgraded: 0
-  weapon3HasBeenUpgraded: 0
-  weapon4HasBeenUpgraded: 0
-  ownsWeapon1: 0
-  ownsWeapon2: 0
-  ownsWeapon3: 0
-  ownsWeapon4: 0
-  savedWeightAmount1: 0
-  savedWeightAmount2: 0
-  savedWeightAmount3: 0
-  savedWeightAmount4: 0
-  savedSpeedAmount1: 0
-  savedSpeedAmount2: 0
-  savedSpeedAmount3: 0
-  savedSpeedAmount4: 0
+  ownedWeaponsList: 
+  upgradedWeaponsList: 
+  savedSpeedAmountsList: 
 --- !u!114 &2003880740
 MonoBehaviour:
   m_ObjectHideFlags: 0

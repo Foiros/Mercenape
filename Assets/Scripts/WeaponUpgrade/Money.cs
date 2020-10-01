@@ -10,15 +10,15 @@ public class Money : MonoBehaviour
     
     private int currency, newCurrency;
 
-    private Text currencyHolder, upgradeHolderMainScreen;
+    private Text currencyHolderShop, currencyHolderForge;
     
 
     void Awake()
     {
         playerCurrency = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCurrency>();
         
-        currencyHolder = GameObject.FindGameObjectWithTag("Money").GetComponentInChildren<Text>();
-        upgradeHolderMainScreen = GameObject.FindGameObjectWithTag("UpgradesMainScreen").GetComponentInChildren<Text>();
+        currencyHolderShop = GameObject.FindGameObjectWithTag("Money").GetComponentInChildren<Text>();
+        currencyHolderForge = GameObject.FindGameObjectWithTag("MoneyUpgrade").GetComponentInChildren<Text>();
     }
 
     void Start()
@@ -33,9 +33,9 @@ public class Money : MonoBehaviour
     void SetStartingCurrency()
     {
         currency = playerCurrency.playerGold;
-
-        currencyHolder.text = "Money: " + currency;
-        upgradeHolderMainScreen.text = "Speed Upgrades: " + playerCurrency.playerUpgrade;
+        
+        if(currencyHolderShop != null) { currencyHolderShop.text = "Money: " + currency; }
+        if(currencyHolderForge != null) { currencyHolderForge.text = "Money: " + currency; }
     }
     
     // Function for changing amount of money, for example when buying components. 
@@ -47,11 +47,7 @@ public class Money : MonoBehaviour
 
         playerCurrency.playerGold = currency;
 
-        currencyHolder.text = "Money: " + currency;
-    }
-
-    public void ChangeUpgradeAmount()
-    {
-        upgradeHolderMainScreen.text = "Speed Upgrades: " + playerCurrency.playerUpgrade;
+        if (currencyHolderShop != null) { currencyHolderShop.text = "Money: " + currency; }
+        if (currencyHolderForge != null) { currencyHolderForge.text = "Money: " + currency; }
     }
 }

@@ -88,6 +88,5 @@ public class PlayerCurrency : MonoBehaviour
        // upgradeText.text = playerUpgrade.ToString();
 
         upgradeText.text = playerUpgrade.ToString();
-
     }
 }
