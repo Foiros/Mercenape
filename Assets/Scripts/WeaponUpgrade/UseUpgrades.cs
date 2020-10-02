@@ -85,7 +85,7 @@ public class UseUpgrades : MonoBehaviour
         weaponCostText.text = "Upgrade Cost: " + upgradeCost;
         weaponImage.sprite = weaponsArray.GetWeaponImage();
 
-        upgradeHolderUpgradeScreen.text = "" + playerCurrency.playerUpgrade;
+        upgradeHolderUpgradeScreen.text = "Speed: " + playerCurrency.playerUpgrade;
 
         UpdateWeaponStats();
 
@@ -159,9 +159,7 @@ public class UseUpgrades : MonoBehaviour
         }
 
         weaponCostText.text = "Upgrade Cost: " + upgradeCost;
-
-        money.ChangeUpgradeAmount();
-        upgradeHolderUpgradeScreen.text = "" + playerCurrency.playerUpgrade;
+        upgradeHolderUpgradeScreen.text = "Speed: " + playerCurrency.playerUpgrade;
 
         weaponStats.SetSpeedAmount(speedAmount);
         UpdateWeaponStats();

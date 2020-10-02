@@ -15,8 +15,7 @@ public class PlayerCurrency : MonoBehaviour
     Transform playerUI;
     void Awake()
     {
-     
-
+    
         LoadSaveFile();
        
     }
@@ -87,7 +86,6 @@ public class PlayerCurrency : MonoBehaviour
         }
        // upgradeText.text = playerUpgrade.ToString();
 
-        upgradeText.text = playerUpgrade.ToString();
-
+//      upgradeText.text = playerUpgrade.ToString();
     }
 }
