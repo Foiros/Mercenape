@@ -13,6 +13,7 @@ public class mainMenu : MonoBehaviour
     [SerializeField]  
     //These vectors point to where each panel except menuCenter goes to when disabled. Sure, it may not be necessary, but I like the filing cabinet aesthetic.
     // I unwittingly made this so compact, that I added the pause menu on the same script. I will chang the name of the script ASAP since it is doing my head in.
+
     public bool isPaused = false;
     public Canvas mainCanvas;
     public GameObject[] panels;
@@ -47,13 +48,96 @@ public class mainMenu : MonoBehaviour
             Debug.Log("Pause pressed");
             pauseGame();
         }
-        if(isSelected)
-        {
-            if(Input.anyKeyDown)
-            {
+        //if(isSelected)
+        //{
+        //    if(Input.anyKeyDown)
+        //    {
+        //        
+        //        selectedButton.GetComponentInChildren<Text>().text = Input.inputString;
+        //        inputManager inputM = transform.GetComponent<inputManager>();
+        //
+        //        isSelected = false;
+        //    }
+        //}
+    }
 
-                selectedButton.GetComponentInChildren<Text>().text = Input.inputString;
-                isSelected = false;
+    private void OnGUI()
+    {
+        if (isSelected)
+        {
+            if (Event.current.isKey && Event.current.type == EventType.KeyDown)
+            {
+                bool duplicate = false;
+                inputManager inputM = mainCanvas.GetComponent<inputManager>();
+                string Bname = selectedButton.transform.parent.transform.Find("Text").GetComponent<Text>().text;
+                Debug.Log("Button: " + Bname);
+                KeyCode newinput = Event.current.keyCode;
+
+                // Check if any input already uses the same KeyCode
+                for(int i = 0; i < inputM.inputs.Length; i++)
+                {
+                    if(newinput == inputM.inputs[i])
+                    {
+                        duplicate = true;
+                        Debug.LogError("Button already taken.");
+                        isSelected = false;
+                        break;
+                    }
+                }
+                //If no duplicates are found, make the switch.
+                if (!duplicate)
+                {
+                    switch (Bname)
+                    {
+                        case "Left":
+                            {
+                                selectedButton.GetComponentInChildren<Text>().text = newinput.ToString();
+                                inputM.left = Event.current.keyCode;
+                                Debug.Log("New LEFT input " + inputM.left.ToString());
+                                inputM.inputs[0] = newinput;
+                                isSelected = false;
+                                break;
+                            }
+                        case "Right":
+                            {
+                                selectedButton.GetComponentInChildren<Text>().text = newinput.ToString();
+                                inputM.right = Event.current.keyCode;
+                                Debug.Log("New RIGHT input " + inputM.right.ToString());
+                                inputM.inputs[1] = newinput;
+                                isSelected = false;
+                                break;
+                            }
+                        case "Up":
+                            {
+                                selectedButton.GetComponentInChildren<Text>().text = newinput.ToString();
+                                inputM.up = Event.current.keyCode;
+                                Debug.Log("New  UP input " + inputM.up.ToString());
+                                inputM.inputs[2] = newinput;
+                                isSelected = false;
+                                break;
+                            }
+                        case "Down":
+                            {
+                                selectedButton.GetComponentInChildren<Text>().text = newinput.ToString();
+                                inputM.down = Event.current.keyCode;
+                                Debug.Log("New DOWN input " + inputM.down.ToString());
+                                inputM.inputs[3] = newinput;
+                                isSelected = false;
+                                break;
+                            }
+                        case "Jump":
+                            {
+                                selectedButton.GetComponentInChildren<Text>().text = newinput.ToString();
+                                inputM.jump = Event.current.keyCode;
+                                Debug.Log("New JUMP input " + inputM.jump.ToString());
+                                inputM.inputs[4] = newinput;
+                                isSelected = false;
+                                break;
+                            }
+
+                    }
+                } 
+
             }
         }
     }
