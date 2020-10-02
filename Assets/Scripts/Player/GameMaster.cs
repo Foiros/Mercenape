@@ -48,7 +48,7 @@ public class GameMaster : MonoBehaviour
 
         if (playerCurrency.playerKarma >= lvMaxKarma)
         {
-            print("Press H to next LV");
+           
             if (Input.GetKeyDown(KeyCode.H))
             {
 

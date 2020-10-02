@@ -348,6 +348,7 @@ MonoBehaviour:
   CheckRadius: 0.1
   PlayerClimbSpeed: 15
   isPlayerBlock: 0
+  vine: {fileID: 0}
 --- !u!114 &8174987084509659845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -385,6 +386,8 @@ MonoBehaviour:
   PlayerHP: 100
   PlayerMaxHP: 100
   PlayerDamage: 5
+  lostGold: 0
+  lostKarma: 0
 --- !u!95 &475687299
 Animator:
   serializedVersion: 3

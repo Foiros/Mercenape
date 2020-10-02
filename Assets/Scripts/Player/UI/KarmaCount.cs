@@ -15,13 +15,13 @@ public class KarmaCount : MonoBehaviour
        
         playerCurrency = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCurrency>();
         karmaText = GameObject.FindGameObjectWithTag("Player").transform.Find("PlayerUI").Find("karmaBar").Find("karmaText").GetComponent<Text>();
-        Updatetext();
+        TextUpdate();
         
     }
     
 
    
-   public void Updatetext()
+   public void TextUpdate()
     {
         karmaText.text = playerCurrency.playerKarma.ToString();
     }

@@ -16,16 +16,16 @@ public class UpgradeCount : MonoBehaviour
         playerCurrency = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCurrency>();
         
         upgradeText = GameObject.FindGameObjectWithTag("Player").transform.Find("PlayerUI").Find("upgradeText").GetComponent<Text>();
-       
 
 
-        UpdateText();// update the UI when start the game
+
+        TextUpdate();// update the UI when start the game
 
     }
 
 
     // Update is called once per frame
-    public void UpdateText()
+    public void TextUpdate()
     {
         upgradeText.text = playerCurrency.playerUpgrade.ToString();
     }

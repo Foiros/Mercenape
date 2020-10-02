@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     public float MidAirSpeed; // for move left and right while mid air
     [SerializeField] private LayerMask groundlayermask, walllayermask, ladderlayermask;
     
-
+    
 
     private Animator PlayerAnimator;
     private Rigidbody2D PlayerRigid2d;
@@ -37,12 +38,16 @@ public class PlayerMovement : MonoBehaviour
 
     public bool isPlayerBlock = false;
 
+    public GameObject vine;
+    VineHingeAnchor vineScript;
+
     void Start()
     {
         PlayerRigid2d = transform.GetComponent<Rigidbody2D>();
         PlayerAnimator = transform.GetComponent<Animator>();
-       
+        vineScript = vine.GetComponent<VineHingeAnchor>();
 
+        vineScript.VineEvent.AddListener(SwingPlayer);
 
     }
 
@@ -67,7 +72,6 @@ public class PlayerMovement : MonoBehaviour
 
         SetPlayerAnimator();// could change to call animation if needed
 
-        
     }
 
     void FixedUpdate()
@@ -82,7 +86,16 @@ public class PlayerMovement : MonoBehaviour
             
         }
 
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            PlayerRigid2d.velocity = new Vector2(0, 0);
+           PlayerRigid2d.MovePosition((Vector2)transform.position +Vector2.right * 100 * Time.deltaTime + Vector2.up * 100 * Time.deltaTime);
+        }
     }
+
+
+
+
 
     void CheckPlayerGrounded()
     {
@@ -195,10 +208,6 @@ public class PlayerMovement : MonoBehaviour
                 PlayerRigid2d.MovePosition((Vector2)transform.position + Vector2.up * PlayerClimbSpeed * Time.deltaTime);
                 
             }
-            
-                
-
-
 
         }
 
@@ -208,9 +217,25 @@ public class PlayerMovement : MonoBehaviour
             
         }
         
-
-        print(CheckClimbLadder());
+     
     }
+
+    // swing player
+    void SwingPlayer()
+    {
+        vineScript.isSwing = false;
+        transform.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+        transform.parent = null;
+        transform.rotation = Quaternion.Euler(0, 0, 0);
+       
+      // PlayerRigid2d.MovePosition((Vector2)transform.position + Vector2.right * 100  + Vector2.up * 100);
+        PlayerRigid2d.AddForce(Vector2.right * 10000 );
+        print("goi");
+      
+    }
+
+
+
 
     //generic player movement
     private void PlayerMove()
@@ -340,6 +365,8 @@ public class PlayerMovement : MonoBehaviour
     }
 
    
+    
+
 
     void OnDrawGizmosSelected()
     {

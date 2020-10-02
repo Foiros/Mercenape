@@ -637,25 +637,6 @@ PlatformEffector2D:
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
---- !u!1 &948218200 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8174987084509659711, guid: 94feb3077caf03b44935f25901d89eca,
-    type: 3}
-  m_PrefabInstance: {fileID: 1679851140}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &948218211
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 948218200}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7681117ef7475984eaa1dda4ac6f3377, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lvMaxKarma: 0
 --- !u!1 &1110291258
 GameObject:
   m_ObjectHideFlags: 0
@@ -991,6 +972,11 @@ PrefabInstance:
       propertyPath: PlayerDoubleJumpPow
       value: 35
       objectReference: {fileID: 0}
+    - target: {fileID: 8174987084509659840, guid: 94feb3077caf03b44935f25901d89eca,
+        type: 3}
+      propertyPath: vine
+      value: 
+      objectReference: {fileID: 2059328108}
     - target: {fileID: 8174987084509659842, guid: 94feb3077caf03b44935f25901d89eca,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1306,6 +1292,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d65fd8bc710b8774bafdd634afade683, type: 3}
+--- !u!1 &2059328108 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 533570468055624942, guid: 8692ee1e81dd19649972edfcff6fa757,
+    type: 3}
+  m_PrefabInstance: {fileID: 1254126515}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &695191269319357864
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -17,6 +17,8 @@ public class PlayerStat : MonoBehaviour
     PlayerHealthBar playerHealthBar;
     PlayerCurrency playerCurrency;
 
+    public int lostGold, lostKarma;
+
     void Start()
     {
         /*healthBar = GetComponentInChildren<Healthbar_Ossi>();
@@ -28,6 +30,7 @@ public class PlayerStat : MonoBehaviour
         playerHealthBar = transform.Find("PlayerUI").GetComponent<PlayerHealthBar>();
         playerCurrency = transform.GetComponent<PlayerCurrency>();
         PlayerHP = PlayerMaxHP;
+        
         
     }
     void Update()
@@ -49,7 +52,7 @@ public class PlayerStat : MonoBehaviour
             updateHealth(-10);
         }
 
-        CheckPlayerDeath();
+        
     }
 
     //Ossi's take on player HP change
@@ -75,7 +78,7 @@ public class PlayerStat : MonoBehaviour
 
         }
 
-
+            
     }
 
 
@@ -85,12 +88,33 @@ public class PlayerStat : MonoBehaviour
         {
             // This checks if the player takes fatal damage.
             PlayerHP = 0;
-            playerCurrency.playerGold -= 1000;
+            playerCurrency.playerGold -= lostGold;
+            
 
             /*Debug.Log("Dead.");
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);*/
         }
     }
+
+   /* void IEnumerable StartDeath()
+    {
+        if (playerCurrency.playerGold < 0)
+        {
+            playerCurrency.playerGold = 0;
+        }
+
+        playerCurrency.playerKarma -= lostKarma;
+        if (playerCurrency.playerGold < 0)
+        {
+            playerCurrency.playerGold = 0;
+        }
+        transform.GetComponentInChildren<GoldCount>().TextUpdate();
+        transform.GetComponentInChildren<KarmaCount>().TextUpdate();
+        transform.GetComponentInChildren<KarmaBar>().SetValue();
+
+        yield WaitForSeconds(0.25); 
+
+    }*/
 
     public void PlayerTakeDamage(int EnemyDamage)
     {
