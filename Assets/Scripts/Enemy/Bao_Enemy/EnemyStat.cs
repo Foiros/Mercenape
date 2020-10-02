@@ -7,6 +7,9 @@ public class EnemyStat : MonoBehaviour
 {
     [SerializeField] protected EnemyStats stat;
 
+    protected GameObject healthBarUI;
+    protected EnemyHealthBar barHealth;
+
     protected float speed;
     [SerializeField] protected float currentHP;
 
@@ -27,14 +30,14 @@ public class EnemyStat : MonoBehaviour
     private EnemyLootDrop enemyLoot;
 
     private void Awake()
-    {
+    {       
         enemyScale = transform.localScale.x;
     }
 
     protected virtual void Start()
     {
-        stat.healthBarUI = gameObject.transform.GetChild(1).gameObject;
-        stat.sliderHealth = stat.healthBarUI.transform.GetChild(0).gameObject;
+        healthBarUI = transform.GetChild(1).gameObject;
+        barHealth = healthBarUI.GetComponent<EnemyHealthBar>();
 
         rb = GetComponent<Rigidbody2D>();
         boxCollier = GetComponent<BoxCollider2D>();
@@ -44,7 +47,7 @@ public class EnemyStat : MonoBehaviour
         //damage += waveStat.GetComponent<EnemySpawnerScript>().wave.enemyIncreasedDamage;
         speed = stat.runningSpeed;
         currentHP = stat.maxHP;
-        stat.UpdateHealthBar(currentHP);
+        barHealth.UpdateHealthBar(currentHP, stat.maxHP);
 
         player = GameObject.FindGameObjectWithTag("Player");
         playerStat = player.GetComponent<PlayerStat>();
@@ -74,17 +77,17 @@ public class EnemyStat : MonoBehaviour
         if(groundInfo.collider == false)
         {
             transform.localScale = new Vector2(-(Mathf.Sign(rb.velocity.x)) * enemyScale, enemyScale);
-            stat.ScaleRightUI(rb);
+            barHealth.ScaleRightUI(rb);
         }
 
         // Check direction facing and adjust to velocity according to that
         if (IsFacingRight())
         {
-            rb.velocity = new Vector2(speed, 0f);
+            rb.velocity = new Vector2(speed, rb.velocity.y);
         }
         else
         {
-            rb.velocity = new Vector2(-speed, 0f);
+            rb.velocity = new Vector2(-speed, rb.velocity.y);
         }
     }
 
@@ -103,8 +106,7 @@ public class EnemyStat : MonoBehaviour
     {
         currentHP -= playerDamage;
 
-        stat.UpdateHealthBar(currentHP);
-        StartCoroutine("HealthBarAnimation");
+        barHealth.UpdateHealthBar(currentHP, stat.maxHP);
 
         CheckEnemyDeath();
     }
@@ -128,15 +130,6 @@ public class EnemyStat : MonoBehaviour
         {
             escapingStunCount++;
         }
-    }
-
-    public IEnumerator HealthBarAnimation()
-    {
-        stat.sliderHealth.gameObject.SetActive(true);
-
-        yield return new WaitForSeconds(1f);
-
-        stat.sliderHealth.gameObject.SetActive(false);
     }
 
     protected void CheckEnemyDeath()

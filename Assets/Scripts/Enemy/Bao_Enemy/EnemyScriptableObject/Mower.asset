@@ -16,5 +16,3 @@ MonoBehaviour:
   damage: 20
   maxHP: 100
   runningSpeed: 4
-  healthBarUI: {fileID: 0}
-  sliderHealth: {fileID: 0}

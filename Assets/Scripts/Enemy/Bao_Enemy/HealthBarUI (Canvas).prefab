@@ -122,6 +122,7 @@ GameObject:
   - component: {fileID: 3567356984003813797}
   - component: {fileID: 1788080176236336045}
   - component: {fileID: 824188302820394497}
+  - component: {fileID: 515942339218717999}
   m_Layer: 10
   m_Name: HealthBarUI (Canvas)
   m_TagString: EnemyHealthBar
@@ -209,6 +210,21 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &515942339218717999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6264346053042711896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bb3629d26ddf46499fe1206d791491b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthBarUI: {fileID: 6264346053042711896}
+  slider: {fileID: 8876013276855465040}
+  sliderFunction: {fileID: 1169861083125375793}
 --- !u!1 &7172207600130794794
 GameObject:
   m_ObjectHideFlags: 0
@@ -371,7 +387,18 @@ MonoBehaviour:
   m_Value: 0.605
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &9102975002708862563
 GameObject:
   m_ObjectHideFlags: 0

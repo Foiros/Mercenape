@@ -125,6 +125,11 @@ public class ShredBehaviour : EnemyStat
             isStunning = false;
         }
     }
+
+    public override void TakeDamage(float playerDamage)
+    {
+        base.TakeDamage(playerDamage);
+    }
 }
 
 

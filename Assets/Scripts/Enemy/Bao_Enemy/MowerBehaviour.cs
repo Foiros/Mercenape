@@ -11,6 +11,9 @@ public class MowerBehaviour : EnemyStat
     private enum ForceFieldState { Inactive, Generating, Active, Destroyed }
     private ForceFieldState currentState;
 
+    private GameObject fieldHealthBarUI;
+    private EnemyHealthBar fieldBarHealth;
+
     private Coroutine dmgCoroutine;
 
     private bool isAttacking = false;
@@ -28,11 +31,11 @@ public class MowerBehaviour : EnemyStat
 
         currentState = ForceFieldState.Inactive;
 
-        fieldStat.healthBarUI = transform.GetChild(2).GetChild(0).gameObject;
-        fieldStat.sliderHealth = fieldStat.healthBarUI.transform.GetChild(0).gameObject;
+        fieldHealthBarUI = transform.GetChild(2).GetChild(0).gameObject;
+        fieldBarHealth = fieldHealthBarUI.GetComponent<EnemyHealthBar>();
 
         fieldHP = fieldStat.maxHP;
-        fieldStat.UpdateHealthBar(fieldHP);
+        fieldBarHealth.UpdateHealthBar(fieldHP, fieldStat.maxHP);
 
         fieldSprite = transform.GetChild(2).GetComponent<SpriteRenderer>();
 
@@ -88,7 +91,7 @@ public class MowerBehaviour : EnemyStat
                 {
                     fieldSprite.enabled = false;
                     generatorCollider.enabled = false;
-                    fieldStat.healthBarUI.SetActive(false);
+                    fieldHealthBarUI.SetActive(false);
 
                     break;
                 }
@@ -99,11 +102,11 @@ public class MowerBehaviour : EnemyStat
     {
         if (currentState == ForceFieldState.Inactive || currentState == ForceFieldState.Destroyed)
         {
-            currentHP -= playerDmg;
             speed = stat.runningSpeed / 2;
 
-            stat.UpdateHealthBar(currentHP);
-            StartCoroutine("HealthBarAnimation");
+            currentHP -= playerDmg;           
+
+            barHealth.UpdateHealthBar(currentHP, stat.maxHP);           
 
             CheckEnemyDeath();
 
@@ -132,7 +135,7 @@ public class MowerBehaviour : EnemyStat
     {
         fieldHP -= playerDmg;
 
-        fieldStat.UpdateHealthBar(fieldHP);
+        fieldBarHealth.UpdateHealthBar(fieldHP, fieldStat.maxHP);
 
         if (fieldHP <= 0)
         {
@@ -147,24 +150,27 @@ public class MowerBehaviour : EnemyStat
         if (col.gameObject.CompareTag("Player"))
         {
             // If player's feet is higher than Mower's head
-            if(player.transform.GetChild(1).position.y > frontDetection.position.y)
+            if (player.transform.GetChild(1).name == "UnderPlayerPosition")
             {
-                // Then ride it
-                ridePos = player.transform.position.x - transform.position.x;
-                isRiding = true;
-                
-            }
-            // If player is super near Mower's head
-            else if (Mathf.Abs(player.transform.position.x - frontDetection.position.x) <= .5f)
-            {
-                // Then attack player
-                if (!isAttacking)
+                if (player.transform.GetChild(1).position.y > frontDetection.position.y)
                 {
-                    isAttacking = true;
+                    // Then ride it
+                    ridePos = player.transform.position.x - transform.position.x;
+                    isRiding = true;
 
-                    MowerAttack();
                 }
-            }           
+                // If player is super near Mower's head
+                else if (Mathf.Abs(player.transform.position.x - frontDetection.position.x) <= .5f)
+                {
+                    // Then attack player
+                    if (!isAttacking && currentState != ForceFieldState.Generating)
+                    {
+                        isAttacking = true;
+
+                        MowerAttack();
+                    }
+                }
+            }          
         }
     }
 

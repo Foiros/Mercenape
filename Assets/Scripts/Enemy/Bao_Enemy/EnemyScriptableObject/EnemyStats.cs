@@ -12,27 +12,4 @@ public class EnemyStats : ScriptableObject
     public float maxHP;
     public float runningSpeed;
 
-    public GameObject healthBarUI;
-    [HideInInspector] public GameObject sliderHealth;
-    private float xScaleUI;
-
-    private void OnEnable()
-    {                
-        xScaleUI = healthBarUI.transform.localScale.x;     
-    }
-
-    public void UpdateHealthBar(float currentHP)
-    {
-        sliderHealth.GetComponent<Slider>().value = CalculateHealth(currentHP);        
-    }
-
-    public float CalculateHealth(float currentHP)
-    {
-        return (float)currentHP / maxHP;
-    }
-
-    public void ScaleRightUI(Rigidbody2D rb)
-    {
-        healthBarUI.transform.localScale = new Vector2(-(Mathf.Sign(rb.velocity.x)) * xScaleUI, healthBarUI.transform.localScale.y);
-    }
 }

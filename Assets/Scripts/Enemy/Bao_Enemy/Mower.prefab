@@ -45,6 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stat: {fileID: 11400000, guid: f09a6823e23331d4e9d64518ab236504, type: 2}
+  healthBarUI: {fileID: 230858569396279000}
+  currentHP: 0
   frontDetection: {fileID: 649199917329479996}
   fieldStat: {fileID: 11400000, guid: 7f9af77152693424fa66935d41e465d3, type: 2}
 --- !u!1 &7613412614568094041
@@ -452,6 +454,12 @@ Transform:
 --- !u!4 &649199917329479996 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4669934860387165151, guid: d561ebe5499b33446a3ba906ed062674,
+    type: 3}
+  m_PrefabInstance: {fileID: 5317795554417564387}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &230858569396279000 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5402268158604971067, guid: d561ebe5499b33446a3ba906ed062674,
     type: 3}
   m_PrefabInstance: {fileID: 5317795554417564387}
   m_PrefabAsset: {fileID: 0}
