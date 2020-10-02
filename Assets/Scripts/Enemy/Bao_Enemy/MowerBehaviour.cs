@@ -93,7 +93,52 @@ public class MowerBehaviour : EnemyStat
                     break;
                 }
         }
-        Debug.DrawRay(player.transform.position, Vector2.right * 0.5f, Color.red);
+    }
+
+    public void DamagingBackside(float playerDmg)
+    {
+        if (currentState == ForceFieldState.Inactive || currentState == ForceFieldState.Destroyed)
+        {
+            currentHP -= playerDmg;
+            speed = stat.runningSpeed / 2;
+
+            stat.UpdateHealthBar(currentHP);
+            StartCoroutine("HealthBarAnimation");
+
+            CheckEnemyDeath();
+
+            if (!isGenerating)
+            {
+                isGenerating = true;
+
+                Invoke("ChangeToGeneratingState", 2f);
+            }
+        }
+
+        if (currentState == ForceFieldState.Generating)
+        {
+
+        }
+
+        if (currentState == ForceFieldState.Active)
+        {
+            // Field Generator will damage back the player and push upward
+            playerStat.PlayerTakeDamage(fieldStat.damage);
+            playerRigid.AddForce(new Vector2(Mathf.Sign(player.transform.localScale.x) * -2000, 100), ForceMode2D.Impulse);
+        }
+    }
+
+    public void DamagingForceField(float playerDmg)
+    {
+        fieldHP -= playerDmg;
+
+        fieldStat.UpdateHealthBar(fieldHP);
+
+        if (fieldHP <= 0)
+        {
+            currentState = ForceFieldState.Destroyed;
+            speed = stat.runningSpeed;
+        }
     }
 
     // When player collides with Mower
@@ -101,44 +146,25 @@ public class MowerBehaviour : EnemyStat
     {
         if (col.gameObject.CompareTag("Player"))
         {
-            /*ContactPoint2D[] contacts = new ContactPoint2D[1];
-            int numContacts = col.GetContacts(contacts);
-
-            for (int i = 0; i < numContacts; i++)
-            {
-                // Attack when hit the player in the front side
-                if (Vector2.Distance(contacts[i].point, frontDetection.position) < 0.5f)
-                {                  
-                    if (!isAttacking)
-                    {
-                        isAttacking = true;
-
-                        MowerAttack();
-                    }
-                }         
-                // Player rides Mower
-                else
-                {
-                    ridePos = player.transform.position.x - transform.position.x;
-                    isRiding = true;
-                }*/
             // If player's feet is higher than Mower's head
             if(player.transform.GetChild(1).position.y > frontDetection.position.y)
             {
                 // Then ride it
                 ridePos = player.transform.position.x - transform.position.x;
                 isRiding = true;
+                
             }
+            // If player is super near Mower's head
             else if (Mathf.Abs(player.transform.position.x - frontDetection.position.x) <= .5f)
             {
+                // Then attack player
                 if (!isAttacking)
                 {
                     isAttacking = true;
 
                     MowerAttack();
                 }
-            }
-            
+            }           
         }
     }
 
@@ -195,13 +221,13 @@ public class MowerBehaviour : EnemyStat
             player.GetComponent<PlayerAttackTrigger>().enabled = true;
             player.GetComponent<Animator>().enabled = true;
 
-            playerRigid.AddForce(new Vector2(-Mathf.Sign(transform.localScale.x) * 3000, 0));
+            playerRigid.AddForce(new Vector2(0, 300), ForceMode2D.Impulse);
 
             escapingStunCount = 0;
             readyToSetStun = true;
             isStunning = false;
 
-            Invoke("ReturnPhysics", 0.2f);
+            Invoke("ReturnPhysics", 0.5f);
         }        
     }
 
@@ -245,52 +271,6 @@ public class MowerBehaviour : EnemyStat
         print("Not dealing dmg");
     }
 
-    public void DamagingBackside(float playerDmg)
-    {
-        if (currentState == ForceFieldState.Inactive || currentState == ForceFieldState.Destroyed)
-        {
-            currentHP -= playerDmg;
-            speed = stat.runningSpeed / 2;
-
-            stat.UpdateHealthBar(currentHP);
-            StartCoroutine("HealthBarAnimation");
-
-            CheckEnemyDeath();
-
-            if (!isGenerating)
-            {
-                isGenerating = true;
-
-                Invoke("ChangeToGeneratingState", 2f);
-            }
-        }
-
-        if (currentState == ForceFieldState.Generating)
-        {
-
-        }
-
-        if (currentState == ForceFieldState.Active)
-        {
-            // Field Generator will damage back the player and push upward
-            playerStat.PlayerTakeDamage(fieldStat.damage);
-            playerRigid.AddForce(new Vector2(Mathf.Sign(player.transform.localScale.x) * -2000, 100), ForceMode2D.Impulse);           
-        }
-    }
-
-    public void DamagingForceField(float playerDmg)
-    {
-        print("circleeeee");
-        fieldHP -= playerDmg;
-
-        fieldStat.UpdateHealthBar(fieldHP);
-
-        if (fieldHP <= 0)
-        {
-            currentState = ForceFieldState.Destroyed;
-        }
-    }
-
     private void ChangeToGeneratingState()
     {
         if (currentState != ForceFieldState.Destroyed)
@@ -303,17 +283,23 @@ public class MowerBehaviour : EnemyStat
 
     private void ChangeToActiveState()
     {
-        currentState = ForceFieldState.Active;
-        speed = stat.runningSpeed;
+        if (currentState != ForceFieldState.Destroyed)
+        {
+            currentState = ForceFieldState.Active;
+            speed = stat.runningSpeed;
 
-        isGenerating = false;
+            isGenerating = false;
+        }
     }
 
     private void ChangeToInactiveState()
     {
-        currentState = ForceFieldState.Inactive;
+        if (currentState != ForceFieldState.Destroyed)
+        {
+            currentState = ForceFieldState.Inactive;
 
-        isGenerating = false;
+            isGenerating = false;
+        }
     }
 
     protected override void Movement()
