@@ -15,8 +15,7 @@ public class PlayerCurrency : MonoBehaviour
     Transform playerUI;
     void Awake()
     {
-     
-
+    
         LoadSaveFile();
        
     }
