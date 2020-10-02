@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stat: {fileID: 11400000, guid: f09a6823e23331d4e9d64518ab236504, type: 2}
-  groundDetection: {fileID: 649199917329479996}
+  frontDetection: {fileID: 649199917329479996}
   fieldStat: {fileID: 11400000, guid: 7f9af77152693424fa66935d41e465d3, type: 2}
 --- !u!1 &7613412614568094041
 GameObject:
@@ -219,7 +219,7 @@ PrefabInstance:
     - target: {fileID: 4669934860387165151, guid: d561ebe5499b33446a3ba906ed062674,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.39
+      value: -2.52
       objectReference: {fileID: 0}
     - target: {fileID: 5157450744152267618, guid: d561ebe5499b33446a3ba906ed062674,
         type: 3}
@@ -275,12 +275,17 @@ PrefabInstance:
     - target: {fileID: 7237859923948144613, guid: d561ebe5499b33446a3ba906ed062674,
         type: 3}
       propertyPath: m_Mass
-      value: 20
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 7237859923948144613, guid: d561ebe5499b33446a3ba906ed062674,
         type: 3}
       propertyPath: m_CollisionDetection
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7237859923948144613, guid: d561ebe5499b33446a3ba906ed062674,
+        type: 3}
+      propertyPath: m_GravityScale
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7237859923948144614, guid: d561ebe5499b33446a3ba906ed062674,
         type: 3}

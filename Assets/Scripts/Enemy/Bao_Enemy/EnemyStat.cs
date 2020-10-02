@@ -8,7 +8,7 @@ public class EnemyStat : MonoBehaviour
     [SerializeField] protected EnemyStats stat;
 
     protected float speed;
-    protected float currentHP;
+    [SerializeField] protected float currentHP;
 
     protected bool isStunning = false;        // For player is stunning
     protected bool readyToSetStun = true;     // For stunning process
@@ -17,7 +17,7 @@ public class EnemyStat : MonoBehaviour
     private float enemyScale;
     protected Rigidbody2D rb;
     protected BoxCollider2D boxCollier;
-    [SerializeField] protected Transform groundDetection;
+    [SerializeField] protected Transform frontDetection;
 
     protected GameObject player;
     protected PlayerStat playerStat;
@@ -69,7 +69,7 @@ public class EnemyStat : MonoBehaviour
     // Basic Movement
     protected virtual void Movement()
     {
-        RaycastHit2D groundInfo = Physics2D.Raycast(groundDetection.position, Vector2.down, 10, LayerMask.GetMask("Ground"));
+        RaycastHit2D groundInfo = Physics2D.Raycast(frontDetection.position, Vector2.down, 10, LayerMask.GetMask("Ground"));
 
         if(groundInfo.collider == false)
         {
@@ -88,10 +88,10 @@ public class EnemyStat : MonoBehaviour
         }
     }
 
-    // Detect if enemy gets out of the ground, turn if yes and also rotate Health bar
+    // Fix a bug that enemy stick to something when colliding
     protected virtual void OnTriggerExit2D(Collider2D collision)
     {
-        // Fix a bug that Shred stick to player when colliding
+        
         if (collision.gameObject.CompareTag("Loot")) { return; }
         if (collision.gameObject.CompareTag("wall")) { return; }
         if (collision.gameObject.CompareTag("VineAnchor")) { return; }

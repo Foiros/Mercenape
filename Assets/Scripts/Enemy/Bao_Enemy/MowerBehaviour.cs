@@ -20,6 +20,7 @@ public class MowerBehaviour : EnemyStat
     private float ridePos;
 
     private CapsuleCollider2D capsuleCollider;
+    private CircleCollider2D generatorCollider;
 
     protected override void Start()
     {
@@ -36,6 +37,7 @@ public class MowerBehaviour : EnemyStat
         fieldSprite = transform.GetChild(2).GetComponent<SpriteRenderer>();
 
         capsuleCollider = GetComponent<CapsuleCollider2D>();
+        generatorCollider = GetComponent<CircleCollider2D>();
     }
 
     private void Update()
@@ -64,7 +66,7 @@ public class MowerBehaviour : EnemyStat
                     {
                         isGenerating = true;
 
-                        Invoke("ChangeToActiveState", 3f);
+                        Invoke("ChangeToActiveState", 2f);
                     }
 
                     break;
@@ -72,31 +74,40 @@ public class MowerBehaviour : EnemyStat
             case ForceFieldState.Active:
                 {
                     fieldSprite.color = Color.red;
-                    speed = stat.runningSpeed;
+
+                    if (!isGenerating)
+                    {
+                        isGenerating = true;
+
+                        Invoke("ChangeToInactiveState", 5f);
+                    }
 
                     break;
                 }
             case ForceFieldState.Destroyed:
                 {
                     fieldSprite.enabled = false;
+                    generatorCollider.enabled = false;
+                    fieldStat.healthBarUI.SetActive(false);
 
                     break;
                 }
         }
+        Debug.DrawRay(player.transform.position, Vector2.right * 0.5f, Color.red);
     }
 
     // When player collides with Mower
     private void OnCollisionEnter2D(Collision2D col)
     {
         if (col.gameObject.CompareTag("Player"))
-        {           
-            ContactPoint2D[] contacts = new ContactPoint2D[1];
+        {
+            /*ContactPoint2D[] contacts = new ContactPoint2D[1];
             int numContacts = col.GetContacts(contacts);
 
             for (int i = 0; i < numContacts; i++)
             {
                 // Attack when hit the player in the front side
-                if (Vector2.Distance(contacts[i].point, groundDetection.position) < 1f)
+                if (Vector2.Distance(contacts[i].point, frontDetection.position) < 0.5f)
                 {                  
                     if (!isAttacking)
                     {
@@ -104,14 +115,30 @@ public class MowerBehaviour : EnemyStat
 
                         MowerAttack();
                     }
-                }
+                }         
                 // Player rides Mower
                 else
                 {
                     ridePos = player.transform.position.x - transform.position.x;
                     isRiding = true;
+                }*/
+            // If player's feet is higher than Mower's head
+            if(player.transform.GetChild(1).position.y > frontDetection.position.y)
+            {
+                // Then ride it
+                ridePos = player.transform.position.x - transform.position.x;
+                isRiding = true;
+            }
+            else if (Mathf.Abs(player.transform.position.x - frontDetection.position.x) <= .5f)
+            {
+                if (!isAttacking)
+                {
+                    isAttacking = true;
+
+                    MowerAttack();
                 }
             }
+            
         }
     }
 
@@ -220,8 +247,7 @@ public class MowerBehaviour : EnemyStat
 
     public void DamagingBackside(float playerDmg)
     {
-        print("yesss");
-        if (currentState == ForceFieldState.Inactive)
+        if (currentState == ForceFieldState.Inactive || currentState == ForceFieldState.Destroyed)
         {
             currentHP -= playerDmg;
             speed = stat.runningSpeed / 2;
@@ -248,10 +274,8 @@ public class MowerBehaviour : EnemyStat
         {
             // Field Generator will damage back the player and push upward
             playerStat.PlayerTakeDamage(fieldStat.damage);
-            playerRigid.AddForce(new Vector2(Mathf.Sign(player.transform.localScale.x) * -2000, 100), ForceMode2D.Impulse);
-            
+            playerRigid.AddForce(new Vector2(Mathf.Sign(player.transform.localScale.x) * -2000, 100), ForceMode2D.Impulse);           
         }
-
     }
 
     public void DamagingForceField(float playerDmg)
@@ -260,18 +284,34 @@ public class MowerBehaviour : EnemyStat
         fieldHP -= playerDmg;
 
         fieldStat.UpdateHealthBar(fieldHP);
+
+        if (fieldHP <= 0)
+        {
+            currentState = ForceFieldState.Destroyed;
+        }
     }
 
     private void ChangeToGeneratingState()
     {
-        currentState = ForceFieldState.Generating;
+        if (currentState != ForceFieldState.Destroyed)
+        {
+            currentState = ForceFieldState.Generating;
 
-        isGenerating = false;
+            isGenerating = false;
+        }
     }
 
     private void ChangeToActiveState()
     {
         currentState = ForceFieldState.Active;
+        speed = stat.runningSpeed;
+
+        isGenerating = false;
+    }
+
+    private void ChangeToInactiveState()
+    {
+        currentState = ForceFieldState.Inactive;
 
         isGenerating = false;
     }
