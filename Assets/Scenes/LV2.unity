@@ -388,7 +388,7 @@ PlatformEffector2D:
   m_SurfaceArc: 180
   m_UseSideFriction: 0
   m_UseSideBounce: 0
-  m_SideArc: 1
+  m_SideArc: 0
 --- !u!61 &446857025
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -473,8 +473,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 446857023}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -15.93, y: -1.57, z: 0}
-  m_LocalScale: {x: 66.12592, y: 5, z: 1}
+  m_LocalPosition: {x: -15.93, y: -1.56, z: 0}
+  m_LocalScale: {x: 66.12592, y: 2.625, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 14
@@ -612,7 +612,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 931473738}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.07, y: 1.727, z: 0}
+  m_LocalPosition: {x: -2.81, y: 7.25, z: 0}
   m_LocalScale: {x: 66.12592, y: 5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -801,12 +801,12 @@ PrefabInstance:
     - target: {fileID: 533570469055275523, guid: 8692ee1e81dd19649972edfcff6fa757,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -9.76
+      value: 2.64
       objectReference: {fileID: 0}
     - target: {fileID: 533570469055275523, guid: 8692ee1e81dd19649972edfcff6fa757,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6.190351
+      value: -2.92
       objectReference: {fileID: 0}
     - target: {fileID: 533570469055275523, guid: 8692ee1e81dd19649972edfcff6fa757,
         type: 3}
@@ -875,17 +875,17 @@ PrefabInstance:
     - target: {fileID: 2263688218446543932, guid: 8f946f34fc60e72448ae4c161cf5c7d5,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -17.33
+      value: -17.32
       objectReference: {fileID: 0}
     - target: {fileID: 2263688218446543932, guid: 8f946f34fc60e72448ae4c161cf5c7d5,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.33
+      value: -4.91
       objectReference: {fileID: 0}
     - target: {fileID: 2263688218446543932, guid: 8f946f34fc60e72448ae4c161cf5c7d5,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.73
+      value: 0.74
       objectReference: {fileID: 0}
     - target: {fileID: 2263688218446543932, guid: 8f946f34fc60e72448ae4c161cf5c7d5,
         type: 3}
@@ -930,7 +930,12 @@ PrefabInstance:
     - target: {fileID: 2263688218446543932, guid: 8f946f34fc60e72448ae4c161cf5c7d5,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 3.3487
+      value: 3.4736066
+      objectReference: {fileID: 0}
+    - target: {fileID: 2263688218446543935, guid: 8f946f34fc60e72448ae4c161cf5c7d5,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8f946f34fc60e72448ae4c161cf5c7d5, type: 3}
@@ -969,7 +974,22 @@ PrefabInstance:
     - target: {fileID: 8174987084509659840, guid: 94feb3077caf03b44935f25901d89eca,
         type: 3}
       propertyPath: PlayerClimbSpeed
-      value: 15
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174987084509659840, guid: 94feb3077caf03b44935f25901d89eca,
+        type: 3}
+      propertyPath: PlayerSpeed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174987084509659840, guid: 94feb3077caf03b44935f25901d89eca,
+        type: 3}
+      propertyPath: PlayerJumpPow
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 8174987084509659840, guid: 94feb3077caf03b44935f25901d89eca,
+        type: 3}
+      propertyPath: PlayerDoubleJumpPow
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 8174987084509659842, guid: 94feb3077caf03b44935f25901d89eca,
         type: 3}
@@ -1306,7 +1326,7 @@ PrefabInstance:
     - target: {fileID: 695191269758247107, guid: a02407bad93421949b3ac17f214d7227,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.59
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 695191269758247107, guid: a02407bad93421949b3ac17f214d7227,
         type: 3}

@@ -15,7 +15,7 @@ public class PlayerStat : MonoBehaviour
     public int PlayerDamage;
 
     PlayerHealthBar playerHealthBar;
-
+    PlayerCurrency playerCurrency;
 
     void Start()
     {
@@ -26,7 +26,7 @@ public class PlayerStat : MonoBehaviour
         }*/
 
         playerHealthBar = transform.Find("PlayerUI").GetComponent<PlayerHealthBar>();
-
+        playerCurrency = transform.GetComponent<PlayerCurrency>();
         PlayerHP = PlayerMaxHP;
         
     }
@@ -67,15 +67,15 @@ public class PlayerStat : MonoBehaviour
             {
                 // This checks if the player takes fatal damage.
                 PlayerHP = 0;
-                Debug.Log("Dead.");
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
             //Add the new health values to change the fill amount of the healthbar.
             //  healthBar.updateHealthBar(PlayerMaxHP, PlayerHP);
             playerHealthBar.SetCurrentHP(PlayerHP);
-        }    
-        
-        
+            CheckPlayerDeath();
+
+        }
+
+
     }
 
 
@@ -85,8 +85,10 @@ public class PlayerStat : MonoBehaviour
         {
             // This checks if the player takes fatal damage.
             PlayerHP = 0;
-            Debug.Log("Dead.");
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            playerCurrency.playerGold -= 1000;
+
+            /*Debug.Log("Dead.");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);*/
         }
     }
 

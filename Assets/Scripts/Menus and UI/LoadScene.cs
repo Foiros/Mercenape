@@ -7,10 +7,12 @@ using UnityEngine.SceneManagement;
 public class LoadScene : MonoBehaviour
 {
     private PlayerCurrency playerCurrency;
+    GameMaster gamemaster;
 
     void Awake()
     {
         playerCurrency = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCurrency>();
+        gamemaster = GameObject.FindGameObjectWithTag("Player").GetComponent<GameMaster>();
     }
 
     public void GoTolevel1()
@@ -20,10 +22,18 @@ public class LoadScene : MonoBehaviour
     }
 
     public void GoToForge()
-    {
-        Time.timeScale = 1;
-        SaveManager.SaveCurrency(playerCurrency);
-        SceneManager.LoadScene("Arttu_WeaponSystem");
+    { //check if player have enough karma
+        if (playerCurrency.playerKarma >= gamemaster.lvMaxKarma)
+        {
+            Time.timeScale = 1;
+            SaveManager.SaveCurrency(playerCurrency);
+            SceneManager.LoadScene("Arttu_WeaponSystem");
+        }
+        //place holder
+        else 
+        { 
+            print("cant go"); 
+        }
     }
 
     public void GoToMainMenu()

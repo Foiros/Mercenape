@@ -9,7 +9,7 @@ public class VineHingeAnchor : MonoBehaviour
     GameObject player;
     bool isSwing=false;
     public float swingSpeed;
-
+    
 
     // Start is called before the first frame update
     void Start()
@@ -22,7 +22,7 @@ public class VineHingeAnchor : MonoBehaviour
     void Update()
     {
         float h = Input.GetAxis("Horizontal");
-
+        float v = Input.GetAxisRaw("Vertical");
 
         if (isSwing)
         {
@@ -32,13 +32,19 @@ public class VineHingeAnchor : MonoBehaviour
             
             rb.AddForce(new Vector2(h * swingSpeed * Time.deltaTime,0), ForceMode2D.Force);
 
-            if (Input.GetKeyDown(KeyCode.Space) && isSwing)
+            if (v != 0) {
+
+                player.transform.Translate(Vector2.up*v*10*Time.deltaTime);
+            }
+
+
+                if (Input.GetKeyDown(KeyCode.Space) && isSwing)
             {
                 isSwing = false;
                 player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
                 player.transform.parent = null;
-
-                player.GetComponent<Rigidbody2D>().AddForce(new Vector2(player.GetComponent<Rigidbody2D>().velocity.x + (h * swingSpeed * 10 * Time.deltaTime), player.GetComponent<Rigidbody2D>().velocity.y + 20) * 100 * Time.deltaTime);
+                // need to come up with a formula for swing
+                player.GetComponent<Rigidbody2D>().AddForce(new Vector2(1,1)*swingSpeed*1000*Time.deltaTime);
                 player.transform.rotation = Quaternion.Euler(0, 0, 0);
                 
 

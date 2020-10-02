@@ -90,17 +90,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-  /*  void CheckPlayerGrabWall()
-    {
-        // to check if player collide with the climable surface both front and behind 
-        IsTouchingFront = Physics2D.OverlapCircle(PlayerFrontPos.position, CheckRadius, walllayermask);
-        IsTouchingBehind = Physics2D.OverlapCircle(PlayerBehindPos.position, CheckRadius, walllayermask);
-        
-        if ((IsTouchingFront == true) || IsTouchingBehind == true)
-        { IsWallGrab = true; }
-        else { IsWallGrab = false; }
-    }
-  */
+
 
     void CheckPlayerBlock()
     {
@@ -117,8 +107,10 @@ public class PlayerMovement : MonoBehaviour
 
     void InputHorrizontal()
     {
-        inputH = Input.GetAxis("Horizontal");
+        inputH = Input.GetAxisRaw("Horizontal");// Note if dont get raw axis it feels like splippery
     }
+   
+    
     // check collide with wall 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -137,7 +129,7 @@ public class PlayerMovement : MonoBehaviour
             
         }
     }
-
+    //player climb on wall
     void PlayerClimbWal()
     {
         isOnTop = (Physics2D.OverlapCircle(PlayerAbovePos.position, CheckRadius, walllayermask) == false && Physics2D.OverlapCircle(PlayerUnderPos.position, CheckRadius, walllayermask) == true);
@@ -151,7 +143,7 @@ public class PlayerMovement : MonoBehaviour
                     PlayerRigid2d.MovePosition((Vector2)transform.position + Vector2.up * PlayerClimbSpeed * Time.deltaTime );
                     if (inputH != 0)
                     {
-                        PlayerRigid2d.velocity = new Vector2(PlayerSpeed*inputH, PlayerRigid2d.velocity.y);
+                        PlayerRigid2d.MovePosition((Vector2)transform.position + Vector2.right * inputH * Time.deltaTime);
 
                     }
                 }
@@ -160,6 +152,20 @@ public class PlayerMovement : MonoBehaviour
       
     }
 
+    
+    /*  void CheckPlayerGrabWall()
+  {
+      // to check if player collide with the climable surface both front and behind 
+      IsTouchingFront = Physics2D.OverlapCircle(PlayerFrontPos.position, CheckRadius, walllayermask);
+      IsTouchingBehind = Physics2D.OverlapCircle(PlayerBehindPos.position, CheckRadius, walllayermask);
+
+      if ((IsTouchingFront == true) || IsTouchingBehind == true)
+      { IsWallGrab = true; }
+      else { IsWallGrab = false; }
+  }
+*/
+
+    //bool for player 2 climb on ladder
     bool CheckClimbLadder()
     {
         return (Physics2D.OverlapCircle(PlayerAbovePos.position, CheckRadius, ladderlayermask)); 
@@ -173,36 +179,24 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
+
+
+    // player climb the ladder
     void PlayerClimbLadder() { 
         if(CheckClimbLadder()==true)
         {
-            PlayerRigid2d.gravityScale = 0;
+            if (!IsGrounded)
+            {
+                PlayerRigid2d.gravityScale = 0;
+            }
 
             if (Input.GetKey(KeyCode.E))
             {
                 PlayerRigid2d.MovePosition((Vector2)transform.position + Vector2.up * PlayerClimbSpeed * Time.deltaTime);
                 
             }
-            if (!IsGrounded)
-            {
-                if (inputH > 0)
-                {
-                    PlayerRigid2d.velocity = new Vector2(PlayerSpeed, PlayerRigid2d.velocity.y);
-
-                }
-
-                else if (inputH < 0)
-                {
-                    PlayerRigid2d.velocity = new Vector2(-PlayerSpeed, PlayerRigid2d.velocity.y);
-
-                }
-            }
-            else
-            {//No key is pressed
-                PlayerRigid2d.velocity = new Vector2(0, PlayerRigid2d.velocity.y);
-
-
-            }
+            
+                
 
 
 
@@ -210,7 +204,7 @@ public class PlayerMovement : MonoBehaviour
 
         else if(CheckClimbLadder()== false)
         {
-            PlayerRigid2d.gravityScale = 3;
+            PlayerRigid2d.gravityScale = 10;
             
         }
         
@@ -218,7 +212,7 @@ public class PlayerMovement : MonoBehaviour
         print(CheckClimbLadder());
     }
 
-
+    //generic player movement
     private void PlayerMove()
     {
 
@@ -226,7 +220,7 @@ public class PlayerMovement : MonoBehaviour
 
             if (IsGrounded) // if player is move on the ground with normal speed
             {
-                if (inputH>0)
+                if (inputH > 0)
                 {
                     PlayerRigid2d.velocity = new Vector2(PlayerSpeed, PlayerRigid2d.velocity.y);
 
@@ -270,11 +264,10 @@ public class PlayerMovement : MonoBehaviour
                 }
             } 
         }
-       
-        
-        
-
     }
+
+
+   
     private void PlayerJump() // both single and double 
         // side note could handle jump power by * with the character height. at the moment the vector in middle of the character so 7pixel long
     {
@@ -282,10 +275,13 @@ public class PlayerMovement : MonoBehaviour
         {
             PlayerDoubleJump = true;
         }
+        
+        
         if (IsWallGrab)
         {
             PlayerDoubleJump = true;
         }
+
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
