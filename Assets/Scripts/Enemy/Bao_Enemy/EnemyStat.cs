@@ -8,7 +8,7 @@ public class EnemyStat : MonoBehaviour
     [SerializeField] protected EnemyStats stat;
 
     protected float speed;
-    private float currentHP;                    
+    protected float currentHP;
 
     protected bool isStunning = false;        // For player is stunning
     protected bool readyToSetStun = true;     // For stunning process
@@ -17,6 +17,7 @@ public class EnemyStat : MonoBehaviour
     private float enemyScale;
     protected Rigidbody2D rb;
     protected BoxCollider2D boxCollier;
+    [SerializeField] protected Transform groundDetection;
 
     protected GameObject player;
     protected PlayerStat playerStat;
@@ -27,7 +28,7 @@ public class EnemyStat : MonoBehaviour
 
     private void Awake()
     {
-        enemyScale = transform.localScale.x;      
+        enemyScale = transform.localScale.x;
     }
 
     protected virtual void Start()
@@ -41,7 +42,7 @@ public class EnemyStat : MonoBehaviour
         //var waveStat = GameObject.Find("EnemySpawner");
         //maxHP += waveStat.GetComponent<EnemySpawnerScript>().wave.enemyIncreasedHP;
         //damage += waveStat.GetComponent<EnemySpawnerScript>().wave.enemyIncreasedDamage;
-        speed = stat.runningSpeed;                     
+        speed = stat.runningSpeed;
         currentHP = stat.maxHP;
         stat.UpdateHealthBar(currentHP);
 
@@ -56,6 +57,26 @@ public class EnemyStat : MonoBehaviour
     // Movement
     protected void FixedUpdate()
     {
+        Movement();
+    }
+
+    // Check if facing right direction
+    protected bool IsFacingRight()
+    {
+        return transform.localScale.x > 0;
+    }
+
+    // Basic Movement
+    protected virtual void Movement()
+    {
+        RaycastHit2D groundInfo = Physics2D.Raycast(groundDetection.position, Vector2.down, 10, LayerMask.GetMask("Ground"));
+
+        if(groundInfo.collider == false)
+        {
+            transform.localScale = new Vector2(-(Mathf.Sign(rb.velocity.x)) * enemyScale, enemyScale);
+            stat.ScaleRightUI(rb);
+        }
+
         // Check direction facing and adjust to velocity according to that
         if (IsFacingRight())
         {
@@ -67,12 +88,6 @@ public class EnemyStat : MonoBehaviour
         }
     }
 
-    // Check if facing right direction
-    protected bool IsFacingRight()
-    {
-        return transform.localScale.x > 0;
-    }
-
     // Detect if enemy gets out of the ground, turn if yes and also rotate Health bar
     protected virtual void OnTriggerExit2D(Collider2D collision)
     {
@@ -81,24 +96,17 @@ public class EnemyStat : MonoBehaviour
         if (collision.gameObject.CompareTag("wall")) { return; }
         if (collision.gameObject.CompareTag("VineAnchor")) { return; }
 
-        if (!collision.gameObject.CompareTag("Player"))
-        {
-            transform.localScale = new Vector2(-(Mathf.Sign(rb.velocity.x)) * enemyScale, enemyScale);            
-            stat.ScaleRightUI(rb);
-        }
-
     }
 
     // Take damage from player
-    public void TakeDamage(float playerDamage)
+    public virtual void TakeDamage(float playerDamage)
     {
         currentHP -= playerDamage;
-        print("Current HP: " + currentHP);
-       
+
         stat.UpdateHealthBar(currentHP);
         StartCoroutine("HealthBarAnimation");
-        
-        CheckEnemydeath();     
+
+        CheckEnemyDeath();
     }
 
     // Set player movement when being knocked down
@@ -119,10 +127,10 @@ public class EnemyStat : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             escapingStunCount++;
-        }      
+        }
     }
 
-    IEnumerator HealthBarAnimation()
+    public IEnumerator HealthBarAnimation()
     {
         stat.sliderHealth.gameObject.SetActive(true);
 
@@ -130,8 +138,8 @@ public class EnemyStat : MonoBehaviour
 
         stat.sliderHealth.gameObject.SetActive(false);
     }
-   
-    private void CheckEnemydeath()
+
+    protected void CheckEnemyDeath()
     {
         if (currentHP <= 0)
         {
@@ -139,5 +147,5 @@ public class EnemyStat : MonoBehaviour
 
             enemyLoot.DropAll();
         }
-    }   
+    }
 }

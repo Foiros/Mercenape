@@ -49,6 +49,8 @@ public class PlayerAttackTrigger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.DrawRay(Attackpos.position, Vector2.right * AttackRange, Color.green);
+
         PlayerAnimator.SetBool("IsPlayerAttack", IsPlayerAttack);
         CheckMouseInput();
     }
@@ -83,14 +85,21 @@ public class PlayerAttackTrigger : MonoBehaviour
         {
             IsPlayerAttack = true;
             TimeDelayAttack = PlayerDelayAttackTime;
+
             Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(Attackpos.position, AttackRange, EnemyLayerMask);
           
             for (int i = 0; i < enemiesToDamage.Length; i++)
-            {
-                
+            {               
                 enemiesToDamage[i].GetComponent<EnemyStat>().TakeDamage(PlayerDamage);
-                Debug.Log("attacking" + enemiesToDamage[i] + PlayerDamage );
-                //Debug.Log(enemiesToDamage[i].GetComponent<EnemyStat>().currentHP);
+
+                if (enemiesToDamage[i].GetType() == typeof(CapsuleCollider2D))
+                {
+                    enemiesToDamage[i].GetComponent<MowerBehaviour>().DamagingBackside(PlayerDamage);
+                }
+                if (enemiesToDamage[i].GetType() == typeof(CircleCollider2D))
+                {
+                    enemiesToDamage[i].GetComponent<MowerBehaviour>().DamagingForceField(PlayerDamage);
+                }
             }
         }
 

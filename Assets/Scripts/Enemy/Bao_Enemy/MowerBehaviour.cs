@@ -4,21 +4,38 @@ using UnityEngine;
 
 public class MowerBehaviour : EnemyStat
 {
-    private Coroutine coroutine;
+    [SerializeField] private EnemyStats fieldStat;
+    private float fieldHP;
+    private SpriteRenderer fieldSprite;
+
+    private enum ForceFieldState { Inactive, Generating, Active, Destroyed }
+    private ForceFieldState currentState;
+
+    private Coroutine dmgCoroutine;
 
     private bool isAttacking = false;
     private bool isRiding = false;
+    private bool isGenerating = false;
 
     private float ridePos;
 
-    private GameObject backSide;
+    private CapsuleCollider2D capsuleCollider;
 
     protected override void Start()
     {
         base.Start();   // Start both EnemyStat and MowerBehaviour   
 
-        backSide = transform.GetChild(2).gameObject;
-        
+        currentState = ForceFieldState.Inactive;
+
+        fieldStat.healthBarUI = transform.GetChild(2).GetChild(0).gameObject;
+        fieldStat.sliderHealth = fieldStat.healthBarUI.transform.GetChild(0).gameObject;
+
+        fieldHP = fieldStat.maxHP;
+        fieldStat.UpdateHealthBar(fieldHP);
+
+        fieldSprite = transform.GetChild(2).GetComponent<SpriteRenderer>();
+
+        capsuleCollider = GetComponent<CapsuleCollider2D>();
     }
 
     private void Update()
@@ -29,15 +46,72 @@ public class MowerBehaviour : EnemyStat
         {
             player.transform.position = new Vector2(transform.position.x +  ridePos, player.transform.position.y);
         }
+
+        switch (currentState)
+        {
+            case ForceFieldState.Inactive:
+                {
+                    fieldSprite.color = Color.white;
+
+                    break;
+                }
+            case ForceFieldState.Generating:
+                {
+                    fieldSprite.color = Color.yellow;
+                    speed = 0;
+
+                    if (!isGenerating)
+                    {
+                        isGenerating = true;
+
+                        Invoke("ChangeToActiveState", 3f);
+                    }
+
+                    break;
+                }
+            case ForceFieldState.Active:
+                {
+                    fieldSprite.color = Color.red;
+                    speed = stat.runningSpeed;
+
+                    break;
+                }
+            case ForceFieldState.Destroyed:
+                {
+                    fieldSprite.enabled = false;
+
+                    break;
+                }
+        }
     }
 
-    // When player jump on Mower to ride
+    // When player collides with Mower
     private void OnCollisionEnter2D(Collision2D col)
     {
         if (col.gameObject.CompareTag("Player"))
-        {
-            ridePos = player.transform.position.x - transform.position.x;
-            isRiding = true;          
+        {           
+            ContactPoint2D[] contacts = new ContactPoint2D[1];
+            int numContacts = col.GetContacts(contacts);
+
+            for (int i = 0; i < numContacts; i++)
+            {
+                // Attack when hit the player in the front side
+                if (Vector2.Distance(contacts[i].point, groundDetection.position) < 1f)
+                {                  
+                    if (!isAttacking)
+                    {
+                        isAttacking = true;
+
+                        MowerAttack();
+                    }
+                }
+                // Player rides Mower
+                else
+                {
+                    ridePos = player.transform.position.x - transform.position.x;
+                    isRiding = true;
+                }
+            }
         }
     }
 
@@ -47,20 +121,6 @@ public class MowerBehaviour : EnemyStat
         if (col.gameObject.CompareTag("Player"))
         {          
             isRiding = false;
-        }
-    }
-
-    // Attack when hit the player in the front side
-    private void OnTriggerEnter2D(Collider2D col)
-    {
-        if (col.gameObject.CompareTag("Player"))
-        {
-            if (!isAttacking)
-            {
-                isAttacking = true;
-
-                MowerAttack();
-            }
         }
     }
 
@@ -83,12 +143,12 @@ public class MowerBehaviour : EnemyStat
         isStunning = true;
 
         StartCoroutine("Attacking");
-        if (coroutine != null)
+        if (dmgCoroutine != null)
         {
-            StopCoroutine(coroutine);
+            StopCoroutine(dmgCoroutine);
         }
 
-        coroutine = StartCoroutine(ApplyDamage(3, stat.damage));
+        dmgCoroutine = StartCoroutine(ApplyDamage(3, stat.damage));
     }
 
     protected override void StunningProcess()
@@ -98,9 +158,9 @@ public class MowerBehaviour : EnemyStat
         if (escapingStunCount == 8)
         {
             // Stop dealing damage and get back to original states
-            if (coroutine != null)
+            if (dmgCoroutine != null)
             {
-                StopCoroutine(coroutine);
+                StopCoroutine(dmgCoroutine);
             }
 
             player.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -121,6 +181,7 @@ public class MowerBehaviour : EnemyStat
     void ReturnPhysics()
     {
         boxCollier.isTrigger = false;
+        capsuleCollider.isTrigger = false;
         rb.bodyType = RigidbodyType2D.Dynamic;
         speed = stat.runningSpeed;
         isAttacking = false;
@@ -130,7 +191,8 @@ public class MowerBehaviour : EnemyStat
     {
         rb.bodyType = RigidbodyType2D.Kinematic;
         boxCollier.isTrigger = true;
-        speed = 1.5f;
+        capsuleCollider.isTrigger = true;
+        speed = 1.4f;
 
         yield return new WaitForSeconds(3f);
 
@@ -144,10 +206,78 @@ public class MowerBehaviour : EnemyStat
 
         while (currentCount < damageCount)
         {
-            playerStat.PlayerHP -= damageAmount;
+            playerStat.PlayerTakeDamage(damageAmount);
             yield return new WaitForSeconds(1f);
             currentCount++;
         }
     }
 
+    // Take no damage
+    public override void TakeDamage(float playerDamage)
+    {
+        print("Not dealing dmg");
+    }
+
+    public void DamagingBackside(float playerDmg)
+    {
+        print("yesss");
+        if (currentState == ForceFieldState.Inactive)
+        {
+            currentHP -= playerDmg;
+            speed = stat.runningSpeed / 2;
+
+            stat.UpdateHealthBar(currentHP);
+            StartCoroutine("HealthBarAnimation");
+
+            CheckEnemyDeath();
+
+            if (!isGenerating)
+            {
+                isGenerating = true;
+
+                Invoke("ChangeToGeneratingState", 2f);
+            }
+        }
+
+        if (currentState == ForceFieldState.Generating)
+        {
+
+        }
+
+        if (currentState == ForceFieldState.Active)
+        {
+            // Field Generator will damage back the player and push upward
+            playerStat.PlayerTakeDamage(fieldStat.damage);
+            playerRigid.AddForce(new Vector2(Mathf.Sign(player.transform.localScale.x) * -2000, 100), ForceMode2D.Impulse);
+            
+        }
+
+    }
+
+    public void DamagingForceField(float playerDmg)
+    {
+        print("circleeeee");
+        fieldHP -= playerDmg;
+
+        fieldStat.UpdateHealthBar(fieldHP);
+    }
+
+    private void ChangeToGeneratingState()
+    {
+        currentState = ForceFieldState.Generating;
+
+        isGenerating = false;
+    }
+
+    private void ChangeToActiveState()
+    {
+        currentState = ForceFieldState.Active;
+
+        isGenerating = false;
+    }
+
+    protected override void Movement()
+    {
+        base.Movement();       
+    }
 }
