@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stat: {fileID: 11400000, guid: 6a1f442a4594d83488089502f1b2307a, type: 2}
-  groundDetection: {fileID: 1417960429150828320}
+  currentHP: 0
+  frontDetection: {fileID: 1417960429150828320}
   bleedChance: 30
   knockBackForce: 2000
 --- !u!1001 &6008763409599780095
