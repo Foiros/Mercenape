@@ -114,7 +114,7 @@ public class MowerBehaviour : EnemyStat
             {
                 isGenerating = true;
 
-                Invoke("ChangeToGeneratingState", 2f);
+                Invoke("ChangeToGeneratingState", 1.5f);
             }
         }
 
@@ -157,7 +157,6 @@ public class MowerBehaviour : EnemyStat
                     // Then ride it
                     ridePos = player.transform.position.x - transform.position.x;
                     isRiding = true;
-
                 }
                 // If player is super near Mower's head
                 else if (Mathf.Abs(player.transform.position.x - frontDetection.position.x) <= .5f)
@@ -166,7 +165,6 @@ public class MowerBehaviour : EnemyStat
                     if (!isAttacking && currentState != ForceFieldState.Generating)
                     {
                         isAttacking = true;
-
                         MowerAttack();
                     }
                 }
@@ -174,11 +172,12 @@ public class MowerBehaviour : EnemyStat
         }
     }
 
-    // When player stop riding
+    // When player get out of Mower's back
     private void OnCollisionExit2D(Collision2D col)
     {
         if (col.gameObject.CompareTag("Player"))
-        {          
+        {      
+            // Stop riding
             isRiding = false;
         }
     }
@@ -227,7 +226,7 @@ public class MowerBehaviour : EnemyStat
             player.GetComponent<PlayerAttackTrigger>().enabled = true;
             player.GetComponent<Animator>().enabled = true;
 
-            playerRigid.AddForce(new Vector2(0, 300), ForceMode2D.Impulse);
+            playerRigid.velocity = Vector2.up * 30;
 
             escapingStunCount = 0;
             readyToSetStun = true;
@@ -310,6 +309,17 @@ public class MowerBehaviour : EnemyStat
 
     protected override void Movement()
     {
-        base.Movement();       
+        base.Movement();
+
+        if (groundInfo.collider == false)
+        {
+            fieldBarHealth.ScaleLeftUI(rb);
+
+            if (isRiding)
+            {
+                isRiding = false;
+                playerRigid.velocity = Vector2.up * 30;
+            }
+        }
     }
 }

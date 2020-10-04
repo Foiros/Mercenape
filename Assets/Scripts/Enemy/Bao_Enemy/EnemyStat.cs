@@ -21,6 +21,7 @@ public class EnemyStat : MonoBehaviour
     protected Rigidbody2D rb;
     protected BoxCollider2D boxCollier;
     [SerializeField] protected Transform frontDetection;
+    protected RaycastHit2D groundInfo;
 
     protected GameObject player;
     protected PlayerStat playerStat;
@@ -72,12 +73,12 @@ public class EnemyStat : MonoBehaviour
     // Basic Movement
     protected virtual void Movement()
     {
-        RaycastHit2D groundInfo = Physics2D.Raycast(frontDetection.position, Vector2.down, 10, LayerMask.GetMask("Ground"));
+        groundInfo = Physics2D.Raycast(frontDetection.position, Vector2.down, 10, LayerMask.GetMask("Ground"));
 
         if(groundInfo.collider == false)
         {
             transform.localScale = new Vector2(-(Mathf.Sign(rb.velocity.x)) * enemyScale, enemyScale);
-            barHealth.ScaleRightUI(rb);
+            barHealth.ScaleRightUI(rb);           
         }
 
         // Check direction facing and adjust to velocity according to that
@@ -93,11 +94,7 @@ public class EnemyStat : MonoBehaviour
 
     // Fix a bug that enemy stick to something when colliding
     protected virtual void OnTriggerExit2D(Collider2D collision)
-    {
-        
-        if (collision.gameObject.CompareTag("Loot")) { return; }
-        if (collision.gameObject.CompareTag("wall")) { return; }
-        if (collision.gameObject.CompareTag("VineAnchor")) { return; }
+    {     
 
     }
 

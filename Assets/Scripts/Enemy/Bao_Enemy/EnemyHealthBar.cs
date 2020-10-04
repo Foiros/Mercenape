@@ -10,8 +10,6 @@ public class EnemyHealthBar : MonoBehaviour
     [SerializeField] private Slider sliderFunction;
     private float xScaleUI;
 
-    private Coroutine co;
-
     private void Start()
     {
         xScaleUI = healthBarUI.transform.localScale.x;
@@ -30,6 +28,11 @@ public class EnemyHealthBar : MonoBehaviour
     public void ScaleRightUI(Rigidbody2D rb)
     {
         healthBarUI.transform.localScale = new Vector2(-(Mathf.Sign(rb.velocity.x)) * xScaleUI, healthBarUI.transform.localScale.y);
+    }
+
+    public void ScaleLeftUI(Rigidbody2D rb)
+    {
+        healthBarUI.transform.localScale = new Vector2((Mathf.Sign(rb.velocity.x)) * xScaleUI, healthBarUI.transform.localScale.y);
     }
 
     private IEnumerator HealthBarAnimation()

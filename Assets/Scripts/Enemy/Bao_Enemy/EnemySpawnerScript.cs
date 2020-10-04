@@ -7,26 +7,27 @@ public class EnemySpawnerScript : MonoBehaviour
     public enum SpawnState { Spawning, Waiting, Counting }
 
     [System.Serializable]
-    public class Wave
+    public class Group
     {
-        public int count;
-        public float spawnRate;
+        public int shredCount;
         public int mowerCount;
         public int enemyIncreasedHP;
         public int enemyIncreasedDamage;
     }
 
-    public Wave wave = new Wave();
-    //public List<Wave> waves = new List<Wave>();
+    public Group group = new Group();
+    //public List<Group> groups = new List<Group>();
 
+    private int currentGroup = 0;
     private int currentWave = 1;
 
     public float timeBetweenWaves = 3f;
 
-    private float waveCountdown;         // Count down to next wave
+    private float groupCountdown;         // Count down to next group
     private float searchCountdown = 1f;  // Count down for searching any alive enemy
 
     public Transform[] enemies = new Transform[2];
+    private List<Transform> spawnList = new List<Transform>();
 
     //public delegate void CompleteGroup();
     //public static event CompleteGroup GroupCompleted;
@@ -35,17 +36,19 @@ public class EnemySpawnerScript : MonoBehaviour
 
     private void Start()
     {
-        waveCountdown = timeBetweenWaves;        
+        groupCountdown = timeBetweenWaves;
+
+        IncreaseDifficulty();
     }
 
     private void Update()
     {
-        // When player is fighting a wave
+        // When player is fighting a group
         if (state == SpawnState.Waiting)
         {
             if (!EnemyIsAlive())
             {
-                WaveCompleted();                
+                GroupCompleted();                
             }
             else
             {
@@ -54,33 +57,31 @@ public class EnemySpawnerScript : MonoBehaviour
             }
         }
 
-        // Spawn wave when count down is finished
-        if (waveCountdown <= 0)
+        // Spawn group when count down is finished
+        if (groupCountdown <= 0)
         {
             if (state != SpawnState.Spawning)
             {
-                // Start spawning wave
-                StartCoroutine(SpawnWave(wave));
+                // Start spawning group
+                StartCoroutine(SpawnWave());
             }
         }
         else
         {
-            waveCountdown -= Time.deltaTime;
+            groupCountdown -= Time.deltaTime;
         }      
     }
 
-    // Wave completed and prepare new wave
-    void WaveCompleted()
+    // Group completed and prepare new group
+    void GroupCompleted()
     {
-        // Begin a new wave
+        // Prepare a new group
         state = SpawnState.Counting;
-        waveCountdown = timeBetweenWaves;
-
-        wave.mowerCount = 0;
-        currentWave++;
+        groupCountdown = timeBetweenWaves;
+        
         IncreaseDifficulty();
 
-        Debug.Log("Wave completed! Going to wave: " + currentWave);
+        Debug.Log("Group completed! Going to group: " + currentGroup);
     }
 
     // Check if enemies are still alive
@@ -100,19 +101,17 @@ public class EnemySpawnerScript : MonoBehaviour
     }
 
     // Spawn enemies one by one with rate
-    IEnumerator SpawnWave(Wave _wave)
+    IEnumerator SpawnWave()
     {
-        Debug.Log("Spawning wave: " + currentWave);
+        Debug.Log("Spawning group: " + currentGroup);
         state = SpawnState.Spawning;
 
         // Spawn
-        for (int i = 0; i < _wave.count; i++)
-        {
-            _wave.spawnRate = Random.Range(1.5f, 5f);
-            
-            SpawnEnemy(enemies[RandomEnemyGenerator()]);
+        for (int i = 0; i < spawnList.Count; i++)
+        {          
+            SpawnEnemy(spawnList[i]);
 
-            yield return new WaitForSeconds(1f / _wave.spawnRate);
+            yield return new WaitForSeconds(1f / RandomSpawnRate());
         }
 
         state = SpawnState.Waiting;
@@ -128,38 +127,54 @@ public class EnemySpawnerScript : MonoBehaviour
 
     void IncreaseDifficulty()
     {
-        wave.count++;
-        wave.enemyIncreasedHP += 2;
-        wave.enemyIncreasedDamage += 1;
+        currentGroup++;
+
+        if (currentGroup == 1) { group.shredCount = 3; }
+
+        if (currentGroup == 2) { group.shredCount = 4; group.mowerCount = 1; }
+        
+        if (currentGroup >= 3)
+        {
+            group.shredCount = Random.Range(4, 6 + 1);
+            group.mowerCount = RandomMower();
+        }
+
+        MakeSpawnList();
+
+        group.enemyIncreasedHP += 2;
+        group.enemyIncreasedDamage += 1;
     }
 
-    int RandomEnemyGenerator()
+    private void MakeSpawnList()
     {
-        if (wave.mowerCount == 2) { return 0; }
+        spawnList.Clear();
 
-        int enemyIndex = 0;
-        
-        int randomRatio = Random.Range(0, 101);
-
-        if (currentWave <= 2)
+        for (int i = 0; i < group.shredCount; i ++)
         {
-            enemyIndex = 0;
+            // Add Shred
+            spawnList.Add(enemies[0]);
+        }
+
+        for (int i = 0; i < group.mowerCount; i++)
+        {
+            // Add Mower
+            spawnList.Add(enemies[1]);
+        }
+    }
+
+    int RandomMower()
+    {
+        bool isOneMower = (Random.value > 0.85f);
+
+        if (isOneMower)
+        {
+            return 1;
         }
         else
-        {           
-            if((randomRatio < 85) && wave.mowerCount == 0)
-            {
-                enemyIndex = 1;
-                wave.mowerCount++;
-            }
-
-            if((randomRatio < 15) && wave.mowerCount == 1)
-            {
-                enemyIndex = 1;
-                wave.mowerCount++;
-            }
-            
-        }
-        return enemyIndex;
+        {
+            return 2;
+        }       
     }
+
+    private float RandomSpawnRate() { return Random.Range(0.2f, 0.5f); }
 }

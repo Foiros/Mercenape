@@ -48,12 +48,12 @@ public class PlayerCollisionDectection : MonoBehaviour
             playerCurrency.playerKarma += KarmaQuantity;
             Destroy(collision.gameObject);
             karmaBar.SetValue();
-            karmaCount.Updatetext();
+            karmaCount.TextUpdate();
         }
             else if(collision.CompareTag("Loot/UpgradeDrop")) {
             playerCurrency.playerUpgrade++;
             Destroy(collision.gameObject);
-            upgradeCount.UpdateText();
+            upgradeCount.TextUpdate();
         }
             
         else if (collision.CompareTag("Loot/HPDrop"))
