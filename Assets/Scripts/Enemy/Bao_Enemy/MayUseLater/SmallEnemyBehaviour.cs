@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SmallEnemyBehaviour : EnemyBehaviour
+public class SmallEnemyBehaviour : EnemyBehaviourNotUsing
 {
     // Collision with player
     private void OnCollisionEnter2D(Collision2D collision)

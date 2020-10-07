@@ -42,6 +42,7 @@ TagManager:
   - Loot/Karma
   - Loot/UpgradeDrop
   - MoneyUpgrade
+  - EnemySpawner
   layers:
   - Default
   - TransparentFX

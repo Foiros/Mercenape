@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Created by Bao: Only script for spawning enemies
 public class EnemySpawnerScript : MonoBehaviour
 {
     public enum SpawnState { Spawning, Waiting, Counting }
@@ -21,7 +22,7 @@ public class EnemySpawnerScript : MonoBehaviour
     private int currentGroup = 0;
     private int currentWave = 1;
 
-    public float timeBetweenWaves = 3f;
+    public float timeBetweenGroups = 3f;
 
     private float groupCountdown;         // Count down to next group
     private float searchCountdown = 1f;  // Count down for searching any alive enemy
@@ -29,14 +30,17 @@ public class EnemySpawnerScript : MonoBehaviour
     public Transform[] enemies = new Transform[2];
     private List<Transform> spawnList = new List<Transform>();
 
-    //public delegate void CompleteGroup();
-    //public static event CompleteGroup GroupCompleted;
+    public SpawnState state = SpawnState.Counting;
 
-    private SpawnState state = SpawnState.Counting;
+    private PlayerCurrency playerCurrency;
+    private GameMaster gm;
 
     private void Start()
     {
-        groupCountdown = timeBetweenWaves;
+        playerCurrency = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCurrency>();
+        gm = GameObject.FindGameObjectWithTag("Player").GetComponent<GameMaster>();
+
+        groupCountdown = timeBetweenGroups;
 
         IncreaseDifficulty();
     }
@@ -52,7 +56,7 @@ public class EnemySpawnerScript : MonoBehaviour
             }
             else
             {
-                // If there's still enemy alive, let player kill them all
+                // If there's still enemy alive, wait for player to kill them all
                 return;
             }
         }
@@ -77,12 +81,25 @@ public class EnemySpawnerScript : MonoBehaviour
     {
         // Prepare a new group
         state = SpawnState.Counting;
-        groupCountdown = timeBetweenWaves;
+        groupCountdown = timeBetweenGroups;
+
+        CheckWaveEnd();
         
         IncreaseDifficulty();
 
-        Debug.Log("Group completed! Going to group: " + currentGroup);
+        Debug.Log("Going to group: " + currentGroup);
     }
+
+    void CheckWaveEnd()
+    {
+        if (playerCurrency.playerKarma >= gm.lvMaxKarma)
+        {
+            print("Wave " + currentWave + " completed!!!!!");
+            currentWave++;
+            currentGroup = 0;   // Reset group
+            groupCountdown = timeBetweenGroups * 2; // Wait a bit longer than normal
+        }
+    }    
 
     // Check if enemies are still alive
     bool EnemyIsAlive()
@@ -129,7 +146,7 @@ public class EnemySpawnerScript : MonoBehaviour
     {
         currentGroup++;
 
-        if (currentGroup == 1) { group.shredCount = 3; }
+        if (currentGroup == 1) { group.shredCount = 3; group.mowerCount = 0; }
 
         if (currentGroup == 2) { group.shredCount = 4; group.mowerCount = 1; }
         

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Created by Bao: Mower's Behaviour, child of EnemyStat
 public class MowerBehaviour : EnemyStat
 {
     [SerializeField] private EnemyStats fieldStat;
@@ -98,6 +99,7 @@ public class MowerBehaviour : EnemyStat
         }
     }
 
+    // Backside main mechanic
     public void DamagingBackside(float playerDmg)
     {
         if (currentState == ForceFieldState.Inactive || currentState == ForceFieldState.Destroyed)
@@ -131,6 +133,7 @@ public class MowerBehaviour : EnemyStat
         }
     }
 
+    // Only for damaging force field
     public void DamagingForceField(float playerDmg)
     {
         fieldHP -= playerDmg;
@@ -245,7 +248,7 @@ public class MowerBehaviour : EnemyStat
         isAttacking = false;
     }
 
-    IEnumerator Attacking()
+    private IEnumerator Attacking()
     {
         rb.bodyType = RigidbodyType2D.Kinematic;
         boxCollier.isTrigger = true;
@@ -258,7 +261,7 @@ public class MowerBehaviour : EnemyStat
     }
 
     // Deal damage
-    IEnumerator ApplyDamage(int damageCount, int damageAmount)
+    private IEnumerator ApplyDamage(int damageCount, int damageAmount)
     {
         int currentCount = 0;
 

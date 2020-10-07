@@ -8,22 +8,27 @@ public class LoadScene : MonoBehaviour
 {
     private PlayerCurrency playerCurrency;
     GameMaster gamemaster;
+    private EnemySpawnerScript spawner;
 
     void Awake()
     {
         playerCurrency = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCurrency>();
         gamemaster = GameObject.FindGameObjectWithTag("Player").GetComponent<GameMaster>();
+        spawner = GameObject.FindGameObjectWithTag("EnemySpawner").GetComponent<EnemySpawnerScript>();
     }
 
     public void GoTolevel1()
     {
-        Time.timeScale = 1;
-        SceneManager.LoadScene("LV1");
+        if (spawner.state == EnemySpawnerScript.SpawnState.Counting)
+        {
+            Time.timeScale = 1;
+            SceneManager.LoadScene("LV1");
+        }
     }
 
     public void GoToForge()
     { //check if player have enough karma
-        if (playerCurrency.playerKarma >= gamemaster.lvMaxKarma)
+        if (playerCurrency.playerKarma >= gamemaster.lvMaxKarma && spawner.state == EnemySpawnerScript.SpawnState.Counting)
         {
             Time.timeScale = 1;
             SaveManager.SaveCurrency(playerCurrency);

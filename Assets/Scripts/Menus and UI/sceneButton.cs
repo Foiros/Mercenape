@@ -9,15 +9,19 @@ public class sceneButton : MonoBehaviour
     private Object Scenetoload;
     private PlayerCurrency playerCurrency;
     GameMaster gamemaster;
+
+    private EnemySpawnerScript spawner;
+
     private void Awake()
     {
         playerCurrency = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCurrency>();
         gamemaster = GameObject.FindGameObjectWithTag("Player").GetComponent<GameMaster>();
+        spawner = GameObject.FindGameObjectWithTag("EnemySpawner").GetComponent<EnemySpawnerScript>();
     }
     public void changeScene()
     {
         //check if player have enough karma
-        if (playerCurrency.playerKarma >= gamemaster.lvMaxKarma)
+        if (playerCurrency.playerKarma >= gamemaster.lvMaxKarma && spawner.state == EnemySpawnerScript.SpawnState.Counting)
         {
             Time.timeScale = 1;
             SceneManager.LoadScene(Scenetoload.name);
@@ -27,7 +31,7 @@ public class sceneButton : MonoBehaviour
         else 
         { 
 
-            print("cant go");
+            print("cant go to next scene");
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// Created by Bao: Individual health bar for each enemy
 public class EnemyHealthBar : MonoBehaviour
 {
     [SerializeField] private GameObject healthBarUI;

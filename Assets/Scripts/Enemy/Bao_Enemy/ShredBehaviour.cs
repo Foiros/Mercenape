@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Created by Bao: Shred's Behaviour, child of EnemyStat
 public class ShredBehaviour : EnemyStat
 {      
     [SerializeField] private float bleedChance;
