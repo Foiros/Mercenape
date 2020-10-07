@@ -9,7 +9,7 @@ public class GameMaster : MonoBehaviour
     PlayerCurrency playerCurrency;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         CheckScene4MaxKarma();
         
@@ -35,7 +35,10 @@ public class GameMaster : MonoBehaviour
 
         if (buildIndex > 0)
         {
+            print(buildIndex);
             lvMaxKarma = buildIndex * 1000;
+            print("lv max karma" + lvMaxKarma);
+           
         }
         else
         {

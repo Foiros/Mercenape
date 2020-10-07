@@ -35,9 +35,11 @@ public class KarmaBar : MonoBehaviour
 
     void SetMaxValue()
     {
-        if (gm.lvMaxKarma != null)
+        if (gm != null)
         {
             karmaBar.maxValue = gm.lvMaxKarma;
+            print("set Karma max value: " + gm.lvMaxKarma);
+           
         }
         else { 
         karmaBar.maxValue = 1000;
