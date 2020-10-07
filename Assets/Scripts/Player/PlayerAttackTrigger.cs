@@ -90,8 +90,9 @@ public class PlayerAttackTrigger : MonoBehaviour
           
             for (int i = 0; i < enemiesToDamage.Length; i++)
             {               
-                enemiesToDamage[i].GetComponent<EnemyStat>().TakeDamage(PlayerDamage);
+                enemiesToDamage[i].GetComponent<EnemyBehaviour>().TakeDamage(PlayerDamage);
 
+                // Create by Bao: Attacking Mower
                 if (enemiesToDamage[i].GetType() == typeof(CapsuleCollider2D))
                 {
                     enemiesToDamage[i].GetComponent<MowerBehaviour>().DamagingBackside(PlayerDamage);

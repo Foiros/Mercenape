@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 // Created by Bao: main enemy behaviour (maybe change name later), parent of ShredBehaviour and MowerBehaviour
-public class EnemyStat : MonoBehaviour
+public class EnemyBehaviour : MonoBehaviour
 {
     [SerializeField] protected EnemyStats stat;
 
@@ -18,7 +18,7 @@ public class EnemyStat : MonoBehaviour
     protected bool readyToSetStun = true;     // For stunning process
     protected int escapingStunCount = 0;      // Current number of pressing space
 
-    private float enemyScale;
+    private Vector3 enemyRotation;
     protected Rigidbody2D rb;
     protected BoxCollider2D boxCollier;
     [SerializeField] protected Transform frontDetection;
@@ -33,7 +33,7 @@ public class EnemyStat : MonoBehaviour
 
     private void Awake()
     {       
-        enemyScale = transform.localScale.x;
+        enemyRotation = transform.rotation.eulerAngles;
     }
 
     protected virtual void Start()
@@ -68,7 +68,7 @@ public class EnemyStat : MonoBehaviour
     // Check if facing right direction
     protected bool IsFacingRight()
     {
-        return transform.localScale.x > 0;
+        return transform.rotation.eulerAngles.y == 0;
     }
 
     // Basic Movement
@@ -78,7 +78,9 @@ public class EnemyStat : MonoBehaviour
 
         if(groundInfo.collider == false)
         {
-            transform.localScale = new Vector2(-(Mathf.Sign(rb.velocity.x)) * enemyScale, enemyScale);
+            //transform.localScale = new Vector2(-(Mathf.Sign(rb.velocity.x)) * enemyScale, enemyScale);
+            enemyRotation += new Vector3(0, -(Mathf.Sign(rb.velocity.x)) * 180, 0);
+            transform.rotation = Quaternion.Euler(0, enemyRotation.y, 0);
             barHealth.ScaleRightUI(rb);           
         }
 

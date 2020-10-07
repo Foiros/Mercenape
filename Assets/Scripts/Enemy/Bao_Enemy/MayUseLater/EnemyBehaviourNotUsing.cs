@@ -17,7 +17,7 @@ public class EnemyBehaviourNotUsing : MonoBehaviour
 
     protected EnemyState currentState;
     protected Rigidbody2D rb;
-    private EnemyStat enemyStat;
+    private EnemyBehaviour enemyStat;
 
     [SerializeField] protected GameObject player;
     protected Rigidbody2D playerRigid;
@@ -49,7 +49,7 @@ public class EnemyBehaviourNotUsing : MonoBehaviour
         rayPos = gameObject.transform.GetChild(0).GetComponent<Transform>();
 
         rb = this.GetComponent<Rigidbody2D>();
-        enemyStat = this.GetComponent<EnemyStat>();
+        enemyStat = this.GetComponent<EnemyBehaviour>();
         //enemyDamage = enemyStat.damage;
 
         timeBetweenAttack = delayTimeBetweenAttack;

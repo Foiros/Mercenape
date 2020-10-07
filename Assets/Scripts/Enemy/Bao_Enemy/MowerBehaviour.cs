@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Created by Bao: Mower's Behaviour, child of EnemyStat
-public class MowerBehaviour : EnemyStat
+// Created by Bao: Mower's Behaviour, child of EnemyBehaviour
+public class MowerBehaviour : EnemyBehaviour
 {
     [SerializeField] private EnemyStats fieldStat;
     private float fieldHP;
@@ -28,7 +28,7 @@ public class MowerBehaviour : EnemyStat
 
     protected override void Start()
     {
-        base.Start();   // Start both EnemyStat and MowerBehaviour   
+        base.Start();   // Start both EnemyBehaviour and MowerBehaviour   
 
         currentState = ForceFieldState.Inactive;
 

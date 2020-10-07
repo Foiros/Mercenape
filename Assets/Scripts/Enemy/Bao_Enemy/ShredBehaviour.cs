@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Created by Bao: Shred's Behaviour, child of EnemyStat
-public class ShredBehaviour : EnemyStat
+// Created by Bao: Shred's Behaviour, child of EnemyBehaviour
+public class ShredBehaviour : EnemyBehaviour
 {      
     [SerializeField] private float bleedChance;
     [SerializeField] private int knockBackForce;
@@ -12,7 +12,7 @@ public class ShredBehaviour : EnemyStat
 
     protected override void Start()
     {
-        base.Start();   // Start both EnemyStat and ShredBehaviour       
+        base.Start();   // Start both EnemyBehaviour and ShredBehaviour       
     }
 
     private void Update()
@@ -101,13 +101,11 @@ public class ShredBehaviour : EnemyStat
         //playerRigid.AddForce(new Vector2(Mathf.Sign(transform.localScale.x) * knockBackForce / 50, 0));
         rb.AddForce(new Vector2(-Mathf.Sign(transform.localScale.x) * knockBackForce, 50));
 
-        speed = 0;
-        this.GetComponent<SpriteRenderer>().color = Color.red;
+        speed = 0;       
 
         yield return new WaitForSeconds(1f);
 
         speed = stat.runningSpeed;
-        this.GetComponent<SpriteRenderer>().color = Color.white;
     }
 
     protected override void StunningProcess()
