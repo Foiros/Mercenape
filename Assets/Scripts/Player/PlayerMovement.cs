@@ -38,16 +38,12 @@ public class PlayerMovement : MonoBehaviour
 
     public bool isPlayerBlock = false;
 
-    public GameObject vine;
-    VineHingeAnchor vineScript;
-
+   
     void Start()
     {
         PlayerRigid2d = transform.GetComponent<Rigidbody2D>();
         PlayerAnimator = transform.GetComponent<Animator>();
-        vineScript = vine.GetComponent<VineHingeAnchor>();
-
-        vineScript.VineEvent.AddListener(SwingPlayer);
+      
 
     }
 
@@ -220,23 +216,6 @@ public class PlayerMovement : MonoBehaviour
         
      
     }
-
-    // swing player
-    void SwingPlayer()
-    {
-        vineScript.isSwing = false;
-        transform.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
-        transform.parent = null;
-        transform.rotation = Quaternion.Euler(0, 0, 0);
-       
-      // PlayerRigid2d.MovePosition((Vector2)transform.position + Vector2.right * 100  + Vector2.up * 100);
-        PlayerRigid2d.AddForce(Vector2.right * 10000 );
-        print("goi");
-      
-    }
-
-
-
 
     //generic player movement
     private void PlayerMove()

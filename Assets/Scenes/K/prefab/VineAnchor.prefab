@@ -168,7 +168,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00039846d4626d748bcc1ae1ff06a7ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isSwing: 0
   swingSpeed: 1000
+  VineEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  playerlayermask:
+    serializedVersion: 2
+    m_Bits: 4096
 --- !u!1 &533570469055275521
 GameObject:
   m_ObjectHideFlags: 0

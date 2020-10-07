@@ -54,9 +54,9 @@ public class PlayerCurrency : MonoBehaviour
         playerGold = data.playerMoney;
         playerUpgrade = data.speedUpgrades;
 
-        updateCurrency(playerGold);
+       /* updateCurrency(playerGold);
         updateKarma(playerKarma);
-        updateUpgrades(playerUpgrade);
+        updateUpgrades(playerUpgrade);*/
     }
 
     public void updateCurrency(int amount)

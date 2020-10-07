@@ -8,10 +8,19 @@ public class VineHingeAnchor : MonoBehaviour
 
     Rigidbody2D rb;
     GameObject player;
-    public bool isSwing=false;
+    public bool isSwing = false;
     public float swingSpeed;
     public UnityEvent VineEvent;
     float h, v;
+
+    bool isFlying=false;
+    BoxCollider2D box2D;
+    [SerializeField] LayerMask playerlayermask;
+
+    //limit how many times player can climb up the vine
+
+    int climbLimit = 10;
+    int climbTimes = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -19,37 +28,57 @@ public class VineHingeAnchor : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         player = GameObject.Find("Player");
 
-        if(VineEvent == null)
+
+        if (VineEvent == null)
         {
             VineEvent = new UnityEvent();
         }
-        //VineEvent.AddListener(MovePlayer);
+       VineEvent.AddListener(UngrabVine);
 
     }
 
     // Update is called once per frame
     void Update()
     {
-         h = Input.GetAxis("Horizontal");
-         v = Input.GetAxisRaw("Vertical");
+        h = Input.GetAxis("Horizontal");
+        v = Input.GetAxisRaw("Vertical");
+       
 
         if (isSwing)
         {
             player.transform.parent = this.transform;
             player.transform.rotation = this.transform.rotation;
 
-            player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;// no more gravity
+           player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;// no more gravity
+           //playerHinge.connectedBody
 
+          
             rb.AddForce(new Vector2(h * swingSpeed * Time.deltaTime, 0), ForceMode2D.Force);
 
             if (v != 0)
             {
+                
+                if (v > 0 &&  climbTimes <= climbLimit )
+                {
+                    player.transform.Translate(Vector2.up * v * 10 * Time.deltaTime);
+                    climbTimes++;
+                }
+                if(v<0&& climbTimes > 0)
+                {
+                    player.transform.Translate(Vector2.up * v * 10 * Time.deltaTime);
+                    climbTimes--;
 
-                player.transform.Translate(Vector2.up * v * 10 * Time.deltaTime);
+                }
+                if(v < 0 && climbTimes == 0)
+                {
+                    isSwing = false;
+                    player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+                    player.transform.parent = null;
+                    player.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    
+                }
+
             }
-
-
-            
 
         }
         else
@@ -57,53 +86,76 @@ public class VineHingeAnchor : MonoBehaviour
             player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
 
         }
-        
-        
+
+
         if (Input.GetKeyDown(KeyCode.Space) && isSwing)
         {
 
             VineEvent.Invoke();
         }
 
-
     }
 
 
-     private void FixedUpdate()
+    private void FixedUpdate()
     {
         
-
-       
+        // note need 2 add time 
+        if(isFlying == true) {
+            if(player.GetComponent<PlayerMovement>().FaceRight) 
+            { 
+            player.GetComponent<Rigidbody2D>().AddForce(new Vector3(10000f, 1000f,0)*Time.deltaTime, ForceMode2D.Impulse);
+            }else
+            {
+                player.GetComponent<Rigidbody2D>().AddForce(new Vector3(-10000f, 1000f, 0) * Time.deltaTime, ForceMode2D.Impulse);
+            }
+            Invoke("func", 0.5f);
+        }
     }
 
-    
+    void func()
+    {
+        isFlying = false;
+       
 
-    void MovePlayer()
+    }
+
+    void UngrabVine()
     {
         isSwing = false;
         player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
         player.transform.parent = null;
+
+        isFlying = true;
         player.transform.rotation = Quaternion.Euler(0, 0, 0);
-        player.GetComponent<Rigidbody2D>().MovePosition((Vector2)player.transform.position +Vector2.up*20*Time.deltaTime + Vector2.right*10000) ;
-        print("event");
+
+        
 
 
     }
 
 
-    private void OnTriggerStay2D  (Collider2D collision)
+    
+    bool checkIsGrabVine()
     {
-        if (collision.gameObject.name == "Player" )
+        return Physics2D.BoxCast(box2D.bounds.center, box2D.bounds.size, 0f,Vector2.down, box2D.bounds.extents.y + 0.1f, playerlayermask); 
+        
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.name == "Player")
         {
             if (Input.GetKey(KeyCode.E))
             {
-                this.transform.GetComponent<Rigidbody2D>().AddForce(new Vector2(0f, 4f));
+                this.transform.GetComponent<Rigidbody2D>().AddForce(new Vector2(10, 0));
 
                 isSwing = true;
             }
         }
     }
+    
+
 
 }
-
 

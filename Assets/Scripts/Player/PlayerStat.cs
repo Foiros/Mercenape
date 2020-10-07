@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerStat : MonoBehaviour
 {
-   
+    
     
     public GameObject player;
     public Healthbar_Ossi healthBar;
@@ -17,7 +17,8 @@ public class PlayerStat : MonoBehaviour
     PlayerHealthBar playerHealthBar;
     PlayerCurrency playerCurrency;
 
-    public int lostGold, lostKarma;
+    public int lostGold;
+        public int lostKarma;
 
     void Start()
     {
@@ -88,39 +89,54 @@ public class PlayerStat : MonoBehaviour
         {
             // This checks if the player takes fatal damage.
             PlayerHP = 0;
-            playerCurrency.playerGold -= lostGold;
-            
 
-            /*Debug.Log("Dead.");
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);*/
+            UpdateCurrency();
+          
+            //Debug.Log("Dead.");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 
-   /* void IEnumerable StartDeath()
+    void UpdateCurrency()
     {
+        lostGold = playerCurrency.playerGold * 10 / 100;
+        lostKarma = playerCurrency.playerKarma * 10 / 100;
+
+        playerCurrency.playerGold -= lostGold;
+
         if (playerCurrency.playerGold < 0)
         {
             playerCurrency.playerGold = 0;
         }
 
         playerCurrency.playerKarma -= lostKarma;
-        if (playerCurrency.playerGold < 0)
+        
+        if (playerCurrency.playerKarma < 0)
         {
-            playerCurrency.playerGold = 0;
+            playerCurrency.playerKarma = 0;
         }
         transform.GetComponentInChildren<GoldCount>().TextUpdate();
         transform.GetComponentInChildren<KarmaCount>().TextUpdate();
         transform.GetComponentInChildren<KarmaBar>().SetValue();
 
-        yield WaitForSeconds(0.25); 
+        SaveManager.SaveCurrency(playerCurrency);
+        
 
-    }*/
+    }
+
+   void StartDeath()
+    {
+        
+        
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+   
 
     public void PlayerTakeDamage(int EnemyDamage)
     {
         PlayerHP -= EnemyDamage;
         playerHealthBar.SetCurrentHP(PlayerHP);
-        CheckPlayerDeath();    //ineffective should only be called when get damage 
+        CheckPlayerDeath();    
         
     }
 
