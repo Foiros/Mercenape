@@ -27,8 +27,6 @@ public class KarmaBar : MonoBehaviour
         
 
         SetMaxValue();
-
-      
     }
 
  

@@ -20,7 +20,6 @@ public class UpgradeCount : MonoBehaviour
 
 
         TextUpdate();// update the UI when start the game
-
     }
 
 

@@ -142,6 +142,7 @@ public class PlayerMovement : MonoBehaviour
             
         }
     }
+    
     //player climb on wall
     void PlayerClimbWal()
     {

@@ -20,6 +20,4 @@ public class Healthbar_Ossi : MonoBehaviour
             Debug.Log("Updating healthbar: " + curHealth + " / " + maxHealth);
             healthBar.fillAmount = curHealth / maxHealth;
     }
- 
-
 }

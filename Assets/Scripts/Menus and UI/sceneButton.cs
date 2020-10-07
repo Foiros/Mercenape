@@ -26,10 +26,10 @@ public class sceneButton : MonoBehaviour
             Time.timeScale = 1;
             SceneManager.LoadScene(Scenetoload.name);
         }
-    
+
         //place holder
-        else 
-        { 
+        else
+        {
 
             print("cant go to next scene");
         }

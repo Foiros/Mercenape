@@ -17,7 +17,5 @@ public class menuButton : MonoBehaviour
             //Checking pause           
             menu.switchPanel(paneltoOpen);
         }
-        
-
     }
 }

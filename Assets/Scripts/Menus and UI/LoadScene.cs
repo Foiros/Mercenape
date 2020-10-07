@@ -26,6 +26,13 @@ public class LoadScene : MonoBehaviour
         }
     }
 
+    public void GoTolevel1FromMainMenu()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene("LV1");
+        
+    }
+
     public void GoToForge()
     { //check if player have enough karma
         if (playerCurrency.playerKarma >= gamemaster.lvMaxKarma && spawner.state == EnemySpawnerScript.SpawnState.Counting)

@@ -6,7 +6,6 @@ using System;
 
 public class PlayerHealthBar : MonoBehaviour
 {
-   
     public Slider hpBar;
     public Gradient hpGradient;
     public Image hpFill;
@@ -16,20 +15,14 @@ public class PlayerHealthBar : MonoBehaviour
 
     private void Start()
     {
-
         hpBar = GameObject.FindGameObjectWithTag("Player").transform.Find("PlayerUI").Find("hpBar").GetComponent<Slider>();
-        
 
         hpFill = GameObject.FindGameObjectWithTag("Player").transform.Find("PlayerUI").Find("hpBar").Find("hpFill").GetComponent<Image>();
 
         playerStat = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStat>();
 
         SetMaxHp();
-
     }
-
-
-   
 
     public void SetMaxHp()
     {
@@ -40,9 +33,7 @@ public class PlayerHealthBar : MonoBehaviour
 
     public void SetCurrentHP(float HP)
     {
-
         hpBar.value = HP;
         hpFill.color = hpGradient.Evaluate(hpBar.normalizedValue);
     }
-
 }
