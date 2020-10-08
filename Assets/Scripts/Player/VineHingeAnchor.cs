@@ -47,7 +47,7 @@ public class VineHingeAnchor : MonoBehaviour
         if (isSwing)
         {
             player.transform.parent = this.transform;
-            player.transform.rotation = this.transform.rotation;
+            player.transform.rotation =this.transform.rotation;
 
            player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Kinematic;// no more gravity
            //playerHinge.connectedBody
@@ -74,7 +74,7 @@ public class VineHingeAnchor : MonoBehaviour
                     isSwing = false;
                     player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
                     player.transform.parent = null;
-                    player.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    player.transform.rotation = Quaternion.Euler(0, 110, 0);
                     
                 }
 
@@ -94,7 +94,13 @@ public class VineHingeAnchor : MonoBehaviour
             VineEvent.Invoke();
         }
 
+        
+
     }
+
+
+
+
 
 
     private void FixedUpdate()
@@ -116,7 +122,7 @@ public class VineHingeAnchor : MonoBehaviour
     void func()
     {
         isFlying = false;
-       
+        climbTimes = 0;
 
     }
 
@@ -127,7 +133,7 @@ public class VineHingeAnchor : MonoBehaviour
         player.transform.parent = null;
 
         isFlying = true;
-        player.transform.rotation = Quaternion.Euler(0, 0, 0);
+        player.transform.rotation = Quaternion.Euler(0, 110, 0);
 
         
 
