@@ -189,6 +189,21 @@ public class inputManager : MonoBehaviour
                             changeInput(KeyCode.Mouse3);
                             break;
                         }
+                    case 4:
+                        {
+                            changeInput(KeyCode.Mouse4);
+                            break;
+                        }
+                    case 5:
+                        {
+                            changeInput(KeyCode.Mouse5);
+                            break;
+                        }
+                    case 6:
+                        {
+                            changeInput(KeyCode.Mouse6);
+                            break;
+                        }              
                     default:
                         {
                             break;
@@ -202,6 +217,7 @@ public class inputManager : MonoBehaviour
         else
         //We will check if the current input matches with any of the inputs in the inputs array.
         {
+            //If a mouse key us oressed, this will activate and replace currentkey with the mouse button keycode. It's odd, but it works.
             if (e.isMouse)
             {
                 switch (e.button)
@@ -226,7 +242,21 @@ public class inputManager : MonoBehaviour
                             currentKey = KeyCode.Mouse3;
                             break;
                         }
-
+                    case 4:
+                        {
+                            currentKey = KeyCode.Mouse4;
+                            break;
+                        }
+                    case 5:
+                        {
+                            currentKey = KeyCode.Mouse5;
+                            break;
+                        }
+                    case 6:
+                        {
+                            currentKey = KeyCode.Mouse6;
+                            break;
+                        }
 
                     default:
                         { break; }
@@ -234,7 +264,7 @@ public class inputManager : MonoBehaviour
             }
                 for (int i = 0; i < inputs.Length; i++)
                 {
-                    //Keyboard inputs:
+                    //Here we compare the current input with the inputs array to see if it matches.
                     if (currentKey == inputs[i])
                     {
                         if (inputs[i] != KeyCode.None)
