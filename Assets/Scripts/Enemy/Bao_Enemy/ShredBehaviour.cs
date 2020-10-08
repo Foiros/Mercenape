@@ -74,9 +74,9 @@ public class ShredBehaviour : EnemyBehaviour
     {
         // Pass through player
         rb.bodyType = RigidbodyType2D.Kinematic;
-        boxCollier.isTrigger = true;      
-
-        yield return new WaitForSeconds(1.0f);
+        boxCollier.isTrigger = true;  
+        
+        yield return new WaitForSeconds(0.5f);
 
         // Return to original states
         boxCollier.isTrigger = false;
@@ -110,7 +110,7 @@ public class ShredBehaviour : EnemyBehaviour
 
     protected override void StunningProcess()
     {
-        base.StunningProcess();     // Still normal stun player
+        base.StunningProcess();     // Still normally stun player
 
         if (escapingStunCount == 5)
         {

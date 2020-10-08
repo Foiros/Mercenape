@@ -34,15 +34,17 @@ public class EnemyBehaviour : MonoBehaviour
     private void Awake()
     {       
         enemyRotation = transform.rotation.eulerAngles;
-    }
 
-    protected virtual void Start()
-    {
         healthBarUI = transform.GetChild(1).gameObject;
         barHealth = healthBarUI.GetComponent<EnemyHealthBar>();
 
         rb = GetComponent<Rigidbody2D>();
         boxCollier = GetComponent<BoxCollider2D>();
+    }
+
+    protected virtual void Start()
+    {
+        Invoke("FreezePosY", 1f);
 
         //var waveStat = GameObject.Find("EnemySpawner");
         //maxHP += waveStat.GetComponent<EnemySpawnerScript>().wave.enemyIncreasedHP;
@@ -77,8 +79,7 @@ public class EnemyBehaviour : MonoBehaviour
         groundInfo = Physics2D.Raycast(frontDetection.position, Vector2.down, 10, LayerMask.GetMask("Ground"));
 
         if(groundInfo.collider == false)
-        {
-            //transform.localScale = new Vector2(-(Mathf.Sign(rb.velocity.x)) * enemyScale, enemyScale);
+        {           
             enemyRotation += new Vector3(0, -(Mathf.Sign(rb.velocity.x)) * 180, 0);
             transform.rotation = Quaternion.Euler(0, enemyRotation.y, 0);
             barHealth.ScaleRightUI(rb);           
@@ -120,7 +121,8 @@ public class EnemyBehaviour : MonoBehaviour
         {
             readyToSetStun = false;
 
-            player.transform.rotation = Quaternion.Euler(0, 0, Mathf.Sign(transform.localScale.x) * -90);
+            //player.transform.rotation = Quaternion.Euler(0, 0, Mathf.Sign(transform.localScale.x) * -90);
+            player.transform.rotation = Quaternion.Euler(0, 0, Mathf.Sign(enemyRotation.y) * -90);
             playerMovement.enabled = false;
             player.GetComponent<PlayerAttackTrigger>().enabled = false;
             player.GetComponent<Animator>().enabled = false;
@@ -141,4 +143,10 @@ public class EnemyBehaviour : MonoBehaviour
             enemyLoot.DropAll();
         }
     }
+
+    protected void FreezePosY()
+    {
+        rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
+    }
+
 }

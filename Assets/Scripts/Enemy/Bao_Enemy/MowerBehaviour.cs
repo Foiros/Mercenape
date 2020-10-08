@@ -9,11 +9,11 @@ public class MowerBehaviour : EnemyBehaviour
     private float fieldHP;
     private SpriteRenderer fieldSprite;
 
-    private enum ForceFieldState { Inactive, Generating, Active, Destroyed }
-    private ForceFieldState currentState;
-
     private GameObject fieldHealthBarUI;
     private EnemyHealthBar fieldBarHealth;
+
+    private enum ForceFieldState { Inactive, Generating, Active, Destroyed }
+    private ForceFieldState currentState;
 
     private Coroutine dmgCoroutine;
 
@@ -22,6 +22,7 @@ public class MowerBehaviour : EnemyBehaviour
     private bool isGenerating = false;
 
     private float ridePos;
+    [SerializeField] private Transform rideHeight;
 
     private CapsuleCollider2D capsuleCollider;
     private CircleCollider2D generatorCollider;
@@ -40,8 +41,8 @@ public class MowerBehaviour : EnemyBehaviour
 
         fieldSprite = transform.GetChild(2).GetComponent<SpriteRenderer>();
 
-        capsuleCollider = GetComponent<CapsuleCollider2D>();
-        generatorCollider = GetComponent<CircleCollider2D>();
+        capsuleCollider = transform.GetChild(2).GetComponent<CapsuleCollider2D>();
+        generatorCollider = transform.GetChild(2).GetComponent<CircleCollider2D>();
     }
 
     private void Update()
@@ -152,17 +153,16 @@ public class MowerBehaviour : EnemyBehaviour
     {
         if (col.gameObject.CompareTag("Player"))
         {
-            // If player's feet is higher than Mower's head
             if (player.transform.GetChild(1).name == "UnderPlayerPosition")
             {
-                if (player.transform.GetChild(1).position.y > frontDetection.position.y)
+                if (player.transform.GetChild(1).position.y >= rideHeight.position.y)
                 {
                     // Then ride it
                     ridePos = player.transform.position.x - transform.position.x;
                     isRiding = true;
                 }
                 // If player is super near Mower's head
-                else if (Mathf.Abs(player.transform.position.x - frontDetection.position.x) <= .5f)
+                else if (Mathf.Abs(player.transform.position.x - frontDetection.position.x) <= 1.5f)
                 {
                     // Then attack player
                     if (!isAttacking && currentState != ForceFieldState.Generating)
@@ -171,7 +171,7 @@ public class MowerBehaviour : EnemyBehaviour
                         MowerAttack();
                     }
                 }
-            }          
+            } 
         }
     }
 
@@ -229,7 +229,7 @@ public class MowerBehaviour : EnemyBehaviour
             player.GetComponent<PlayerAttackTrigger>().enabled = true;
             player.GetComponent<Animator>().enabled = true;
 
-            playerRigid.velocity = Vector2.up * 30;
+            playerRigid.velocity = Vector2.up * 50;
 
             escapingStunCount = 0;
             readyToSetStun = true;

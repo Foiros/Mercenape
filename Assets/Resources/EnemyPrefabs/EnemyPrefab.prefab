@@ -41,8 +41,8 @@ GameObject:
   - component: {fileID: 7237859923948144615}
   - component: {fileID: 7237859923948144612}
   - component: {fileID: 7237859923948144613}
-  - component: {fileID: -5583255050072111067}
   - component: {fileID: 7152132314532048145}
+  - component: {fileID: -5583255050072111067}
   m_Layer: 10
   m_Name: EnemyPrefab
   m_TagString: Enemy
@@ -137,6 +137,30 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &7152132314532048145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7237859923948144618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e540a446a00712f45b2d53e5aaeec4d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemy: {fileID: 7237859923948144618}
+  KarmaDrop: {fileID: 450763958401993869, guid: cc456ea0021f3334091f822ddba309f2,
+    type: 3}
+  KarmaDropQuantity: 100
+  goldDrop: {fileID: 5243515410850218913, guid: d65fd8bc710b8774bafdd634afade683,
+    type: 3}
+  healthDrop: {fileID: 1894584535332837582, guid: fd655d8535685a043a4244e1d452097f,
+    type: 3}
+  healthChance: 99
+  upgradeDrop: {fileID: 6106106539920529169, guid: 372244b7ea842e34ba2a93514a5e82bf,
+    type: 3}
+  upgradeChance: 99
 --- !u!61 &-5583255050072111067
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -163,30 +187,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 4.130142, y: 3.5640516}
   m_EdgeRadius: 0
---- !u!114 &7152132314532048145
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7237859923948144618}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e540a446a00712f45b2d53e5aaeec4d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemy: {fileID: 7237859923948144618}
-  KarmaDrop: {fileID: 450763958401993869, guid: cc456ea0021f3334091f822ddba309f2,
-    type: 3}
-  KarmaDropQuantity: 100
-  goldDrop: {fileID: 5243515410850218913, guid: d65fd8bc710b8774bafdd634afade683,
-    type: 3}
-  healthDrop: {fileID: 1894584535332837582, guid: fd655d8535685a043a4244e1d452097f,
-    type: 3}
-  healthChance: 99
-  upgradeDrop: {fileID: 6106106539920529169, guid: 372244b7ea842e34ba2a93514a5e82bf,
-    type: 3}
-  upgradeChance: 99
 --- !u!1001 &2024328240012108131
 PrefabInstance:
   m_ObjectHideFlags: 0
