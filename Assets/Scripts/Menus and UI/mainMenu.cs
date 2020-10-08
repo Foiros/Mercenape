@@ -16,7 +16,6 @@ public class mainMenu : MonoBehaviour
     
 
     public bool isPaused = false;
-    public inputManager inputM;
     public Canvas mainCanvas;
     public GameObject[] panels, inputButtons;
     public Vector2[] startPos;
@@ -25,7 +24,7 @@ public class mainMenu : MonoBehaviour
 
     void Start()
     {
-        inputM = transform.GetComponent<inputManager>();
+
         mainCanvas = transform.GetComponent<Canvas>();
         startPos = new Vector2[panels.Length];  
         //Set the position each panel returns to when not selected.
@@ -47,22 +46,11 @@ public class mainMenu : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.P))
+        if(Input.GetKeyDown(KeyCode.Escape))
         {
             Debug.Log("Pause pressed");
             pauseGame();
         }
-        //if(isSelected)
-        //{
-        //    if(Input.anyKeyDown)
-        //    {
-        //        
-        //        selectedButton.GetComponentInChildren<Text>().text = Input.inputString;
-        //        inputManager inputM = transform.GetComponent<inputManager>();
-        //
-        //        isSelected = false;
-        //    }
-        //}
     }
 
     

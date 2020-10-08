@@ -683,7 +683,7 @@ RectTransform:
   - {fileID: 319921720}
   - {fileID: 1923168100}
   m_Father: {fileID: 1233860398}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -871,6 +871,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   paneltoOpen: {fileID: 347455469}
+  sceneToload: {fileID: 0}
 --- !u!1 &136885698
 GameObject:
   m_ObjectHideFlags: 0
@@ -1146,6 +1147,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   paneltoOpen: {fileID: 1049569068}
+  sceneToload: {fileID: 0}
 --- !u!1 &138862456
 GameObject:
   m_ObjectHideFlags: 0
@@ -1979,6 +1981,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   paneltoOpen: {fileID: 1776202847}
+  sceneToload: {fileID: 0}
 --- !u!1 &317201499
 GameObject:
   m_ObjectHideFlags: 0
@@ -2563,6 +2566,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   paneltoOpen: {fileID: 753062136}
+  sceneToload: {fileID: 0}
 --- !u!1 &347455469
 GameObject:
   m_ObjectHideFlags: 0
@@ -2596,7 +2600,7 @@ RectTransform:
   - {fileID: 969417448}
   - {fileID: 1842718313}
   m_Father: {fileID: 1233860398}
-  m_RootOrder: 6
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -3379,6 +3383,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   paneltoOpen: {fileID: 347455469}
+  sceneToload: {fileID: 0}
 --- !u!1 &459496432
 GameObject:
   m_ObjectHideFlags: 0
@@ -4270,6 +4275,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   paneltoOpen: {fileID: 753062136}
+  sceneToload: {fileID: 0}
 --- !u!1 &571655092
 GameObject:
   m_ObjectHideFlags: 0
@@ -5324,7 +5330,7 @@ RectTransform:
   - {fileID: 1357431268}
   - {fileID: 678346677}
   m_Father: {fileID: 1233860398}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -5518,7 +5524,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1233860394}
+      - m_Target: {fileID: 0}
         m_MethodName: WipeCurrencyMemory
         m_Mode: 1
         m_Arguments:
@@ -5601,7 +5607,7 @@ RectTransform:
   - {fileID: 1214885949}
   - {fileID: 1024506253}
   m_Father: {fileID: 1233860398}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -6916,6 +6922,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   paneltoOpen: {fileID: 1331346099}
+  sceneToload: {fileID: 0}
 --- !u!1 &977084161
 GameObject:
   m_ObjectHideFlags: 0
@@ -7457,6 +7464,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   paneltoOpen: {fileID: 347455469}
+  sceneToload: {fileID: 0}
 --- !u!1 &1014955058
 GameObject:
   m_ObjectHideFlags: 0
@@ -7601,6 +7609,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   paneltoOpen: {fileID: 347455469}
+  sceneToload: {fileID: 0}
 --- !u!1 &1023363856
 GameObject:
   m_ObjectHideFlags: 0
@@ -7888,7 +7897,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64cb32d0a3100844b9863e5d10578955, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  paneltoOpen: {fileID: 0}
+  paneltoOpen: {fileID: 1776202847}
+  sceneToload: {fileID: 0}
 --- !u!1 &1028273101
 GameObject:
   m_ObjectHideFlags: 0
@@ -8882,7 +8892,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1233860394}
+      - m_Target: {fileID: 0}
         m_MethodName: pauseGame
         m_Mode: 1
         m_Arguments:
@@ -9182,26 +9192,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 1233860393}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5c9b532f0ca0404cbce32dd7b8c137a, type: 3}
+  m_Script: {fileID: 11500000, guid: fb73df0b472084c42861d98e404b08e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isPaused: 0
-  inputM: {fileID: 0}
   mainCanvas: {fileID: 1233860397}
   panels:
   - {fileID: 1776202847}
-  - {fileID: 142524922}
-  - {fileID: 1049569068}
-  - {fileID: 347455469}
-  - {fileID: 1331346099}
   - {fileID: 735806637}
-  - {fileID: 1540071324}
   - {fileID: 120136725}
   - {fileID: 753062136}
-  inputButtons: []
+  - {fileID: 1540071324}
+  - {fileID: 1331346099}
+  - {fileID: 1049569068}
+  - {fileID: 347455469}
+  - {fileID: 142524922}
   startPos: []
   currentPanel: {fileID: 0}
-  pausePanel: {fileID: 0}
+  pausepanel: {fileID: 142524922}
 --- !u!114 &1233860395
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9274,14 +9282,14 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 2051596759}
+  - {fileID: 1776202848}
   - {fileID: 735806638}
   - {fileID: 120136726}
   - {fileID: 753062137}
   - {fileID: 1540071325}
   - {fileID: 1331346100}
-  - {fileID: 347455470}
   - {fileID: 1049569069}
-  - {fileID: 1776202848}
+  - {fileID: 347455470}
   - {fileID: 142524923}
   m_Father: {fileID: 0}
   m_RootOrder: 1
@@ -9332,7 +9340,7 @@ RectTransform:
   - {fileID: 1001258032}
   - {fileID: 88725792}
   m_Father: {fileID: 1233860398}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -9612,7 +9620,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1233860394}
+      - m_Target: {fileID: 0}
         m_MethodName: WipeWeaponMemory
         m_Mode: 1
         m_Arguments:
@@ -10274,6 +10282,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   paneltoOpen: {fileID: 120136725}
+  sceneToload: {fileID: 0}
 --- !u!1 &1493239121
 GameObject:
   m_ObjectHideFlags: 0
@@ -10544,7 +10553,7 @@ RectTransform:
   - {fileID: 1378958178}
   - {fileID: 749195353}
   m_Father: {fileID: 1233860398}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -11132,6 +11141,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   paneltoOpen: {fileID: 735806637}
+  sceneToload: {fileID: 0}
 --- !u!1 &1635399581
 GameObject:
   m_ObjectHideFlags: 0
@@ -11794,6 +11804,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   paneltoOpen: {fileID: 1540071324}
+  sceneToload: {fileID: 0}
 --- !u!1 &1757555634
 GameObject:
   m_ObjectHideFlags: 0
@@ -11906,7 +11917,7 @@ RectTransform:
   - {fileID: 138417783}
   - {fileID: 1852068634}
   m_Father: {fileID: 1233860398}
-  m_RootOrder: 8
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -12094,6 +12105,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   paneltoOpen: {fileID: 1776202847}
+  sceneToload: {fileID: 0}
 --- !u!1 &1811149991
 GameObject:
   m_ObjectHideFlags: 0
@@ -12600,6 +12612,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   paneltoOpen: {fileID: 0}
+  sceneToload: {fileID: 0}
 --- !u!1 &1852068633
 GameObject:
   m_ObjectHideFlags: 0
@@ -12682,7 +12695,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1233860394}
+      - m_Target: {fileID: 0}
         m_MethodName: quitGame
         m_Mode: 1
         m_Arguments:
@@ -13096,6 +13109,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   paneltoOpen: {fileID: 142524922}
+  sceneToload: {fileID: 0}
 --- !u!1 &1964698614
 GameObject:
   m_ObjectHideFlags: 0
@@ -13240,6 +13254,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   paneltoOpen: {fileID: 1776202847}
+  sceneToload: {fileID: 0}
 --- !u!1 &1970811482
 GameObject:
   m_ObjectHideFlags: 0
@@ -13478,7 +13493,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1233860394}
+      - m_Target: {fileID: 0}
         m_MethodName: quitGame
         m_Mode: 1
         m_Arguments:
