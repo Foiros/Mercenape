@@ -14,7 +14,7 @@ public class inputManager : MonoBehaviour
     public GameObject selectedInput;
     //You can set the then inputs from the editor
     [SerializeField]
-    public KeyCode left, right, up, down, jump;
+    public KeyCode left, right, up, down, jump, climb, attack1, block;
 
 
     void Start()
@@ -25,16 +25,22 @@ public class inputManager : MonoBehaviour
         up = KeyCode.W;
         down = KeyCode.S;
         jump = KeyCode.Space;
+        climb = KeyCode.E;
+        attack1 = KeyCode.Mouse0;
+        block = KeyCode.Mouse1;
         //VERY IMPORTANT
 
         //Make an array for the inputs to be compared when a button is pressed. I know this isn't as intuitive, but this is the best I could come up with.
         //Also, make sure that these inputs are in the same top-to-bottom, left-to-right order as they are on the menu panel. We do not want to mix them up. Nothing fatal though.
-        inputs = new KeyCode[5];
+        inputs = new KeyCode[8];
         inputs[0] = left;
         inputs[1] = right;
         inputs[2] = up;
         inputs[3] = down;
         inputs[4] = jump;
+        inputs[5] = climb;
+        inputs[6] = attack1;
+        inputs[7] = block;
 
         //Make sure to add the inputbuttons array in the same order as the array above.
 
@@ -49,7 +55,6 @@ public class inputManager : MonoBehaviour
                 defaultInputs[i] = inputs[i];
                 // Set the text component in the input button to reflect the input it has.
                 inputButtons[i].transform.GetComponentInChildren<Text>().text = inputs[i].ToString();
-                Debug.Log("Set text of " + inputButtons[i].name);
 
             }
         }
@@ -146,24 +151,95 @@ public class inputManager : MonoBehaviour
 
     private void OnGUI()
     {
+
         Event e = Event.current;
-        if (e.isKey)
+        KeyCode currentKey = e.keyCode;
+
+        //If an input UI button's been pressed, this will check if the current input can be used to replace the old input.
+        if (selectedInput != null)
         {
-            KeyCode currentKey = e.keyCode;
-            
-            if (selectedInput != null)
+
+            if (e.isKey)
             {
                 changeInput(currentKey);
             }
-            else
+            //For a mouse button input, a switch statement is needed.
+            else if (e.isMouse)
             {
-                for(int i = 0; i < inputs.Length; i++)
+
+                switch (e.button)
                 {
+                    case 0:
+                        {
+                            changeInput(KeyCode.Mouse0);
+                            break;
+                        }
+                    case 1:
+                        {
+                            changeInput(KeyCode.Mouse1);
+                            break;
+                        }
+                    case 2:
+                        {
+                            changeInput(KeyCode.Mouse2);
+                            break;
+                        }
+                    case 3:
+                        {
+                            changeInput(KeyCode.Mouse3);
+                            break;
+                        }
+                    default:
+                        {
+                            break;
+                        }
+
+                }
+                Debug.Log("Mouse " + e.button + " pressed for new input");
+            }
+        }
+
+        else
+        //We will check if the current input matches with any of the inputs in the inputs array.
+        {
+            if (e.isMouse)
+            {
+                switch (e.button)
+                {
+                    case 0:
+                        {
+                            currentKey = KeyCode.Mouse0;
+                            break;
+                        }
+                    case 1:
+                        {
+                            currentKey = KeyCode.Mouse1;
+                            break;
+                        }
+                    case 2:
+                        {
+                            currentKey = KeyCode.Mouse2;
+                            break;
+                        }
+                    case 3:
+                        {
+                            currentKey = KeyCode.Mouse3;
+                            break;
+                        }
+
+
+                    default:
+                        { break; }
+                }
+            }
+                for (int i = 0; i < inputs.Length; i++)
+                {
+                    //Keyboard inputs:
                     if (currentKey == inputs[i])
                     {
                         if (inputs[i] != KeyCode.None)
                         {
-                            switch(i)
+                            switch (i)
                             {
                                 case 0:
                                     {
@@ -190,17 +266,27 @@ public class inputManager : MonoBehaviour
                                         Debug.Log("Jump pressed");
                                         break;
                                     }
+                                case 5:
+                                    {
+                                        Debug.Log("Climb pressed");
+                                        break;
+                                    }
+                                case 6:
+                                    {
+                                        Debug.Log("Attack1 pressed");
+                                        break;
+                                    }
+                                case 7:
+                                    {
+                                        Debug.Log("Block pressed");
+                                        break;
+                                    }
+
 
                             }
                         }
-                        else
-                        {
-                            Debug.LogError("No input selected.");
-                        }
                     }
-                }
-            }
+                }      
         }
-    
     }
 }
