@@ -149,29 +149,26 @@ public class MowerBehaviour : EnemyBehaviour
     }
 
     // When player collides with Mower
-    private void OnCollisionEnter2D(Collision2D col)
+    protected void OnCollisionEnter2D(Collision2D col)
     {
         if (col.gameObject.CompareTag("Player"))
         {
-            if (player.transform.GetChild(1).name == "UnderPlayerPosition")
+            if (player.transform.Find("UnderPlayerPosition").position.y >= rideHeight.position.y)
             {
-                if (player.transform.GetChild(1).position.y >= rideHeight.position.y)
+                // Then ride it
+                ridePos = player.transform.position.x - transform.position.x;
+                isRiding = true;
+            }
+            // If player is super near Mower's head
+            else if (Mathf.Abs(player.transform.position.x - frontDetection.position.x) <= 1.5f)
+            {
+                // Then attack player
+                if (!isAttacking && currentState != ForceFieldState.Generating)
                 {
-                    // Then ride it
-                    ridePos = player.transform.position.x - transform.position.x;
-                    isRiding = true;
+                    isAttacking = true;
+                    MowerAttack();
                 }
-                // If player is super near Mower's head
-                else if (Mathf.Abs(player.transform.position.x - frontDetection.position.x) <= 1.5f)
-                {
-                    // Then attack player
-                    if (!isAttacking && currentState != ForceFieldState.Generating)
-                    {
-                        isAttacking = true;
-                        MowerAttack();
-                    }
-                }
-            } 
+            }         
         }
     }
 
@@ -216,7 +213,7 @@ public class MowerBehaviour : EnemyBehaviour
     {
         base.StunningProcess();     // Still normal stun player
 
-        if (escapingStunCount == 8)
+        if (escapingStunCount == 10)
         {
             // Stop dealing damage and get back to original states
             if (dmgCoroutine != null)
@@ -253,9 +250,9 @@ public class MowerBehaviour : EnemyBehaviour
         rb.bodyType = RigidbodyType2D.Kinematic;
         boxCollier.isTrigger = true;
         capsuleCollider.isTrigger = true;
-        speed = 1.4f;
+        speed = stat.runningSpeed / 1.4f;
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(5f);
 
         ReturnPhysics();      
     }
@@ -268,7 +265,7 @@ public class MowerBehaviour : EnemyBehaviour
         while (currentCount < damageCount)
         {
             playerStat.PlayerTakeDamage(damageAmount);
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(1.5f);
             currentCount++;
         }
     }

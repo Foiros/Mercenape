@@ -65,6 +65,7 @@ public class EnemyBehaviour : MonoBehaviour
     protected void FixedUpdate()
     {
         Movement();
+        Debug.DrawRay(frontDetection.position, transform.right * 0.7f, Color.red);
     }
 
     // Check if facing right direction
@@ -78,11 +79,18 @@ public class EnemyBehaviour : MonoBehaviour
     {
         groundInfo = Physics2D.Raycast(frontDetection.position, Vector2.down, 10, LayerMask.GetMask("Ground"));
 
-        if(groundInfo.collider == false)
-        {           
+        if (groundInfo.collider == false)
+        {
             enemyRotation += new Vector3(0, -(Mathf.Sign(rb.velocity.x)) * 180, 0);
             transform.rotation = Quaternion.Euler(0, enemyRotation.y, 0);
-            barHealth.ScaleRightUI(rb);           
+            barHealth.ScaleRightUI(rb);
+        }
+
+        if (Physics2D.Raycast(frontDetection.position, transform.right, 0.7f, LayerMask.GetMask("Wall")))
+        {
+            enemyRotation += new Vector3(0, -(Mathf.Sign(rb.velocity.x)) * 180, 0);
+            transform.rotation = Quaternion.Euler(0, enemyRotation.y, 0);
+            barHealth.ScaleRightUI(rb);
         }
 
         // Check direction facing and adjust to velocity according to that
@@ -121,7 +129,6 @@ public class EnemyBehaviour : MonoBehaviour
         {
             readyToSetStun = false;
 
-            //player.transform.rotation = Quaternion.Euler(0, 0, Mathf.Sign(transform.localScale.x) * -90);
             player.transform.rotation = Quaternion.Euler(0, 0, Mathf.Sign(enemyRotation.y) * -90);
             playerMovement.enabled = false;
             player.GetComponent<PlayerAttackTrigger>().enabled = false;
