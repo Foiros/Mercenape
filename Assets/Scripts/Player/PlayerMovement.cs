@@ -339,6 +339,7 @@ public class PlayerMovement : MonoBehaviour
     {
         FaceRight = !FaceRight;
         Vector3 Scale= transform.localScale;
+        Scale.z *= -1;
         Scale.x *= -1;
         transform.localScale = Scale;
 
