@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class inputManager : MonoBehaviour
 {
@@ -44,6 +46,9 @@ public class inputManager : MonoBehaviour
             for(int i = 0; i < defaultInputs.Length; i++)
             {
                 defaultInputs[i] = inputs[i];
+                // Set the text component in the input button to reflect the input it has.
+                inputButtons[i].transform.GetComponentInChildren<Text>().text = inputs[i].ToString();
+                Debug.Log("Set text of " + inputButtons[i].name);
 
             }
         }
@@ -51,26 +56,83 @@ public class inputManager : MonoBehaviour
 
     }
 
-    public void changeInput(string inputName)
+    public void initiateInputChange()
     {
-        for(int i = 0; i < inputButtons.Length; i++)
-        {
+        selectedInput = EventSystem.current.currentSelectedGameObject;
+        selectedInput.GetComponentInChildren<Text>().text = "Add new input";
+        Debug.Log(selectedInput + " selected.");
+    }
 
+    public void changeInput(KeyCode newKey)
+    {
+        bool duplicate = false;
+        //Here we check if the selected input is already in use.
+        for(int i = 0; i < inputs.Length; i++)
+        {
+            if(newKey == inputs[i])
+            {
+                duplicate = true;
+                break;
+            }
         }
+
+        //If no duplicates are found, we add the new input in the old inputs place.
+        if(!duplicate)
+        {
+            Debug.Log("No duplicates found");
+            for(int i = 0; i < inputButtons.Length; i++)
+            {
+                if(selectedInput == inputButtons[i])
+                {
+                    inputs[i] = newKey;
+                    inputButtons[i].GetComponentInChildren<Text>().text = inputs[i].ToString();
+                    
+                    break;
+                }
+            }
+        } else
+        {
+            Debug.Log("Duplicate input");
+            for(int i = 0; i < inputButtons.Length; i++)
+            {
+                if(selectedInput == inputButtons[i])
+                {
+                    inputButtons[i].GetComponentInChildren<Text>().text = inputs[i].ToString();
+                    Debug.Log("Reset the text");
+                    break;
+                }
+
+            }
+        }
+
+        //After this, the selected button becomes null until another input button is pressed.
+        selectedInput = null;
     }
 
 
-    public void clearInput(string inputClear)
+    public void clearInput()
     {
-        
+        selectedInput = EventSystem.current.currentSelectedGameObject.transform.parent.gameObject;
+        Debug.Log(selectedInput.name + " is to be cleared.");
+        for(int i = 0; i <inputButtons.Length; i++)
+        {
+            if (selectedInput == inputButtons[i])
+            {
+                inputs[i] = KeyCode.None;
+                inputButtons[i].transform.GetComponentInChildren<Text>().text = "Empty";
+                selectedInput = null;
+                break;
+            }
+        }
     }
 
     public void setDefault()
     {
-        // Just to check if the defaults set in.
+        // Here we put the default inputs to their respective slots, hopefully in the right order.
         for(int i = 0; i < inputs.Length; i++)
         {
-
+            inputs[i] = defaultInputs[i];
+            inputButtons[i].transform.GetComponentInChildren<Text>().text = inputs[i].ToString();
             Debug.Log(inputs[i].ToString());
         }
 
@@ -89,33 +151,51 @@ public class inputManager : MonoBehaviour
             
             if (selectedInput != null)
             {
-                for(int i = 0; i < inputButtons.Length; i++)
-                {
-
-                }
+                changeInput(currentKey);
             }
             else
             {
-                if (currentKey == left)
+                for(int i = 0; i < inputs.Length; i++)
                 {
-                    Debug.Log("Left pressed");
-                }
+                    if (currentKey == inputs[i])
+                    {
+                        if (inputs[i] != KeyCode.None)
+                        {
+                            switch(i)
+                            {
+                                case 0:
+                                    {
+                                        Debug.Log("Left pressed");
+                                        break;
+                                    }
+                                case 1:
+                                    {
+                                        Debug.Log("Right pressed");
+                                        break;
+                                    }
+                                case 2:
+                                    {
+                                        Debug.Log("Up pressed");
+                                        break;
+                                    }
+                                case 3:
+                                    {
+                                        Debug.Log("Down pressed");
+                                        break;
+                                    }
+                                case 4:
+                                    {
+                                        Debug.Log("Jump pressed");
+                                        break;
+                                    }
 
-                if (currentKey == right)
-                {
-                    Debug.Log("Right pressed");
-                }
-                if (currentKey == up)
-                {
-                    Debug.Log("Up pressed");
-                }
-                if (currentKey == down)
-                {
-                    Debug.Log("Down pressed");
-                }
-                if (currentKey == jump)
-                {
-                    Debug.Log("Jump pressed");
+                            }
+                        }
+                        else
+                        {
+                            Debug.LogError("No input selected.");
+                        }
+                    }
                 }
             }
         }

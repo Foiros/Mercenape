@@ -23,9 +23,6 @@ public class mainMenu : MonoBehaviour
     public GameObject currentPanel;
     public GameObject pausePanel;
 
-    public GameObject selectedButton;
-    bool isSelected = false;
-
     void Start()
     {
         inputM = transform.GetComponent<inputManager>();
@@ -113,15 +110,6 @@ public class mainMenu : MonoBehaviour
 
     }
 
-    public void clearButton()
-    {
-        //Thhis is for the "clear" button on the Controls menu
-        string inputName = EventSystem.current.currentSelectedGameObject.transform.parent.name;
-        inputM.clearInput(inputName);
-    }
-
-
-
     public void switchPanel(GameObject newPanel)
     {
         Debug.Log("Changing panel");
@@ -176,19 +164,6 @@ public class mainMenu : MonoBehaviour
         }
     }
 
-    public void changeInput()
-    {
-        for(int i = 0; i < inputButtons.Length; i++)
-        {
-            if(EventSystem.current.currentSelectedGameObject == inputButtons[i])
-            {
-                inputM.selectedInput = inputButtons[i];
-                selectedButton.GetComponentInChildren<Text>().text = "Add new input";
-                isSelected = true;
-                break;
-            }
-        }
-    }
         
     public void startGame()
     {
