@@ -25,6 +25,7 @@ public class inputManager : MonoBehaviour
         up = KeyCode.W;
         down = KeyCode.S;
         jump = KeyCode.Space;
+        //VERY IMPORTANT
 
         //Make an array for the inputs to be compared when a button is pressed. I know this isn't as intuitive, but this is the best I could come up with.
         //Also, make sure that these inputs are in the same top-to-bottom, left-to-right order as they are on the menu panel. We do not want to mix them up. Nothing fatal though.
@@ -93,6 +94,7 @@ public class inputManager : MonoBehaviour
         } else
         {
             Debug.Log("Duplicate input");
+
             for(int i = 0; i < inputButtons.Length; i++)
             {
                 if(selectedInput == inputButtons[i])
