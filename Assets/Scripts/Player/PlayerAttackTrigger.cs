@@ -63,9 +63,6 @@ public class PlayerAttackTrigger : MonoBehaviour
     void SetWeaponStats()
     {
         weaponID = weaponStates.GetChosenWeaponID();
-        hitboxDistFromPlayer = weapons[weaponID].GetReach();
-
-        frontPlayerPosition.position = new Vector3(Attackpos.position.x + hitboxDistFromPlayer, Attackpos.position.y, 0);
         AttackRange = weapons[weaponID].GetHitBox();
 
         weaponSpeed = setActualWeapon.GetWeaponSpeed();

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Created by Arttu Paldán 23.9.2020: This script handles weapon stat calculations. 
-public class WeaponStats : MonoBehaviour
+public class StatsCalculator : MonoBehaviour
 {
     private WeaponStates weaponStates;
     

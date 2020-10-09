@@ -14,13 +14,16 @@ public abstract class AbstractWeapon
     // Weapon images
     protected Sprite weaponImage, chosenWeaponImage;
 
+    // Weapon model
+    protected GameObject weaponModel;
+
     // Weapon stats
     protected float weaponSpeed, weaponWeight;
         
     protected int impactDamage, bleedDamage, bleedDuration;
 
     // Weapon reach and hit box
-    protected float hitBox, hitBoxLocation;
+    protected float hitBox; 
 
 
     // Fetch functions for details
@@ -30,6 +33,7 @@ public abstract class AbstractWeapon
     public int GetCost() { return weaponCost;}
     public Sprite GetWeaponImage(){ return weaponImage;}
     public Sprite GetChosenWeaponImage() { return chosenWeaponImage; }
+    public GameObject GetWeaponModel() { return weaponModel; }
 
     // Fetch functios for stats
     public float GetSpeed() { return weaponSpeed;}
@@ -40,13 +44,12 @@ public abstract class AbstractWeapon
 
     // Fetch functions for reach and hitbox
     public float GetHitBox() { return hitBox; }
-    public float GetReach() { return hitBoxLocation; }
 }
 
 public class TestWeapon : AbstractWeapon
 {
     // This is used to create this object in the scripts. 
-    public TestWeapon(string name, string description, int id, int cost, float speed, float weight, int damage, float range, float location, Sprite weapon, Sprite chosenWeapon)
+    public TestWeapon(string name, string description, int id, int cost, float speed, float weight, int damage, float range, Sprite weapon, Sprite chosenWeapon, GameObject model)
     {
         weaponName = name;
         weaponDescription = description;
@@ -56,8 +59,8 @@ public class TestWeapon : AbstractWeapon
         weaponWeight = weight;
         impactDamage = damage;
         hitBox = range;
-        hitBoxLocation = location;
         weaponImage = weapon;
         chosenWeaponImage = chosenWeapon;
+        weaponModel = model;
     }
 }

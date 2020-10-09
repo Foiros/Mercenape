@@ -8,7 +8,7 @@ public class UseUpgrades : MonoBehaviour
 {
     private WeaponStates weaponStates;
     private Money money;
-    private WeaponStats weaponStats;
+    private StatsCalculator calculator;
     private PlayerCurrency playerCurrency;
    
     private List<AbstractWeapon> weapons;
@@ -51,7 +51,7 @@ public class UseUpgrades : MonoBehaviour
     {
         weaponStates = GetComponent<WeaponStates>();
         money = GetComponent<Money>();
-        weaponStats = GetComponent<WeaponStats>();
+        calculator = GetComponent<StatsCalculator>();
         playerCurrency = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCurrency>();
 
         weaponName = GameObject.FindGameObjectWithTag("UpgradeScreenWeaponName").GetComponent<Text>();
@@ -137,7 +137,7 @@ public class UseUpgrades : MonoBehaviour
     {
         arrowButtonName = EventSystem.current.currentSelectedGameObject.name;
 
-        int speedAmount = weaponStats.GetSpeedAmount();
+        int speedAmount = calculator.GetSpeedAmount();
 
         if (arrowButtonName == "Arrow1" && playerCurrency.playerUpgrade > 0)
         {
@@ -161,7 +161,7 @@ public class UseUpgrades : MonoBehaviour
         weaponCostText.text = "Upgrade Cost: " + upgradeCost;
         upgradeHolderUpgradeScreen.text = "Speed: " + playerCurrency.playerUpgrade;
 
-        weaponStats.SetSpeedAmount(speedAmount);
+        calculator.SetSpeedAmount(speedAmount);
         UpdateWeaponStats();
     }
 
@@ -170,12 +170,12 @@ public class UseUpgrades : MonoBehaviour
     {
         int weaponID = weaponStates.GetChosenWeaponID();
 
-        weaponStats.SetRequestFromUpgrades(true);
-        weaponStats.CalculateStats();
+        calculator.SetRequestFromUpgrades(true);
+        calculator.CalculateStats();
 
-        weaponSpeedText.text = "Speed: " + weaponStats.GetSpeed();
+        weaponSpeedText.text = "Speed: " + calculator.GetSpeed();
         weaponWeightText.text = " Weight: " + weapons[weaponID].GetWeight();
-        weaponImpactDamageText.text = " Impact Damage: " + weaponStats.GetImpactDamage();
+        weaponImpactDamageText.text = " Impact Damage: " + calculator.GetImpactDamage();
     }
 
     // Confirm button function for confirming the updates. 
@@ -193,11 +193,11 @@ public class UseUpgrades : MonoBehaviour
             weaponCostText.text = "Upgrade Cost: " + upgradeCost;
 
             UpdateWeaponStats();
-            weaponStats.SaveStats();
+            calculator.SaveStats();
             
-            weaponStats.SetSpeedAmount(0);
-            weaponStats.SetSpeed(0);
-            weaponStats.SetImpactDamage(0);
+            calculator.SetSpeedAmount(0);
+            calculator.SetSpeed(0);
+            calculator.SetImpactDamage(0);
 
             for (int i = 0; i < amountTexts.Length; i++)
             {

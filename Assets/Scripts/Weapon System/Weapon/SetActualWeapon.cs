@@ -7,20 +7,16 @@ using UnityEngine.UI;
 public class SetActualWeapon : MonoBehaviour
 {
     private WeaponStates weaponStates;
-    private WeaponStats weaponStats;
+    private StatsCalculator calculator;
 
     private List<AbstractWeapon> weapons;
-
-    private SpriteRenderer weaponInUseImage;
 
     [SerializeField] private float speed, impactDamage;
     
     void Awake()
     {
         weaponStates = GetComponent<WeaponStates>();
-        weaponStats = GetComponent<WeaponStats>();
-
-        weaponInUseImage = GameObject.FindGameObjectWithTag("WeaponInUse").GetComponent<SpriteRenderer>();
+        calculator = GetComponent<StatsCalculator>();
     }
 
     void Start()
@@ -35,13 +31,15 @@ public class SetActualWeapon : MonoBehaviour
 
         AbstractWeapon weaponsArray = weapons[weaponID];
 
-        weaponInUseImage.sprite = weaponsArray.GetWeaponImage();
+        GameObject weaponModel = weaponsArray.GetWeaponModel();
 
-        weaponStats.SetRequestFromActualWeapon(true);
-        weaponStats.CalculateStats();
+        weaponModel.SetActive(true);
+
+        calculator.SetRequestFromActualWeapon(true);
+        calculator.CalculateStats();
         
-        speed = weaponStats.GetSpeed();
-        impactDamage = weaponStats.GetImpactDamage();
+        speed = calculator.GetSpeed();
+        impactDamage = calculator.GetImpactDamage();
     }
 
     public void SetWeaponList(List<AbstractWeapon> list) { weapons = list; }

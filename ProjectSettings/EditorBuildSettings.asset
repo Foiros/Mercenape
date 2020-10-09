@@ -9,14 +9,8 @@ EditorBuildSettings:
     path: Assets/Scenes/mainMenu.unity
     guid: 23b579fa9cec788419c734aff303edca
   - enabled: 1
-    path: Assets/Scenes/Bao_Mower.unity
-    guid: 26466d1214021624682dd38532255a90
-  - enabled: 1
     path: Assets/Scenes/LV1.unity
     guid: e751e003910074341b6fa7e33aa14531
-  - enabled: 1
-    path: Assets/Scenes/LV2.unity
-    guid: 89af043fe93a12a499037444e90497cd
   - enabled: 1
     path: Assets/Scenes/Arttu_WeaponSystem.unity
     guid: 6876dfd1f509aa9479da99457334856f
