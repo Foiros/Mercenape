@@ -76,7 +76,7 @@ public class ShredBehaviour : EnemyBehaviour
         rb.bodyType = RigidbodyType2D.Kinematic;
         boxCollier.isTrigger = true;  
         
-        yield return new WaitForSeconds(0.7f);
+        yield return new WaitForSeconds(1f);
 
         // Return to original states
         boxCollier.isTrigger = false;

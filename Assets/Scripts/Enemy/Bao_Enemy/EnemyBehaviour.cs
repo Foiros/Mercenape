@@ -108,6 +108,7 @@ public class EnemyBehaviour : MonoBehaviour
     // Take damage from player
     public virtual void TakeDamage(float playerDamage)
     {
+        print("taking mdg");
         currentHP -= playerDamage;
 
         barHealth.UpdateHealthBar(currentHP, stat.maxHP);
