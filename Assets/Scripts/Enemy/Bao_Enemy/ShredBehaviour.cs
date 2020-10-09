@@ -17,7 +17,7 @@ public class ShredBehaviour : EnemyBehaviour
 
     private void Update()
     {
-        // Check if is stunning
+        // Check if player is stunned by Shred
         StunningProcess();
 
         // Temporary cheat code to kill all ememy
@@ -76,7 +76,7 @@ public class ShredBehaviour : EnemyBehaviour
         rb.bodyType = RigidbodyType2D.Kinematic;
         boxCollier.isTrigger = true;  
         
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.7f);
 
         // Return to original states
         boxCollier.isTrigger = false;

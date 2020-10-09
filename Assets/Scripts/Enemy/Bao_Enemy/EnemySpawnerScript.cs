@@ -24,7 +24,7 @@ public class EnemySpawnerScript : MonoBehaviour
 
     public float timeBetweenGroups = 3f;
 
-    private float groupCountdown;         // Count down to next group
+    private float groupCountdown;        // Count down to next group
     private float searchCountdown = 1f;  // Count down for searching any alive enemy
 
     public Transform[] enemies = new Transform[2];
@@ -52,6 +52,7 @@ public class EnemySpawnerScript : MonoBehaviour
         {
             if (!EnemyIsAlive())
             {
+                // Finish group when player kill all enemy
                 GroupCompleted();                
             }
             else
@@ -72,6 +73,7 @@ public class EnemySpawnerScript : MonoBehaviour
         }
         else
         {
+            // Otherwise count down
             groupCountdown -= Time.deltaTime;
         }      
     }
@@ -90,6 +92,7 @@ public class EnemySpawnerScript : MonoBehaviour
         Debug.Log("Going to group: " + currentGroup);
     }
 
+    // When player get enough karma
     void CheckWaveEnd()
     {
         if (playerCurrency.playerKarma >= gm.lvMaxKarma)
@@ -142,6 +145,7 @@ public class EnemySpawnerScript : MonoBehaviour
         Instantiate(_enemy, transform.position, transform.rotation);
     }
 
+    // Next group more difficult, spawn pattern
     void IncreaseDifficulty()
     {
         currentGroup++;
@@ -158,10 +162,12 @@ public class EnemySpawnerScript : MonoBehaviour
 
         MakeSpawnList();
 
+        // Increase enemy HP and Damage
         group.enemyIncreasedHP += 2;
         group.enemyIncreasedDamage += 1;
     }
 
+    // Make a list to spawn
     private void MakeSpawnList()
     {
         spawnList.Clear();

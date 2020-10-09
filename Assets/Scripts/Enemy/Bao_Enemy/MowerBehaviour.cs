@@ -47,8 +47,10 @@ public class MowerBehaviour : EnemyBehaviour
 
     private void Update()
     {
+        // Check if player is stunned by Mower
         StunningProcess();
 
+        // If is riding, stick on the top of Mower
         if (isRiding)
         {
             player.transform.position = new Vector2(transform.position.x +  ridePos, player.transform.position.y);
@@ -250,7 +252,7 @@ public class MowerBehaviour : EnemyBehaviour
         rb.bodyType = RigidbodyType2D.Kinematic;
         boxCollier.isTrigger = true;
         capsuleCollider.isTrigger = true;
-        speed = stat.runningSpeed / 1.4f;
+        speed = stat.runningSpeed / 1.3f;
 
         yield return new WaitForSeconds(5f);
 
@@ -311,7 +313,7 @@ public class MowerBehaviour : EnemyBehaviour
     {
         base.Movement();
 
-        if (groundInfo.collider == false)
+        if (!groundInfo || wallInfo)
         {
             fieldBarHealth.ScaleLeftUI(rb);
 

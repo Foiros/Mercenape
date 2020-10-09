@@ -23,6 +23,7 @@ public class EnemyBehaviour : MonoBehaviour
     protected BoxCollider2D boxCollier;
     [SerializeField] protected Transform frontDetection;
     protected RaycastHit2D groundInfo;
+    protected RaycastHit2D wallInfo;
 
     protected GameObject player;
     protected PlayerStat playerStat;
@@ -65,7 +66,6 @@ public class EnemyBehaviour : MonoBehaviour
     protected void FixedUpdate()
     {
         Movement();
-        Debug.DrawRay(frontDetection.position, transform.right * 0.7f, Color.red);
     }
 
     // Check if facing right direction
@@ -78,15 +78,10 @@ public class EnemyBehaviour : MonoBehaviour
     protected virtual void Movement()
     {
         groundInfo = Physics2D.Raycast(frontDetection.position, Vector2.down, 10, LayerMask.GetMask("Ground"));
+        wallInfo = Physics2D.Raycast(frontDetection.position, transform.right, 0.7f, LayerMask.GetMask("Wall"));
 
-        if (groundInfo.collider == false)
-        {
-            enemyRotation += new Vector3(0, -(Mathf.Sign(rb.velocity.x)) * 180, 0);
-            transform.rotation = Quaternion.Euler(0, enemyRotation.y, 0);
-            barHealth.ScaleRightUI(rb);
-        }
 
-        if (Physics2D.Raycast(frontDetection.position, transform.right, 0.7f, LayerMask.GetMask("Wall")))
+        if (!groundInfo || wallInfo)
         {
             enemyRotation += new Vector3(0, -(Mathf.Sign(rb.velocity.x)) * 180, 0);
             transform.rotation = Quaternion.Euler(0, enemyRotation.y, 0);
