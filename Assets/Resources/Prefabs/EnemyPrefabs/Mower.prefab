@@ -376,6 +376,12 @@ PrefabInstance:
       propertyPath: upgradeChance
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 7152132314532048145, guid: d561ebe5499b33446a3ba906ed062674,
+        type: 3}
+      propertyPath: floatUpgrade
+      value: 
+      objectReference: {fileID: 4190288013318672064, guid: 40ea508804c230f44a289e7a6e88172d,
+        type: 3}
     - target: {fileID: 7237859923948144612, guid: d561ebe5499b33446a3ba906ed062674,
         type: 3}
       propertyPath: m_Sprite

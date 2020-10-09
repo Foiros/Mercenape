@@ -18,10 +18,15 @@ public class EnemyLootDrop : MonoBehaviour
 
     public GameObject floatMoney;
     public GameObject floatKarma;
+    public GameObject floatUpgrade;
     
     
     public int healthChance;
     public int upgradeChance;
+
+    public int xOffset;
+    public int yOffset;
+
 
     void Start()
     {
@@ -59,7 +64,14 @@ public class EnemyLootDrop : MonoBehaviour
 
           Instantiate(goldDrop, (Vector2)transform.position + new Vector2(Random.Range(-2f, 2f), Random.Range(0f, 10f)), Quaternion.identity);
 
-      }*/
+      }
+    
+     public void InstantiateUpgrade()
+    {
+        int randomSpawn = Random.Range(0, 101);
+        if (randomSpawn < upgradeChance)
+        { Instantiate(upgradeDrop, (Vector2)transform.position + new Vector2(Random.Range(-2f, 2f), Random.Range(0f, 10f)), Quaternion.identity); }
+    }*/
 
 
     public void InstantiateKarmaDrop()
@@ -73,7 +85,12 @@ public class EnemyLootDrop : MonoBehaviour
         Instantiate(floatMoney, (Vector2)transform.position + new Vector2(Random.Range(-2f, 2f), Random.Range(0f, 4f)), Quaternion.identity);
 
     }
-
+    public void InstantiateUpgrade()
+    {
+        int randomSpawn = Random.Range(0, 101);
+        if (randomSpawn < upgradeChance)
+        { Instantiate(floatUpgrade, (Vector2)player.transform.position + new Vector2(xOffset,yOffset), Quaternion.identity); }
+    }
 
     public void InstantiateHealthOrb()
     {
@@ -82,12 +99,9 @@ public class EnemyLootDrop : MonoBehaviour
        
 
     }
-    public void InstantiateUpgrade()
-    {
-        int randomSpawn = Random.Range(0, 101);
-        if (randomSpawn < upgradeChance)
-        { Instantiate(upgradeDrop, (Vector2)transform.position + new Vector2(Random.Range(-2f, 2f), Random.Range(0f, 10f)), Quaternion.identity); }
-    }
+   
+
+
 
     public void DropAll()
     {
