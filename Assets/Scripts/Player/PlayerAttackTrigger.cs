@@ -21,7 +21,7 @@ public class PlayerAttackTrigger : MonoBehaviour
     public Transform frontPlayerPosition;
     private int weaponID;
     private float weaponSpeed;
-    private float hitboxDistFromPlayer;
+    // private float hitboxDistFromPlayer;
 
     public Animator PlayerAnimator;
     public Animation anim;
@@ -66,7 +66,7 @@ public class PlayerAttackTrigger : MonoBehaviour
         AttackRange = weapons[weaponID].GetHitBox();
 
         weaponSpeed = setActualWeapon.GetWeaponSpeed();
-        anim["PlayerAttack"].speed = weaponSpeed;
+        // anim["PlayerAttack"].speed = weaponSpeed;
 
         PlayerDamage = setActualWeapon.GetWeaponImpactDamage();
     }
@@ -83,7 +83,7 @@ public class PlayerAttackTrigger : MonoBehaviour
             IsPlayerAttack = true;
             TimeDelayAttack = PlayerDelayAttackTime;
 
-            Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(Attackpos.position, AttackRange, EnemyLayerMask);
+            Collider[] enemiesToDamage = Physics.OverlapBox(Attackpos.position, transform.localScale * AttackRange, Quaternion.identity, EnemyLayerMask);
           
             for (int i = 0; i < enemiesToDamage.Length; i++)
             {               
@@ -121,7 +121,7 @@ public class PlayerAttackTrigger : MonoBehaviour
     void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawSphere(Attackpos.position, AttackRange);
+        Gizmos.DrawWireCube(Attackpos.position, transform.localScale * AttackRange);
     }
 
     public void SetWeaponList(List<AbstractWeapon> list) { weapons = list; }

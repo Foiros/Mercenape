@@ -22,14 +22,14 @@ public class LoadScene : MonoBehaviour
         if (spawner.state == EnemySpawnerScript.SpawnState.Counting)
         {
             Time.timeScale = 1;
-            SceneManager.LoadScene("LV1");
+            SceneManager.LoadScene("NewLV1Test");
         }
     }
 
     public void GoTolevel1FromMainMenu()
     {
         Time.timeScale = 1;
-        SceneManager.LoadScene("LV1");
+        SceneManager.LoadScene("NewLV1Test");
         
     }
 
@@ -39,7 +39,7 @@ public class LoadScene : MonoBehaviour
         {
             Time.timeScale = 1;
             SaveManager.SaveCurrency(playerCurrency);
-            SceneManager.LoadScene("Arttu_WeaponSystem");
+            SceneManager.LoadScene("Forge");
         }
         //place holder
         else 
