@@ -190,7 +190,6 @@ GameObject:
   - component: {fileID: 475687300}
   - component: {fileID: 1163720209925091138}
   - component: {fileID: 1821904375537557184}
-  - component: {fileID: -329964529626644091}
   m_Layer: 12
   m_Name: Player
   m_TagString: Player
@@ -331,7 +330,6 @@ MonoBehaviour:
   PlayerJumpPow: 40
   PlayerDoubleJumpPow: 35
   MidAirSpeed: 20
-  PlayerClimbSpeed: 15
   groundlayermask:
     serializedVersion: 2
     m_Bits: 256
@@ -348,8 +346,9 @@ MonoBehaviour:
   PlayerUnderPos: {fileID: 128901979}
   PlayerAbovePos: {fileID: 9025427508995980396}
   CheckRadius: 0.1
+  PlayerClimbSpeed: 15
   isPlayerBlock: 0
-  playerHinge: {fileID: 0}
+  vine: {fileID: 370670031572284440, guid: d37b3d04ec208b84e827a9ee14c21be3, type: 3}
 --- !u!114 &8174987084509659845
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -456,30 +455,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lvMaxKarma: 0
---- !u!233 &-329964529626644091
-HingeJoint2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8174987084509659711}
-  m_Enabled: 0
-  serializedVersion: 4
-  m_EnableCollision: 0
-  m_ConnectedRigidBody: {fileID: 0}
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_AutoConfigureConnectedAnchor: 1
-  m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 0, y: 0}
-  m_UseMotor: 0
-  m_Motor:
-    m_MotorSpeed: 0
-    m_MaximumMotorForce: 10000
-  m_UseLimits: 0
-  m_AngleLimits:
-    m_LowerAngle: 0
-    m_UpperAngle: 359
 --- !u!1001 &39829775646640210
 PrefabInstance:
   m_ObjectHideFlags: 0

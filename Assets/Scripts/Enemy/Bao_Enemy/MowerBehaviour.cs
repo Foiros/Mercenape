@@ -9,11 +9,11 @@ public class MowerBehaviour : EnemyBehaviour
     private float fieldHP;
     private SpriteRenderer fieldSprite;
 
-    private enum ForceFieldState { Inactive, Generating, Active, Destroyed }
-    private ForceFieldState currentState;
-
     private GameObject fieldHealthBarUI;
     private EnemyHealthBar fieldBarHealth;
+
+    private enum ForceFieldState { Inactive, Generating, Active, Destroyed }
+    private ForceFieldState currentState;
 
     private Coroutine dmgCoroutine;
 
@@ -22,6 +22,7 @@ public class MowerBehaviour : EnemyBehaviour
     private bool isGenerating = false;
 
     private float ridePos;
+    [SerializeField] private Transform rideHeight;
 
     private CapsuleCollider2D capsuleCollider;
     private CircleCollider2D generatorCollider;
@@ -40,8 +41,8 @@ public class MowerBehaviour : EnemyBehaviour
 
         fieldSprite = transform.GetChild(2).GetComponent<SpriteRenderer>();
 
-        capsuleCollider = GetComponent<CapsuleCollider2D>();
-        generatorCollider = GetComponent<CircleCollider2D>();
+        capsuleCollider = transform.GetChild(2).GetComponent<CapsuleCollider2D>();
+        generatorCollider = transform.GetChild(2).GetComponent<CircleCollider2D>();
     }
 
     private void Update()
@@ -148,30 +149,26 @@ public class MowerBehaviour : EnemyBehaviour
     }
 
     // When player collides with Mower
-    private void OnCollisionEnter2D(Collision2D col)
+    protected void OnCollisionEnter2D(Collision2D col)
     {
         if (col.gameObject.CompareTag("Player"))
         {
-            // If player's feet is higher than Mower's head
-            if (player.transform.GetChild(1).name == "UnderPlayerPosition")
+            if (player.transform.Find("UnderPlayerPosition").position.y >= rideHeight.position.y)
             {
-                if (player.transform.GetChild(1).position.y > frontDetection.position.y)
+                // Then ride it
+                ridePos = player.transform.position.x - transform.position.x;
+                isRiding = true;
+            }
+            // If player is super near Mower's head
+            else if (Mathf.Abs(player.transform.position.x - frontDetection.position.x) <= 1.5f)
+            {
+                // Then attack player
+                if (!isAttacking && currentState != ForceFieldState.Generating)
                 {
-                    // Then ride it
-                    ridePos = player.transform.position.x - transform.position.x;
-                    isRiding = true;
+                    isAttacking = true;
+                    MowerAttack();
                 }
-                // If player is super near Mower's head
-                else if (Mathf.Abs(player.transform.position.x - frontDetection.position.x) <= .5f)
-                {
-                    // Then attack player
-                    if (!isAttacking && currentState != ForceFieldState.Generating)
-                    {
-                        isAttacking = true;
-                        MowerAttack();
-                    }
-                }
-            }          
+            }         
         }
     }
 
@@ -216,7 +213,7 @@ public class MowerBehaviour : EnemyBehaviour
     {
         base.StunningProcess();     // Still normal stun player
 
-        if (escapingStunCount == 8)
+        if (escapingStunCount == 10)
         {
             // Stop dealing damage and get back to original states
             if (dmgCoroutine != null)
@@ -229,7 +226,7 @@ public class MowerBehaviour : EnemyBehaviour
             player.GetComponent<PlayerAttackTrigger>().enabled = true;
             player.GetComponent<Animator>().enabled = true;
 
-            playerRigid.velocity = Vector2.up * 30;
+            playerRigid.velocity = Vector2.up * 50;
 
             escapingStunCount = 0;
             readyToSetStun = true;
@@ -253,9 +250,9 @@ public class MowerBehaviour : EnemyBehaviour
         rb.bodyType = RigidbodyType2D.Kinematic;
         boxCollier.isTrigger = true;
         capsuleCollider.isTrigger = true;
-        speed = 1.4f;
+        speed = stat.runningSpeed / 1.4f;
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(5f);
 
         ReturnPhysics();      
     }
@@ -268,7 +265,7 @@ public class MowerBehaviour : EnemyBehaviour
         while (currentCount < damageCount)
         {
             playerStat.PlayerTakeDamage(damageAmount);
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(1.5f);
             currentCount++;
         }
     }

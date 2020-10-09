@@ -22,11 +22,15 @@ public class VineHingeAnchor : MonoBehaviour
     int climbLimit = 10;
     int climbTimes = 0;
 
+    Transform upper, lower;
+
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         player = GameObject.Find("Player");
+        upper = transform.Find("UpperLimit");
+        lower = transform.Find("LowerLimit");
 
 
         if (VineEvent == null)
@@ -42,7 +46,8 @@ public class VineHingeAnchor : MonoBehaviour
     {
         h = Input.GetAxis("Horizontal");
         v = Input.GetAxisRaw("Vertical");
-       
+
+
 
         if (isSwing)
         {
@@ -57,8 +62,25 @@ public class VineHingeAnchor : MonoBehaviour
 
             if (v != 0)
             {
+                if(v > 0 && (player.transform.position.y < upper.position.y)) //if player dont cross the upperlimit then he can climb more
+                {
+                    player.transform.Translate(Vector2.up * v * 10 * Time.deltaTime);
+                } 
                 
-                if (v > 0 &&  climbTimes <= climbLimit )
+                if ( v < 0 && (player.transform.position.y > lower.position.y))//if player above lowerlimit and climb down
+                {
+                    player.transform.Translate(Vector2.up * v * 10 * Time.deltaTime);
+                }
+
+                if (v<0 && (player.transform.position.y <= lower.position.y)) //if player bellow lowerlimit he drop down
+                {
+                    isSwing = false;
+                    player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+                    player.transform.parent = null;
+                    player.transform.rotation = Quaternion.Euler(0, 110, 0);
+                }
+
+              /* if (v > 0 &&  climbTimes <= climbLimit )
                 {
                     player.transform.Translate(Vector2.up * v * 10 * Time.deltaTime);
                     climbTimes++;
@@ -76,7 +98,8 @@ public class VineHingeAnchor : MonoBehaviour
                     player.transform.parent = null;
                     player.transform.rotation = Quaternion.Euler(0, 110, 0);
                     
-                }
+                }*/ 
+
 
             }
 
@@ -99,7 +122,7 @@ public class VineHingeAnchor : MonoBehaviour
     }
 
 
-
+    
 
 
 

@@ -16,19 +16,15 @@ public class mainMenu : MonoBehaviour
     
 
     public bool isPaused = false;
-    public inputManager inputM;
     public Canvas mainCanvas;
     public GameObject[] panels, inputButtons;
     public Vector2[] startPos;
     public GameObject currentPanel;
     public GameObject pausePanel;
 
-    public GameObject selectedButton;
-    bool isSelected = false;
-
     void Start()
     {
-        inputM = transform.GetComponent<inputManager>();
+
         mainCanvas = transform.GetComponent<Canvas>();
         startPos = new Vector2[panels.Length];  
         //Set the position each panel returns to when not selected.
@@ -50,22 +46,11 @@ public class mainMenu : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.P))
+        if(Input.GetKeyDown(KeyCode.Escape))
         {
             Debug.Log("Pause pressed");
             pauseGame();
         }
-        //if(isSelected)
-        //{
-        //    if(Input.anyKeyDown)
-        //    {
-        //        
-        //        selectedButton.GetComponentInChildren<Text>().text = Input.inputString;
-        //        inputManager inputM = transform.GetComponent<inputManager>();
-        //
-        //        isSelected = false;
-        //    }
-        //}
     }
 
     
@@ -112,15 +97,6 @@ public class mainMenu : MonoBehaviour
         }
 
     }
-
-    public void clearButton()
-    {
-        //Thhis is for the "clear" button on the Controls menu
-        string inputName = EventSystem.current.currentSelectedGameObject.transform.parent.name;
-        inputM.clearInput(inputName);
-    }
-
-
 
     public void switchPanel(GameObject newPanel)
     {
@@ -176,19 +152,6 @@ public class mainMenu : MonoBehaviour
         }
     }
 
-    public void changeInput()
-    {
-        for(int i = 0; i < inputButtons.Length; i++)
-        {
-            if(EventSystem.current.currentSelectedGameObject == inputButtons[i])
-            {
-                inputM.selectedInput = inputButtons[i];
-                selectedButton.GetComponentInChildren<Text>().text = "Add new input";
-                isSelected = true;
-                break;
-            }
-        }
-    }
         
     public void startGame()
     {

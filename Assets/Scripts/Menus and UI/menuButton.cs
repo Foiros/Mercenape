@@ -1,16 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class menuButton : MonoBehaviour
 {
-    public GameObject paneltoOpen;
+    public GameObject paneltoOpen, sceneToload;
 
     // Start is called before the first frame update
     
     public void changePanel()
     {
-        mainMenu menu = transform.parent.transform.parent.GetComponent<mainMenu>();
+        Menu menu = transform.parent.transform.parent.GetComponent<Menu>();
         if(menu != null)
         {
             Debug.Log("Menu component found " + paneltoOpen.name);
@@ -18,4 +19,21 @@ public class menuButton : MonoBehaviour
             menu.switchPanel(paneltoOpen);
         }
     }
+
+
+    public void changeScene()
+    {
+        if(sceneToload != null)
+        {
+            SceneManager.LoadScene(sceneToload.name);
+        }
+        
+    }
+
+    public void closeGame()
+    {
+        Application.Quit();
+    }
+
+
 }
