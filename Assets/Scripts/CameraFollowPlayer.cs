@@ -19,7 +19,7 @@ public class CameraFollowPlayer : MonoBehaviour
 
         //These are the values that the camera's Orthopode-whatever- size takes to implement the level of zoom.
         zoomIn = zoomNormal;
-        zoomOut = zoomNormal + 53;
+        zoomOut = zoomNormal + 50;
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
