@@ -23,7 +23,7 @@ public class UseUpgrades : MonoBehaviour
     private Text upgradeHolderUpgradeScreen, upgradeName, upgradeDescription;
     private Image weaponImage, upgradeImage;
     
-    public Text[] amountTexts;
+    public Text amountTexts;
     public Image[] upgradeImagesHolder;
    
     public GameObject upgradeComponentScreen;
@@ -93,11 +93,8 @@ public class UseUpgrades : MonoBehaviour
         {
             upgradeImagesHolder[i].sprite = upgrades[i].GetUpgradeImage();
         }
-
-        for (int i = 0; i < amountTexts.Length; i++)
-        {
-            amountTexts[i].text = "0";
-        }
+         
+        amountTexts.text = "0";
     }
 
     // Button function for opening an screen that will explain, what the upgrade does when put into the weapon. 
@@ -144,7 +141,7 @@ public class UseUpgrades : MonoBehaviour
             upgradeID = upgrades[0].GetID();
 
             speedAmount++;
-            amountTexts[0].text = "" + speedAmount;
+            amountTexts.text = "" + speedAmount;
             upgradeCost = upgrades[upgradeID].GetUpgradeCost() * speedAmount;
             playerCurrency.playerUpgrade--;
         }
@@ -153,7 +150,7 @@ public class UseUpgrades : MonoBehaviour
             upgradeID = upgrades[0].GetID();
 
             speedAmount--;
-            amountTexts[0].text = "" + speedAmount;
+            amountTexts.text = "" + speedAmount;
             upgradeCost = upgrades[upgradeID].GetUpgradeCost() * speedAmount;
             playerCurrency.playerUpgrade++;
         }
@@ -173,9 +170,13 @@ public class UseUpgrades : MonoBehaviour
         calculator.SetRequestFromUpgrades(true);
         calculator.CalculateStats();
 
-        weaponSpeedText.text = "Speed: " + calculator.GetSpeed();
-        weaponWeightText.text = " Weight: " + weapons[weaponID].GetWeight();
-        weaponImpactDamageText.text = " Impact Damage: " + calculator.GetImpactDamage();
+        float weight = weapons[weaponID].GetWeight();
+        float speed = calculator.GetSpeed();
+        float damage = calculator.GetImpactDamage();
+
+        weaponWeightText.text = " Weight: " + weight;
+        weaponSpeedText.text = "Speed: " + speed;
+        weaponImpactDamageText.text = " Impact Damage: " + damage;
     }
 
     // Confirm button function for confirming the updates. 
@@ -196,15 +197,9 @@ public class UseUpgrades : MonoBehaviour
             calculator.SaveStats();
             
             calculator.SetSpeedAmount(0);
-            calculator.SetSpeed(0);
-            calculator.SetImpactDamage(0);
 
-            for (int i = 0; i < amountTexts.Length; i++)
-            {
-                amountTexts[i].text = "0";
-            }
+            amountTexts.text = "0";
 
-            SaveManager.SaveWeapons(weaponStates);
             SaveManager.SaveCurrency(playerCurrency);
         }
     }

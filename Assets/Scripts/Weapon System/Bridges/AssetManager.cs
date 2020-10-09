@@ -26,7 +26,8 @@ public class AssetManager : MonoBehaviour
     void Awake()
     {
         GetNecessaryScripts();
-        SetUpSpritesAndModels();
+        SetUpSprites();
+        SetUpModels();
         SetUpWeaponsAndUpgrades();
         SetUpArraysForOtherScripts();
     }
@@ -44,7 +45,7 @@ public class AssetManager : MonoBehaviour
     }
 
     // Function for setting up images from the editor menu.
-    void SetUpSpritesAndModels()
+    void SetUpSprites()
     {
         Sprite[] weapons = Resources.LoadAll<Sprite>("Weapons");
         Sprite[] chosenWeapons = Resources.LoadAll<Sprite>("ChosenWeapons");
@@ -53,10 +54,13 @@ public class AssetManager : MonoBehaviour
         weaponImages = new List<Sprite>(weapons);
         chosenWeaponImages = new List<Sprite>(chosenWeapons); 
         upgradeImages = new List<Sprite>(upgrades);
+    }
 
+    public void SetUpModels()
+    {
         weaponModels = new List<GameObject>(GameObject.FindGameObjectsWithTag("WeaponInUse"));
 
-        for(int i = 0; i < weaponModels.Count; i++)
+        for (int i = 0; i < weaponModels.Count; i++)
         {
             weaponModels[i].SetActive(false);
         }

@@ -23,7 +23,6 @@ public class PlayerCurrency : MonoBehaviour
     {
         playerUI = GameObject.FindGameObjectWithTag("Player").transform.Find("PlayerUI");
     
-
         moneyText = playerUI.Find("moneyText").GetComponent<Text>();
 
         upgradeText = playerUI.Find("upgradeText").GetComponent<Text>();

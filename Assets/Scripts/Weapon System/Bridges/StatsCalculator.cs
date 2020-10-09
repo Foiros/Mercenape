@@ -67,15 +67,13 @@ public class StatsCalculator : MonoBehaviour
 
         LoadSaveFiles();
 
+        savedAmountOfSpeed = savedAmountOfSpeed + amountOfSpeed;
         weaponWeight = weaponsArray.GetWeight();
         weaponSpeed = weaponsArray.GetSpeed();
         weaponImpactDamage = weaponsArray.GetImpactDamage();
 
-        actualWeaponSpeed = weaponSpeed + savedAmountOfSpeed / 10 - weaponWeight / 10;
-
+        actualWeaponSpeed = weaponSpeed + savedAmountOfSpeed - weaponWeight;
         actualWeaponImpactDamage = weaponImpactDamage + weaponWeight;
-
-        savedAmountOfSpeed = 0;
     }
 
     // Function for calculating weapon stats when changes have not been made or when player upgrades the weapon.
@@ -89,11 +87,11 @@ public class StatsCalculator : MonoBehaviour
 
         if (amountOfSpeed > 0)
         {
-            actualWeaponSpeed = weaponSpeed + amountOfSpeed / 10 - weaponWeight / 10;
+            actualWeaponSpeed = weaponSpeed + amountOfSpeed - weaponWeight;
         }
         else
         {
-            actualWeaponSpeed = weaponSpeed - weaponWeight / 10;
+            actualWeaponSpeed = weaponSpeed - weaponWeight;
         }
 
         actualWeaponImpactDamage =  weaponImpactDamage + weaponWeight;

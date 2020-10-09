@@ -88,7 +88,7 @@ public class PlayerAttackTrigger : MonoBehaviour
             for (int i = 0; i < enemiesToDamage.Length; i++)
             {
                 print("attacking");
-
+               
                 // Create by Bao: Attacking Mower
                 if (enemiesToDamage[i].GetType() == typeof(CapsuleCollider2D))
                 {

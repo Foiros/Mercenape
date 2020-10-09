@@ -26,7 +26,7 @@ public class LoadScene : MonoBehaviour
         }
     }
 
-    public void GoTolevel1FromMainMenu()
+    public void GoTolevel1WithoutCheckingKarma()
     {
         Time.timeScale = 1;
         SceneManager.LoadScene("NewLV1Test");
@@ -46,6 +46,13 @@ public class LoadScene : MonoBehaviour
         { 
             print("cant go"); 
         }
+    }
+
+    public void GoToForgeWithoutCheckingKarma()
+    {
+        Time.timeScale = 1;
+        SaveManager.SaveCurrency(playerCurrency);
+        SceneManager.LoadScene("Forge");
     }
 
     public void GoToMainMenu()
