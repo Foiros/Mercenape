@@ -114,8 +114,6 @@ public class PlayerStat : MonoBehaviour
 
    void StartDeath()
     {
-        
-        
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
    

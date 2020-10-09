@@ -12421,7 +12421,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1610466379}
-        m_MethodName: GoTolevel1WithoutCheckingKarma
+        m_MethodName: GoTolevel1
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

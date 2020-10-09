@@ -3598,13 +3598,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9495335238a314c45ac2a582f2f2b169, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amountOfSpeed: 0
-  savedAmountOfSpeed: 0
-  weaponWeight: 0
-  weaponSpeed: 0
-  weaponImpactDamage: 0
-  actualWeaponSpeed: 0
-  actualWeaponImpactDamage: 0
 --- !u!114 &972304601
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4869,7 +4862,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 972304601}
-        m_MethodName: GoTolevel1WithoutCheckingKarma
+        m_MethodName: GoTolevel1
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

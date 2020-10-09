@@ -19,18 +19,8 @@ public class LoadScene : MonoBehaviour
 
     public void GoTolevel1()
     {
-        if (spawner.state == EnemySpawnerScript.SpawnState.Counting)
-        {
-            Time.timeScale = 1;
-            SceneManager.LoadScene("NewLV1Test");
-        }
-    }
-
-    public void GoTolevel1WithoutCheckingKarma()
-    {
         Time.timeScale = 1;
         SceneManager.LoadScene("NewLV1Test");
-        
     }
 
     public void GoToForge()
@@ -46,13 +36,6 @@ public class LoadScene : MonoBehaviour
         { 
             print("cant go"); 
         }
-    }
-
-    public void GoToForgeWithoutCheckingKarma()
-    {
-        Time.timeScale = 1;
-        SaveManager.SaveCurrency(playerCurrency);
-        SceneManager.LoadScene("Forge");
     }
 
     public void GoToMainMenu()
