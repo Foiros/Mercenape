@@ -8,7 +8,7 @@ public class AssetManager : MonoBehaviour
     // Scripts
     private BuyWeapons buyWeapons;
     private UseUpgrades useUpgrades;
-    private WeaponStats weaponStats;
+    private StatsCalculator calculator;
     private SetActualWeapon setActualWeapon;
     private ChooseWeapon chooseWeapon;
     private PlayerAttackTrigger playerAttack;
@@ -20,10 +20,13 @@ public class AssetManager : MonoBehaviour
     // Sprite lists
     private List<Sprite> weaponImages, chosenWeaponImages, upgradeImages;
 
+    // MeshRenrerer lists
+    [SerializeField] private List<GameObject> weaponModels;
+
     void Awake()
     {
         GetNecessaryScripts();
-        SetUpSprites();
+        SetUpSpritesAndModels();
         SetUpWeaponsAndUpgrades();
         SetUpArraysForOtherScripts();
     }
@@ -33,7 +36,7 @@ public class AssetManager : MonoBehaviour
     {
         buyWeapons = GetComponent<BuyWeapons>();
         useUpgrades = GetComponent<UseUpgrades>();
-        weaponStats = GetComponent<WeaponStats>();
+        calculator = GetComponent<StatsCalculator>();
         setActualWeapon = GetComponent<SetActualWeapon>();
         chooseWeapon = GetComponent<ChooseWeapon>();
 
@@ -41,24 +44,31 @@ public class AssetManager : MonoBehaviour
     }
 
     // Function for setting up images from the editor menu.
-    void SetUpSprites()
+    void SetUpSpritesAndModels()
     {
         Sprite[] weapons = Resources.LoadAll<Sprite>("Weapons");
         Sprite[] chosenWeapons = Resources.LoadAll<Sprite>("ChosenWeapons");
         Sprite[] upgrades = Resources.LoadAll<Sprite>("Upgrades");
 
         weaponImages = new List<Sprite>(weapons);
-        chosenWeaponImages = new List<Sprite>(chosenWeapons);
+        chosenWeaponImages = new List<Sprite>(chosenWeapons); 
         upgradeImages = new List<Sprite>(upgrades);
+
+        weaponModels = new List<GameObject>(GameObject.FindGameObjectsWithTag("WeaponInUse"));
+
+        for(int i = 0; i < weaponModels.Count; i++)
+        {
+            weaponModels[i].SetActive(false);
+        }
     }
 
     // Constructs weapons and upgrades and adds them to their own lists. 
     void SetUpWeaponsAndUpgrades()
     {
-        weapons.Add(new TestWeapon("Weapon 1", "Does things", 0, 0, 2.0f, 1, 10, 1f, 3f, weaponImages[0], chosenWeaponImages[0]));
-        weapons.Add(new TestWeapon("Weapon 2", "Does things", 1, 25, 1.0f, 7, 15, 1f, 3f, weaponImages[1], chosenWeaponImages[1]));
-        weapons.Add(new TestWeapon("Weapon 3", "Does things", 2, 100, 1.5f, 3, 13, 1f, 1f, weaponImages[2], chosenWeaponImages[2]));
-        weapons.Add(new TestWeapon("Weapon 4", "Does things", 3, 150, 2.5f, 1, 5, 1f, 5f, weaponImages[3], chosenWeaponImages[3]));
+        weapons.Add(new TestWeapon("Weapon 1", "Does things", 0, 0, 2.0f, 1, 10, 1.5f, 3.0f, weaponImages[0], chosenWeaponImages[0], weaponModels[0]));
+        weapons.Add(new TestWeapon("Weapon 2", "Does things", 1, 25, 1.0f, 7, 15, 5f, 3.0f, weaponImages[1], chosenWeaponImages[1], weaponModels[1]));
+        weapons.Add(new TestWeapon("Weapon 3", "Does things", 2, 100, 1.5f, 3, 13, 7f, 3.0f, weaponImages[2], chosenWeaponImages[2], weaponModels[2]));
+        weapons.Add(new TestWeapon("Weapon 4", "Does things", 3, 150, 2.5f, 1, 5, 10f, 3.0f, weaponImages[3], chosenWeaponImages[3], weaponModels[3]));
 
         upgrades.Add(new TestUpgrade("Speed Upgrade", "Increases the speed of your attacks", 0, 25, upgradeImages[0]));
     }
@@ -70,7 +80,7 @@ public class AssetManager : MonoBehaviour
 
         if (useUpgrades != null) { useUpgrades.SetWeaponList(weapons); useUpgrades.SetUpgradeList(upgrades); }
 
-        if (weaponStats != null) { weaponStats.SetWeaponList(weapons); }
+        if (calculator != null) { calculator.SetWeaponList(weapons); }
 
         if (chooseWeapon != null) { chooseWeapon.SetWeaponList(weapons); }
 
