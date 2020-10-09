@@ -1018,6 +1018,16 @@ PrefabInstance:
       propertyPath: gm
       value: 
       objectReference: {fileID: 813203078}
+    - target: {fileID: 6344795163466718395, guid: 08f5c9f89f6349d49a2605674215a83c,
+        type: 3}
+      propertyPath: PlayerJumpPow
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 6344795163466718395, guid: 08f5c9f89f6349d49a2605674215a83c,
+        type: 3}
+      propertyPath: PlayerDoubleJumpPow
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 6344795163744552721, guid: 08f5c9f89f6349d49a2605674215a83c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1424,7 +1434,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1054856598}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 5, z: -10}
+  m_LocalPosition: {x: 0, y: 7, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1446,6 +1456,7 @@ MonoBehaviour:
   zoomIn: 0
   zoomOut: 0
   zoomNormal: 0
+  zoomNum: 0
 --- !u!1001 &1153550411
 PrefabInstance:
   m_ObjectHideFlags: 0

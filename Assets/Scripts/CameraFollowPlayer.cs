@@ -13,13 +13,13 @@ public class CameraFollowPlayer : MonoBehaviour
     void Start()
     {
         zoomNum = 1;
-        isZoomedIn = false;
+        isZoomedIn = true;
         cam = transform.GetComponent<Camera>();
         zoomNormal = cam.orthographicSize;
 
         //These are the values that the camera's Orthopode-whatever- size takes to implement the level of zoom.
-        zoomIn = zoomNormal - 2;
-        zoomOut = zoomNormal + 5;
+        zoomIn = zoomNormal;
+        zoomOut = zoomNormal + 53;
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
