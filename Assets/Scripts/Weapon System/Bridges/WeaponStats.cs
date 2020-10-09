@@ -6,7 +6,6 @@ using UnityEngine;
 public class WeaponStats : MonoBehaviour
 {
     private WeaponStates weaponStates;
-    private SetActualWeapon setActualWeapon;
     
     private List<AbstractWeapon> weapons;
 
@@ -23,7 +22,6 @@ public class WeaponStats : MonoBehaviour
     void Awake()
     {
         weaponStates = GetComponent<WeaponStates>();
-        setActualWeapon = GetComponent<SetActualWeapon>();
     }
 
     // Public function that other scripts can call to handle the weapon stat calculations.

@@ -18,9 +18,7 @@ public class AssetManager : MonoBehaviour
     private List<AbstractUpgrades> upgrades = new List<AbstractUpgrades>();
 
     // Sprite lists
-    private List<Sprite> weaponImages;
-    private List<Sprite> chosenWeaponImages;
-    private List<Sprite> upgradeImages;
+    private List<Sprite> weaponImages, chosenWeaponImages, upgradeImages;
 
     void Awake()
     {

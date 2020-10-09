@@ -14,8 +14,7 @@ public class BuyWeapons : MonoBehaviour
 
     private int weaponID;
 
-    public Image[] weaponImagesHolder;
-    public Image[] ownedWeapons;
+    public Image[] weaponImagesHolder, ownedWeapons;
 
     public GameObject buyWeaponScreen;
     private Text weaponName, weaponDescription, weaponCostText;

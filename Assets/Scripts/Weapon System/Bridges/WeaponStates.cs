@@ -7,8 +7,7 @@ public class WeaponStates: MonoBehaviour
 {
     [SerializeField]private int weaponID;
 
-    [SerializeField] private List<bool> ownedWeaponsList;
-    [SerializeField] private List<bool> upgradedWeaponsList;
+    [SerializeField] private List<bool> ownedWeaponsList, upgradedWeaponsList;
     [SerializeField] private List<int> savedSpeedAmountsList;
 
     private bool ownsWeapon1, ownsWeapon2, ownsWeapon3, ownsWeapon4;
