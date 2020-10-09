@@ -113,7 +113,8 @@ public class EnemyBehaviour : MonoBehaviour
 
         barHealth.UpdateHealthBar(currentHP, stat.maxHP);
 
-        CheckEnemyDeath();
+        StopCoroutine("CheckEnemyDeath");
+        StartCoroutine("CheckEnemyDeath");
     }
 
     // Set player movement when being knocked down
@@ -137,10 +138,15 @@ public class EnemyBehaviour : MonoBehaviour
         }
     }
 
-    protected void CheckEnemyDeath()
+    protected IEnumerator CheckEnemyDeath()
     {
         if (currentHP <= 0)
         {
+            transform.rotation = Quaternion.Euler(90, Random.Range(0f, 360f), 0);
+            speed = 0;
+
+            yield return new WaitForSeconds(1f);
+
             Destroy(gameObject, 0);
 
             enemyLoot.DropAll();

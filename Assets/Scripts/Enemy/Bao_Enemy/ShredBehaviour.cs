@@ -5,8 +5,7 @@ using UnityEngine;
 // Created by Bao: Shred's Behaviour, child of EnemyBehaviour
 public class ShredBehaviour : EnemyBehaviour
 {      
-    [SerializeField] private float bleedChance;
-    [SerializeField] private int knockBackForce;
+    [SerializeField] private float bleedChance;   
 
     private Coroutine co;
 
@@ -19,7 +18,7 @@ public class ShredBehaviour : EnemyBehaviour
     {
         // Check if player is stunned by Shred
         StunningProcess();
-
+        Debug.DrawRay(frontDetection.position, transform.right * 2, Color.blue);
         // Temporary cheat code to kill all ememy
         if (Input.GetKeyDown(KeyCode.L))
         {
@@ -31,29 +30,27 @@ public class ShredBehaviour : EnemyBehaviour
     protected void OnCollisionEnter2D(Collision2D col)
     {
         if (col.gameObject.CompareTag("Player"))
-        {
-            if (!playerMovement.isPlayerBlock) // if player is not blocking, attack player normal
+        {          
+            // If player face against Shred and is blocking
+            if (IsFacingRight() != playerMovement.FaceRight && playerMovement.isPlayerBlock)
+            {
+                // Block and immobilize Shred
+                StopCoroutine("ImmobilizeShred");
+                StartCoroutine("ImmobilizeShred");
+            }
+            else
             {
                 ShredAttack();
             }
-            else // when player is blocking
-            {
-                if (IsFacingRight() == playerMovement.FaceRight) // if hit player from behind aka both face same direction then atk player normally
-                {
-                    ShredAttack();
-                }
-                else
-                {
-                    StopCoroutine("ImmobilizeShred");
-                    StartCoroutine("ImmobilizeShred");
-                }
-            }           
         }
     }
 
     // When Shred attacks and applies damage
     private void ShredAttack()
     {
+        // If player is not in front of Shred's peak, don't attack
+        if (Mathf.Abs(player.transform.position.x - frontDetection.position.x) > 2f) { return; }
+
         StartCoroutine("Attacking");
         playerStat.PlayerTakeDamage(stat.damage);
         escapingStunCount = 0;
@@ -97,11 +94,8 @@ public class ShredBehaviour : EnemyBehaviour
     }
    
     IEnumerator ImmobilizeShred()
-    {
-        //playerRigid.AddForce(new Vector2(Mathf.Sign(transform.localScale.x) * knockBackForce / 50, 0));
-        rb.AddForce(new Vector2(-Mathf.Sign(transform.localScale.x) * knockBackForce, 50));
-
-        speed = 0;       
+    {       
+        speed = -stat.runningSpeed / 20;
 
         yield return new WaitForSeconds(1f);
 

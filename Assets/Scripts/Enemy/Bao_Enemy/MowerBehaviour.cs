@@ -111,9 +111,10 @@ public class MowerBehaviour : EnemyBehaviour
 
             currentHP -= playerDmg;           
 
-            barHealth.UpdateHealthBar(currentHP, stat.maxHP);           
+            barHealth.UpdateHealthBar(currentHP, stat.maxHP);
 
-            CheckEnemyDeath();
+            StopCoroutine("CheckEnemyDeath");
+            StartCoroutine("CheckEnemyDeath");
 
             if (!isGenerating)
             {
