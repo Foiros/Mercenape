@@ -5,31 +5,24 @@ using UnityEngine.SceneManagement;
 
 public class PlayerStat : MonoBehaviour
 {
-    
-    
     public GameObject player;
-    public Healthbar_Ossi healthBar;
+ 
    
     public int PlayerHP;
     public int PlayerMaxHP;
     public int PlayerDamage;
 
-    PlayerHealthBar playerHealthBar;
     PlayerCurrency playerCurrency;
+    playerUI playerUI;
 
     public int lostGold;
         public int lostKarma;
 
     void Start()
     {
-        /*healthBar = GetComponentInChildren<Healthbar_Ossi>();
-        if(healthBar != null)
-        {
-            Debug.Log("PlayerHP bar found.");
-        }*/
-
-        playerHealthBar = transform.Find("PlayerUI").GetComponent<PlayerHealthBar>();
+        playerUI = transform.Find("PlayerUI").GetComponent<playerUI>();
         playerCurrency = transform.GetComponent<PlayerCurrency>();
+
         PlayerHP = PlayerMaxHP;
         
         
@@ -37,12 +30,6 @@ public class PlayerStat : MonoBehaviour
     void Update()
     {
 
-        //if (Input.GetKeyDown(KeyCode.X))    
-        //{
-        //    PlayerHP -= 30;
-        //}
-
-        //Ossi's version:
         if(Input.GetKeyDown(KeyCode.Y))
         {
             updateHealth(10);
@@ -74,7 +61,7 @@ public class PlayerStat : MonoBehaviour
             }
             //Add the new health values to change the fill amount of the healthbar.
             //  healthBar.updateHealthBar(PlayerMaxHP, PlayerHP);
-            playerHealthBar.SetCurrentHP(PlayerHP);
+            playerUI.SetCurrentHP(PlayerHP);
             CheckPlayerDeath();
 
         }
@@ -115,9 +102,10 @@ public class PlayerStat : MonoBehaviour
         {
             playerCurrency.playerKarma = 0;
         }
-        transform.GetComponentInChildren<GoldCount>().TextUpdate();
-        transform.GetComponentInChildren<KarmaCount>().TextUpdate();
-        transform.GetComponentInChildren<KarmaBar>().SetValue();
+        playerUI.MoneyText();
+        playerUI.KarmaText();
+        playerUI.SetKarmaValue();
+     
 
         SaveManager.SaveCurrency(playerCurrency);
         
@@ -135,7 +123,7 @@ public class PlayerStat : MonoBehaviour
     public void PlayerTakeDamage(int EnemyDamage)
     {
         PlayerHP -= EnemyDamage;
-        playerHealthBar.SetCurrentHP(PlayerHP);
+        playerUI.SetCurrentHP(PlayerHP);
         CheckPlayerDeath();    
         
     }

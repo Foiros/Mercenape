@@ -18,7 +18,7 @@ public class GoldCount : MonoBehaviour
         playerCurrency = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCurrency>();
 
         moneyText = GameObject.FindGameObjectWithTag("Player").transform.Find("PlayerUI").Find("moneyText").GetComponent<Text>();
-        TextUpdate();
+        MoneyText();
 
     }
 
@@ -26,9 +26,10 @@ public class GoldCount : MonoBehaviour
  
 
 
-    public void TextUpdate()
+    public void MoneyText()
 
     {
         moneyText.text = playerCurrency.playerGold.ToString();
+        moneyText.color = Color.red;
     }
 }

@@ -38,12 +38,13 @@ public class PlayerMovement : MonoBehaviour
 
     public bool isPlayerBlock = false;
 
+    BoxCollider2D boxCollider;
    
     void Start()
     {
         PlayerRigid2d = transform.GetComponent<Rigidbody2D>();
         PlayerAnimator = transform.GetComponent<Animator>();
-      
+        boxCollider = transform.GetComponent<BoxCollider2D>();
 
     }
 
@@ -95,13 +96,12 @@ public class PlayerMovement : MonoBehaviour
 
     void CheckPlayerGrounded()
     {
-        IsGrounded = Physics2D.OverlapCircle(PlayerUnderPos.position, CheckRadius, groundlayermask);
+        IsGrounded = IsGrounded = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, CheckRadius, groundlayermask);
     }
 
 
 
-
-    void CheckPlayerBlock()
+        void CheckPlayerBlock()
     {
         // check if player click right mouse 
         if (Input.GetMouseButton(1))

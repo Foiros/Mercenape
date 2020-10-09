@@ -19,8 +19,6 @@ public class VineHingeAnchor : MonoBehaviour
 
     //limit how many times player can climb up the vine
 
-    int climbLimit = 10;
-    int climbTimes = 0;
 
     Transform upper, lower;
 
@@ -133,10 +131,10 @@ public class VineHingeAnchor : MonoBehaviour
         if(isFlying == true) {
             if(player.GetComponent<PlayerMovement>().FaceRight) 
             { 
-            player.GetComponent<Rigidbody2D>().AddForce(new Vector3(10000f, 1000f,0)*Time.deltaTime, ForceMode2D.Impulse);
+            player.GetComponent<Rigidbody2D>().AddForce(new Vector2(10000f, 2000f)*Time.deltaTime, ForceMode2D.Impulse);
             }else
             {
-                player.GetComponent<Rigidbody2D>().AddForce(new Vector3(-10000f, 1000f, 0) * Time.deltaTime, ForceMode2D.Impulse);
+                player.GetComponent<Rigidbody2D>().AddForce(new Vector2(-10000f, 2000f) * Time.deltaTime, ForceMode2D.Impulse);
             }
             Invoke("func", 0.5f);
         }
@@ -145,7 +143,7 @@ public class VineHingeAnchor : MonoBehaviour
     void func()
     {
         isFlying = false;
-        climbTimes = 0;
+   
 
     }
 

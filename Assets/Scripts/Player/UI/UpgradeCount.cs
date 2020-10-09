@@ -19,12 +19,12 @@ public class UpgradeCount : MonoBehaviour
 
 
 
-        TextUpdate();// update the UI when start the game
+        UpgradeText();// update the UI when start the game
     }
 
 
     // Update is called once per frame
-    public void TextUpdate()
+    public void UpgradeText()
     {
         upgradeText.text = playerCurrency.playerUpgrade.ToString();
     }

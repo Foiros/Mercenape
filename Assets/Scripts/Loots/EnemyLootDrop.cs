@@ -6,23 +6,29 @@ public class EnemyLootDrop : MonoBehaviour
 {
     private GameObject player;
     public GameObject enemy;
-    public GameObject KarmaDrop;
+    
     int noKarmaInstantiate;
     public int KarmaDropQuantity;// to make it dramatic but can also make 1 var  
     private PlayerCollisionDectection collisionDectection;
     
     public GameObject goldDrop;
-    
+    public GameObject KarmaDrop;
     public GameObject healthDrop;
-    public int healthChance;
-
     public GameObject upgradeDrop;
+
+    public GameObject floatMoney;
+    public GameObject floatKarma;
+    
+    
+    public int healthChance;
     public int upgradeChance;
 
     void Start()
     {
         player = GameObject.Find("Player");
         collisionDectection = player.GetComponent<PlayerCollisionDectection>();
+
+
     }
     private void Update()
     {
@@ -37,24 +43,36 @@ public class EnemyLootDrop : MonoBehaviour
 
     }
 
+    /*  public void InstantiateKarmaDrop()
+      {
+          noKarmaInstantiate = KarmaDropQuantity / collisionDectection.KarmaQuantity;
+
+          for (int i = 0; i < noKarmaInstantiate; i++)
+          {
+              Instantiate(KarmaDrop, (Vector2)transform.position + new Vector2(Random.Range(-2f, 2f), Random.Range(0f, 10f)), Quaternion.identity);
+          }
+
+      }
+
+      public void InstantiateGoldDrop()
+      {
+
+          Instantiate(goldDrop, (Vector2)transform.position + new Vector2(Random.Range(-2f, 2f), Random.Range(0f, 10f)), Quaternion.identity);
+
+      }*/
+
+
     public void InstantiateKarmaDrop()
     {
-        noKarmaInstantiate = KarmaDropQuantity / collisionDectection.KarmaQuantity;
-
-        for (int i = 0; i < noKarmaInstantiate; i++)
-        {
-            Instantiate(KarmaDrop, (Vector2)transform.position + new Vector2(Random.Range(-2f, 2f), Random.Range(0f, 10f)), Quaternion.identity);
-        }
-
+            Instantiate(floatKarma, (Vector2)transform.position + new Vector2(Random.Range(-2f, 2f), Random.Range(0f, 1f)), Quaternion.identity);
     }
 
     public void InstantiateGoldDrop()
     {
-        
-        Instantiate(goldDrop, (Vector2)transform.position + new Vector2(Random.Range(-2f, 2f), Random.Range(0f, 10f)), Quaternion.identity);
-        
-    }
 
+        Instantiate(floatMoney, (Vector2)transform.position + new Vector2(Random.Range(-2f, 2f), Random.Range(0f, 4f)), Quaternion.identity);
+
+    }
 
 
     public void InstantiateHealthOrb()

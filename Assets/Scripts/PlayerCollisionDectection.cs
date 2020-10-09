@@ -10,25 +10,17 @@ public class PlayerCollisionDectection : MonoBehaviour
 
     PlayerStat playerStat;
     PlayerCurrency playerCurrency;
-    GameObject playerUI;
+    playerUI playerUI;
 
-    KarmaBar karmaBar;
-    KarmaCount karmaCount;
-    GoldCount goldCount;
-    PlayerHealthBar healthBar;
-    UpgradeCount upgradeCount;
+   
 
     // Start is called before the first frame update
     void Start()
     {
         playerStat = GetComponent<PlayerStat>();
         playerCurrency = GetComponent<PlayerCurrency>();
-        playerUI = GameObject.FindGameObjectWithTag("Player").transform.Find("PlayerUI").gameObject;
-        goldCount = playerUI.GetComponent<GoldCount>();
-        karmaBar = playerUI.GetComponent<KarmaBar>();
-        karmaCount = playerUI.GetComponent<KarmaCount>();
-        healthBar = playerUI.GetComponent<PlayerHealthBar>();
-        upgradeCount = playerUI.GetComponent<UpgradeCount>();
+        playerUI = GameObject.FindGameObjectWithTag("Player").transform.Find("PlayerUI").GetComponent<playerUI>();
+     
     }
 
     // Update is called once per frame
@@ -39,7 +31,7 @@ public class PlayerCollisionDectection : MonoBehaviour
         {
             goldQuantity = UnityEngine.Random.Range(10, 100);//TODO: create a range of gold drop for different enemy and put here
             playerCurrency.playerGold += goldQuantity;
-            goldCount.TextUpdate();
+            playerUI.MoneyText();
             Destroy(collision.gameObject);
 
         }
@@ -47,20 +39,20 @@ public class PlayerCollisionDectection : MonoBehaviour
         {
             playerCurrency.playerKarma += KarmaQuantity;
             Destroy(collision.gameObject);
-            karmaBar.SetValue();
-            karmaCount.TextUpdate();
+            playerUI.SetKarmaValue();
+            playerUI.KarmaText();
         }
             else if(collision.CompareTag("Loot/UpgradeDrop")) {
             playerCurrency.playerUpgrade++;
             Destroy(collision.gameObject);
-            upgradeCount.TextUpdate();
+            playerUI.UpgradeText();
         }
             
         else if (collision.CompareTag("Loot/HPDrop"))
         {
             playerStat.PlayerHP += 30;
             Destroy(collision.gameObject);
-            healthBar.SetCurrentHP(playerStat.PlayerHP);
+            playerUI.SetCurrentHP(playerStat.PlayerHP);
             
              }
         }
