@@ -83,7 +83,7 @@ public class PlayerAttackTrigger : MonoBehaviour
             IsPlayerAttack = true;
             TimeDelayAttack = PlayerDelayAttackTime;
 
-            Collider[] enemiesToDamage = Physics.OverlapBox(Attackpos.position, transform.localScale * AttackRange, Quaternion.identity, EnemyLayerMask);
+            Collider2D[] enemiesToDamage = Physics2D.OverlapBoxAll(Attackpos.position, transform.localScale * AttackRange, EnemyLayerMask);
           
             for (int i = 0; i < enemiesToDamage.Length; i++)
             {               
