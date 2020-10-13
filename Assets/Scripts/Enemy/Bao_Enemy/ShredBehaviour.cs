@@ -16,14 +16,8 @@ public class ShredBehaviour : EnemyBehaviour
 
     private void Update()
     {
-        // Check if player is stunned by Shred
-        StunningProcess();
-        Debug.DrawRay(frontDetection.position, transform.right * 2, Color.blue);
-        // Temporary cheat code to kill all ememy
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            Destroy(gameObject);
-        }
+        // Check if player is knocked down by Shred
+        KnockDownProcess();
     }
 
     // Hit player
@@ -49,12 +43,13 @@ public class ShredBehaviour : EnemyBehaviour
     private void ShredAttack()
     {
         // If player is not in front of Shred's peak, don't attack
-        if (Mathf.Abs(player.transform.position.x - frontDetection.position.x) > 2f) { return; }
+        if (Mathf.Abs(player.transform.position.x - frontDetection.position.x) > 3f) { return; }
 
+        isAttacker = true;
         StartCoroutine("Attacking");
         playerStat.PlayerTakeDamage(stat.damage);
-        escapingStunCount = 0;
-        isStunning = true;
+        playerMovement.getUpCount = 0;
+        playerMovement.isKnockDown = true;
 
         if (Random.Range(0f, 100f) < bleedChance)
         {
@@ -73,7 +68,7 @@ public class ShredBehaviour : EnemyBehaviour
         rb.bodyType = RigidbodyType2D.Kinematic;
         boxCollier.isTrigger = true;  
         
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
 
         // Return to original states
         boxCollier.isTrigger = false;
@@ -102,20 +97,21 @@ public class ShredBehaviour : EnemyBehaviour
         speed = stat.runningSpeed;
     }
 
-    protected override void StunningProcess()
+    protected override void KnockDownProcess()
     {
-        base.StunningProcess();     // Still normally stun player
+        base.KnockDownProcess();     // Still normally stun player
+        
+        if (!isAttacker) { return; }
 
-        if (escapingStunCount == 5)
+        if (playerMovement.getUpCount == 5)
         {
             player.transform.rotation = Quaternion.Euler(0, 0, 0);
-            playerMovement.enabled = true;
-            player.GetComponent<PlayerAttackTrigger>().enabled = true;
-            player.GetComponent<Animator>().enabled = true;          
+            playerMovement.playerAttack.enabled = true;         
 
-            escapingStunCount = 0;
-            readyToSetStun = true;
-            isStunning = false;
+            playerMovement.getUpCount = 0;           
+            playerMovement.isKnockDown = false;
+
+            isAttacker = false;
         }
     }
 

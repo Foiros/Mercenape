@@ -16,7 +16,6 @@ MonoBehaviour:
   currentHP: 0
   frontDetection: {fileID: 1417960429150828320}
   bleedChance: 30
-  knockBackForce: 1000000000
 --- !u!1001 &1352124088747745884
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -96,7 +95,7 @@ PrefabInstance:
     - target: {fileID: -5583255050072111067, guid: d561ebe5499b33446a3ba906ed062674,
         type: 3}
       propertyPath: m_Offset.x
-      value: 0.15254211
+      value: 0.13820982
       objectReference: {fileID: 0}
     - target: {fileID: -5583255050072111067, guid: d561ebe5499b33446a3ba906ed062674,
         type: 3}
@@ -106,7 +105,7 @@ PrefabInstance:
     - target: {fileID: -5583255050072111067, guid: d561ebe5499b33446a3ba906ed062674,
         type: 3}
       propertyPath: m_Size.x
-      value: 6.828333
+      value: 6.7996683
       objectReference: {fileID: 0}
     - target: {fileID: -5583255050072111067, guid: d561ebe5499b33446a3ba906ed062674,
         type: 3}
@@ -166,7 +165,7 @@ PrefabInstance:
     - target: {fileID: 4669934860387165151, guid: d561ebe5499b33446a3ba906ed062674,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.41
+      value: 3.553
       objectReference: {fileID: 0}
     - target: {fileID: 4669934860387165151, guid: d561ebe5499b33446a3ba906ed062674,
         type: 3}

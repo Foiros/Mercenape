@@ -47,8 +47,8 @@ public class MowerBehaviour : EnemyBehaviour
 
     private void Update()
     {
-        // Check if player is stunned by Mower
-        StunningProcess();
+        // Check if player is knocked down by Mower
+        KnockDownProcess();
 
         // If is riding, stick on the top of Mower
         if (isRiding)
@@ -133,7 +133,7 @@ public class MowerBehaviour : EnemyBehaviour
         {
             // Field Generator will damage back the player and push upward
             playerStat.PlayerTakeDamage(fieldStat.damage);
-            playerRigid.AddForce(new Vector2(Mathf.Sign(player.transform.localScale.x) * -2000, 100), ForceMode2D.Impulse);
+            playerMovement.PlayerRigid2d.AddForce(new Vector2(Mathf.Sign(player.transform.localScale.x) * -2000, 100), ForceMode2D.Impulse);
         }
     }
 
@@ -198,12 +198,14 @@ public class MowerBehaviour : EnemyBehaviour
 
     private void MowerAttack()
     {
-        playerRigid.velocity = Vector2.zero;
+        playerMovement.PlayerRigid2d.velocity = Vector2.zero;
 
-        escapingStunCount = 0;
-        isStunning = true;
+        playerMovement.getUpCount = 0;
+        playerMovement.isKnockDown = true;
 
+        isAttacker = true;
         StartCoroutine("Attacking");
+
         if (dmgCoroutine != null)
         {
             StopCoroutine(dmgCoroutine);
@@ -212,11 +214,13 @@ public class MowerBehaviour : EnemyBehaviour
         dmgCoroutine = StartCoroutine(ApplyDamage(3, stat.damage));
     }
 
-    protected override void StunningProcess()
+    protected override void KnockDownProcess()
     {
-        base.StunningProcess();     // Still normal stun player
+        base.KnockDownProcess();     // Still normal stun player
 
-        if (escapingStunCount == 10)
+        if (!isAttacker) { return; }
+
+        if (playerMovement.getUpCount == 10)
         {
             // Stop dealing damage and get back to original states
             if (dmgCoroutine != null)
@@ -225,16 +229,15 @@ public class MowerBehaviour : EnemyBehaviour
             }
 
             player.transform.rotation = Quaternion.Euler(0, 0, 0);
-            playerMovement.enabled = true;
-            player.GetComponent<PlayerAttackTrigger>().enabled = true;
-            player.GetComponent<Animator>().enabled = true;
+            playerMovement.playerAttack.enabled = true;
 
-            playerRigid.velocity = Vector2.up * 50;
+            // Push player up 
+            playerMovement.PlayerRigid2d.velocity = Vector2.up * 50;
 
-            escapingStunCount = 0;
-            readyToSetStun = true;
-            isStunning = false;
+            playerMovement.getUpCount = 0;
+            playerMovement.isKnockDown = false;
 
+            isAttacker = false;
             Invoke("ReturnPhysics", 0.5f);
         }        
     }
@@ -321,7 +324,7 @@ public class MowerBehaviour : EnemyBehaviour
             if (isRiding)
             {
                 isRiding = false;
-                playerRigid.velocity = Vector2.up * 30;
+                playerMovement.PlayerRigid2d.velocity = Vector2.up * 30;
             }
         }
     }

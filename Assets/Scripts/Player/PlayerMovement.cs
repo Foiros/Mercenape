@@ -10,11 +10,11 @@ public class PlayerMovement : MonoBehaviour
     public float PlayerJumpPow, PlayerDoubleJumpPow; // for jump
     public float MidAirSpeed; // for move left and right while mid air
     [SerializeField] private LayerMask groundlayermask, walllayermask, ladderlayermask;
-    
-    
 
-    private Animator PlayerAnimator;
-    private Rigidbody2D PlayerRigid2d;
+
+    [HideInInspector] public PlayerAttackTrigger playerAttack;
+    [HideInInspector] public Animator PlayerAnimator;
+    [HideInInspector] public Rigidbody2D PlayerRigid2d;
 
     float inputH; 
     
@@ -38,10 +38,14 @@ public class PlayerMovement : MonoBehaviour
 
     public bool isPlayerBlock = false;
 
+    [HideInInspector] public bool isKnockDown = false;
+    [HideInInspector] public int getUpCount = 0;
+
     BoxCollider2D boxCollider;
    
     void Start()
     {
+        playerAttack = transform.GetComponent<PlayerAttackTrigger>();
         PlayerRigid2d = transform.GetComponent<Rigidbody2D>();
         PlayerAnimator = transform.GetComponent<Animator>();
         boxCollider = transform.GetComponent<BoxCollider2D>();
@@ -50,31 +54,30 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        CheckKnockDown();
+
         CheckPlayerGrounded();
        //CheckPlayerGrabWall();
         CheckPlayerBlock();
         CheckClimbLadder();
 
 
-       InputHorrizontal();
-        FlipPlayer();
-
         PlayerRigid2d.constraints = RigidbodyConstraints2D.FreezeRotation;
-        if (!isPlayerBlock) { 
-            PlayerJump();
-            
 
+        if (!isPlayerBlock && !isKnockDown) { 
+            PlayerJump();
+            InputHorrizontal(); // Included player flip
+            SetPlayerAnimator();// could change to call animation if needed
         }
 
-
-        SetPlayerAnimator();// could change to call animation if needed
+        
 
     }
 
     void FixedUpdate()
     {
 
-        if (!isPlayerBlock)// when player is not blocking they can move
+        if (!isPlayerBlock && !isKnockDown)// when player is not blocking they can move
         {
             PlayerMove();
             PlayerClimbLadder();
@@ -90,18 +93,12 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-
-
-
-
     void CheckPlayerGrounded()
     {
         IsGrounded = IsGrounded = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, CheckRadius, groundlayermask);
     }
 
-
-
-        void CheckPlayerBlock()
+    void CheckPlayerBlock()
     {
         // check if player click right mouse 
         if (Input.GetMouseButton(1))
@@ -117,18 +114,19 @@ public class PlayerMovement : MonoBehaviour
     void InputHorrizontal()
     {
         inputH = Input.GetAxisRaw("Horizontal");// Note if dont get raw axis it feels like splippery
+
+        FlipPlayer();
     }
-   
-    
+       
     // check collide with wall 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("wall")&& IsWallGrab==false)
         {
-            IsWallGrab = true;
-           
+            IsWallGrab = true;          
         }
     }
+
     private void OnCollisionExit2D(Collision2D collision)
     {
        
@@ -316,8 +314,7 @@ public class PlayerMovement : MonoBehaviour
 
 
         }
-    }*/
-    
+    }*/   
 
     private void SetPlayerAnimator()
     {
@@ -339,25 +336,27 @@ public class PlayerMovement : MonoBehaviour
     {
         FaceRight = !FaceRight;
         Vector3 Scale= transform.localScale;
-        Scale.z *= -1;
+        //Scale.z *= -1;
         Scale.x *= -1;
-        transform.localScale = Scale;
-
+        transform.localScale = Scale;      
     }
-
    
-    
-
-
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(PlayerFrontPos.position, CheckRadius);
-
-      
-
     }
 
-    
+    void CheckKnockDown()
+    {
+        if (isKnockDown)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 90);
+            playerAttack.enabled = false;
+
+            if (Input.GetKeyDown(KeyCode.Space)) { getUpCount++; }   
+                        
+        }
+    }
 }
 

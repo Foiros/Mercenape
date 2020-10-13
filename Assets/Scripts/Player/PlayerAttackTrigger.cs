@@ -84,9 +84,7 @@ public class PlayerAttackTrigger : MonoBehaviour
             Collider2D[] enemiesToDamage = Physics2D.OverlapBoxAll(Attackpos.position, transform.localScale * AttackRange, EnemyLayerMask);
           
             for (int i = 0; i < enemiesToDamage.Length; i++)
-            {
-                print("attacking");
-               
+            {             
                 // Create by Bao: Attacking Mower
                 if (enemiesToDamage[i].GetType() == typeof(CapsuleCollider2D))
                 {

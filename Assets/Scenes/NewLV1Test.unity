@@ -1029,25 +1029,15 @@ PrefabInstance:
       propertyPath: PlayerDoubleJumpPow
       value: 40
       objectReference: {fileID: 0}
-    - target: {fileID: 6344795163744552721, guid: 08f5c9f89f6349d49a2605674215a83c,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 2.32
-      objectReference: {fileID: 0}
-    - target: {fileID: 6344795163744552721, guid: 08f5c9f89f6349d49a2605674215a83c,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 3.52
-      objectReference: {fileID: 0}
     - target: {fileID: 6883616690640275715, guid: 08f5c9f89f6349d49a2605674215a83c,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -22.956982
+      value: -24.59
       objectReference: {fileID: 0}
     - target: {fileID: 6883616690640275715, guid: 08f5c9f89f6349d49a2605674215a83c,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.100048065
+      value: 2.68
       objectReference: {fileID: 0}
     - target: {fileID: 6883616690640275715, guid: 08f5c9f89f6349d49a2605674215a83c,
         type: 3}
@@ -2054,7 +2044,7 @@ GameObject:
   - component: {fileID: 1623530785}
   - component: {fileID: 1623530787}
   - component: {fileID: 1623530786}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Wall
   m_TagString: wall
   m_Icon: {fileID: 0}
