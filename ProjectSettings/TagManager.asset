@@ -43,6 +43,12 @@ TagManager:
   - Loot/UpgradeDrop
   - MoneyUpgrade
   - EnemySpawner
+  - UpgradeHolder
+  - UpgradeComponentScreen
+  - ChosenWeaponHolder
+  - WeaponHolder
+  - Shop
+  - Forge
   layers:
   - Default
   - TransparentFX

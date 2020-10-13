@@ -7,28 +7,29 @@ using UnityEngine.EventSystems;
 // Created by Arttu Paldán 11.9.2020: This script will handle buying or unlocking component pieces.
 public class BuyWeapons : MonoBehaviour
 {
-    private List<AbstractWeapon> weapons;
-
+    private ChooseWeapon chooseWeapon;
     private Money money;
     private WeaponStates weaponStates;
 
+    private List<AbstractWeapon> weapons;
+
     private int weaponID;
 
-    public Image[] weaponImagesHolder, ownedWeapons;
+    private List<Image> weaponImagesHolder = new List<Image>();
 
-    public GameObject buyWeaponScreen;
+    private GameObject buyWeaponScreen;
     private Text weaponName, weaponDescription, weaponCostText;
     private Image weaponImageBuyScreen;
 
     private bool cantBuy;
 
     private float counterStart, originalStart;
-    
     public float counterEnd;
 
     void Awake()
     {
         BuyOperations.SetUpImportantComponents(this, counterStart);
+        BuyOperations.GetWeaponHolders(this, weaponImagesHolder);
 
         buyWeaponScreen.SetActive(false);
     }
@@ -56,20 +57,7 @@ public class BuyWeapons : MonoBehaviour
     {
         List<bool> ownedWeapons = weaponStates.GetOwnedWeapons();
 
-        for (int i = 1; i < weaponImagesHolder.Length; i++)
-        {
-            switch (ownedWeapons[i])
-            {
-                case true:
-                    weaponImagesHolder[i].sprite = null;
-                    weaponImagesHolder[i].enabled = false;
-                    break;
-
-                case false:
-                    weaponImagesHolder[i].sprite = weapons[i].GetWeaponImage();
-                    break;
-            }
-        }
+        BuyOperations.SetWeaponsHolder(weapons, ownedWeapons, weaponImagesHolder);
     }
 
     // Sets the sprites and texts in the buy screen. These things are gotten from the abstract components.
@@ -91,7 +79,7 @@ public class BuyWeapons : MonoBehaviour
     // Function for buying the components.
     public void Buy()
     {
-        BuyOperations.BuyWeapon(this, weaponStates, money, weapons, weaponID);
+        BuyOperations.BuyWeapon(this, weaponStates, money, weapons, weaponImagesHolder, chooseWeapon.GetOwnedWeaponsList(), buyWeaponScreen, weaponID); 
     }
 
     // Function that announces, that player can't buy component and keeps this message going for couple of frames. 
@@ -127,6 +115,7 @@ public class BuyWeapons : MonoBehaviour
 
     // Set functions
     public void SetWeaponList(List<AbstractWeapon> list) { weapons = list; }
+    public void SetChooseWeapon(ChooseWeapon thisChoose) { chooseWeapon = thisChoose; }
     public void SetMoney(Money thisMoney) { money = thisMoney; }
     public void SetWeaponStates(WeaponStates weapon) { weaponStates = weapon; }
     public void SetCantBuy(bool cant) { cantBuy = cant; }
@@ -137,4 +126,6 @@ public class BuyWeapons : MonoBehaviour
     public void SetWeaponDescText(Text desc) { weaponDescription = desc; }
     public void SetWeaponCostText(Text cost) { weaponCostText = cost; }
     public void SetBuyScreenWeaponImage(Image weapon) { weaponImageBuyScreen = weapon; }
+    public void SetWeaponHolders(List<Image> weaponHolder) { weaponImagesHolder = weaponHolder; }
+    public void SetBuyScreen(GameObject screen) { buyWeaponScreen = screen;}
 }

@@ -18,15 +18,13 @@ public class UseUpgrades : MonoBehaviour
 
     private string upgradeButtonName, arrowButtonName;
 
-    private Text weaponName, weaponDescription, weaponSpeedText, weaponWeightText, weaponImpactDamageText, weaponCostText;
-
+    private Text weaponName, weaponDescription, weaponSpeedText, weaponWeightText, weaponImpactDamageText, weaponCostText, amountTexts;
     private Text upgradeHolderUpgradeScreen, upgradeName, upgradeDescription;
-    private Image weaponImage, upgradeImage;
-    
-    public Text amountTexts;
-    public Image[] upgradeImagesHolder;
    
-    public GameObject upgradeComponentScreen;
+    private Image weaponImage, upgradeImage;
+    private Image upgradeImagesHolder;
+   
+    private GameObject upgradeComponentScreen;
 
     void Awake()
     {
@@ -61,7 +59,10 @@ public class UseUpgrades : MonoBehaviour
         weaponImpactDamageText = GameObject.FindGameObjectWithTag("ImpactDamage").GetComponent<Text>();
         weaponCostText = GameObject.FindGameObjectWithTag("UpgradeCost").GetComponent<Text>();
         weaponImage = GameObject.FindGameObjectWithTag("UpgradeScreenWeaponImage").GetComponent<Image>();
+        upgradeImagesHolder = GameObject.FindGameObjectWithTag("UpgradeImageHolder").GetComponent<Image>();
+        amountTexts = GameObject.FindGameObjectWithTag("AmountText").GetComponentInChildren<Text>();
 
+        upgradeComponentScreen = GameObject.FindGameObjectWithTag("UpgradeImage");
         upgradeName = GameObject.FindGameObjectWithTag("UpgradeName").GetComponent<Text>();
         upgradeDescription = GameObject.FindGameObjectWithTag("UpgradeDescription").GetComponent<Text>();
         upgradeImage = GameObject.FindGameObjectWithTag("UpgradeImage").GetComponent<Image>();
@@ -89,11 +90,8 @@ public class UseUpgrades : MonoBehaviour
 
         UpdateWeaponStats();
 
-        for (int i = 0; i < upgradeImagesHolder.Length; i++)
-        {
-            upgradeImagesHolder[i].sprite = upgrades[i].GetUpgradeImage();
-        }
-         
+        upgradeImagesHolder.sprite = upgrades[0].GetUpgradeImage();
+       
         amountTexts.text = "0";
     }
 

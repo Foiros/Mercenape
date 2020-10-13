@@ -2,24 +2,34 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Created by Arttu Paldán 17.9.2020: A script that handles the ownership issues of this system.
+// Created by Arttu Paldán 17.9.2020: A script that handles the ownership issues of this system and sets up the weapon for level scene. 
 public class WeaponStates: MonoBehaviour
 {
-    [SerializeField]private int weaponID;
+    private StatsCalculator calculator;
 
-    [SerializeField] private List<bool> ownedWeaponsList, upgradedWeaponsList;
-    [SerializeField] private List<int> savedSpeedAmountsList;
+    private List<AbstractWeapon> weapons;
+    private List<bool> ownedWeaponsList, upgradedWeaponsList;
+    private List<int> savedSpeedAmountsList;
 
     private bool ownsWeapon1, ownsWeapon2, ownsWeapon3, ownsWeapon4;
-
     private bool weapon1HasBeenUpgraded, weapon2HasBeenUpgraded, weapon3HasBeenUpgraded, weapon4HasBeenUpgraded;
-    
+
+    private int weaponID;
     private int savedSpeedAmount1, savedSpeedAmount2, savedSpeedAmount3, savedSpeedAmount4;
+
+   [SerializeField] private float speed, impactDamage;
 
     void Awake()
     {
+        calculator = GetComponent<StatsCalculator>();
+
         SetUpBoolLists();
         LoadWeaponData();
+    }
+
+    void Start()
+    {
+        SetUpWeapon();
     }
 
     void SetUpBoolLists()
@@ -77,24 +87,45 @@ public class WeaponStates: MonoBehaviour
         }
     }
 
+    // This function sets up the weapon to be used in level scenes. 
+    void SetUpWeapon()
+    {
+        AbstractWeapon weaponsArray = weapons[weaponID];
+
+        GameObject weaponModel = weaponsArray.GetWeaponModel();
+
+        weaponModel.SetActive(true);
+
+        calculator.SetRequestFromActualWeapon(true);
+        calculator.CalculateStats();
+
+        speed = calculator.GetSpeed();
+        impactDamage = calculator.GetImpactDamage();
+    }
+
     // Function for loading necessary data.
     void LoadWeaponData()
     {
         WeaponsData data = SaveManager.LoadWeapons();
 
         weaponID = data.weaponID;
-
-        ownedWeaponsList = data.ownedWeaponsList;
-        upgradedWeaponsList = data.upgradedWeaponsList;
-        savedSpeedAmountsList = data.savedSpeedAmountsList;
+        
+        if(data.ownedWeaponsList != null) { ownedWeaponsList = data.ownedWeaponsList; }
+        if(data.upgradedWeaponsList != null) { upgradedWeaponsList = data.upgradedWeaponsList; }
+        if(data.savedSpeedAmountsList != null) { savedSpeedAmountsList = data.savedSpeedAmountsList; }
     }
 
+    // Set functions
+    public void SetWeaponList(List<AbstractWeapon> list) { weapons = list; }
     public void SetChosenWeaponID(int id) { weaponID = id; }
     public void SetSavedSpeeds (List<int> list){ savedSpeedAmountsList = list; }
 
 
+    // Get Functions
     public int GetChosenWeaponID() { return weaponID; }
     public List<bool> GetOwnedWeapons() { return ownedWeaponsList; }
     public List<bool> GetUpgradedWeapons() { return upgradedWeaponsList; }
     public List<int> GetSavedSpeeds() { return savedSpeedAmountsList; }
+    public float GetWeaponSpeed() { return speed; }
+    public float GetWeaponImpactDamage() { return impactDamage; }
 }

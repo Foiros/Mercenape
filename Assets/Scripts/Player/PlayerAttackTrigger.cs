@@ -6,7 +6,6 @@ using UnityEngine;
 public class PlayerAttackTrigger : MonoBehaviour
 {
     private WeaponStates weaponStates;
-    private SetActualWeapon setActualWeapon;
 
     private List<AbstractWeapon> weapons;
     
@@ -32,7 +31,6 @@ public class PlayerAttackTrigger : MonoBehaviour
     void Awake()
     {
         weaponStates= GameObject.FindGameObjectWithTag("GameManager").GetComponent<WeaponStates>();
-        setActualWeapon = GameObject.FindGameObjectWithTag("GameManager").GetComponent<SetActualWeapon>();
     }
 
     // Start is called before the first frame update
@@ -65,10 +63,10 @@ public class PlayerAttackTrigger : MonoBehaviour
         weaponID = weaponStates.GetChosenWeaponID();
         AttackRange = weapons[weaponID].GetHitBox();
 
-        weaponSpeed = setActualWeapon.GetWeaponSpeed();
+        weaponSpeed = weaponStates.GetWeaponSpeed();
         // anim["PlayerAttack"].speed = weaponSpeed;
 
-        PlayerDamage = setActualWeapon.GetWeaponImpactDamage();
+        PlayerDamage = weaponStates.GetWeaponImpactDamage();
     }
 
     bool CheckMouseInput()    

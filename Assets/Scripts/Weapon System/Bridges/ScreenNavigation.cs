@@ -2,11 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Created by Arttu Paldán 1.10.2020:
+// Created by Arttu Paldán 1.10.2020: This script used to navigate the Forge scene. Aka these button methods set screens active and false. 
 public class ScreenNavigation : MonoBehaviour
 {
-    public GameObject shop;
-    public GameObject forge;
+    private GameObject shop, forge;
+
+    void Awake()
+    {
+        shop = GameObject.FindGameObjectWithTag("Shop");
+        forge = GameObject.FindGameObjectWithTag("Forge");
+    }
 
     void Start()
     {

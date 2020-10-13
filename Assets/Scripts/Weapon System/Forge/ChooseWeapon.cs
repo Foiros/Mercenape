@@ -12,12 +12,11 @@ public class ChooseWeapon : MonoBehaviour
    
     private List<AbstractWeapon> weapons;
 
-    [SerializeField] private int chosenWeaponID;
-    private int buttonID;
+    private int chosenWeaponID, buttonID;
 
     private string buttonName;
 
-    public Image[] weaponHasBeenChosenHolder;
+    private List<Image> ownedWeapons = new List<Image>();
 
     void Awake()
     {
@@ -27,32 +26,48 @@ public class ChooseWeapon : MonoBehaviour
 
     void Start()
     {
+        GetChodenHolders();
         SetOwnedWeaponImages();
+    }
+
+    void GetChodenHolders()
+    {
+        GameObject[] holderObjects = GameObject.FindGameObjectsWithTag("ChosenWeaponHolder");
+        Image[] holderImage = new Image[holderObjects.Length];
+        
+        for (int i = 0; i < holderObjects.Length; i++)
+        {
+            holderImage[i] = holderObjects[i].GetComponent<Image>();
+        }
+
+        ownedWeapons.Add(holderImage[0]);
+        ownedWeapons.Add(holderImage[1]);
+        ownedWeapons.Add(holderImage[2]);
+        ownedWeapons.Add(holderImage[3]);
     }
 
     void SetOwnedWeaponImages()
     {
-        List<bool> ownedWeapons = weaponStates.GetOwnedWeapons();
+        List<bool> ownedBools = weaponStates.GetOwnedWeapons();
 
         chosenWeaponID = weaponStates.GetChosenWeaponID();
 
         for (int i = 0; i < ownedWeapons.Count; i++)
         {
-            switch (ownedWeapons[i])
+            switch (ownedBools[i])
             {
                 case true:
-                    weaponHasBeenChosenHolder[i].sprite = weapons[i].GetWeaponImage();
+                    ownedWeapons[i].sprite = weapons[i].GetWeaponImage();
                     break;
 
                 case false:
-                    weaponHasBeenChosenHolder[i].sprite = null;
+                    ownedWeapons[i].sprite = null;
                     break;
             }
         }
 
-        weaponHasBeenChosenHolder[chosenWeaponID].sprite = weapons[chosenWeaponID].GetChosenWeaponImage();
+        ownedWeapons[chosenWeaponID].sprite = weapons[chosenWeaponID].GetChosenWeaponImage();
     }
-
 
 
     // Button function, which detects which button has been pressed and gives us the chosenWeaponID based on that. 
@@ -66,25 +81,25 @@ public class ChooseWeapon : MonoBehaviour
         {
             buttonID = 0;
             chosenWeaponID = weapons[0].GetID();
-            ChangeWeaponImage();
+            SwitchImages();
         }
         else if (buttonName == "ChooseButton2" && ownedWeaponsList[1])
         {
             buttonID = 1;
             chosenWeaponID = weapons[1].GetID();
-            ChangeWeaponImage();
+            SwitchImages();
         }
         else if (buttonName == "ChooseButton3" && ownedWeaponsList[2])
         {
             buttonID = 2;
             chosenWeaponID = weapons[2].GetID();
-            ChangeWeaponImage();
+            SwitchImages();
         }
         else if (buttonName == "ChooseButton4" && ownedWeaponsList[3])
         {
             buttonID = 3;
             chosenWeaponID = weapons[3].GetID();
-            ChangeWeaponImage();
+            SwitchImages();
         }
 
         weaponStates.SetChosenWeaponID(chosenWeaponID);
@@ -93,158 +108,28 @@ public class ChooseWeapon : MonoBehaviour
     }
 
     // Function that simply changes the image of an weapon to indicate, that this one is one the player is equipping. 
-    void ChangeWeaponImage()
-    {
-        if (buttonName == "ChooseButton1")
-        {
-            weaponHasBeenChosenHolder[buttonID].sprite = weapons[chosenWeaponID].GetChosenWeaponImage();
-
-            SwitchOtherImages();
-        }
-        else if (buttonName == "ChooseButton2")
-        {
-            weaponHasBeenChosenHolder[buttonID].sprite = weapons[chosenWeaponID].GetChosenWeaponImage();
-
-            SwitchOtherImages();
-        }
-       else if (buttonName == "ChooseButton3")
-        {
-            weaponHasBeenChosenHolder[buttonID].sprite = weapons[chosenWeaponID].GetChosenWeaponImage();
-
-            SwitchOtherImages();
-        }
-        else if (buttonName == "ChooseButton4")
-        {
-            weaponHasBeenChosenHolder[buttonID].sprite = weapons[chosenWeaponID].GetChosenWeaponImage();
-
-            SwitchOtherImages();
-        }
-    }
-
-    void SwitchOtherImages()
+    void SwitchImages()
     {
         List<bool> ownedWeaponsList = weaponStates.GetOwnedWeapons();
 
-
-        switch (chosenWeaponID)
+        for (int i = 0; i < ownedWeapons.Count; i++)
         {
-            case 0:
-                if (ownedWeaponsList[1])
-                {
-                    weaponHasBeenChosenHolder[1].sprite = weapons[1].GetWeaponImage();
-                }
-                else
-                {
-                    weaponHasBeenChosenHolder[1].sprite = null;
-                }
-                
-                if(ownedWeaponsList[2])
-                {
-                    weaponHasBeenChosenHolder[2].sprite = weapons[2].GetWeaponImage();
-                }
-                else
-                {
-                    weaponHasBeenChosenHolder[2].sprite = null;
-                }
+              switch (ownedWeaponsList[i])
+              {
+                case true:
+                    ownedWeapons[i].sprite = weapons[i].GetWeaponImage();
+                    break;
 
-                if (ownedWeaponsList[3])
-                {
-                    weaponHasBeenChosenHolder[3].sprite = weapons[3].GetWeaponImage();
-                }
-                else
-                {
-                    weaponHasBeenChosenHolder[3].sprite = null;
-                }
-                break;
-
-            case 1:
-                if (ownedWeaponsList[0])
-                {
-                    weaponHasBeenChosenHolder[0].sprite = weapons[0].GetWeaponImage();
-                }
-                else
-                {
-                    weaponHasBeenChosenHolder[0].sprite = null;
-                }
-
-                if (ownedWeaponsList[2])
-                {
-                    weaponHasBeenChosenHolder[2].sprite = weapons[2].GetWeaponImage();
-                }
-                else
-                {
-                    weaponHasBeenChosenHolder[2].sprite = null;
-                }
-
-                if (ownedWeaponsList[3])
-                {
-                    weaponHasBeenChosenHolder[3].sprite = weapons[3].GetWeaponImage();
-                }
-                else
-                {
-                    weaponHasBeenChosenHolder[3].sprite = null;
-                }
-                break;
-
-            case 2:
-                if (ownedWeaponsList[0])
-                {
-                    weaponHasBeenChosenHolder[0].sprite = weapons[0].GetWeaponImage();
-                }
-                else
-                {
-                    weaponHasBeenChosenHolder[0].sprite = null;
-                }
-
-                if (ownedWeaponsList[1])
-                {
-                    weaponHasBeenChosenHolder[1].sprite = weapons[1].GetWeaponImage();
-                }
-                else
-                {
-                    weaponHasBeenChosenHolder[1].sprite = null;
-                }
-
-                if (ownedWeaponsList[3])
-                {
-                    weaponHasBeenChosenHolder[3].sprite = weapons[3].GetWeaponImage();
-                }
-                else
-                {
-                    weaponHasBeenChosenHolder[3].sprite = null;
-                }
-                break;
-
-            case 3:
-                if (ownedWeaponsList[0])
-                {
-                    weaponHasBeenChosenHolder[0].sprite = weapons[0].GetWeaponImage();
-                }
-                else
-                {
-                    weaponHasBeenChosenHolder[0].sprite = null;
-                }
-
-                if (ownedWeaponsList[1])
-                {
-                    weaponHasBeenChosenHolder[1].sprite = weapons[1].GetWeaponImage();
-                }
-                else
-                {
-                    weaponHasBeenChosenHolder[1].sprite = null;
-                }
-
-                if (ownedWeaponsList[2])
-                {
-                    weaponHasBeenChosenHolder[2].sprite = weapons[2].GetWeaponImage();
-                }
-                else
-                {
-                    weaponHasBeenChosenHolder[2].sprite = null;
-                }
-                break;
+                case false:
+                    ownedWeapons[i].sprite = null;
+                    break;
+              }
         }
+
+        ownedWeapons[buttonID].sprite = weapons[chosenWeaponID].GetChosenWeaponImage();
     }
 
     public void SetWeaponList(List<AbstractWeapon> list) { weapons = list; }
+
+    public List<Image> GetOwnedWeaponsList() { return ownedWeapons; }
 }

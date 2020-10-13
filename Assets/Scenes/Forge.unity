@@ -358,7 +358,7 @@ GameObject:
   - component: {fileID: 77736192}
   m_Layer: 5
   m_Name: WeaponUpgrade
-  m_TagString: Untagged
+  m_TagString: Forge
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -457,7 +457,7 @@ GameObject:
   - component: {fileID: 83217164}
   m_Layer: 5
   m_Name: WeaponA
-  m_TagString: Untagged
+  m_TagString: WeaponHolder
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1057,7 +1057,7 @@ GameObject:
   - component: {fileID: 328040361}
   m_Layer: 5
   m_Name: OwnedWeaponD
-  m_TagString: Untagged
+  m_TagString: ChosenWeaponHolder
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1146,7 +1146,7 @@ GameObject:
   - component: {fileID: 366137883}
   m_Layer: 5
   m_Name: Amount1
-  m_TagString: Untagged
+  m_TagString: AmountText
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1458,7 +1458,7 @@ GameObject:
   - component: {fileID: 421540905}
   m_Layer: 5
   m_Name: OwnedWeaponC
-  m_TagString: Untagged
+  m_TagString: ChosenWeaponHolder
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3151,7 +3151,7 @@ GameObject:
   - component: {fileID: 849333008}
   m_Layer: 5
   m_Name: OwnedWeaponB
-  m_TagString: Untagged
+  m_TagString: ChosenWeaponHolder
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3485,10 +3485,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cee3e0c65cea7ba4b861166ce132ef35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amountTexts: {fileID: 1593333888}
-  upgradeImagesHolder:
-  - {fileID: 1055566471}
-  upgradeComponentScreen: {fileID: 982684169}
 --- !u!114 &972304594
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3501,12 +3497,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 071dcc318ef2c7341802148513cd0598, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chosenWeaponID: 0
-  weaponHasBeenChosenHolder:
-  - {fileID: 1921063407}
-  - {fileID: 849333006}
-  - {fileID: 421540903}
-  - {fileID: 328040359}
 --- !u!114 &972304595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3519,17 +3509,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d3589343c6ceba41821b40f34cdc0c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponImagesHolder:
-  - {fileID: 83217162}
-  - {fileID: 83217162}
-  - {fileID: 1061459739}
-  - {fileID: 1131973061}
-  ownedWeapons:
-  - {fileID: 1921063407}
-  - {fileID: 849333006}
-  - {fileID: 421540903}
-  - {fileID: 328040359}
-  buyWeaponScreen: {fileID: 620933339}
   counterEnd: 3
 --- !u!4 &972304596
 Transform:
@@ -3557,10 +3536,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bf9353344ac8204b92a1b8e2cf530d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponID: 0
-  ownedWeaponsList: 
-  upgradedWeaponsList: 
-  savedSpeedAmountsList: 
 --- !u!114 &972304598
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3585,7 +3560,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7b2a11342aebd349a926d27c6b6b763, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponModels: []
 --- !u!114 &972304600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3622,8 +3596,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be4c1c6719e4258439d1d9aa3f78db39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shop: {fileID: 1919273857}
-  forge: {fileID: 77736190}
 --- !u!1 &975264640
 GameObject:
   m_ObjectHideFlags: 0
@@ -4092,7 +4064,7 @@ GameObject:
   - component: {fileID: 1061459741}
   m_Layer: 5
   m_Name: WeaponB
-  m_TagString: Untagged
+  m_TagString: WeaponHolder
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4351,7 +4323,7 @@ GameObject:
   - component: {fileID: 1131973063}
   m_Layer: 5
   m_Name: WeaponC
-  m_TagString: Untagged
+  m_TagString: WeaponHolder
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6045,7 +6017,7 @@ GameObject:
   - component: {fileID: 1593333888}
   m_Layer: 5
   m_Name: Amount1Text
-  m_TagString: AmountText
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7156,7 +7128,7 @@ GameObject:
   - component: {fileID: 1843065709}
   m_Layer: 5
   m_Name: UpgradesAmount
-  m_TagString: Untagged
+  m_TagString: AmountText
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7534,7 +7506,7 @@ GameObject:
   - component: {fileID: 1919273859}
   m_Layer: 5
   m_Name: WeaponShop
-  m_TagString: Untagged
+  m_TagString: Shop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7633,7 +7605,7 @@ GameObject:
   - component: {fileID: 1921063409}
   m_Layer: 5
   m_Name: OwnedWeaponA
-  m_TagString: Untagged
+  m_TagString: ChosenWeaponHolder
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -6,10 +6,10 @@ using UnityEngine;
 public class AssetManager : MonoBehaviour
 {
     // Scripts
+    private WeaponStates weaponStates;
     private BuyWeapons buyWeapons;
     private UseUpgrades useUpgrades;
     private StatsCalculator calculator;
-    private SetActualWeapon setActualWeapon;
     private ChooseWeapon chooseWeapon;
     private PlayerAttackTrigger playerAttack;
 
@@ -21,7 +21,7 @@ public class AssetManager : MonoBehaviour
     private List<Sprite> weaponImages, chosenWeaponImages, upgradeImages;
 
     // MeshRenrerer lists
-    [SerializeField] private List<GameObject> weaponModels;
+    private List<GameObject> weaponModels;
 
     void Awake()
     {
@@ -35,10 +35,10 @@ public class AssetManager : MonoBehaviour
     // Function for getting all the other scripts needed by this script. 
     void GetNecessaryScripts()
     {
+        weaponStates = GetComponent<WeaponStates>();
         buyWeapons = GetComponent<BuyWeapons>();
         useUpgrades = GetComponent<UseUpgrades>();
         calculator = GetComponent<StatsCalculator>();
-        setActualWeapon = GetComponent<SetActualWeapon>();
         chooseWeapon = GetComponent<ChooseWeapon>();
 
         playerAttack = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerAttackTrigger>();
@@ -80,6 +80,8 @@ public class AssetManager : MonoBehaviour
     // Basically this sends the weapons and upgrade lists to the scripts that use them. 
     void SetUpArraysForOtherScripts()
     {
+        if(weaponStates != null) { weaponStates.SetWeaponList(weapons); }
+
         if (buyWeapons != null) { buyWeapons.SetWeaponList(weapons); }
 
         if (useUpgrades != null) { useUpgrades.SetWeaponList(weapons); useUpgrades.SetUpgradeList(upgrades); }
@@ -87,8 +89,6 @@ public class AssetManager : MonoBehaviour
         if (calculator != null) { calculator.SetWeaponList(weapons); }
 
         if (chooseWeapon != null) { chooseWeapon.SetWeaponList(weapons); }
-
-        if (setActualWeapon != null) { setActualWeapon.SetWeaponList(weapons); }
 
         if (playerAttack != null) { playerAttack.SetWeaponList(weapons); }
     }
