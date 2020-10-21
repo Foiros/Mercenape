@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -14,11 +15,11 @@ public class PlayerMovement : MonoBehaviour
 
     [HideInInspector] public PlayerAttackTrigger playerAttack;
     [HideInInspector] public Animator PlayerAnimator;
-    [HideInInspector] public Rigidbody2D PlayerRigid2d;
+    [HideInInspector] public Rigidbody PlayerRigid2d;
 
     float inputH; 
     
-    bool IsGrounded;
+    bool isGrounded;
     
     public bool FaceRight = true;
     public bool PlayerDoubleJump;
@@ -41,14 +42,14 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector] public bool isKnockDown = false;
     [HideInInspector] public int getUpCount = 0;
 
-    BoxCollider2D boxCollider;
+    BoxCollider boxCollider;
    
     void Start()
     {
         playerAttack = transform.GetComponent<PlayerAttackTrigger>();
-        PlayerRigid2d = transform.GetComponent<Rigidbody2D>();
+        PlayerRigid2d = transform.GetComponent<Rigidbody>();
         PlayerAnimator = transform.GetComponent<Animator>();
-        boxCollider = transform.GetComponent<BoxCollider2D>();
+        boxCollider = transform.GetComponent<BoxCollider>();
 
     }
 
@@ -62,7 +63,6 @@ public class PlayerMovement : MonoBehaviour
         CheckClimbLadder();
 
 
-        PlayerRigid2d.constraints = RigidbodyConstraints2D.FreezeRotation;
 
         if (!isPlayerBlock && !isKnockDown) { 
             PlayerJump();
@@ -70,7 +70,11 @@ public class PlayerMovement : MonoBehaviour
             SetPlayerAnimator();// could change to call animation if needed
         }
 
-        
+      /*  if (Input.GetKey(KeyCode.Space))
+        {
+            print("jump");
+            PlayerRigid2d.AddForce(new Vector3(0.0f, 1.0f, 0.0f) * PlayerJumpPow, ForceMode.Impulse);
+        }*/
 
     }
 
@@ -82,20 +86,28 @@ public class PlayerMovement : MonoBehaviour
             PlayerMove();
             PlayerClimbLadder();
             PlayerClimbWal();
-            PlayerRigid2d.constraints = RigidbodyConstraints2D.FreezeRotation;
+          
             
         }
 
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            PlayerRigid2d.velocity = new Vector2(0, 0);
-           PlayerRigid2d.MovePosition((Vector2)transform.position +Vector2.right * 100 * Time.deltaTime + Vector2.up * 100 * Time.deltaTime);
-        }
+      
     }
 
     void CheckPlayerGrounded()
     {
-        IsGrounded = IsGrounded = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, CheckRadius, groundlayermask);
+        
+        float distance = 3f;
+        Vector3 dir = new Vector3(0, -1);
+
+        if (Physics.Raycast(transform.position, dir, distance, groundlayermask))
+        {
+            isGrounded = true;
+        }
+        else
+        {
+            isGrounded = false;
+        }
+        print(isGrounded);
     }
 
     void CheckPlayerBlock()
@@ -148,10 +160,10 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (Input.GetKey(KeyCode.E))// climb up
                 {
-                    PlayerRigid2d.MovePosition((Vector2)transform.position + Vector2.up * PlayerClimbSpeed * Time.deltaTime );
+                    PlayerRigid2d.MovePosition((Vector3)transform.position + Vector3.up * PlayerClimbSpeed * Time.deltaTime );
                     if (inputH != 0)
                     {
-                        PlayerRigid2d.MovePosition((Vector2)transform.position + Vector2.right * inputH * Time.deltaTime);
+                        PlayerRigid2d.MovePosition((Vector3)transform.position + Vector3.right * inputH * Time.deltaTime);
 
                     }
                 }
@@ -193,24 +205,16 @@ public class PlayerMovement : MonoBehaviour
     void PlayerClimbLadder() { 
         if(CheckClimbLadder()==true)
         {
-            if (!IsGrounded)
-            {
-                PlayerRigid2d.gravityScale = 0;
-            }
+            
 
             if (Input.GetKey(KeyCode.E))
             {
-                PlayerRigid2d.MovePosition((Vector2)transform.position + Vector2.up * PlayerClimbSpeed * Time.deltaTime);
+                PlayerRigid2d.MovePosition((Vector3)transform.position + Vector3.up * PlayerClimbSpeed * Time.deltaTime);
                 
             }
 
         }
 
-        else if(CheckClimbLadder()== false)
-        {
-            PlayerRigid2d.gravityScale = 10;
-            
-        }
         
      
     }
@@ -221,52 +225,24 @@ public class PlayerMovement : MonoBehaviour
 
         
 
-            if (IsGrounded) // if player is move on the ground with normal speed
+            if (isGrounded) // if player is move on the ground with normal speed
             {
-                if (inputH > 0)
+                if (inputH != 0)
                 {
-                    PlayerRigid2d.velocity = new Vector2(PlayerSpeed, PlayerRigid2d.velocity.y);
-
+                PlayerRigid2d.MovePosition((Vector3)transform.position + Vector3.right * inputH * PlayerSpeed* Time.deltaTime);
                 }
-
-                  else if (inputH<0)
-                    {
-                        PlayerRigid2d.velocity = new Vector2(-PlayerSpeed, PlayerRigid2d.velocity.y);
-
-                    }
-                    else
-                    {//No key is pressed
-                        PlayerRigid2d.velocity = new Vector2(0, PlayerRigid2d.velocity.y);
-                      
-
-                    }
-                }
+   
+            }
 
             
-            else if(!IsGrounded)// if player is jumping we can have them some control
+            else if(!isGrounded)// if player is jumping we can have them some control
             {
-                if (Input.GetKey(KeyCode.D))
-                {
-                    PlayerRigid2d.velocity += new Vector2(PlayerSpeed * MidAirSpeed * Time.deltaTime, 0);
-                    PlayerRigid2d.velocity = new Vector2(Mathf.Clamp(PlayerRigid2d.velocity.x, -PlayerSpeed, PlayerSpeed), PlayerRigid2d.velocity.y);
-
-                }
-                else
-                {
-                    if (Input.GetKey(KeyCode.A))
-                    {
-                        PlayerRigid2d.velocity += new Vector2(-PlayerSpeed * MidAirSpeed * Time.deltaTime, 0);
-                        PlayerRigid2d.velocity = new Vector2(Mathf.Clamp(PlayerRigid2d.velocity.x, -PlayerSpeed, PlayerSpeed), PlayerRigid2d.velocity.y);
-
-                    }
-                    else
-                    {//No key is pressed
-                        PlayerRigid2d.velocity = new Vector2(0, PlayerRigid2d.velocity.y);
-
-                    
-                }
-            } 
-        }
+            if (inputH != 0)
+            {
+                PlayerRigid2d.MovePosition((Vector3)transform.position + Vector3.right * inputH *MidAirSpeed* Time.deltaTime);
+            }
+        } 
+        
     }
 
 
@@ -274,7 +250,7 @@ public class PlayerMovement : MonoBehaviour
     private void PlayerJump() // both single and double 
         // side note could handle jump power by * with the character height. at the moment the vector in middle of the character so 7pixel long
     {
-        if (IsGrounded)
+        if (isGrounded)
         {
             PlayerDoubleJump = true;
         }
@@ -288,16 +264,16 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (IsGrounded) 
+            if (isGrounded) 
             {
-                PlayerRigid2d.velocity =  Vector2.up * PlayerJumpPow;
-
+                PlayerRigid2d.AddForce(new Vector3(0.0f, 1.0f, 0.0f) * PlayerJumpPow, ForceMode.Impulse);
+              
             }
             else
 
             if (PlayerDoubleJump==true)
             {
-                PlayerRigid2d.velocity = Vector2.up * PlayerDoubleJumpPow;
+                PlayerRigid2d.AddForce(new Vector3(0.0f, 1.0f, 0.0f) * PlayerDoubleJumpPow, ForceMode.Impulse);
                 PlayerDoubleJump = false;
                
             }
@@ -319,7 +295,7 @@ public class PlayerMovement : MonoBehaviour
     private void SetPlayerAnimator()
     {
         
-        PlayerAnimator.SetBool("PlayerGrounded", IsGrounded);
+        PlayerAnimator.SetBool("PlayerGrounded", isGrounded);
         PlayerAnimator.SetFloat("PlayerSpeed", Mathf.Abs(PlayerRigid2d.velocity.x));
         PlayerAnimator.SetBool("IsPlayerBlock", isPlayerBlock);
         
