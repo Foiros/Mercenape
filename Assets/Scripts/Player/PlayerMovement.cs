@@ -43,14 +43,15 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector] public int getUpCount = 0;
 
     BoxCollider boxCollider;
+    CapsuleCollider capsuleCollider;
    
-    void Start()
+    void Awake()
     {
         playerAttack = transform.GetComponent<PlayerAttackTrigger>();
         PlayerRigid2d = transform.GetComponent<Rigidbody>();
         PlayerAnimator = transform.GetComponent<Animator>();
         boxCollider = transform.GetComponent<BoxCollider>();
-
+        capsuleCollider = transform.GetComponent<CapsuleCollider>();
     }
 
     void Update()
@@ -60,7 +61,6 @@ public class PlayerMovement : MonoBehaviour
         CheckPlayerGrounded();
        //CheckPlayerGrabWall();
         CheckPlayerBlock();
-        CheckClimbLadder();
 
 
 
@@ -84,7 +84,7 @@ public class PlayerMovement : MonoBehaviour
         if (!isPlayerBlock && !isKnockDown)// when player is not blocking they can move
         {
             PlayerMove();
-            PlayerClimbLadder();
+         
             PlayerClimbWal();
           
             
@@ -107,7 +107,7 @@ public class PlayerMovement : MonoBehaviour
         {
             isGrounded = false;
         }
-        print(isGrounded);
+
     }
 
     void CheckPlayerBlock()
@@ -131,15 +131,19 @@ public class PlayerMovement : MonoBehaviour
     }
        
     // check collide with wall 
-    private void OnCollisionEnter2D(Collision2D collision)
+   
+    
+    
+    private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("wall")&& IsWallGrab==false)
         {
             IsWallGrab = true;          
         }
+        print("collide wall");
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+    private void OnCollisionExit(Collision collision)
     {
        
         if (collision.gameObject.CompareTag("wall") && IsWallGrab == true)
@@ -147,25 +151,25 @@ public class PlayerMovement : MonoBehaviour
             IsWallGrab = false;
             
         }
+        print("no wall");
     }
     
     //player climb on wall
     void PlayerClimbWal()
     {
-        isOnTop = (Physics2D.OverlapCircle(PlayerAbovePos.position, CheckRadius, walllayermask) == false && Physics2D.OverlapCircle(PlayerUnderPos.position, CheckRadius, walllayermask) == true);
+        
 
         if (IsWallGrab == true)
         {
-            if (!isOnTop)//if not on top
-            {
+            
                 if (Input.GetKey(KeyCode.E))// climb up
                 {
-                    PlayerRigid2d.MovePosition((Vector3)transform.position + Vector3.up * PlayerClimbSpeed * Time.deltaTime );
+                PlayerRigid2d.AddForce(new Vector3(0.0f, 1.0f, 0.0f) * PlayerClimbSpeed, ForceMode.Impulse); ;
                     if (inputH != 0)
                     {
                         PlayerRigid2d.MovePosition((Vector3)transform.position + Vector3.right * inputH * Time.deltaTime);
 
-                    }
+                    
                 }
             }
         }
@@ -185,39 +189,6 @@ public class PlayerMovement : MonoBehaviour
   }
 */
 
-    //bool for player 2 climb on ladder
-    bool CheckClimbLadder()
-    {
-        return (Physics2D.OverlapCircle(PlayerAbovePos.position, CheckRadius, ladderlayermask)); 
-        
-        
-    }
-    bool CheckOnTopLadder()
-    {
-        return (!Physics2D.OverlapCircle(PlayerAbovePos.position, CheckRadius, ladderlayermask) && (Physics2D.OverlapCircle(PlayerUnderPos.position, CheckRadius, ladderlayermask)));
-           
-
-    }
-
-
-
-    // player climb the ladder
-    void PlayerClimbLadder() { 
-        if(CheckClimbLadder()==true)
-        {
-            
-
-            if (Input.GetKey(KeyCode.E))
-            {
-                PlayerRigid2d.MovePosition((Vector3)transform.position + Vector3.up * PlayerClimbSpeed * Time.deltaTime);
-                
-            }
-
-        }
-
-        
-     
-    }
 
     //generic player movement
     private void PlayerMove()
@@ -314,7 +285,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 Scale= transform.localScale;
         //Scale.z *= -1;
         Scale.x *= -1;
-        transform.localScale = Scale;      
+        transform.localScale = Scale;
     }
    
     void OnDrawGizmosSelected()

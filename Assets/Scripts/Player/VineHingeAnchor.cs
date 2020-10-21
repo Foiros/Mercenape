@@ -102,12 +102,7 @@ public class VineHingeAnchor : MonoBehaviour
             }
 
         }
-        else
-        {
-            player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
-
-        }
-
+     
 
         if (Input.GetKeyDown(KeyCode.Space) && isSwing)
         {
