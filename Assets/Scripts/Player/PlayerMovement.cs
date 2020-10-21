@@ -44,6 +44,8 @@ public class PlayerMovement : MonoBehaviour
 
     BoxCollider boxCollider;
     CapsuleCollider capsuleCollider;
+
+    public Animator animator;
    
     void Awake()
     {
@@ -193,19 +195,15 @@ public class PlayerMovement : MonoBehaviour
     //generic player movement
     private void PlayerMove()
     {
-
-        
-
             if (isGrounded) // if player is move on the ground with normal speed
             {
                 if (inputH != 0)
                 {
-                PlayerRigid2d.MovePosition((Vector3)transform.position + Vector3.right * inputH * PlayerSpeed* Time.deltaTime);
+                    PlayerRigid2d.MovePosition((Vector3)transform.position + Vector3.right * inputH * PlayerSpeed* Time.deltaTime);
+                    animator.SetBool("IsRunning", true);
                 }
    
             }
-
-            
             else if(!isGrounded)// if player is jumping we can have them some control
             {
             if (inputH != 0)
