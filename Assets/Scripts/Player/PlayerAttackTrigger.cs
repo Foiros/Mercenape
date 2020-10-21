@@ -81,16 +81,16 @@ public class PlayerAttackTrigger : MonoBehaviour
             IsPlayerAttack = true;
             TimeDelayAttack = PlayerDelayAttackTime;
 
-            Collider2D[] enemiesToDamage = Physics2D.OverlapBoxAll(Attackpos.position, transform.localScale * AttackRange, EnemyLayerMask);
+            Collider[] enemiesToDamage = Physics.OverlapBox(Attackpos.position, transform.localScale * AttackRange, Quaternion.identity, EnemyLayerMask);
           
             for (int i = 0; i < enemiesToDamage.Length; i++)
             {             
                 // Create by Bao: Attacking Mower
-                if (enemiesToDamage[i].GetType() == typeof(CapsuleCollider2D))
+                if (enemiesToDamage[i].GetType() == typeof(BoxCollider))
                 {
                     enemiesToDamage[i].GetComponentInParent<MowerBehaviour>().DamagingBackside(PlayerDamage);
                 }
-                else if (enemiesToDamage[i].GetType() == typeof(CircleCollider2D))
+                else if (enemiesToDamage[i].GetType() == typeof(BoxCollider))
                 {
                     enemiesToDamage[i].GetComponentInParent<MowerBehaviour>().DamagingForceField(PlayerDamage);
                 }

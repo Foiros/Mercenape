@@ -15,4 +15,4 @@ MonoBehaviour:
   name: Shred
   damage: 10
   maxHP: 50
-  runningSpeed: 30
+  runningSpeed: 20

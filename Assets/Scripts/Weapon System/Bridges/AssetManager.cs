@@ -21,7 +21,7 @@ public class AssetManager : MonoBehaviour
     private List<Sprite> weaponImages, chosenWeaponImages, upgradeImages;
 
     // MeshRenrerer lists
-    private List<GameObject> weaponModels;
+    [SerializeField] private List<GameObject> weaponModels;
 
     void Awake()
     {
