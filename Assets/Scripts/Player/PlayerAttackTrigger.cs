@@ -47,9 +47,7 @@ public class PlayerAttackTrigger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.DrawRay(Attackpos.position, Vector2.right * AttackRange, Color.green);
-
-        PlayerAnimator.SetBool("IsPlayerAttack", IsPlayerAttack);
+        // PlayerAnimator.SetBool("IsAttacking", IsPlayerAttack);
         CheckMouseInput();
     }
     void FixedUpdate()
@@ -105,11 +103,13 @@ public class PlayerAttackTrigger : MonoBehaviour
         {
             if(TimeDelayAttack > 0)
             {
+                PlayerAnimator.SetBool("IsAttacking", true);
                 TimeDelayAttack -= Time.deltaTime;
             }
             else
             {
                 IsPlayerAttack = false;
+                PlayerAnimator.SetBool("IsAttacking", false);
             }
         }
     }
