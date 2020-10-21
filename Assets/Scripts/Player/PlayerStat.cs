@@ -117,7 +117,7 @@ public class PlayerStat : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
    
-
+    // This can be handled by the UpdateHealth().
     public void PlayerTakeDamage(int EnemyDamage)
     {
         PlayerHP -= EnemyDamage;

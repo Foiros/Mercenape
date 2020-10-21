@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnemyLootDrop : MonoBehaviour
 {
+
+    //Edited by Ossi Uusitalo
     private GameObject player;
     public GameObject enemy;
     
@@ -20,9 +22,13 @@ public class EnemyLootDrop : MonoBehaviour
     public GameObject floatKarma;
     public GameObject floatUpgrade;
     
-    
-    public int healthChance;
-    public int upgradeChance;
+    //Ossi: These are the % chance of Health and Upgrade drops.
+    public int healthChance = 40;
+    public int upgradeChance = 30;
+
+    //The value of HP and upgrade orbs. I'm thinking that each enemy has a different multiplier on the value of the orbs they spawn upon death. Something that's swirling in my noggin'.
+    public int HPvalue = 15, UPvalue = 1;
+
 
     public int xOffset;
     public int yOffset;
@@ -48,7 +54,7 @@ public class EnemyLootDrop : MonoBehaviour
 
     }
 
-    /*  public void InstantiateKarmaDrop()
+      public void InstantiateKarmaDrop()
       {
           noKarmaInstantiate = KarmaDropQuantity / collisionDectection.KarmaQuantity;
 
@@ -58,6 +64,13 @@ public class EnemyLootDrop : MonoBehaviour
           }
 
       }
+
+        public void InstantiateHealthOrb()
+    {
+        GameObject newOrb;
+        newOrb = Instantiate(healthDrop, (Vector2)transform.position + new Vector2(0f, 2f), Quaternion.identity);
+        newOrb.GetComponent<lootDrop>().health = HPvalue; //This sets the amount of health you get from the freshly spawned HP orb.
+    }
 
       public void InstantiateGoldDrop()
       {
@@ -69,40 +82,12 @@ public class EnemyLootDrop : MonoBehaviour
      public void InstantiateUpgrade()
     {
         int randomSpawn = Random.Range(0, 101);
-        if (randomSpawn < upgradeChance)
+        if (randomSpawn <= upgradeChance)
         { Instantiate(upgradeDrop, (Vector2)transform.position + new Vector2(Random.Range(-2f, 2f), Random.Range(0f, 10f)), Quaternion.identity); }
-    }*/
-
-
-    public void InstantiateKarmaDrop()
-    {
-            Instantiate(floatKarma, (Vector2)transform.position + new Vector2(Random.Range(-2f, 2f), Random.Range(0f, 1f)), Quaternion.identity);
     }
 
-    public void InstantiateGoldDrop()
-    {
 
-        Instantiate(floatMoney, (Vector2)transform.position + new Vector2(Random.Range(-2f, 2f), Random.Range(0f, 4f)), Quaternion.identity);
-
-    }
-    public void InstantiateUpgrade()
-    {
-        int randomSpawn = Random.Range(0, 101);
-        if (randomSpawn < upgradeChance)
-        { Instantiate(floatUpgrade, (Vector2)player.transform.position + new Vector2(xOffset,yOffset), Quaternion.identity); }
-    }
-
-    public void InstantiateHealthOrb()
-    {
-        int randomSpawn = Random.Range(0, 101);
-        if (randomSpawn < healthChance) { Instantiate(healthDrop, (Vector2)transform.position + new Vector2(Random.Range(-2f, 2f), Random.Range(0f, 10f)), Quaternion.identity); }
-       
-
-    }
-   
-
-
-
+    
     public void DropAll()
     {
         InstantiateGoldDrop();
@@ -110,5 +95,6 @@ public class EnemyLootDrop : MonoBehaviour
         InstantiateHealthOrb();
         InstantiateUpgrade();
     }
+    
 
     }

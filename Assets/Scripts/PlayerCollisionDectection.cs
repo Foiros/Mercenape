@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerCollisionDectection : MonoBehaviour
 {
 
+    // Why can't this be all in the same script? - Ossi
     int goldQuantity;
     public int KarmaQuantity=10;
 
@@ -50,10 +51,10 @@ public class PlayerCollisionDectection : MonoBehaviour
             
         else if (collision.CompareTag("Loot/HPDrop"))
         {
-            playerStat.PlayerHP += 30;
+            playerStat.updateHealth(collision.gameObject.GetComponent<lootDrop>().health);
             Destroy(collision.gameObject);
-            playerUI.SetCurrentHP(playerStat.PlayerHP);
-            
+            //playerUI.SetCurrentHP(playerStat.PlayerHP);
+            //The UI element is updated during the PlayerStat.cs UpdateHealth function. - Ossi
              }
         }
     }

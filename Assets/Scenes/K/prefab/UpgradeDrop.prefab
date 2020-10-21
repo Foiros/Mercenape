@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 1980276748720250687}
   - component: {fileID: -8568385072332679687}
   - component: {fileID: 5635507955814971729}
+  - component: {fileID: -276475716671052124}
   m_Layer: 0
   m_Name: UpgradeDrop
   m_TagString: Loot/UpgradeDrop
@@ -163,3 +164,19 @@ MonoBehaviour:
   groundlayermask:
     serializedVersion: 2
     m_Bits: 256
+--- !u!114 &-276475716671052124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6106106539920529169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89b1fcbc8bca4bf4380b5608f4a61874, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 0
+  upgrade: 0
+  karma: 0
+  money: 0
