@@ -65,14 +65,14 @@ public class ShredBehaviour : EnemyBehaviour
     IEnumerator Attacking()
     {
         // Pass through player
-        rb.isKinematic = true;
+        rb.useGravity = false;
         boxCollier.isTrigger = true;  
         
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.7f);
 
         // Return to original states
         boxCollier.isTrigger = false;
-        rb.isKinematic = false;
+        rb.useGravity = true;
     }
 
     // Do bleed damage (per sec for now)
@@ -89,8 +89,10 @@ public class ShredBehaviour : EnemyBehaviour
     }
    
     IEnumerator ImmobilizeShred()
-    {       
-        speed = -stat.runningSpeed / 20;
+    {
+        //speed = -stat.runningSpeed / 20;
+        speed = 0;
+        rb.AddForce(transform.right * -10, ForceMode.VelocityChange);
 
         yield return new WaitForSeconds(1f);
 

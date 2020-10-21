@@ -84,11 +84,11 @@ public class PlayerAttackTrigger : MonoBehaviour
             for (int i = 0; i < enemiesToDamage.Length; i++)
             {             
                 // Create by Bao: Attacking Mower
-                if (enemiesToDamage[i].GetType() == typeof(BoxCollider))
+                if (enemiesToDamage[i].GetType() == typeof(CapsuleCollider))
                 {
                     enemiesToDamage[i].GetComponentInParent<MowerBehaviour>().DamagingBackside(PlayerDamage);
                 }
-                else if (enemiesToDamage[i].GetType() == typeof(BoxCollider))
+                else if (enemiesToDamage[i].GetType() == typeof(SphereCollider))
                 {
                     enemiesToDamage[i].GetComponentInParent<MowerBehaviour>().DamagingForceField(PlayerDamage);
                 }

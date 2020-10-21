@@ -42,7 +42,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     protected virtual void Start()
     {
-        Invoke("FreezePosY", 1f);
+        Invoke("FreezePosY", 0.8f);
 
         //var waveStat = GameObject.Find("EnemySpawner");
         //maxHP += waveStat.GetComponent<EnemySpawnerScript>().wave.enemyIncreasedHP;
@@ -73,9 +73,11 @@ public class EnemyBehaviour : MonoBehaviour
     // Basic Movement
     protected virtual void Movement()
     {
+        if (currentHP <= 0) { return; }
+
         groundInfo = Physics.Raycast(frontDetection.position, Vector3.down, 10f, LayerMask.GetMask("Ground"));
         wallInfo = Physics.Raycast(frontDetection.position, transform.right, 2f, LayerMask.GetMask("Wall"));
-
+       
         if (!groundInfo || wallInfo)
         {
             enemyRotation += new Vector3(0, -(Mathf.Sign(rb.velocity.x)) * 180, 0);
@@ -122,9 +124,10 @@ public class EnemyBehaviour : MonoBehaviour
         // If dead
         if (currentHP <= 0)
         {
+            rb.constraints = RigidbodyConstraints.None;
             transform.rotation = Quaternion.Euler(90, Random.Range(0f, 360f), 0);
             speed = 0;
-            rb.isKinematic = true;
+            rb.useGravity = false;
             boxCollier.enabled = false;
 
             yield return new WaitForSeconds(1f);
@@ -137,7 +140,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     protected void FreezePosY()
     {
-        //rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
+        rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
     }
 
 }

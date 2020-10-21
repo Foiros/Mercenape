@@ -53,7 +53,7 @@ public class MowerBehaviour : EnemyBehaviour
         // If is riding, stick on the top of Mower
         if (isRiding)
         {
-            player.transform.position = new Vector3(transform.position.x +  ridePos, player.transform.position.y, 0);
+            //player.transform.position = new Vector3(transform.position.x +  ridePos, player.transform.position.y, 0);
         }
 
         switch (currentState)
@@ -155,15 +155,9 @@ public class MowerBehaviour : EnemyBehaviour
     protected void OnCollisionEnter(Collision col)
     {
         if (col.gameObject.CompareTag("Player"))
-        {
-            if (player.transform.Find("UnderPlayerPosition").position.y >= rideHeight.position.y)
-            {
-                // Then ride it
-                ridePos = player.transform.position.x - transform.position.x;
-                isRiding = true;
-            }
+        {            
             // If player is super near Mower's head
-            else if (Mathf.Abs(player.transform.position.x - frontDetection.position.x) <= 1.5f)
+            if (Mathf.Abs(player.transform.position.x - frontDetection.position.x) <= 1.5f)
             {
                 // Then attack player
                 if (!isAttacking && currentState != ForceFieldState.Generating)
@@ -172,6 +166,20 @@ public class MowerBehaviour : EnemyBehaviour
                     MowerAttack();
                 }
             }         
+        }
+    }
+
+    // If player stays on Mower's top
+    private void OnCollisionStay(Collision col)
+    {
+        if (col.gameObject.CompareTag("Player"))
+        {
+            if (player.transform.Find("UnderPlayerPosition").position.y >= rideHeight.position.y)
+            {
+                // Then ride it
+                ridePos = player.transform.position.x - transform.position.x;
+                isRiding = true;
+            }
         }
     }
 
@@ -190,7 +198,7 @@ public class MowerBehaviour : EnemyBehaviour
     {
         base.OnTriggerExit(collision);
 
-        if (!collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player"))
         {
             isRiding = false;
         }
@@ -204,14 +212,9 @@ public class MowerBehaviour : EnemyBehaviour
         playerMovement.isKnockDown = true;
 
         isAttacker = true;
-        StartCoroutine("Attacking");
 
-        if (dmgCoroutine != null)
-        {
-            StopCoroutine(dmgCoroutine);
-        }
-
-        dmgCoroutine = StartCoroutine(ApplyDamage(3, stat.damage));
+        StopAllCoroutines();
+        StartCoroutine("Attacking");       
     }
 
     protected override void KnockDownProcess()
@@ -223,16 +226,13 @@ public class MowerBehaviour : EnemyBehaviour
         if (playerMovement.getUpCount == 10)
         {
             // Stop dealing damage and get back to original states
-            if (dmgCoroutine != null)
-            {
-                StopCoroutine(dmgCoroutine);
-            }
+            StopAllCoroutines();
 
             player.transform.rotation = Quaternion.Euler(0, 0, 0);
             playerMovement.playerAttack.enabled = true;
 
             // Push player up 
-            playerMovement.PlayerRigid2d.velocity = Vector3.up * 50;
+            playerMovement.PlayerRigid2d.velocity = Vector3.up * 30;
 
             playerMovement.getUpCount = 0;
             playerMovement.isKnockDown = false;
@@ -246,19 +246,21 @@ public class MowerBehaviour : EnemyBehaviour
     {
         boxCollier.isTrigger = false;
         capsuleCollider.isTrigger = false;
-        rb.isKinematic = false;
+        rb.useGravity = true;
         speed = stat.runningSpeed;
         isAttacking = false;
     }
 
     private IEnumerator Attacking()
     {
-        rb.isKinematic = true;
+        rb.useGravity = false;
         boxCollier.isTrigger = true;
         capsuleCollider.isTrigger = true;
-        speed = stat.runningSpeed / 1.3f;
+        speed = stat.runningSpeed / 1.8f;
 
-        yield return new WaitForSeconds(5f);
+        dmgCoroutine = StartCoroutine(ApplyDamage(5, stat.damage));
+
+        yield return new WaitForSeconds(6f);
 
         ReturnPhysics();      
     }
@@ -271,7 +273,7 @@ public class MowerBehaviour : EnemyBehaviour
         while (currentCount < damageCount)
         {
             playerStat.PlayerTakeDamage(damageAmount);
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(1.2f);
             currentCount++;
         }
     }
@@ -317,6 +319,7 @@ public class MowerBehaviour : EnemyBehaviour
     {
         base.Movement();
 
+        // Also turn healthbar of the generator
         if (!groundInfo || wallInfo)
         {
             fieldBarHealth.ScaleLeftUI(rb);
