@@ -17,11 +17,11 @@ public class EnemyBehaviour : MonoBehaviour
     protected bool isAttacker = false;    // For stunning process
 
     private Vector3 enemyRotation;
-    protected Rigidbody2D rb;
-    protected BoxCollider2D boxCollier;
+    protected Rigidbody rb;
+    protected BoxCollider boxCollier;
     [SerializeField] protected Transform frontDetection;
-    protected RaycastHit2D groundInfo;
-    protected RaycastHit2D wallInfo;
+    protected bool groundInfo;
+    protected bool wallInfo;
 
     protected GameObject player;
     protected PlayerStat playerStat;
@@ -36,8 +36,8 @@ public class EnemyBehaviour : MonoBehaviour
         healthBarUI = transform.GetChild(1).gameObject;
         barHealth = healthBarUI.GetComponent<EnemyHealthBar>();
 
-        rb = GetComponent<Rigidbody2D>();
-        boxCollier = GetComponent<BoxCollider2D>();
+        rb = GetComponent<Rigidbody>();
+        boxCollier = GetComponent<BoxCollider>();
     }
 
     protected virtual void Start()
@@ -67,14 +67,14 @@ public class EnemyBehaviour : MonoBehaviour
     // Check if facing right direction
     protected bool IsFacingRight()
     {
-        return transform.rotation.eulerAngles.y == 0;
+        return transform.rotation.eulerAngles.y == (int)0;
     }
 
     // Basic Movement
     protected virtual void Movement()
     {
-        groundInfo = Physics2D.Raycast(frontDetection.position, Vector2.down, 5, LayerMask.GetMask("Ground"));
-        wallInfo = Physics2D.Raycast(frontDetection.position, transform.right, 1, LayerMask.GetMask("Wall"));
+        groundInfo = Physics.Raycast(frontDetection.position, Vector3.down, 10f, LayerMask.GetMask("Ground"));
+        wallInfo = Physics.Raycast(frontDetection.position, transform.right, 2f, LayerMask.GetMask("Wall"));
 
         if (!groundInfo || wallInfo)
         {
@@ -85,21 +85,21 @@ public class EnemyBehaviour : MonoBehaviour
 
         // Check direction facing and adjust to velocity according to that
         if (IsFacingRight())
-        {
-            rb.velocity = new Vector2(speed, rb.velocity.y);
+        {          
+            rb.velocity = new Vector3(speed, rb.velocity.y, 0);
         }
         else
         {
-            rb.velocity = new Vector2(-speed, rb.velocity.y);
-        }
+            rb.velocity = new Vector3(-speed, rb.velocity.y, 0);
+        }      
     }
 
     // Fix a bug that enemy stick to something when colliding
-    protected virtual void OnTriggerExit2D(Collider2D collision)
+    protected virtual void OnTriggerExit(Collider collision)
     {     
 
     }
-
+    
     // Take damage from player
     public virtual void TakeDamage(float playerDamage)
     {
@@ -124,7 +124,7 @@ public class EnemyBehaviour : MonoBehaviour
         {
             transform.rotation = Quaternion.Euler(90, Random.Range(0f, 360f), 0);
             speed = 0;
-            rb.bodyType = RigidbodyType2D.Static;
+            rb.isKinematic = true;
             boxCollier.enabled = false;
 
             yield return new WaitForSeconds(1f);
@@ -137,7 +137,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     protected void FreezePosY()
     {
-        rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
+        //rb.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
     }
 
 }

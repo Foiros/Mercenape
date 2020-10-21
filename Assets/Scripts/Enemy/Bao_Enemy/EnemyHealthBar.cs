@@ -26,14 +26,14 @@ public class EnemyHealthBar : MonoBehaviour
         sliderFunction.value = currentHP / maxHP;       
     }
 
-    public void ScaleRightUI(Rigidbody2D rb)
+    public void ScaleRightUI(Rigidbody rb)
     {
-        healthBarUI.transform.localScale = new Vector2(-(Mathf.Sign(rb.velocity.x)) * xScaleUI, healthBarUI.transform.localScale.y);
+        healthBarUI.transform.localScale = new Vector3(-(Mathf.Sign(rb.velocity.x)) * xScaleUI, healthBarUI.transform.localScale.y);
     }
 
-    public void ScaleLeftUI(Rigidbody2D rb)
+    public void ScaleLeftUI(Rigidbody rb)
     {
-        healthBarUI.transform.localScale = new Vector2((Mathf.Sign(rb.velocity.x)) * xScaleUI, healthBarUI.transform.localScale.y);
+        healthBarUI.transform.localScale = new Vector3((Mathf.Sign(rb.velocity.x)) * xScaleUI, healthBarUI.transform.localScale.y);
     }
 
     private IEnumerator HealthBarAnimation()

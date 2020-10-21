@@ -40,9 +40,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7237859923948144615}
   - component: {fileID: 7237859923948144612}
-  - component: {fileID: 7237859923948144613}
   - component: {fileID: 7152132314532048145}
-  - component: {fileID: -5583255050072111067}
+  - component: {fileID: 4739630094514872579}
+  - component: {fileID: 4537305852983065253}
   m_Layer: 10
   m_Name: EnemyPrefab
   m_TagString: Enemy
@@ -116,27 +116,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!50 &7237859923948144613
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7237859923948144618}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 8
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 4
 --- !u!114 &7152132314532048145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,43 +129,51 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemy: {fileID: 7237859923948144618}
-  KarmaDrop: {fileID: 450763958401993869, guid: cc456ea0021f3334091f822ddba309f2,
-    type: 3}
   KarmaDropQuantity: 100
   goldDrop: {fileID: 5243515410850218913, guid: d65fd8bc710b8774bafdd634afade683,
     type: 3}
+  KarmaDrop: {fileID: 450763958401993869, guid: cc456ea0021f3334091f822ddba309f2,
+    type: 3}
   healthDrop: {fileID: 1894584535332837582, guid: fd655d8535685a043a4244e1d452097f,
     type: 3}
-  healthChance: 99
   upgradeDrop: {fileID: 6106106539920529169, guid: 372244b7ea842e34ba2a93514a5e82bf,
     type: 3}
+  floatMoney: {fileID: 0}
+  floatKarma: {fileID: 0}
+  floatUpgrade: {fileID: 0}
+  healthChance: 99
   upgradeChance: 99
---- !u!61 &-5583255050072111067
-BoxCollider2D:
+  xOffset: 0
+  yOffset: 0
+--- !u!54 &4739630094514872579
+Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7237859923948144618}
-  m_Enabled: 1
-  m_Density: 1
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 120
+  m_CollisionDetection: 0
+--- !u!65 &4537305852983065253
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7237859923948144618}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -1.01, y: -0.11705965}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 6.8, y: 4.72}
-    newSize: {x: 6.8, y: 4.72}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4.130142, y: 3.5640516}
-  m_EdgeRadius: 0
+  m_Size: {x: 1, y: 2.7290196, z: 6.7289114}
+  m_Center: {x: 1.0622046e-15, y: 1.3413069, z: 0.14909385}
 --- !u!1001 &2024328240012108131
 PrefabInstance:
   m_ObjectHideFlags: 0

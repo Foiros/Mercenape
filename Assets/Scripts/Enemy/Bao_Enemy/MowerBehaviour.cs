@@ -24,8 +24,8 @@ public class MowerBehaviour : EnemyBehaviour
     private float ridePos;
     [SerializeField] private Transform rideHeight;
 
-    private CapsuleCollider2D capsuleCollider;
-    private CircleCollider2D generatorCollider;
+    private CapsuleCollider capsuleCollider;
+    private SphereCollider generatorCollider;
 
     protected override void Start()
     {
@@ -41,8 +41,8 @@ public class MowerBehaviour : EnemyBehaviour
 
         fieldSprite = transform.GetChild(2).GetComponent<SpriteRenderer>();
 
-        capsuleCollider = transform.GetChild(2).GetComponent<CapsuleCollider2D>();
-        generatorCollider = transform.GetChild(2).GetComponent<CircleCollider2D>();
+        capsuleCollider = transform.GetChild(2).GetComponent<CapsuleCollider>();
+        generatorCollider = transform.GetChild(2).GetComponent<SphereCollider>();
     }
 
     private void Update()
@@ -53,7 +53,7 @@ public class MowerBehaviour : EnemyBehaviour
         // If is riding, stick on the top of Mower
         if (isRiding)
         {
-            player.transform.position = new Vector2(transform.position.x +  ridePos, player.transform.position.y);
+            player.transform.position = new Vector3(transform.position.x +  ridePos, player.transform.position.y, 0);
         }
 
         switch (currentState)
@@ -133,7 +133,7 @@ public class MowerBehaviour : EnemyBehaviour
         {
             // Field Generator will damage back the player and push upward
             playerStat.PlayerTakeDamage(fieldStat.damage);
-            playerMovement.PlayerRigid2d.AddForce(new Vector2(Mathf.Sign(player.transform.localScale.x) * -2000, 100), ForceMode2D.Impulse);
+            playerMovement.PlayerRigid2d.AddForce(new Vector3(Mathf.Sign(player.transform.localScale.x) * -2000, 100), ForceMode2D.Impulse);
         }
     }
 
@@ -152,7 +152,7 @@ public class MowerBehaviour : EnemyBehaviour
     }
 
     // When player collides with Mower
-    protected void OnCollisionEnter2D(Collision2D col)
+    protected void OnCollisionEnter(Collision col)
     {
         if (col.gameObject.CompareTag("Player"))
         {
@@ -176,7 +176,7 @@ public class MowerBehaviour : EnemyBehaviour
     }
 
     // When player get out of Mower's back
-    private void OnCollisionExit2D(Collision2D col)
+    private void OnCollisionExit(Collision col)
     {
         if (col.gameObject.CompareTag("Player"))
         {      
@@ -186,9 +186,9 @@ public class MowerBehaviour : EnemyBehaviour
     }
 
     // Fix a bug when player auto ride after being attacked
-    protected override void OnTriggerExit2D(Collider2D collision)
+    protected override void OnTriggerExit(Collider collision)
     {
-        base.OnTriggerExit2D(collision);
+        base.OnTriggerExit(collision);
 
         if (!collision.gameObject.CompareTag("Player"))
         {
@@ -198,7 +198,7 @@ public class MowerBehaviour : EnemyBehaviour
 
     private void MowerAttack()
     {
-        playerMovement.PlayerRigid2d.velocity = Vector2.zero;
+        playerMovement.PlayerRigid2d.velocity = Vector3.zero;
 
         playerMovement.getUpCount = 0;
         playerMovement.isKnockDown = true;
@@ -232,7 +232,7 @@ public class MowerBehaviour : EnemyBehaviour
             playerMovement.playerAttack.enabled = true;
 
             // Push player up 
-            playerMovement.PlayerRigid2d.velocity = Vector2.up * 50;
+            playerMovement.PlayerRigid2d.velocity = Vector3.up * 50;
 
             playerMovement.getUpCount = 0;
             playerMovement.isKnockDown = false;
@@ -246,14 +246,14 @@ public class MowerBehaviour : EnemyBehaviour
     {
         boxCollier.isTrigger = false;
         capsuleCollider.isTrigger = false;
-        rb.bodyType = RigidbodyType2D.Dynamic;
+        rb.isKinematic = false;
         speed = stat.runningSpeed;
         isAttacking = false;
     }
 
     private IEnumerator Attacking()
     {
-        rb.bodyType = RigidbodyType2D.Kinematic;
+        rb.isKinematic = true;
         boxCollier.isTrigger = true;
         capsuleCollider.isTrigger = true;
         speed = stat.runningSpeed / 1.3f;
@@ -324,7 +324,7 @@ public class MowerBehaviour : EnemyBehaviour
             if (isRiding)
             {
                 isRiding = false;
-                playerMovement.PlayerRigid2d.velocity = Vector2.up * 30;
+                playerMovement.PlayerRigid2d.velocity = Vector3.up * 30;
             }
         }
     }

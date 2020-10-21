@@ -21,7 +21,7 @@ public class ShredBehaviour : EnemyBehaviour
     }
 
     // Hit player
-    protected void OnCollisionEnter2D(Collision2D col)
+    protected void OnCollisionEnter(Collision col)
     {
         if (col.gameObject.CompareTag("Player"))
         {          
@@ -65,14 +65,14 @@ public class ShredBehaviour : EnemyBehaviour
     IEnumerator Attacking()
     {
         // Pass through player
-        rb.bodyType = RigidbodyType2D.Kinematic;
+        rb.isKinematic = true;
         boxCollier.isTrigger = true;  
         
         yield return new WaitForSeconds(0.5f);
 
         // Return to original states
         boxCollier.isTrigger = false;
-        rb.bodyType = RigidbodyType2D.Dynamic;       
+        rb.isKinematic = false;
     }
 
     // Do bleed damage (per sec for now)
