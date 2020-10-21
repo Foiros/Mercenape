@@ -133,7 +133,7 @@ public class MowerBehaviour : EnemyBehaviour
         {
             // Field Generator will damage back the player and push upward
             playerStat.PlayerTakeDamage(fieldStat.damage);
-            playerMovement.PlayerRigid2d.AddForce(new Vector3(Mathf.Sign(player.transform.localScale.x) * -2000, 100), ForceMode2D.Impulse);
+            playerMovement.PlayerRigid2d.AddForce(new Vector3(Mathf.Sign(player.transform.localScale.x) * -2000, 100), ForceMode.Impulse);
         }
     }
 
