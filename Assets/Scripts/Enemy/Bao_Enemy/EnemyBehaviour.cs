@@ -142,5 +142,4 @@ public class EnemyBehaviour : MonoBehaviour
     {
         rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
     }
-
 }

@@ -23,7 +23,7 @@ public abstract class AbstractWeapon
     protected int impactDamage, bleedDamage, bleedDuration;
 
     // Weapon reach and hit box
-    protected float hitBoxSize, hitBoxLocation; 
+    protected Vector3 hitBoxLocation, hitBoxSize;
 
 
     // Fetch functions for details
@@ -43,14 +43,14 @@ public abstract class AbstractWeapon
     public float GetBleedDuration() { return bleedDuration; }
 
     // Fetch functions for reach and hitbox
-    public float GetHitBox() { return hitBoxSize; }
-    public float GetHitBoxLocation() { return hitBoxLocation; }
+    public Vector3 GetHitBoxSize() { return hitBoxSize; }
+    public Vector3 GetHitBoxLocation() { return hitBoxLocation; }
 }
 
 public class TestWeapon : AbstractWeapon
 {
     // This is used to create this object in the scripts. 
-    public TestWeapon(string name, string description, int id, int cost, float speed, float weight, int damage, float size, float location, Sprite weapon, Sprite chosenWeapon, GameObject model)
+    public TestWeapon(string name, string description, int id, int cost, float speed, float weight, int damage, Vector3 location, Vector3 size, Sprite weapon, Sprite chosenWeapon, GameObject model)
     {
         weaponName = name;
         weaponDescription = description;

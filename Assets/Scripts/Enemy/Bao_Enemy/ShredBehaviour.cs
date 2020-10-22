@@ -35,7 +35,7 @@ public class ShredBehaviour : EnemyBehaviour
             }
             else
             {
-                ShredAttack();
+                // ShredAttack();
             }
         }
     }

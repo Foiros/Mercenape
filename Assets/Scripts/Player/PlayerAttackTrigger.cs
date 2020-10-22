@@ -13,7 +13,11 @@ public class PlayerAttackTrigger : MonoBehaviour
     public float PlayerDelayAttackTime; // can exchange to weapon atk rate later
 
     public Transform Attackpos;
-    public float AttackRange;
+    private Vector3 scaleChange, positionChange;
+    
+    public float WeaponLocation;
+    public float AttackSize;
+
     public LayerMask EnemyLayerMask;
     public float PlayerDamage;
 
@@ -59,9 +63,14 @@ public class PlayerAttackTrigger : MonoBehaviour
     void SetWeaponStats()
     {
         weaponID = weaponStates.GetChosenWeaponID();
-        AttackRange = weapons[weaponID].GetHitBox();
         PlayerDamage = weaponStates.GetWeaponImpactDamage();
         weaponSpeed = weaponStates.GetWeaponSpeed();
+
+        positionChange = weapons[weaponID].GetHitBoxLocation();
+        scaleChange = weapons[weaponID].GetHitBoxSize();
+
+        Attackpos.localPosition = positionChange;
+        Attackpos.localScale = scaleChange;
     }
 
     bool CheckMouseInput()    
@@ -80,7 +89,7 @@ public class PlayerAttackTrigger : MonoBehaviour
 
             PlayerAnimator.SetBool("IsAttacking", true);
 
-            Collider[] enemiesToDamage = Physics.OverlapBox(Attackpos.position, transform.localScale * AttackRange, Quaternion.identity, EnemyLayerMask);
+            Collider[] enemiesToDamage = Physics.OverlapBox(Attackpos.position, Attackpos.localScale, Quaternion.identity, EnemyLayerMask);
           
             for (int i = 0; i < enemiesToDamage.Length; i++)
             {             
@@ -120,7 +129,7 @@ public class PlayerAttackTrigger : MonoBehaviour
     void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawWireCube(Attackpos.position, transform.localScale * AttackRange);
+        Gizmos.DrawWireCube(Attackpos.position, Attackpos.localScale);
     }
 
     public void SetWeaponList(List<AbstractWeapon> list) { weapons = list; }
