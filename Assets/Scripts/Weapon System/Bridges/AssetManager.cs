@@ -69,7 +69,7 @@ public class AssetManager : MonoBehaviour
     // Constructs weapons and upgrades and adds them to their own lists. 
     void SetUpWeaponsAndUpgrades()
     {
-        weapons.Add(new TestWeapon("Weapon 1", "Does things", 0, 0, 2.0f, 1, 10, 1.5f, 3.0f, weaponImages[0], chosenWeaponImages[0], weaponModels[0]));
+        weapons.Add(new TestWeapon("Weapon 1", "Does things", 0, 0, 2.0f, 1, 10, 3.0f, 3.0f, weaponImages[0], chosenWeaponImages[0], weaponModels[0]));
         weapons.Add(new TestWeapon("Weapon 2", "Does things", 1, 25, 1.0f, 7, 15, 5f, 3.0f, weaponImages[1], chosenWeaponImages[1], weaponModels[1]));
         weapons.Add(new TestWeapon("Weapon 3", "Does things", 2, 100, 1.5f, 3, 13, 7f, 3.0f, weaponImages[2], chosenWeaponImages[2], weaponModels[2]));
         weapons.Add(new TestWeapon("Weapon 4", "Does things", 3, 150, 2.5f, 1, 5, 10f, 3.0f, weaponImages[3], chosenWeaponImages[3], weaponModels[3]));

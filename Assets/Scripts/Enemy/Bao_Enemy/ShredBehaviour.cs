@@ -28,6 +28,7 @@ public class ShredBehaviour : EnemyBehaviour
             // If player face against Shred and is blocking
             if (IsFacingRight() != playerMovement.FaceRight && playerMovement.isPlayerBlock)
             {
+                playerMovement.animator.SetBool("TakingHitBlocking", true);
                 // Block and immobilize Shred
                 StopCoroutine("ImmobilizeShred");
                 StartCoroutine("ImmobilizeShred");
@@ -49,7 +50,7 @@ public class ShredBehaviour : EnemyBehaviour
         StartCoroutine("Attacking");
         playerStat.PlayerTakeDamage(stat.damage);
         playerMovement.getUpCount = 0;
-        playerMovement.isKnockDown = true;
+        playerMovement.isBeingKnockedDown = true;
 
         if (Random.Range(0f, 100f) < bleedChance)
         {
@@ -104,17 +105,6 @@ public class ShredBehaviour : EnemyBehaviour
         base.KnockDownProcess();     // Still normally stun player
         
         if (!isAttacker) { return; }
-
-        if (playerMovement.getUpCount == 5)
-        {
-            player.transform.rotation = Quaternion.Euler(0, 0, 0);
-            playerMovement.playerAttack.enabled = true;         
-
-            playerMovement.getUpCount = 0;           
-            playerMovement.isKnockDown = false;
-
-            isAttacker = false;
-        }
     }
 
     public override void TakeDamage(float playerDamage)

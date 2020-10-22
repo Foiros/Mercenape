@@ -3765,8 +3765,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7890612550837907960}
-  m_LocalRotation: {x: 0.0017826582, y: 0.6796614, z: 0.0019239262, w: 0.7335214}
-  m_LocalPosition: {x: -1.8586078, y: -0.1062572, z: 2.0865963}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1907859044768758748}
@@ -3784,7 +3784,7 @@ Transform:
   - {fileID: 7007741340191067977}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 85.635, z: 0.30100003}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &3470843985174671672
 Animator:
   serializedVersion: 3
@@ -3818,7 +3818,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!136 &7007741340744387838
 CapsuleCollider:
@@ -3974,6 +3974,7 @@ MonoBehaviour:
   isPlayerBlock: 0
   isKnockDown: 0
   getUpCount: 0
+  animator: {fileID: 0}
 --- !u!1 &8090755846774300851
 GameObject:
   m_ObjectHideFlags: 0

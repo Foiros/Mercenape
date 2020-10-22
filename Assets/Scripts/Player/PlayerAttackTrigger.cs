@@ -23,7 +23,7 @@ public class PlayerAttackTrigger : MonoBehaviour
     // private float hitboxDistFromPlayer;
 
     public Animator PlayerAnimator;
-    public Animation anim;
+    
     private bool IsPlayerAttack = false;
 
     PlayerMovement playerMovement;
@@ -47,9 +47,9 @@ public class PlayerAttackTrigger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // PlayerAnimator.SetBool("IsAttacking", IsPlayerAttack);
         CheckMouseInput();
     }
+
     void FixedUpdate()
     {
         if (!playerMovement.isPlayerBlock)
@@ -60,11 +60,8 @@ public class PlayerAttackTrigger : MonoBehaviour
     {
         weaponID = weaponStates.GetChosenWeaponID();
         AttackRange = weapons[weaponID].GetHitBox();
-
-        weaponSpeed = weaponStates.GetWeaponSpeed();
-        // anim["PlayerAttack"].speed = weaponSpeed;
-
         PlayerDamage = weaponStates.GetWeaponImpactDamage();
+        weaponSpeed = weaponStates.GetWeaponSpeed();
     }
 
     bool CheckMouseInput()    
@@ -76,8 +73,12 @@ public class PlayerAttackTrigger : MonoBehaviour
     {
         if(CheckMouseInput()&& !IsPlayerAttack)
         {
+            PlayerAnimator.speed = weaponSpeed;
+
             IsPlayerAttack = true;
             TimeDelayAttack = PlayerDelayAttackTime;
+
+            PlayerAnimator.SetBool("IsAttacking", true);
 
             Collider[] enemiesToDamage = Physics.OverlapBox(Attackpos.position, transform.localScale * AttackRange, Quaternion.identity, EnemyLayerMask);
           
@@ -87,14 +88,17 @@ public class PlayerAttackTrigger : MonoBehaviour
                 if (enemiesToDamage[i].GetType() == typeof(CapsuleCollider))
                 {
                     enemiesToDamage[i].GetComponentInParent<MowerBehaviour>().DamagingBackside(PlayerDamage);
+                    PlayerAnimator.speed = 1;
                 }
                 else if (enemiesToDamage[i].GetType() == typeof(SphereCollider))
                 {
                     enemiesToDamage[i].GetComponentInParent<MowerBehaviour>().DamagingForceField(PlayerDamage);
+                    PlayerAnimator.speed = 1;
                 }
                 else
                 {
                     enemiesToDamage[i].GetComponentInParent<EnemyBehaviour>().TakeDamage(PlayerDamage);
+                    PlayerAnimator.speed = 1;
                 }
             }
         }
@@ -103,7 +107,6 @@ public class PlayerAttackTrigger : MonoBehaviour
         {
             if(TimeDelayAttack > 0)
             {
-                PlayerAnimator.SetBool("IsAttacking", true);
                 TimeDelayAttack -= Time.deltaTime;
             }
             else

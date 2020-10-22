@@ -1,7 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -41,6 +39,7 @@ public class PlayerMovement : MonoBehaviour
     public bool isPlayerBlock = false;
 
     [HideInInspector] public bool isKnockDown = false;
+    [HideInInspector] public bool isBeingKnockedDown;
     [HideInInspector] public int getUpCount = 0;
 
     BoxCollider boxCollider;
@@ -74,13 +73,19 @@ public class PlayerMovement : MonoBehaviour
         CheckOnTop();
         InputHorrizontal(); // Included player flip
 
-
+        if (isPlayerBlock)
+        {
+            animator.SetBool("Blocking", true);
+        }
+        else
+        {
+            animator.SetBool("Blocking", false);
+        }
 
         if (!isPlayerBlock && !isKnockDown)
         {
             PlayerJump();
             //SetPlayerAnimator();// could change to call animation if needed
-
         }
 
     }
@@ -263,16 +268,6 @@ public class PlayerMovement : MonoBehaviour
             }
         }
      }
-   
-
-    private void SetPlayerAnimator()
-    {
-        
-        PlayerAnimator.SetBool("PlayerGrounded", isGrounded);
-        PlayerAnimator.SetFloat("PlayerSpeed", Mathf.Abs(PlayerRigid2d.velocity.x));
-        PlayerAnimator.SetBool("IsPlayerBlock", isPlayerBlock);
-        
-    }
 
     private void FlipPlayer()
     {
@@ -299,13 +294,26 @@ public class PlayerMovement : MonoBehaviour
 
     void CheckKnockDown()
     {
-        if (isKnockDown)
+        if (isBeingKnockedDown)
         {
-            transform.rotation = Quaternion.Euler(0, 0, 90);
+            animator.SetBool("KnockDown", true);
+
+            isBeingKnockedDown = false;
+            isKnockDown = true;
+        }
+        if(isKnockDown && getUpCount >= 5)
+        {
+            animator.SetBool("BounceUp", true);
+            isKnockDown = false;
+            playerAttack.enabled = true;
+        }
+        else if (isKnockDown)
+        {
+            animator.SetBool("KnockedDown", true);
+
             playerAttack.enabled = false;
 
-            if (Input.GetKeyDown(KeyCode.Space)) { getUpCount++; }   
-                        
+            if (Input.GetKeyDown(KeyCode.Space)) { getUpCount++; }          
         }
     }
 }
