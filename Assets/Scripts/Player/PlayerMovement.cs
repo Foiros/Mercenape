@@ -73,20 +73,36 @@ public class PlayerMovement : MonoBehaviour
         CheckOnTop();
         InputHorrizontal(); // Included player flip
 
-        if (isPlayerBlock)
+        if (isGrounded || isCollideWall)
         {
-            animator.SetBool("Blocking", true);
+            PlayerDoubleJump = true;
         }
-        else
-        {
-            animator.SetBool("Blocking", false);
-        }
+
+        /*  if (isPlayerBlock)
+          {
+              animator.SetBool("Blocking", true);
+          }
+          else
+          {
+              animator.SetBool("Blocking", false);
+          }*/
 
         if (!isPlayerBlock && !isKnockDown)
         {
-            PlayerJump();
+            if (Input.GetKey(KeyCode.Space)) {
+                PlayerJump();    
+                print("space");
+            
+            
+            }
+
+
+
             //SetPlayerAnimator();// could change to call animation if needed
         }
+
+
+      
 
     }
 
@@ -183,7 +199,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            PlayerRigid2d.velocity =(new Vector3(0, -1, 0) * slideSpeed * Time.deltaTime + Vector3.right* inputH*MidAirSpeed*Time.deltaTime);
+            PlayerRigid2d.velocity =new Vector3(PlayerRigid2d.velocity.x, 0, 0);
             if (Input.GetKey(KeyCode.Space))
             {
                 PlayerRigid2d.AddForce(new Vector3(0.0f, 1.0f, 0.0f) * PlayerDoubleJumpPow, ForceMode.Impulse);
@@ -235,39 +251,27 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-   
+
     private void PlayerJump() // both single and double 
-        // side note could handle jump power by * with the character height. at the moment the vector in middle of the character so 7pixel long
+                              // side note could handle jump power by * with the character height. at the moment the vector in middle of the character so 7pixel long
     {
+       
+
         if (isGrounded)
         {
-            PlayerDoubleJump = true;
+            PlayerRigid2d.velocity+= new Vector3(0.0f, 1.0f, 0.0f) * PlayerJumpPow;
+
+
         }
-        
-        
-        if (IsWallGrab)
-        {
-            PlayerDoubleJump = true;
-        }
-
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (isGrounded) 
+        else if( !isGrounded && PlayerDoubleJump )
             {
-                PlayerRigid2d.AddForce(new Vector3(0.0f, 1.0f, 0.0f) * PlayerJumpPow, ForceMode.Impulse);
-              
-            }
-            else
+                
+                    PlayerRigid2d.velocity+=new Vector3(0.0f, 1.0f, 0.0f) * PlayerDoubleJumpPow;
+                    PlayerDoubleJump = false;
 
-            if (PlayerDoubleJump==true)
-            {
-                PlayerRigid2d.AddForce(new Vector3(0.0f, 1.0f, 0.0f) * PlayerDoubleJumpPow, ForceMode.Impulse);
-                PlayerDoubleJump = false;
-               
             }
         }
-     }
+    
 
     private void FlipPlayer()
     {
@@ -280,17 +284,12 @@ public class PlayerMovement : MonoBehaviour
     {
         FaceRight = !FaceRight;
         Vector3 Scale= transform.localScale;
-        //Scale.z *= -1;
-        Scale.x *= -1;
+       Scale.z *= -1;
+       //Scale.x *= -1;
         transform.localScale = Scale;
     }
    
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(PlayerFrontPos.position, CheckRadius);
-        Gizmos.DrawRay(boxCollider.bounds.center, Vector3.down);
-    }
+
 
     void CheckKnockDown()
     {
