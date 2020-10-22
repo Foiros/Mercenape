@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.Events;
@@ -46,7 +47,13 @@ public class PlayerMovement : MonoBehaviour
     CapsuleCollider capsuleCollider;
 
     public Animator animator;
-   
+
+    public float slideSpeed;
+
+    public bool isCollideWall;
+
+
+
     void Awake()
     {
         playerAttack = transform.GetComponent<PlayerAttackTrigger>();
@@ -61,22 +68,20 @@ public class PlayerMovement : MonoBehaviour
         CheckKnockDown();
 
         CheckPlayerGrounded();
-       //CheckPlayerGrabWall();
+        //CheckPlayerGrabWall();
         CheckPlayerBlock();
+        CheckCollideWall();
+        CheckOnTop();
+        InputHorrizontal(); // Included player flip
 
 
 
-        if (!isPlayerBlock && !isKnockDown) { 
-            PlayerJump();
-            InputHorrizontal(); // Included player flip
-            SetPlayerAnimator();// could change to call animation if needed
-        }
-
-      /*  if (Input.GetKey(KeyCode.Space))
+        if (!isPlayerBlock && !isKnockDown)
         {
-            print("jump");
-            PlayerRigid2d.AddForce(new Vector3(0.0f, 1.0f, 0.0f) * PlayerJumpPow, ForceMode.Impulse);
-        }*/
+            PlayerJump();
+            //SetPlayerAnimator();// could change to call animation if needed
+
+        }
 
     }
 
@@ -86,22 +91,22 @@ public class PlayerMovement : MonoBehaviour
         if (!isPlayerBlock && !isKnockDown)// when player is not blocking they can move
         {
             PlayerMove();
-         
+
+        }
+        if (isCollideWall && Input.GetKey(KeyCode.E))
+        {
             PlayerClimbWal();
-          
-            
         }
 
-      
     }
 
     void CheckPlayerGrounded()
     {
         
         float distance = 3f;
-        Vector3 dir = new Vector3(0, -1);
+        
 
-        if (Physics.Raycast(transform.position, dir, distance, groundlayermask))
+        if (Physics.Raycast(boxCollider.bounds.center, Vector3.down, distance, groundlayermask))
         {
             isGrounded = true;
         }
@@ -135,83 +140,93 @@ public class PlayerMovement : MonoBehaviour
     // check collide with wall 
    
     
-    
-    private void OnCollisionEnter(Collision collision)
+    void CheckCollideWall()
     {
-        if (collision.gameObject.CompareTag("wall")&& IsWallGrab==false)
+        float distance = 2f;
+        if (FaceRight)
         {
-            IsWallGrab = true;          
-        }
-        print("collide wall");
-    }
-
-    private void OnCollisionExit(Collision collision)
-    {
-       
-        if (collision.gameObject.CompareTag("wall") && IsWallGrab == true)
-        {
-            IsWallGrab = false;
+           isCollideWall=Physics.Raycast(transform.position, Vector3.right, distance, walllayermask);
             
         }
-        print("no wall");
+        else
+        {
+            isCollideWall=Physics.Raycast(transform.position, Vector3.left, distance, walllayermask);
+        }
+    }
+
+    void CheckOnTop()
+    {
+        float distance = 4f;
+        if (FaceRight)
+        {
+            isOnTop= (!Physics.Raycast(PlayerAbovePos.position , Vector3.right, distance, walllayermask)&& Physics.Raycast(PlayerUnderPos.position, Vector3.right, distance, walllayermask));
+
+        }
+        else
+        {
+            isOnTop = (!Physics.Raycast(PlayerAbovePos.position, Vector3.left, distance, walllayermask) && Physics.Raycast(PlayerUnderPos.position, Vector3.left, distance, walllayermask));
+        }
+
     }
     
     //player climb on wall
     void PlayerClimbWal()
     {
-        
-
-        if (IsWallGrab == true)
+        if (!isOnTop) 
         {
-            
-                if (Input.GetKey(KeyCode.E))// climb up
-                {
-                PlayerRigid2d.AddForce(new Vector3(0.0f, 1.0f, 0.0f) * PlayerClimbSpeed, ForceMode.Impulse); ;
-                    if (inputH != 0)
-                    {
-                        PlayerRigid2d.MovePosition((Vector3)transform.position + Vector3.right * inputH * Time.deltaTime);
+            PlayerRigid2d.velocity += ( new Vector3(0, 1, 0) * PlayerClimbSpeed  * Time.deltaTime);
+        }
+        else
+        {
+            PlayerRigid2d.velocity =(new Vector3(0, -1, 0) * slideSpeed * Time.deltaTime + Vector3.right* inputH*MidAirSpeed*Time.deltaTime);
+            if (Input.GetKey(KeyCode.Space))
+            {
+                PlayerRigid2d.AddForce(new Vector3(0.0f, 1.0f, 0.0f) * PlayerDoubleJumpPow, ForceMode.Impulse);
 
-                    
-                }
             }
         }
-      
+        
     }
+      
+    
 
     
-    /*  void CheckPlayerGrabWall()
-  {
-      // to check if player collide with the climable surface both front and behind 
-      IsTouchingFront = Physics2D.OverlapCircle(PlayerFrontPos.position, CheckRadius, walllayermask);
-      IsTouchingBehind = Physics2D.OverlapCircle(PlayerBehindPos.position, CheckRadius, walllayermask);
-
-      if ((IsTouchingFront == true) || IsTouchingBehind == true)
-      { IsWallGrab = true; }
-      else { IsWallGrab = false; }
-  }
-*/
-
-
-    //generic player movement
+ 
     private void PlayerMove()
     {
+        if (!isCollideWall)
+        {
             if (isGrounded) // if player is move on the ground with normal speed
             {
-                if (inputH != 0)
+                    PlayerRigid2d.MovePosition((Vector3)transform.position + Vector3.right * inputH * PlayerSpeed * Time.deltaTime);
+                    // animator.SetBool("IsRunning", true);
+
+            }
+            else if (!isGrounded)// if player is jumping we can have them some control
+            {
+                    PlayerRigid2d.MovePosition((Vector3)transform.position + Vector3.right * inputH * MidAirSpeed * Time.deltaTime);
+            }
+        }
+        if (isCollideWall)
+        {
+            if (isGrounded)
+            {
+                if (inputH * transform.localScale.x == -1)
                 {
-                    PlayerRigid2d.MovePosition((Vector3)transform.position + Vector3.right * inputH * PlayerSpeed* Time.deltaTime);
-                    animator.SetBool("IsRunning", true);
+                    PlayerRigid2d.MovePosition((Vector3)transform.position + Vector3.right * inputH * PlayerSpeed * Time.deltaTime);
                 }
-   
             }
-            else if(!isGrounded)// if player is jumping we can have them some control
+            else if ((!isGrounded))
             {
-            if (inputH != 0)
-            {
-                PlayerRigid2d.MovePosition((Vector3)transform.position + Vector3.right * inputH *MidAirSpeed* Time.deltaTime);
+                if (inputH * transform.localScale.x == -1)
+                {
+                    PlayerRigid2d.MovePosition((Vector3)transform.position + Vector3.right * inputH * MidAirSpeed * Time.deltaTime);
+                }
             }
-        } 
-        
+
+        }
+
+
     }
 
 
@@ -248,18 +263,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
      }
-
-    // TODO make a end and start time to check if moving button held more than some sec to increase or decrease move speed
-    /*void CheckMoveButtonTime()
-    {
-        float endTime, startTime;
-
-        if (Input.GetKeyDown(KeyCode.A)|| Input.GetKeyDown(KeyCode.D))
-        {
-
-
-        }
-    }*/   
+   
 
     private void SetPlayerAnimator()
     {
@@ -290,6 +294,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(PlayerFrontPos.position, CheckRadius);
+        Gizmos.DrawRay(boxCollider.bounds.center, Vector3.down);
     }
 
     void CheckKnockDown()
