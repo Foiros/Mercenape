@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 // Created by Bao: Only script for spawning enemies
 public class EnemySpawnerScript : MonoBehaviour
@@ -31,6 +32,8 @@ public class EnemySpawnerScript : MonoBehaviour
     private List<Transform> spawnList = new List<Transform>();
 
     public SpawnState state = SpawnState.Counting;
+
+    [SerializeField] private GameObject completeWaveScreen;
 
     private PlayerCurrency playerCurrency;
     private GameMaster gm;
@@ -75,7 +78,12 @@ public class EnemySpawnerScript : MonoBehaviour
         {
             // Otherwise count down
             groupCountdown -= Time.deltaTime;
-        }      
+        }   
+        
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            playerCurrency.playerKarma = gm.lvMaxKarma;
+        }
     }
 
     // Group completed and prepare new group
@@ -97,7 +105,9 @@ public class EnemySpawnerScript : MonoBehaviour
     {
         if (playerCurrency.playerKarma >= gm.lvMaxKarma)
         {
-            print("Wave " + currentWave + " completed!!!!!");
+            Time.timeScale = 0;
+            completeWaveScreen.SetActive(true);
+
             currentWave++;
             currentGroup = 0;   // Reset group
             groupCountdown = timeBetweenGroups * 2; // Wait a bit longer than normal
@@ -110,7 +120,7 @@ public class EnemySpawnerScript : MonoBehaviour
         searchCountdown -= Time.deltaTime;
         if (searchCountdown <= 0f)
         {
-            searchCountdown = 1f;
+            searchCountdown = 2f;   // Check every 2 seconds
             if (GameObject.FindGameObjectWithTag("Enemy") == null)
             {
                 return false;
@@ -185,7 +195,8 @@ public class EnemySpawnerScript : MonoBehaviour
         }
     }
 
-    int RandomMower()
+    // Random Mower generator
+    private int RandomMower()
     {
         bool isOneMower = (Random.value > 0.85f);
 
@@ -200,4 +211,24 @@ public class EnemySpawnerScript : MonoBehaviour
     }
 
     private float RandomSpawnRate() { return Random.Range(0.2f, 0.5f); }
+
+
+
+    public void NextWaveButton()
+    {
+        Time.timeScale = 1;
+        completeWaveScreen.SetActive(false);
+    }
+
+    public void ForgeButton()
+    {
+        Time.timeScale = 1;
+        SaveManager.SaveCurrency(playerCurrency);
+        SceneManager.LoadScene("Forge");
+    }
+
+    public void NextLevelButton()
+    {
+
+    }
 }
