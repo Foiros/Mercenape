@@ -39,7 +39,6 @@ public class PlayerMovement : MonoBehaviour
     public bool isPlayerBlock = false;
 
     [HideInInspector] public bool isKnockDown = false;
-    [HideInInspector] public bool isBeingKnockedDown;
     [HideInInspector] public int getUpCount = 0;
 
     BoxCollider boxCollider;
@@ -57,7 +56,7 @@ public class PlayerMovement : MonoBehaviour
     {
         playerAttack = transform.GetComponent<PlayerAttackTrigger>();
         PlayerRigid2d = transform.GetComponent<Rigidbody>();
-        PlayerAnimator = transform.GetComponent<Animator>();
+        //PlayerAnimator = transform.GetComponent<Animator>();
         boxCollider = transform.GetComponent<BoxCollider>();
         capsuleCollider = transform.GetComponent<CapsuleCollider>();
     }
@@ -71,46 +70,41 @@ public class PlayerMovement : MonoBehaviour
         CheckPlayerBlock();
         CheckCollideWall();
         CheckOnTop();
-        InputHorrizontal(); // Included player flip
+        
 
         if (isGrounded || isCollideWall)
         {
             PlayerDoubleJump = true;
         }
 
-        /*  if (isPlayerBlock)
-          {
-              animator.SetBool("Blocking", true);
-          }
-          else
-          {
-              animator.SetBool("Blocking", false);
-          }*/
+        if (isPlayerBlock)
+        {
+            animator.SetBool("Blocking", true);
+        }
+        else
+        {
+            animator.SetBool("Blocking", false);
+        }
 
         if (!isPlayerBlock && !isKnockDown)
         {
             if (Input.GetKey(KeyCode.Space)) {
                 PlayerJump();    
-                print("space");
-            
-            
+                
+                       
             }
 
 
-
-            //SetPlayerAnimator();// could change to call animation if needed
         }
-
-
-      
+    
 
     }
 
     void FixedUpdate()
     {
-
         if (!isPlayerBlock && !isKnockDown)// when player is not blocking they can move
         {
+            InputHorrizontal(); // Included player flip
             PlayerMove();
 
         }
@@ -124,7 +118,7 @@ public class PlayerMovement : MonoBehaviour
     void CheckPlayerGrounded()
     {
         
-        float distance = 3f;
+        float distance = 1f;
         
 
         if (Physics.Raycast(boxCollider.bounds.center, Vector3.down, distance, groundlayermask))
@@ -154,8 +148,16 @@ public class PlayerMovement : MonoBehaviour
     void InputHorrizontal()
     {
         inputH = Input.GetAxisRaw("Horizontal");// Note if dont get raw axis it feels like splippery
-
         FlipPlayer();
+
+        if (inputH != 0)
+        {
+            animator.SetBool("IsRunning", true);
+        }
+        else
+        {
+            animator.SetBool("IsRunning", false);
+        }
     }
        
     // check collide with wall 
@@ -209,9 +211,6 @@ public class PlayerMovement : MonoBehaviour
         
     }
       
-    
-
-    
  
     private void PlayerMove()
     {
@@ -219,14 +218,13 @@ public class PlayerMovement : MonoBehaviour
         {
             if (isGrounded) // if player is move on the ground with normal speed
             {
-                    PlayerRigid2d.MovePosition((Vector3)transform.position + Vector3.right * inputH * PlayerSpeed * Time.deltaTime);
-                    // animator.SetBool("IsRunning", true);
-
+                PlayerRigid2d.MovePosition((Vector3)transform.position + Vector3.right * inputH * PlayerSpeed * Time.deltaTime);
             }
             else if (!isGrounded)// if player is jumping we can have them some control
             {
-                    PlayerRigid2d.MovePosition((Vector3)transform.position + Vector3.right * inputH * MidAirSpeed * Time.deltaTime);
+                PlayerRigid2d.MovePosition((Vector3)transform.position + Vector3.right * inputH * MidAirSpeed * Time.deltaTime);
             }
+            
         }
         if (isCollideWall)
         {
@@ -277,32 +275,23 @@ public class PlayerMovement : MonoBehaviour
     {
         if (inputH <0  &&  FaceRight == true) { Flip(); }
         else if (inputH > 0 && FaceRight == false) { Flip(); }
-        
+       
     }
 
     private void Flip()
     {
         FaceRight = !FaceRight;
         Vector3 Scale= transform.localScale;
-       Scale.z *= -1;
-       //Scale.x *= -1;
+        Scale.z *= -1;
+        //Scale.x *= -1;
         transform.localScale = Scale;
     }
    
-
-
     void CheckKnockDown()
-    {
-        if (isBeingKnockedDown)
-        {
-            animator.SetBool("KnockDown", true);
-
-            isBeingKnockedDown = false;
-            isKnockDown = true;
-        }
+    {      
         if(isKnockDown && getUpCount >= 5)
         {
-            animator.SetBool("BounceUp", true);
+            animator.SetTrigger("BounceUp");
             isKnockDown = false;
             playerAttack.enabled = true;
         }

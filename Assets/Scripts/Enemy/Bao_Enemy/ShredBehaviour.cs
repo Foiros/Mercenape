@@ -25,18 +25,18 @@ public class ShredBehaviour : EnemyBehaviour
     protected void OnCollisionEnter(Collision col)
     {
         if (col.gameObject.CompareTag("Player"))
-        {          
+        {
             // If player face against Shred and is blocking
             if (IsFacingRight() != playerMovement.FaceRight && playerMovement.isPlayerBlock)
             {
-                playerMovement.animator.SetBool("TakingHitBlocking", true);
+                playerMovement.animator.SetTrigger("TakingHitBlocking");
                 // Block and immobilize Shred
                 StopCoroutine("ImmobilizeShred");
                 StartCoroutine("ImmobilizeShred");
             }
             else
             {
-                // ShredAttack();
+                ShredAttack();
             }
         }
     }
@@ -48,10 +48,11 @@ public class ShredBehaviour : EnemyBehaviour
         if (Mathf.Abs(player.transform.position.x - frontDetection.position.x) > 3f) { return; }
 
         isAttacker = true;
+        playerMovement.animator.SetTrigger("KnockDown");
         StartCoroutine("Attacking");
         playerStat.PlayerTakeDamage(stat.damage);
         playerMovement.getUpCount = 0;
-        playerMovement.isBeingKnockedDown = true;
+        playerMovement.isKnockDown = true;
 
         if (Random.Range(0f, 100f) < bleedChance)
         {

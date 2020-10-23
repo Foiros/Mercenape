@@ -119,7 +119,7 @@ public class EnemyBehaviour : MonoBehaviour
     // Process when player get knocked down, mainly in Shred and Mower script
     protected virtual void KnockDownProcess()
     {
-        if (!playerMovement.isBeingKnockedDown) { return; }
+        if (!playerMovement.isKnockDown) { return; }
     }
 
     protected IEnumerator CheckEnemyDeath()
