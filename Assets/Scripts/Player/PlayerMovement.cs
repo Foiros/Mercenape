@@ -16,7 +16,7 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector] public Animator PlayerAnimator;
     [HideInInspector] public Rigidbody PlayerRigid2d;
 
-    float inputH; 
+    float inputH,inputV; 
     
     bool isGrounded;
     
@@ -27,13 +27,7 @@ public class PlayerMovement : MonoBehaviour
     public Transform PlayerUnderPos, PlayerAbovePos;
     public float CheckRadius;
     
-
-    bool IsTouchingFront;
-    bool IsTouchingBehind;
-    
-    
     bool isOnTop;
-    bool IsWallGrab = false;
     public float PlayerClimbSpeed;
 
     public bool isPlayerBlock = false;
@@ -47,9 +41,10 @@ public class PlayerMovement : MonoBehaviour
     public Animator animator;
 
     public float slideSpeed;
-
     public bool isCollideWall;
 
+    bool isGrabWall = false;
+    bool isJumping = false;
 
 
     void Awake()
@@ -70,33 +65,46 @@ public class PlayerMovement : MonoBehaviour
         CheckPlayerBlock();
         CheckCollideWall();
         CheckOnTop();
-        
-
+        CheckGrabWall();
+        InputHorrizontal(); // Included player flip
+        InputVertical();
+      
         if (isGrounded || isCollideWall)
         {
             PlayerDoubleJump = true;
+
+        }
+        if (isGrounded)
+        {
+            isJumping = false;
         }
 
-        if (isPlayerBlock)
-        {
-            animator.SetBool("Blocking", true);
-        }
-        else
-        {
-            animator.SetBool("Blocking", false);
-        }
+
+
 
         if (!isPlayerBlock && !isKnockDown)
         {
             if (Input.GetKey(KeyCode.Space)) {
                 PlayerJump();    
                 
-                       
             }
 
-
         }
-    
+
+
+        if (isGrabWall == true)
+        {
+            PlayerRigid2d.useGravity = false;
+            PlayerClimbWal();
+        }
+        else
+        {
+            PlayerRigid2d.useGravity = true;
+        }
+
+
+
+        SetAnimatorPara();
 
     }
 
@@ -104,14 +112,11 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!isPlayerBlock && !isKnockDown)// when player is not blocking they can move
         {
-            InputHorrizontal(); // Included player flip
+            
             PlayerMove();
 
         }
-        if (isCollideWall && Input.GetKey(KeyCode.E))
-        {
-            PlayerClimbWal();
-        }
+      
 
     }
 
@@ -159,6 +164,13 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("IsRunning", false);
         }
     }
+
+
+    void InputVertical()
+    {
+        inputV = Input.GetAxisRaw("Vertical");
+    }
+
        
     // check collide with wall 
    
@@ -179,7 +191,7 @@ public class PlayerMovement : MonoBehaviour
 
     void CheckOnTop()
     {
-        float distance = 4f;
+        float distance = 2f;
         if (FaceRight)
         {
             isOnTop= (!Physics.Raycast(PlayerAbovePos.position , Vector3.right, distance, walllayermask)&& Physics.Raycast(PlayerUnderPos.position, Vector3.right, distance, walllayermask));
@@ -191,27 +203,63 @@ public class PlayerMovement : MonoBehaviour
         }
 
     }
-    
+
+    void CheckGrabWall()
+    {
+        
+
+
+        if (isCollideWall)
+        {
+            if (isGrabWall == false)
+            {
+                if (Input.GetKey(KeyCode.E) && !Input.GetKey(KeyCode.S))
+                {
+                    isGrabWall = true;
+                }
+            }
+            else
+            {
+                if(Input.GetKey(KeyCode.E)&& Input.GetKey(KeyCode.S))
+                {
+                    isGrabWall = false;
+                }
+            }
+        }
+        if (!isCollideWall)
+        {
+            isGrabWall = false;
+        }
+
+    }
+
     //player climb on wall
     void PlayerClimbWal()
     {
-        if (!isOnTop) 
+        if (inputV == 0)
         {
-            PlayerRigid2d.velocity += ( new Vector3(0, 1, 0) * PlayerClimbSpeed  * Time.deltaTime);
+
+            PlayerRigid2d.velocity = new Vector3(PlayerRigid2d.velocity.x, 0, 0);
         }
         else
         {
-            PlayerRigid2d.velocity =new Vector3(PlayerRigid2d.velocity.x, 0, 0);
-            if (Input.GetKey(KeyCode.Space))
+            if (!isOnTop)
             {
-                PlayerRigid2d.AddForce(new Vector3(0.0f, 1.0f, 0.0f) * PlayerDoubleJumpPow, ForceMode.Impulse);
-
+                PlayerRigid2d.velocity += (new Vector3(0, 1, 0) * PlayerClimbSpeed *inputV* Time.deltaTime);
+            }
+            else
+            {
+                PlayerRigid2d.velocity = new Vector3(PlayerRigid2d.velocity.x, 0, 0);
+                if (Input.GetKey(KeyCode.Space))
+                {
+                    PlayerRigid2d.velocity += new Vector3(0.0f, 1.0f, 0.0f) * PlayerDoubleJumpPow;
+                    PlayerDoubleJump = false;
+                }
             }
         }
-        
     }
-      
- 
+
+
     private void PlayerMove()
     {
         if (!isCollideWall)
@@ -304,5 +352,20 @@ public class PlayerMovement : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space)) { getUpCount++; }          
         }
     }
+
+
+
+    void SetAnimatorPara()
+    {
+        animator.SetFloat("inputH", Mathf.Abs(inputH));
+        animator.SetFloat("vSpeed", PlayerRigid2d.velocity.y);
+        animator.SetBool("isJumping", isJumping);
+        animator.SetBool("isGrounded", isGrounded);
+        animator.SetBool("Blocking", isPlayerBlock);
+        animator.SetBool("isWallGrab", isGrabWall);
+        animator.SetFloat("inputV", Mathf.Abs(inputV));
+
+    }
+
 }
 
