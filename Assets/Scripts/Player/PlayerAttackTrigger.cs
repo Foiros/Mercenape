@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// Arttu Paldán modified on 24.9.2020:
+// Arttu Paldán modified on 24.9.2020: Added SetWeaponStats function for setting 
+// Edited by Arttu Paldán on 22-23.10.2020: Added the ability to draw the attack radius with Vector3's. Also added the ability for player attack to cause bleed effect. 
 public class PlayerAttackTrigger : MonoBehaviour
 {
     private WeaponStates weaponStates;
+    private PlayerMovement playerMovement;
 
     private List<AbstractWeapon> weapons;
     
@@ -14,23 +16,18 @@ public class PlayerAttackTrigger : MonoBehaviour
 
     public Transform Attackpos;
     private Vector3 scaleChange, positionChange;
-    
-    public float WeaponLocation;
-    public float AttackSize;
 
     public LayerMask EnemyLayerMask;
-    public float PlayerDamage;
+    [SerializeField] private float PlayerDamage;
 
     public Transform frontPlayerPosition;
     private int weaponID;
-    private float weaponSpeed;
-    // private float hitboxDistFromPlayer;
+    [SerializeField] private float weaponSpeed, weaponBleedDamage, weaponBleedDuration;
+    private int bleedTicks;
 
     public Animator PlayerAnimator;
     
     private bool IsPlayerAttack = false;
-
-    PlayerMovement playerMovement;
 
     void Awake()
     {
@@ -65,6 +62,9 @@ public class PlayerAttackTrigger : MonoBehaviour
         weaponID = weaponStates.GetChosenWeaponID();
         PlayerDamage = weaponStates.GetWeaponImpactDamage();
         weaponSpeed = weaponStates.GetWeaponSpeed();
+        weaponBleedDamage = weaponStates.GetWeaponBleedDamage();
+        weaponBleedDuration = weaponStates.GetBleedDuration();
+        bleedTicks = weaponStates.GetWeaponBleedTicks();
 
         positionChange = weapons[weaponID].GetHitBoxLocation();
         scaleChange = weapons[weaponID].GetHitBoxSize();
@@ -97,6 +97,12 @@ public class PlayerAttackTrigger : MonoBehaviour
                 if (enemiesToDamage[i].GetType() == typeof(CapsuleCollider))
                 {
                     enemiesToDamage[i].GetComponentInParent<MowerBehaviour>().DamagingBackside(PlayerDamage);
+                    
+                    if(weaponBleedDamage > 0 && bleedTicks > 0)
+                    {
+                        enemiesToDamage[i].GetComponentInParent<MowerBehaviour>().ApplyBleeding(weaponBleedDamage, weaponBleedDuration, bleedTicks);
+                    }
+                    
                     PlayerAnimator.speed = 1;
                 }
                 else if (enemiesToDamage[i].GetType() == typeof(SphereCollider))
@@ -107,6 +113,12 @@ public class PlayerAttackTrigger : MonoBehaviour
                 else
                 {
                     enemiesToDamage[i].GetComponentInParent<EnemyBehaviour>().TakeDamage(PlayerDamage);
+                    
+                    if(weaponBleedDamage > 0 && bleedTicks > 0)
+                    {
+                        enemiesToDamage[i].GetComponentInParent<EnemyBehaviour>().ApplyBleeding(weaponBleedDamage, weaponBleedDuration, bleedTicks);
+                    }
+                    
                     PlayerAnimator.speed = 1;
                 }
             }

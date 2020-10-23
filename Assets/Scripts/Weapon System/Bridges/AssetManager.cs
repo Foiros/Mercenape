@@ -69,12 +69,12 @@ public class AssetManager : MonoBehaviour
     // Constructs weapons and upgrades and adds them to their own lists. 
     void SetUpWeaponsAndUpgrades()
     {
-        weapons.Add(new TestWeapon("Weapon 1", "Does things", 0, 0, 2.0f, 1, 10, new Vector3(0, 3, 4), new Vector3(4, 1, 2), weaponImages[0], chosenWeaponImages[0], weaponModels[0]));
-        weapons.Add(new TestWeapon("Weapon 2", "Does things", 1, 25, 1.0f, 7, 15, new Vector3(0, 3, 4), new Vector3(4, 1, 2), weaponImages[1], chosenWeaponImages[1], weaponModels[1]));
-        weapons.Add(new TestWeapon("Weapon 3", "Does things", 2, 100, 1.5f, 3, 13, new Vector3(0, 3, 4), new Vector3(4, 1, 2), weaponImages[2], chosenWeaponImages[2], weaponModels[2]));
-        weapons.Add(new TestWeapon("Weapon 4", "Does things", 3, 150, 2.5f, 1, 5, new Vector3(0, 3, 4), new Vector3(4, 1, 2), weaponImages[3], chosenWeaponImages[3], weaponModels[3]));
+        weapons.Add(new TestWeapon("Weapon 1", "Does things", 0, 0, 1.5f, 5, 5, 2, 2, 1, new Vector3(0, 3, 4), new Vector3(4, 1, 2), weaponImages[0], chosenWeaponImages[0], weaponModels[0]));
+        weapons.Add(new TestWeapon("Weapon 2", "Does things", 1, 25, 1.0f, 7, 15, 2, 3,  1, new Vector3(0, 3, 4), new Vector3(4, 1, 2), weaponImages[1], chosenWeaponImages[1], weaponModels[1]));
+        weapons.Add(new TestWeapon("Weapon 3", "Does things", 2, 100, 1.5f, 3, 13, 2, 3, 1, new Vector3(0, 3, 4), new Vector3(4, 1, 2), weaponImages[2], chosenWeaponImages[2], weaponModels[2]));
+        weapons.Add(new TestWeapon("Weapon 4", "Does things", 3, 150, 2.5f, 1, 5, 2, 3, 1, new Vector3(0, 3, 4), new Vector3(4, 1, 2), weaponImages[3], chosenWeaponImages[3], weaponModels[3]));
 
-        upgrades.Add(new TestUpgrade("Speed Upgrade", "Increases the speed of your attacks", 0, 25, upgradeImages[0]));
+        upgrades.Add(new TestUpgrade("Speed Upgrade", "Increases the Speed of your attacks", 0, 25, upgradeImages[0]));
     }
 
     // Basically this sends the weapons and upgrade lists to the scripts that use them. 

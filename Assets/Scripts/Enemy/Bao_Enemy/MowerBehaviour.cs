@@ -109,7 +109,7 @@ public class MowerBehaviour : EnemyBehaviour
         {
             speed = stat.runningSpeed / 2;
 
-            currentHP -= playerDmg;           
+            currentHP -= playerDmg;
 
             barHealth.UpdateHealthBar(currentHP, stat.maxHP);
 
@@ -155,7 +155,7 @@ public class MowerBehaviour : EnemyBehaviour
     protected void OnCollisionEnter(Collision col)
     {
         if (col.gameObject.CompareTag("Player"))
-        {            
+        {
             // If player is super near Mower's head
             if (Mathf.Abs(player.transform.position.x - frontDetection.position.x) <= 1.5f)
             {
@@ -165,7 +165,7 @@ public class MowerBehaviour : EnemyBehaviour
                     isAttacking = true;
                     MowerAttack();
                 }
-            }         
+            }
         }
     }
 
@@ -187,7 +187,7 @@ public class MowerBehaviour : EnemyBehaviour
     private void OnCollisionExit(Collision col)
     {
         if (col.gameObject.CompareTag("Player"))
-        {      
+        {
             // Stop riding
             isRiding = false;
         }
@@ -214,7 +214,7 @@ public class MowerBehaviour : EnemyBehaviour
         isAttacker = true;
 
         StopAllCoroutines();
-        StartCoroutine("Attacking");       
+        StartCoroutine("Attacking");
     }
 
     protected override void KnockDownProcess()
@@ -239,7 +239,7 @@ public class MowerBehaviour : EnemyBehaviour
 
             isAttacker = false;
             Invoke("ReturnPhysics", 0.5f);
-        }        
+        }
     }
 
     void ReturnPhysics()
@@ -262,7 +262,7 @@ public class MowerBehaviour : EnemyBehaviour
 
         yield return new WaitForSeconds(6f);
 
-        ReturnPhysics();      
+        ReturnPhysics();
     }
 
     // Deal damage
@@ -329,6 +329,22 @@ public class MowerBehaviour : EnemyBehaviour
                 isRiding = false;
                 playerMovement.PlayerRigid2d.velocity = Vector3.up * 30;
             }
+        }
+    }
+
+    public override void ApplyBleeding(float damage, float duration, int ticks)
+    {
+        base.ApplyBleeding(damage, duration, ticks);
+        StartCoroutine(BleedTick());
+    }
+
+    IEnumerator BleedTick()
+    {
+        while (currentBleedTicks <= bleedTicks)
+        {
+            TakeDamage(weaponBleedDamage);
+            yield return new WaitForSeconds(weaponBleedDuration);
+            currentBleedTicks++;
         }
     }
 }

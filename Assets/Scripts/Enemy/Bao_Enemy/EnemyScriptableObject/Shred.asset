@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Shred
   damage: 10
-  maxHP: 50
+  maxHP: 30
   runningSpeed: 20

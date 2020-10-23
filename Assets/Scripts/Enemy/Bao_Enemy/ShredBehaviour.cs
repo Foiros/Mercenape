@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Created by Bao: Shred's Behaviour, child of EnemyBehaviour
+// Edited by Arttu Paldán on 22-23.10.2020: Made some changes to the knockdown effect to implement knocked down animations. Also implemented the weapon bleed damage. 
 public class ShredBehaviour : EnemyBehaviour
 {      
     [SerializeField] private float bleedChance;   
@@ -111,6 +112,20 @@ public class ShredBehaviour : EnemyBehaviour
     {
         base.TakeDamage(playerDamage);
     }
+
+    public override void ApplyBleeding(float damage, float duration, int ticks)
+    {
+        base.ApplyBleeding(damage, duration, ticks);
+        StartCoroutine(BleedTick());
+    }
+
+    IEnumerator BleedTick()
+    {
+        while (currentBleedTicks <= bleedTicks)
+        {
+            TakeDamage(weaponBleedDamage);
+            yield return new WaitForSeconds(weaponBleedDuration);
+            currentBleedTicks++;
+        }
+    }
 }
-
-

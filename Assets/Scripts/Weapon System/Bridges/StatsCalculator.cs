@@ -72,7 +72,7 @@ public class StatsCalculator : MonoBehaviour
         weaponSpeed = weaponsArray.GetSpeed();
         weaponImpactDamage = weaponsArray.GetImpactDamage();
 
-        actualWeaponSpeed = weaponSpeed + savedAmountOfSpeed - weaponWeight;
+        actualWeaponSpeed = weaponSpeed + savedAmountOfSpeed - (weaponWeight / 10);
         actualWeaponImpactDamage = weaponImpactDamage + weaponWeight;
     }
 
@@ -87,11 +87,11 @@ public class StatsCalculator : MonoBehaviour
 
         if (amountOfSpeed > 0)
         {
-            actualWeaponSpeed = weaponSpeed + amountOfSpeed - weaponWeight;
+            actualWeaponSpeed = weaponSpeed + amountOfSpeed - (weaponWeight / 10);
         }
         else
         {
-            actualWeaponSpeed = weaponSpeed - weaponWeight;
+            actualWeaponSpeed = weaponSpeed - (weaponWeight / 10);
         }
 
         actualWeaponImpactDamage =  weaponImpactDamage + weaponWeight;

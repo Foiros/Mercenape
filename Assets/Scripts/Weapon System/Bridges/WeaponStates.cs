@@ -17,7 +17,8 @@ public class WeaponStates: MonoBehaviour
     private int weaponID;
     private int savedSpeedAmount1, savedSpeedAmount2, savedSpeedAmount3, savedSpeedAmount4;
 
-   [SerializeField] private float speed, impactDamage;
+    [SerializeField] private float speed, impactDamage, bleedDamage, bleedDuration;
+    private int bleedTicks;
 
     void Awake()
     {
@@ -101,6 +102,9 @@ public class WeaponStates: MonoBehaviour
 
         speed = calculator.GetSpeed();
         impactDamage = calculator.GetImpactDamage();
+        bleedDamage = weaponsArray.GetBleedDamage();
+        bleedDuration = weaponsArray.GetBleedDuration();
+        bleedTicks = weaponsArray.GetBleedTicks();
     }
 
     // Function for loading necessary data.
@@ -128,4 +132,7 @@ public class WeaponStates: MonoBehaviour
     public List<int> GetSavedSpeeds() { return savedSpeedAmountsList; }
     public float GetWeaponSpeed() { return speed; }
     public float GetWeaponImpactDamage() { return impactDamage; }
+    public float GetWeaponBleedDamage() { return bleedDamage; }
+    public float GetBleedDuration() { return bleedDuration; }
+    public int GetWeaponBleedTicks() { return bleedTicks; }
 }

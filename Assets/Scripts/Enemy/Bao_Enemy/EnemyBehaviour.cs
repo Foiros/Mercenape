@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 // Created by Bao: main enemy behaviour (maybe change name later), parent of ShredBehaviour and MowerBehaviour
+// Edited by Arttu Paldán on 23.10.2020: Added an virtual function for player to add bleed on enemies. 
 public class EnemyBehaviour : MonoBehaviour
 {
     [SerializeField] protected EnemyStats stat;
@@ -14,7 +14,10 @@ public class EnemyBehaviour : MonoBehaviour
     protected float speed;
     [SerializeField] protected float currentHP;
 
-    protected bool isAttacker = false;    // For stunning process
+    protected bool isAttacker = false; // For stunning process
+    
+    protected float weaponBleedDamage, weaponBleedDuration;
+    protected int bleedTicks, currentBleedTicks;
 
     private Vector3 enemyRotation;
     protected Rigidbody rb;
@@ -141,5 +144,12 @@ public class EnemyBehaviour : MonoBehaviour
     protected void FreezePosY()
     {
         rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+    }
+
+    public virtual void ApplyBleeding(float damage, float duration, int ticks) 
+    {
+        weaponBleedDamage = damage;
+        weaponBleedDuration = duration;
+        bleedTicks = ticks;
     }
 }
