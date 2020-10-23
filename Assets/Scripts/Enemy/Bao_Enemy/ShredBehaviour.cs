@@ -36,6 +36,7 @@ public class ShredBehaviour : EnemyBehaviour
             }
             else
             {
+                playerMovement.isPlayerBlock = false;
                 ShredAttack();
             }
         }
@@ -48,7 +49,12 @@ public class ShredBehaviour : EnemyBehaviour
         if (Mathf.Abs(player.transform.position.x - frontDetection.position.x) > 3f) { return; }
 
         isAttacker = true;
-        playerMovement.animator.SetTrigger("KnockDown");
+
+        if (!playerMovement.animator.GetCurrentAnimatorStateInfo(0).IsName("Armature|KnockedDown"))
+        {
+            playerMovement.animator.SetTrigger("KnockDown");
+        }
+
         StartCoroutine("Attacking");
         playerStat.PlayerTakeDamage(stat.damage);
         playerMovement.getUpCount = 0;
@@ -106,7 +112,7 @@ public class ShredBehaviour : EnemyBehaviour
     {
         base.KnockDownProcess();     // Still normally stun player
         
-        if (!isAttacker) { return; }
+        //if (!isAttacker) { return; }
     }
 
     public override void TakeDamage(float playerDamage)

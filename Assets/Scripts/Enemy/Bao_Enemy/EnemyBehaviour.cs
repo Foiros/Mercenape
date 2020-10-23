@@ -130,6 +130,7 @@ public class EnemyBehaviour : MonoBehaviour
             rb.constraints = RigidbodyConstraints.None;
             transform.rotation = Quaternion.Euler(90, Random.Range(0f, 360f), 0);
             speed = 0;
+            rb.velocity = Vector3.zero;
             rb.useGravity = false;
             boxCollier.enabled = false;
 

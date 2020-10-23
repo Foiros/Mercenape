@@ -61,36 +61,35 @@ public class PlayerMovement : MonoBehaviour
         CheckKnockDown();
 
         CheckPlayerGrounded();
-        //CheckPlayerGrabWall();
-        CheckPlayerBlock();
+        //CheckPlayerGrabWall();       
         CheckCollideWall();
         CheckOnTop();
         CheckGrabWall();
-        InputHorrizontal(); // Included player flip
-        InputVertical();
-      
+     
         if (isGrounded || isCollideWall)
         {
             PlayerDoubleJump = true;
-
         }
         if (isGrounded)
         {
             isJumping = false;
         }
 
-
-
+        if (!isKnockDown)
+        {
+            CheckPlayerBlock();
+            InputHorrizontal(); // Included player flip
+            InputVertical();
+        }
 
         if (!isPlayerBlock && !isKnockDown)
         {
-            if (Input.GetKey(KeyCode.Space)) {
-                PlayerJump();    
-                
-            }
-
+            if (Input.GetKey(KeyCode.Space))
+            {
+                isJumping = true;
+                PlayerJump();
+            }  
         }
-
 
         if (isGrabWall == true)
         {
@@ -102,8 +101,7 @@ public class PlayerMovement : MonoBehaviour
             PlayerRigid2d.useGravity = true;
         }
 
-
-
+       
         SetAnimatorPara();
 
     }
@@ -111,20 +109,15 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         if (!isPlayerBlock && !isKnockDown)// when player is not blocking they can move
-        {
-            
+        {          
             PlayerMove();
-
-        }
-      
-
+        }     
     }
 
     void CheckPlayerGrounded()
-    {
-        
-        float distance = 1f;
-        
+    {      
+        float distance = .5f;
+        Debug.DrawRay(boxCollider.bounds.center, Vector3.down * distance, Color.red);
 
         if (Physics.Raycast(boxCollider.bounds.center, Vector3.down, distance, groundlayermask))
         {
@@ -134,11 +127,12 @@ public class PlayerMovement : MonoBehaviour
         {
             isGrounded = false;
         }
-
     }
 
     void CheckPlayerBlock()
     {
+        if (!isGrounded) { return; }    // Don't check if player is on air
+
         // check if player click right mouse 
         if (Input.GetMouseButton(1))
         {
@@ -165,23 +159,18 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-
     void InputVertical()
     {
         inputV = Input.GetAxisRaw("Vertical");
     }
-
-       
-    // check collide with wall 
-   
-    
+      
+    // check collide with wall  
     void CheckCollideWall()
     {
         float distance = 2f;
         if (FaceRight)
         {
-           isCollideWall=Physics.Raycast(transform.position, Vector3.right, distance, walllayermask);
-            
+           isCollideWall=Physics.Raycast(transform.position, Vector3.right, distance, walllayermask);           
         }
         else
         {
@@ -195,7 +184,6 @@ public class PlayerMovement : MonoBehaviour
         if (FaceRight)
         {
             isOnTop= (!Physics.Raycast(PlayerAbovePos.position , Vector3.right, distance, walllayermask)&& Physics.Raycast(PlayerUnderPos.position, Vector3.right, distance, walllayermask));
-
         }
         else
         {
@@ -205,10 +193,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     void CheckGrabWall()
-    {
-        
-
-
+    {      
         if (isCollideWall)
         {
             if (isGrabWall == false)
@@ -336,35 +321,41 @@ public class PlayerMovement : MonoBehaviour
     }
    
     void CheckKnockDown()
-    {      
-        if(isKnockDown && getUpCount >= 5)
-        {
-            animator.SetTrigger("BounceUp");
-            isKnockDown = false;
-            playerAttack.enabled = true;
-        }
-        else if (isKnockDown)
+    {             
+        if (isKnockDown)
         {
             animator.SetBool("KnockedDown", true);
 
             playerAttack.enabled = false;
 
-            if (Input.GetKeyDown(KeyCode.Space)) { getUpCount++; }          
+            if (Input.GetKeyDown(KeyCode.Space)) { getUpCount++; }
+
+            if (getUpCount >= 5)
+            {
+                getUpCount = 0;
+                isKnockDown = false;
+                
+                animator.SetTrigger("BounceUp");
+                animator.SetBool("KnockedDown", false);
+                
+                playerAttack.enabled = true;
+
+            }
         }
     }
-
-
 
     void SetAnimatorPara()
     {
         animator.SetFloat("inputH", Mathf.Abs(inputH));
+        animator.SetFloat("inputV", Mathf.Abs(inputV));
         animator.SetFloat("vSpeed", PlayerRigid2d.velocity.y);
+
         animator.SetBool("isJumping", isJumping);
         animator.SetBool("isGrounded", isGrounded);
-        animator.SetBool("Blocking", isPlayerBlock);
-        animator.SetBool("isWallGrab", isGrabWall);
-        animator.SetFloat("inputV", Mathf.Abs(inputV));
 
+        animator.SetBool("Blocking", isPlayerBlock);
+
+        animator.SetBool("isGrabWall", isGrabWall);       
     }
 
 }
