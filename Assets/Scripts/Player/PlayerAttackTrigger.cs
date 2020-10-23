@@ -10,8 +10,8 @@ public class PlayerAttackTrigger : MonoBehaviour
     private PlayerMovement playerMovement;
 
     private List<AbstractWeapon> weapons;
-    
-    private float TimeDelayAttack; // to check if there still countdown time untill player can atk again
+
+    [SerializeField] private float TimeDelayAttack; // to check if there still countdown time untill player can atk again
     public float PlayerDelayAttackTime; // can exchange to weapon atk rate later
 
     public Transform Attackpos;
@@ -48,7 +48,7 @@ public class PlayerAttackTrigger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CheckMouseInput();
+        CheckMouseInput();  
     }
 
     void FixedUpdate()
@@ -73,68 +73,77 @@ public class PlayerAttackTrigger : MonoBehaviour
         Attackpos.localScale = scaleChange;
     }
 
-    bool CheckMouseInput()    
-    {
-        return Input.GetKey(KeyCode.Mouse0);
-    }
+    bool CheckMouseInput() { return Input.GetKey(KeyCode.Mouse0); }
 
     public void PlayerAttack()
     {
-        if(CheckMouseInput()&& !IsPlayerAttack)
+        if (CheckMouseInput() && !IsPlayerAttack)
         {
-            PlayerAnimator.speed = weaponSpeed;
-
             IsPlayerAttack = true;
+            SetAnimationState();
+
             TimeDelayAttack = PlayerDelayAttackTime;
 
-            PlayerAnimator.SetBool("IsAttacking", true);
-
             Collider[] enemiesToDamage = Physics.OverlapBox(Attackpos.position, Attackpos.localScale, Quaternion.identity, EnemyLayerMask);
-          
+
             for (int i = 0; i < enemiesToDamage.Length; i++)
-            {             
+            {
                 // Create by Bao: Attacking Mower
                 if (enemiesToDamage[i].GetType() == typeof(CapsuleCollider))
                 {
                     enemiesToDamage[i].GetComponentInParent<MowerBehaviour>().DamagingBackside(PlayerDamage);
-                    
-                    if(weaponBleedDamage > 0 && bleedTicks > 0)
+
+                    if (weaponBleedDamage > 0 && bleedTicks > 0)
                     {
                         enemiesToDamage[i].GetComponentInParent<MowerBehaviour>().ApplyBleeding(weaponBleedDamage, weaponBleedDuration, bleedTicks);
                     }
-                    
-                    PlayerAnimator.speed = 1;
                 }
                 else if (enemiesToDamage[i].GetType() == typeof(SphereCollider))
                 {
                     enemiesToDamage[i].GetComponentInParent<MowerBehaviour>().DamagingForceField(PlayerDamage);
-                    PlayerAnimator.speed = 1;
                 }
                 else
                 {
                     enemiesToDamage[i].GetComponentInParent<EnemyBehaviour>().TakeDamage(PlayerDamage);
-                    
-                    if(weaponBleedDamage > 0 && bleedTicks > 0)
+
+                    if (weaponBleedDamage > 0 && bleedTicks > 0)
                     {
                         enemiesToDamage[i].GetComponentInParent<EnemyBehaviour>().ApplyBleeding(weaponBleedDamage, weaponBleedDuration, bleedTicks);
                     }
-                    
-                    PlayerAnimator.speed = 1;
                 }
             }
         }
+        else
+        {
+            CheckAttackStatus();
+        }
+    }
 
+    void CheckAttackStatus()
+    {
+        if (TimeDelayAttack <= 0)
+        {
+            IsPlayerAttack = false;
+
+            SetAnimationState();
+        }
+        else if (IsPlayerAttack)
+        {
+            TimeDelayAttack -= Time.deltaTime;
+        }
+    }
+
+    void SetAnimationState()
+    {
         if (IsPlayerAttack)
         {
-            if(TimeDelayAttack > 0)
-            {
-                TimeDelayAttack -= Time.deltaTime;
-            }
-            else
-            {
-                IsPlayerAttack = false;
-                PlayerAnimator.SetBool("IsAttacking", false);
-            }
+            PlayerAnimator.speed = weaponSpeed;
+            PlayerAnimator.SetBool("IsAttacking", true);
+        }
+        else
+        {
+            PlayerAnimator.SetBool("IsAttacking", false);
+            PlayerAnimator.speed = 1;
         }
     }
 
