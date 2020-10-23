@@ -385,14 +385,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 90085102}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0.026949996, w: 0.99963677}
+  m_LocalPosition: {x: -1.82, y: -0.71, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1672973481}
   m_Father: {fileID: 1505822431}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -3.0890002}
 --- !u!1 &97825150
 GameObject:
   m_ObjectHideFlags: 0
@@ -1293,7 +1293,7 @@ PrefabInstance:
     - target: {fileID: 7007741340744387837, guid: 68b0754ba15f8744a8d1c6c6649a986d,
         type: 3}
       propertyPath: PlayerDoubleJumpPow
-      value: 40
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 7406951217879771970, guid: 68b0754ba15f8744a8d1c6c6649a986d,
         type: 3}
@@ -2905,9 +2905,9 @@ GameObject:
   - component: {fileID: 1672973481}
   - component: {fileID: 1672973483}
   - component: {fileID: 1672973482}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Vine1
-  m_TagString: Untagged
+  m_TagString: Ladder
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2920,7 +2920,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1672973480}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -37.96, y: 16.85, z: 0}
+  m_LocalPosition: {x: -38.04, y: 16.92, z: 0}
   m_LocalScale: {x: 1, y: 1.5, z: 1}
   m_Children: []
   m_Father: {fileID: 90085103}
@@ -2937,8 +2937,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 4.5952034, y: 22.775564, z: 4.1687007}
-  m_Center: {x: 0.5248394, y: 0, z: 0.55239797}
+  m_Size: {x: 4.5952034, y: 25.217604, z: 4.1687007}
+  m_Center: {x: 0.5248394, y: -1.2209707, z: 0.55239797}
 --- !u!212 &1672973483
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3000,9 +3000,9 @@ GameObject:
   - component: {fileID: 1722565033}
   - component: {fileID: 1722565035}
   - component: {fileID: 1722565034}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Platform1
-  m_TagString: Untagged
+  m_TagString: ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
