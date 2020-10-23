@@ -23,6 +23,16 @@ public class AssetManager : MonoBehaviour
     // MeshRenrerer lists
     [SerializeField] private List<GameObject> weaponModels;
 
+    //Sound effect array
+    public SoundAudioClip[] soundAudioclipArray;
+
+    [System.Serializable]
+    public class SoundAudioClip
+    {
+        public soundManager.Sound sound;
+        public AudioClip audioclip;
+    }
+
     void Awake()
     {
         GetNecessaryScripts();
@@ -30,6 +40,7 @@ public class AssetManager : MonoBehaviour
         SetUpModels();
         SetUpWeaponsAndUpgrades();
         SetUpArraysForOtherScripts();
+        soundManager.Initialize();
     }
 
     // Function for getting all the other scripts needed by this script. 
