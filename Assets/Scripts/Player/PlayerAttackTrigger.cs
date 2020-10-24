@@ -26,6 +26,7 @@ public class PlayerAttackTrigger : MonoBehaviour
     private int bleedTicks;
 
     public Animator PlayerAnimator;
+    public AnimationClip attackAnim;
     
     private bool IsPlayerAttack = false;
 
@@ -81,8 +82,11 @@ public class PlayerAttackTrigger : MonoBehaviour
         {
             IsPlayerAttack = true;
             SetAnimationState();
+            PlayerAnimator.SetTrigger("Attack");           
 
-            TimeDelayAttack = PlayerDelayAttackTime;
+            // (Holding mouse) When attack anim finish, it continues the next one, not standing still as before
+            // weaponSpeed = 1 is normal, = 2 is fast double, etc. (could be less than 1 for slower speed)
+            TimeDelayAttack = (1 / weaponSpeed) * GetAttackAnimLength();
 
             Collider[] enemiesToDamage = Physics.OverlapBox(Attackpos.position, Attackpos.localScale, Quaternion.identity, EnemyLayerMask);
 
@@ -105,7 +109,7 @@ public class PlayerAttackTrigger : MonoBehaviour
                 else
                 {
                     enemiesToDamage[i].GetComponentInParent<EnemyBehaviour>().TakeDamage(PlayerDamage);
-
+                    
                     if (weaponBleedDamage > 0 && bleedTicks > 0)
                     {
                         enemiesToDamage[i].GetComponentInParent<EnemyBehaviour>().ApplyBleeding(weaponBleedDamage, weaponBleedDuration, bleedTicks);
@@ -137,14 +141,22 @@ public class PlayerAttackTrigger : MonoBehaviour
     {
         if (IsPlayerAttack)
         {
-            PlayerAnimator.speed = weaponSpeed;
-            PlayerAnimator.SetBool("IsAttacking", true);
+            // This is the multiplier parameter for speed for Attack Animation
+            PlayerAnimator.SetFloat("AttackSpeed", weaponSpeed);
+
+            //PlayerAnimator.speed = weaponSpeed;
+            //PlayerAnimator.SetBool("IsAttacking", true);
         }
         else
         {
-            PlayerAnimator.SetBool("IsAttacking", false);
-            PlayerAnimator.speed = 1;
+            //PlayerAnimator.SetBool("IsAttacking", false);
+            //PlayerAnimator.speed = 1;
         }
+    }
+
+    float GetAttackAnimLength()
+    {
+        return attackAnim.length;
     }
 
     void OnDrawGizmos()

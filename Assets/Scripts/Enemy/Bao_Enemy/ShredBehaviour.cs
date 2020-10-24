@@ -48,18 +48,12 @@ public class ShredBehaviour : EnemyBehaviour
         // If player is not in front of Shred's peak, don't attack
         if (Mathf.Abs(player.transform.position.x - frontDetection.position.x) > 3f) { return; }
 
-        isAttacker = true;
-
-        if (!playerMovement.animator.GetCurrentAnimatorStateInfo(0).IsName("Armature|KnockedDown"))
-        {
-            playerMovement.animator.SetTrigger("KnockDown");
-        }
+        KnockPlayerDown();
 
         StartCoroutine("Attacking");
         playerStat.PlayerTakeDamage(stat.damage);
-        playerMovement.getUpCount = 0;
-        playerMovement.isKnockDown = true;
 
+        // Check bleed chance of Shred, then apply 
         if (Random.Range(0f, 100f) < bleedChance)
         {
             if (co != null)
@@ -112,7 +106,14 @@ public class ShredBehaviour : EnemyBehaviour
     {
         base.KnockDownProcess();     // Still normally stun player
         
-        //if (!isAttacker) { return; }
+        if (!isAttacker) { return; }
+
+        if (playerMovement.getUpCount >= 5)
+        {
+            playerMovement.PlayerBounceUp();
+
+            isAttacker = false;
+        }
     }
 
     public override void TakeDamage(float playerDamage)

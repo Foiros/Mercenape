@@ -14,7 +14,7 @@ public class EnemyBehaviour : MonoBehaviour
     protected float speed;
     [SerializeField] protected float currentHP;
 
-    protected bool isAttacker = false; // For stunning process
+    protected bool isAttacker = false; // Make sure not all enemy activate function
     
     protected float weaponBleedDamage, weaponBleedDuration;
     protected int bleedTicks, currentBleedTicks;
@@ -120,6 +120,19 @@ public class EnemyBehaviour : MonoBehaviour
     protected virtual void KnockDownProcess()
     {
         if (!playerMovement.isKnockDown) { return; }
+    }
+
+    // Knock down player with animation
+    protected void KnockPlayerDown()
+    {
+        if (!playerMovement.animator.GetCurrentAnimatorStateInfo(0).IsName("Armature|KnockedDown"))
+        {
+            playerMovement.animator.SetTrigger("KnockDown");
+            isAttacker = true;
+        }
+
+        playerMovement.getUpCount = 0;
+        playerMovement.isKnockDown = true;
     }
 
     protected IEnumerator CheckEnemyDeath()

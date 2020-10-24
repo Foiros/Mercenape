@@ -3845,7 +3845,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1.1688081, y: 0.3450482, z: 1}
-  m_Center: {x: 0.009191872, y: 0.17915481, z: -6.9624924e-11}
+  m_Center: {x: 0.009191872, y: 0.17915481, z: 6.962492e-11}
 --- !u!114 &7007741340744387825
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3871,16 +3871,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a1cd6b92c187704699e85bb498f5224, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TimeDelayAttack: 0
   PlayerDelayAttackTime: 0.1
   Attackpos: {fileID: 7007741340632427131}
-  WeaponLocation: 0
-  AttackSize: 0
   EnemyLayerMask:
     serializedVersion: 2
     m_Bits: 1024
   PlayerDamage: 5
   frontPlayerPosition: {fileID: 7007741340632427131}
+  weaponSpeed: 0
+  weaponBleedDamage: 0
+  weaponBleedDuration: 0
   PlayerAnimator: {fileID: 3470843985174671672}
+  attackAnim: {fileID: 3434298946185078405, guid: 7d0cd3794cb121147b641d85006362ca,
+    type: 3}
 --- !u!114 &7007741340744387827
 MonoBehaviour:
   m_ObjectHideFlags: 0

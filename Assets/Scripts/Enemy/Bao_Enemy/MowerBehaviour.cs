@@ -162,6 +162,8 @@ public class MowerBehaviour : EnemyBehaviour
                 // Then attack player
                 if (!isAttacking && currentState != ForceFieldState.Generating)
                 {
+                    playerMovement.isPlayerBlock = false;
+
                     isAttacking = true;
                     MowerAttack();
                 }
@@ -208,12 +210,12 @@ public class MowerBehaviour : EnemyBehaviour
     {
         playerMovement.PlayerRigid2d.velocity = Vector3.zero;
 
-        playerMovement.getUpCount = 0;
-        playerMovement.isKnockDown = true;
+        KnockPlayerDown();
 
-        isAttacker = true;
-
-        StopAllCoroutines();
+        if (dmgCoroutine != null)
+        {
+            StopCoroutine(dmgCoroutine);           
+        }
         StartCoroutine("Attacking");
     }
 
@@ -223,21 +225,19 @@ public class MowerBehaviour : EnemyBehaviour
 
         if (!isAttacker) { return; }
 
-        if (playerMovement.getUpCount == 10)
+        if (playerMovement.getUpCount >= 10)
         {
             // Stop dealing damage and get back to original states
-            StopAllCoroutines();
-
-            player.transform.rotation = Quaternion.Euler(0, 0, 0);
-            playerMovement.playerAttack.enabled = true;
+            StopCoroutine("Attacking");
+            StopCoroutine(dmgCoroutine);
 
             // Push player up 
-            playerMovement.PlayerRigid2d.velocity = Vector3.up * 30;
+            //playerMovement.PlayerRigid2d.velocity = Vector3.up * 30;
 
-            playerMovement.getUpCount = 0;
-            playerMovement.isKnockDown = false;
+            playerMovement.PlayerBounceUp();
 
             isAttacker = false;
+
             Invoke("ReturnPhysics", 0.5f);
         }
     }
@@ -274,7 +274,7 @@ public class MowerBehaviour : EnemyBehaviour
         {
             playerStat.PlayerTakeDamage(damageAmount);
             yield return new WaitForSeconds(1.2f);
-            currentCount++;
+            currentCount++;           
         }
     }
 
@@ -339,7 +339,7 @@ public class MowerBehaviour : EnemyBehaviour
     }
 
     IEnumerator BleedTick()
-    {
+    {       
         while (currentBleedTicks <= bleedTicks)
         {
             TakeDamage(weaponBleedDamage);

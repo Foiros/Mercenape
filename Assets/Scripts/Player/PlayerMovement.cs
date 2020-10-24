@@ -146,7 +146,12 @@ public class PlayerMovement : MonoBehaviour
 
     void InputHorrizontal()
     {
-        inputH = Input.GetAxisRaw("Horizontal");// Note if dont get raw axis it feels like splippery
+        if (!isPlayerBlock)
+        {
+            inputH = Input.GetAxisRaw("Horizontal");// Note if dont get raw axis it feels like splippery
+        }
+        else { inputH = 0; }
+
         FlipPlayer();
 
         if (inputH != 0)
@@ -328,20 +333,18 @@ public class PlayerMovement : MonoBehaviour
 
             playerAttack.enabled = false;
 
-            if (Input.GetKeyDown(KeyCode.Space)) { getUpCount++; }
-
-            if (getUpCount >= 5)
-            {
-                getUpCount = 0;
-                isKnockDown = false;
-                
-                animator.SetTrigger("BounceUp");
-                animator.SetBool("KnockedDown", false);
-                
-                playerAttack.enabled = true;
-
-            }
+            if (Input.GetKeyDown(KeyCode.Space)) { getUpCount++; }           
         }
+    }
+
+    public void PlayerBounceUp()
+    {
+        getUpCount = 0;
+        isKnockDown = false;
+
+        animator.SetTrigger("BounceUp");        
+
+        playerAttack.enabled = true;
     }
 
     void SetAnimatorPara()
@@ -355,7 +358,9 @@ public class PlayerMovement : MonoBehaviour
 
         animator.SetBool("Blocking", isPlayerBlock);
 
-        animator.SetBool("isGrabWall", isGrabWall);       
+        animator.SetBool("isGrabWall", isGrabWall);
+
+        animator.SetBool("KnockedDown", isKnockDown);
     }
 
 }

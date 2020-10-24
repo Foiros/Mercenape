@@ -17,7 +17,7 @@ public class EnemyHealthBar : MonoBehaviour
     }
 
     public void UpdateHealthBar(float currentHP, float maxHP)
-    {
+    {       
         if (!slider.activeSelf)
         {
             StartCoroutine(HealthBarAnimation());
