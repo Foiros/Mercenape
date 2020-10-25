@@ -125,7 +125,7 @@ public class EnemyBehaviour : MonoBehaviour
     // Knock down player with animation
     protected void KnockPlayerDown()
     {
-        if (!playerMovement.animator.GetCurrentAnimatorStateInfo(0).IsName("Armature|KnockedDown"))
+        if (!playerMovement.animator.GetCurrentAnimatorStateInfo(0).IsTag("KnockedDown"))
         {
             playerMovement.animator.SetTrigger("KnockDown");
             isAttacker = true;

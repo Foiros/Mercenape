@@ -371,7 +371,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 90085103}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: ClimbingSurfaces
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2212,7 +2212,7 @@ PrefabInstance:
     - target: {fileID: 1009075717142670542, guid: 1ef1b201a3367b1479db9b184712a677,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4901740970412203402, guid: 1ef1b201a3367b1479db9b184712a677,
         type: 3}
@@ -2905,7 +2905,7 @@ GameObject:
   - component: {fileID: 1672973481}
   - component: {fileID: 1672973483}
   - component: {fileID: 1672973482}
-  m_Layer: 11
+  m_Layer: 9
   m_Name: Vine1
   m_TagString: Ladder
   m_Icon: {fileID: 0}

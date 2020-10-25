@@ -146,15 +146,12 @@ public class PlayerMovement : MonoBehaviour
 
     void InputHorrizontal()
     {
-        if (!isPlayerBlock)
-        {
-            inputH = Input.GetAxisRaw("Horizontal");// Note if dont get raw axis it feels like splippery
-        }
-        else { inputH = 0; }
+
+        inputH = Input.GetAxisRaw("Horizontal");// Note if dont get raw axis it feels like splippery
 
         FlipPlayer();
 
-        if (inputH != 0)
+        if (inputH != 0 && !isPlayerBlock)
         {
             animator.SetBool("IsRunning", true);
         }
