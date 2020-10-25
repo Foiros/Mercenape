@@ -10,9 +10,15 @@ public class ShredBehaviour : EnemyBehaviour
 
     private Coroutine co;
 
+    private Animator animatorShred;
+
+    private bool isStaggering = false;
+
     protected override void Start()
     {
-        base.Start();   // Start both EnemyBehaviour and ShredBehaviour       
+        base.Start();   // Start both EnemyBehaviour and ShredBehaviour  
+
+        animatorShred = GetComponent<Animator>();
     }
 
     private void Update()
@@ -31,8 +37,8 @@ public class ShredBehaviour : EnemyBehaviour
             {
                 playerMovement.animator.SetTrigger("TakingHitBlocking");
                 // Block and immobilize Shred
-                StopCoroutine("ImmobilizeShred");
-                StartCoroutine("ImmobilizeShred");
+                StopCoroutine("StaggerShred");
+                StartCoroutine("StaggerShred");
             }
             else
             {
@@ -47,6 +53,9 @@ public class ShredBehaviour : EnemyBehaviour
     {
         // If player is not in front of Shred's peak, don't attack
         if (Mathf.Abs(player.transform.position.x - frontDetection.position.x) > 3f) { return; }
+
+        // If Shred is staggering, don't attack
+        if (isStaggering) { return; }
 
         KnockPlayerDown();
 
@@ -91,13 +100,20 @@ public class ShredBehaviour : EnemyBehaviour
         }       
     }
    
-    IEnumerator ImmobilizeShred()
+    IEnumerator StaggerShred()
     {
-        //speed = -stat.runningSpeed / 20;
+        isStaggering = true;
+        animatorShred.SetBool("Staggering", isStaggering);
+
         speed = 0;
         rb.AddForce(transform.right * -10, ForceMode.VelocityChange);
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.5f);
+
+        isStaggering = false;
+        animatorShred.SetBool("Staggering", isStaggering);
+
+        yield return new WaitForSeconds(0.25f);
 
         speed = stat.runningSpeed;
     }
@@ -119,6 +135,14 @@ public class ShredBehaviour : EnemyBehaviour
     public override void TakeDamage(float playerDamage)
     {
         base.TakeDamage(playerDamage);
+
+        animatorShred.Play("Armature|StaggeredTakeHit", 0, 0f);
+
+        // If dead
+        if (currentHP <= 0)
+        {
+            animatorShred.SetTrigger("Death");
+        }
     }
 
     public override void ApplyBleeding(float damage, float duration, int ticks)

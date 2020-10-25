@@ -112,8 +112,12 @@ public class EnemyBehaviour : MonoBehaviour
 
         barHealth.UpdateHealthBar(currentHP, stat.maxHP);
 
-        StopCoroutine("CheckEnemyDeath");
-        StartCoroutine("CheckEnemyDeath");
+        // If dead
+        if (currentHP <= 0)
+        {
+            StopCoroutine("CheckEnemyDeath");
+            StartCoroutine("CheckEnemyDeath");
+        }
     }
 
     // Process when player get knocked down, mainly in Shred and Mower script
@@ -137,22 +141,16 @@ public class EnemyBehaviour : MonoBehaviour
 
     protected IEnumerator CheckEnemyDeath()
     {
-        // If dead
-        if (currentHP <= 0)
-        {
-            rb.constraints = RigidbodyConstraints.None;
-            transform.rotation = Quaternion.Euler(90, Random.Range(0f, 360f), 0);
-            speed = 0;
-            rb.velocity = Vector3.zero;
-            rb.useGravity = false;
-            boxCollier.enabled = false;
+        speed = 0;
+        rb.velocity = Vector3.zero;
+        rb.useGravity = false;
+        boxCollier.enabled = false;
 
-            yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1f);
 
-            Destroy(gameObject, 0);
+        Destroy(gameObject, 0);
 
-            enemyLoot.DropAll();
-        }
+        enemyLoot.DropAll();
     }
 
     protected void FreezePosY()
