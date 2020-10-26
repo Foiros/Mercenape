@@ -21,6 +21,9 @@ public class MowerBehaviour : EnemyBehaviour
     private bool isRiding = false;
     private bool isGenerating = false;
 
+    private bool isBackSideHit = false;
+    private bool isGeneratorHit = false;
+
     private float ridePos;
     [SerializeField] private Transform rideHeight;
 
@@ -102,6 +105,25 @@ public class MowerBehaviour : EnemyBehaviour
         }
     }
 
+    // Special TakerDamage mechanic for Mower
+    public override void TakeDamage(float playerDamage)
+    {
+        if (isBackSideHit) { DamagingBackside(playerDamage); }
+
+        if (isGeneratorHit) { DamagingForceField(playerDamage); }
+
+        // And take no damage if none of them are true
+    }
+
+    // Check whether backside or generator get hit, then act accordingly
+    protected override void EnemyGetHit(bool isMowerBackSide, bool isMowerGenerator, Collider selfCol, float playerDmg)
+    {
+        this.isBackSideHit = isMowerBackSide;
+        this.isGeneratorHit = isMowerGenerator;
+
+        base.EnemyGetHit(isMowerBackSide, isMowerGenerator, selfCol, playerDmg);
+    }
+
     // Backside main mechanic
     public void DamagingBackside(float playerDmg)
     {
@@ -113,8 +135,11 @@ public class MowerBehaviour : EnemyBehaviour
 
             barHealth.UpdateHealthBar(currentHP, stat.maxHP);
 
-            StopCoroutine("CheckEnemyDeath");
-            StartCoroutine("CheckEnemyDeath");
+            if (currentHP <= 0)
+            {
+                StopCoroutine("CheckEnemyDeath");
+                StartCoroutine("CheckEnemyDeath");
+            }
 
             if (!isGenerating)
             {
@@ -278,12 +303,6 @@ public class MowerBehaviour : EnemyBehaviour
         }
     }
 
-    // Take no damage
-    public override void TakeDamage(float playerDamage)
-    {
-        print("Not dealing dmg");
-    }
-
     private void ChangeToGeneratingState()
     {
         if (currentState != ForceFieldState.Destroyed)
@@ -332,19 +351,19 @@ public class MowerBehaviour : EnemyBehaviour
         }
     }
 
-    public override void ApplyBleeding(float damage, float duration, int ticks)
+    public override void ApplyBleeding(float damage, float duration, int ticks, Collider selfCol)
     {
-        base.ApplyBleeding(damage, duration, ticks);
-        StartCoroutine(BleedTick());
+        // Don't bleed the generator
+        if (isGeneratorHit) { return; }
+
+        // Don't bleed Mower's front side
+        if (!isBackSideHit) { return; }
+
+        // Only bleed when Inactive or Destroyed
+        if (currentState == ForceFieldState.Inactive || currentState == ForceFieldState.Destroyed)
+        {
+            base.ApplyBleeding(damage, duration, ticks, selfCol);
+        }  
     }
 
-    IEnumerator BleedTick()
-    {       
-        while (currentBleedTicks <= bleedTicks)
-        {
-            TakeDamage(weaponBleedDamage);
-            yield return new WaitForSeconds(weaponBleedDuration);
-            currentBleedTicks++;
-        }
-    }
 }

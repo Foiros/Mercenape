@@ -90,9 +90,9 @@ public class ShredBehaviour : EnemyBehaviour
     // Do bleed damage (per sec for now)
     IEnumerator ApplyBleedDamage(float damageDuration, int damageCount, int damageAmount)
     {
-        int currentCount = 0;
-
-        while(currentCount < damageCount)
+        int currentCount = 1;
+    
+        while(currentCount <= damageCount)
         {
             playerStat.PlayerHP -= damageAmount;
             yield return new WaitForSeconds(damageDuration);
@@ -138,26 +138,10 @@ public class ShredBehaviour : EnemyBehaviour
 
         animatorShred.Play("Armature|StaggeredTakeHit", 0, 0f);
 
-        // If dead
+        // If Shred is dead
         if (currentHP <= 0)
         {
             animatorShred.SetTrigger("Death");
-        }
-    }
-
-    public override void ApplyBleeding(float damage, float duration, int ticks)
-    {
-        base.ApplyBleeding(damage, duration, ticks);
-        StartCoroutine(BleedTick());
-    }
-
-    IEnumerator BleedTick()
-    {
-        while (currentBleedTicks <= bleedTicks)
-        {
-            TakeDamage(weaponBleedDamage);
-            yield return new WaitForSeconds(weaponBleedDuration);
-            currentBleedTicks++;
         }
     }
 }

@@ -56,9 +56,21 @@ public class EnemyBehaviour : MonoBehaviour
 
         player = GameObject.FindGameObjectWithTag("Player");
         playerStat = player.GetComponent<PlayerStat>();
-        playerMovement = player.GetComponent<PlayerMovement>();      
+        playerMovement = player.GetComponent<PlayerMovement>();
+
+        // Subscribe to the OnHitEnemy event in PlayerAttack
+        playerMovement.playerAttack.OnHitEnemy += EnemyGetHit;
+        playerMovement.playerAttack.OnBleedEnemy += ApplyBleeding;
 
         enemyLoot = GetComponent<EnemyLootDrop>();
+    }
+
+    // When enemy die, unsubscibe events
+    protected void OnDisable()
+    {
+        // Not to cause error
+        playerMovement.playerAttack.OnHitEnemy -= EnemyGetHit;
+        playerMovement.playerAttack.OnBleedEnemy -= ApplyBleeding;
     }
 
     // Movement
@@ -120,6 +132,28 @@ public class EnemyBehaviour : MonoBehaviour
         }
     }
 
+    // Take bleed damage from player's weapon
+    public void TakeBleedDammage(float weaponBleedDmg)
+    {
+        currentHP -= weaponBleedDmg;
+
+        // If dead
+        if (currentHP <= 0)
+        {
+            StopCoroutine("CheckEnemyDeath");
+            StartCoroutine("CheckEnemyDeath");
+        }
+    }
+
+    // Check to see which type of enemy get hit
+    protected virtual void EnemyGetHit(bool isMowerBackSide, bool isMowerGenerator, Collider selfCol, float playerDmg)
+    {
+        if (!IsSelf(selfCol)) { return; }
+
+        // Then deal damage to the correct enemy
+        TakeDamage(playerDmg);
+    }
+
     // Process when player get knocked down, mainly in Shred and Mower script
     protected virtual void KnockDownProcess()
     {
@@ -158,10 +192,35 @@ public class EnemyBehaviour : MonoBehaviour
         rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
     }
 
-    public virtual void ApplyBleeding(float damage, float duration, int ticks) 
+    public virtual void ApplyBleeding(float damage, float duration, int ticks, Collider selfCol) 
     {
+        if (!IsSelf(selfCol)) { return; }
+
         weaponBleedDamage = damage;
         weaponBleedDuration = duration;
         bleedTicks = ticks;
+        currentBleedTicks = 1;
+
+        // Stop stacking bleed before begin new bleed
+        StopCoroutine(BleedTick());
+        StartCoroutine(BleedTick());
+    }
+
+    IEnumerator BleedTick()
+    {
+        print("bleeding");
+        while (currentBleedTicks <= bleedTicks)
+        {
+            TakeBleedDammage(weaponBleedDamage);
+            yield return new WaitForSeconds(weaponBleedDuration);
+            currentBleedTicks++;
+        }
+    }
+
+    // Check to make sure only the enemy get hit is called, not every enemy
+    protected bool IsSelf(Collider selfCol)
+    {
+        // Get root because Mower's backside and generator are not actually Mower itself
+        return selfCol.gameObject.transform.root.gameObject.GetInstanceID() == this.gameObject.GetInstanceID();
     }
 }

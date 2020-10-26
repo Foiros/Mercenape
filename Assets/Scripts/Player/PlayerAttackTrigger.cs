@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,12 +24,15 @@ public class PlayerAttackTrigger : MonoBehaviour
     public Transform frontPlayerPosition;
     private int weaponID;
     [SerializeField] private float weaponSpeed, weaponBleedDamage, weaponBleedDuration;
-    private int bleedTicks;
+    [SerializeField] private int bleedTicks;
 
     public Animator PlayerAnimator;
     public AnimationClip attackAnim;
     
     private bool IsPlayerAttack = false;
+
+    public event Action<bool, bool, Collider, float> OnHitEnemy;  // 1st bool is Mower backside, 2nd bool is generator
+    public event Action<float, float, int, Collider> OnBleedEnemy;  // weaponBleedDamage, weaponBleedDuration, bleedTicks
 
     void Awake()
     {
@@ -96,28 +100,27 @@ public class PlayerAttackTrigger : MonoBehaviour
 
             for (int i = 0; i < enemiesToDamage.Length; i++)
             {
-                // Created by Bao: Attacking Mower
-                if (enemiesToDamage[i].GetType() == typeof(CapsuleCollider))
+                // Created  and edited by Bao: Detect enemy and attack
+                if (enemiesToDamage[i].GetType() == typeof(CapsuleCollider)) // Mower's back
                 {
-                    enemiesToDamage[i].GetComponentInParent<MowerBehaviour>().DamagingBackside(PlayerDamage);
+                    // Hit backside but not generator
+                    OnHitEnemy?.Invoke(true, false, enemiesToDamage[i], PlayerDamage);               
+                }
+                else if (enemiesToDamage[i].GetType() == typeof(SphereCollider)) // Mower's generator
+                {
+                    // Hit generator but not backside
+                    OnHitEnemy?.Invoke(false, true, enemiesToDamage[i], PlayerDamage);
+                }
+                else  // Not Mower, meaning Shred
+                {
+                    // None of generator nor backside
+                    OnHitEnemy?.Invoke(false, false, enemiesToDamage[i], PlayerDamage);            
+                }
 
-                    if (weaponBleedDamage > 0 && bleedTicks > 0)
-                    {
-                        enemiesToDamage[i].GetComponentInParent<MowerBehaviour>().ApplyBleeding(weaponBleedDamage, weaponBleedDuration, bleedTicks);
-                    }
-                }
-                else if (enemiesToDamage[i].GetType() == typeof(SphereCollider))
+                // Then bleed enemy (Mower script make sure the generator don't bleed)
+                if (weaponBleedDamage > 0 && bleedTicks > 0)
                 {
-                    enemiesToDamage[i].GetComponentInParent<MowerBehaviour>().DamagingForceField(PlayerDamage);
-                }
-                else
-                {
-                    enemiesToDamage[i].GetComponentInParent<EnemyBehaviour>().TakeDamage(PlayerDamage);
-                    
-                    if (weaponBleedDamage > 0 && bleedTicks > 0)
-                    {
-                        enemiesToDamage[i].GetComponentInParent<EnemyBehaviour>().ApplyBleeding(weaponBleedDamage, weaponBleedDuration, bleedTicks);
-                    }
+                    OnBleedEnemy?.Invoke(weaponBleedDamage, weaponBleedDuration, bleedTicks, enemiesToDamage[i]);
                 }
             }
         }
