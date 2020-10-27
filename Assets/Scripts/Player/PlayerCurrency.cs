@@ -15,8 +15,9 @@ public class PlayerCurrency : MonoBehaviour
     Transform playerUI;
     void Awake()
     {
-    
         LoadSaveFile();
+
+        playerUpgrade = 2;
        
     }
     private void Start()

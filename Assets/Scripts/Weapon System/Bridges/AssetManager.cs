@@ -18,7 +18,7 @@ public class AssetManager : MonoBehaviour
     private List<AbstractUpgrades> upgrades = new List<AbstractUpgrades>();
 
     // Sprite lists
-    private List<Sprite> weaponImages, chosenWeaponImages, upgradeImages;
+    [SerializeField] private List<Sprite> weaponImages, chosenWeaponImages, upgradeImages;
 
     // MeshRenrerer lists
     [SerializeField] private List<GameObject> weaponModels;
@@ -39,7 +39,7 @@ public class AssetManager : MonoBehaviour
         SetUpSprites();
         SetUpModels();
         SetUpWeaponsAndUpgrades();
-        SetUpArraysForOtherScripts();
+        SetUpListsForOtherScripts();
         soundManager.Initialize();
     }
 
@@ -58,23 +58,16 @@ public class AssetManager : MonoBehaviour
     // Function for setting up images from the editor menu.
     void SetUpSprites()
     {
-        Sprite[] weapons = Resources.LoadAll<Sprite>("Weapons");
-        Sprite[] chosenWeapons = Resources.LoadAll<Sprite>("ChosenWeapons");
-        Sprite[] upgrades = Resources.LoadAll<Sprite>("Upgrades");
-
-        weaponImages = new List<Sprite>(weapons);
-        chosenWeaponImages = new List<Sprite>(chosenWeapons); 
-        upgradeImages = new List<Sprite>(upgrades);
+        weaponImages.InsertRange(0, new List<Sprite>(Resources.LoadAll<Sprite>("Weapons")));
+        chosenWeaponImages.InsertRange(0, new List<Sprite>(Resources.LoadAll<Sprite>("ChosenWeapons"))); 
+        upgradeImages.InsertRange(0, new List<Sprite>(Resources.LoadAll<Sprite>("Upgrades")));
     }
 
     public void SetUpModels()
     {
-        weaponModels = new List<GameObject>(GameObject.FindGameObjectsWithTag("WeaponInUse"));
+        weaponModels.InsertRange(0, new List<GameObject>(GameObject.FindGameObjectsWithTag("WeaponInUse")));
 
-        for (int i = 0; i < weaponModels.Count; i++)
-        {
-            weaponModels[i].SetActive(false);
-        }
+        foreach (GameObject weapon in weaponModels) { weapon.SetActive(false); }
     }
 
     // Constructs weapons and upgrades and adds them to their own lists. 
@@ -89,18 +82,13 @@ public class AssetManager : MonoBehaviour
     }
 
     // Basically this sends the weapons and upgrade lists to the scripts that use them. 
-    void SetUpArraysForOtherScripts()
-    {
-        if(weaponStates != null) { weaponStates.SetWeaponList(weapons); }
-
+    public void SetUpListsForOtherScripts() 
+    { 
+        if (weaponStates != null) { weaponStates.SetWeaponList(weapons); }
         if (buyWeapons != null) { buyWeapons.SetWeaponList(weapons); }
-
         if (useUpgrades != null) { useUpgrades.SetWeaponList(weapons); useUpgrades.SetUpgradeList(upgrades); }
-
         if (calculator != null) { calculator.SetWeaponList(weapons); }
-
         if (chooseWeapon != null) { chooseWeapon.SetWeaponList(weapons); }
-
         if (playerAttack != null) { playerAttack.SetWeaponList(weapons); }
     }
 }

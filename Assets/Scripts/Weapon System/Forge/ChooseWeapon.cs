@@ -35,15 +35,9 @@ public class ChooseWeapon : MonoBehaviour
         GameObject[] holderObjects = GameObject.FindGameObjectsWithTag("ChosenWeaponHolder");
         Image[] holderImage = new Image[holderObjects.Length];
         
-        for (int i = 0; i < holderObjects.Length; i++)
-        {
-            holderImage[i] = holderObjects[i].GetComponent<Image>();
-        }
+        for (int i = 0; i < holderImage.Length; i++) { holderImage[i] = holderObjects[i].GetComponent<Image>(); }
 
-        ownedWeapons.Add(holderImage[0]);
-        ownedWeapons.Add(holderImage[1]);
-        ownedWeapons.Add(holderImage[2]);
-        ownedWeapons.Add(holderImage[3]);
+        ownedWeapons.InsertRange(0, holderImage);
     }
 
     void SetOwnedWeaponImages()

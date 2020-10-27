@@ -9,7 +9,7 @@ public class PlayerAttackTrigger : MonoBehaviour
 {
     private WeaponStates weaponStates;
     private PlayerMovement playerMovement;
-
+    
     private List<AbstractWeapon> weapons;
 
     [SerializeField] private float TimeDelayAttack; // to check if there still countdown time untill player can atk again
@@ -36,7 +36,7 @@ public class PlayerAttackTrigger : MonoBehaviour
 
     void Awake()
     {
-        weaponStates= GameObject.FindGameObjectWithTag("GameManager").GetComponent<WeaponStates>();
+        weaponStates = GameObject.FindGameObjectWithTag("GameManager").GetComponent<WeaponStates>();
     }
 
     // Start is called before the first frame update

@@ -8,8 +8,8 @@ public class WeaponStates: MonoBehaviour
     private StatsCalculator calculator;
 
     private List<AbstractWeapon> weapons;
-    [SerializeField]private List<bool> ownedWeaponsList, upgradedWeaponsList;
-    [SerializeField]private List<int> savedSpeedAmountsList;
+    [SerializeField]private List<bool> ownedWeaponsList , upgradedWeaponsList;
+    [SerializeField] private List<int> savedSpeedAmountsList;
 
     private int weaponID;
 
@@ -19,7 +19,6 @@ public class WeaponStates: MonoBehaviour
     void Awake()
     {
         calculator = GetComponent<StatsCalculator>();
-
         SetUpBoolLists();
         LoadWeaponData();
     }
@@ -31,58 +30,18 @@ public class WeaponStates: MonoBehaviour
 
     void SetUpBoolLists()
     {
-        ownedWeaponsList = new List<bool>(new bool[4]);
-        upgradedWeaponsList = new List<bool>(new bool[4]);
-        savedSpeedAmountsList = new List<int>(new int[4]);
+        ownedWeaponsList = new List<bool>(new bool[weapons.Count]);
+        upgradedWeaponsList = new List<bool>(new bool[weapons.Count]);
+        savedSpeedAmountsList = new List<int>(new int[weapons.Count]);
 
         ownedWeaponsList[0] = true;
     }
 
-    // Switch loop function for setting the ownership status of a weapon.
-    public void WhatWeaponWasBought(int id)
-    {
-        int weaponID = id;
+    // Function for setting the ownership status of a weapon.
+    public void WhatWeaponWasBought(int id) { ownedWeaponsList[id] = true; }
 
-        switch (weaponID)
-        {
-            case 1:
-                ownedWeaponsList[1] = true;
-                break;
-
-            case 2:
-                ownedWeaponsList[2] = true;
-                break;
-
-            case 3:
-                ownedWeaponsList[3] = true;
-                break;
-        }
-    }
-
-    // Switch loop function for setting the upgrade status of a weapon. 
-    public void WhatWeaponWasUpgraded(int id)
-    {
-        int weaponID = id;
-        
-        switch (weaponID)
-        {
-            case 0:
-                upgradedWeaponsList[0] = true;
-                break;
-
-            case 1:
-                upgradedWeaponsList[1] = true;
-                break;
-
-            case 2:
-                upgradedWeaponsList[2] = true;
-                break;
-
-            case 3:
-                upgradedWeaponsList[3] = true;
-                break;
-        }
-    }
+    // Function for setting the upgrade status of a weapon. 
+    public void WhatWeaponWasUpgraded(int id) { upgradedWeaponsList[id] = true; }
 
     // This function sets up the weapon to be used in level scenes. 
     void SetUpWeapon()
