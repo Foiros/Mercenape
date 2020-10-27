@@ -8,14 +8,10 @@ public class WeaponStates: MonoBehaviour
     private StatsCalculator calculator;
 
     private List<AbstractWeapon> weapons;
-    private List<bool> ownedWeaponsList, upgradedWeaponsList;
-    private List<int> savedSpeedAmountsList;
-
-    private bool ownsWeapon1, ownsWeapon2, ownsWeapon3, ownsWeapon4;
-    private bool weapon1HasBeenUpgraded, weapon2HasBeenUpgraded, weapon3HasBeenUpgraded, weapon4HasBeenUpgraded;
+    [SerializeField]private List<bool> ownedWeaponsList, upgradedWeaponsList;
+    [SerializeField]private List<int> savedSpeedAmountsList;
 
     private int weaponID;
-    private int savedSpeedAmount1, savedSpeedAmount2, savedSpeedAmount3, savedSpeedAmount4;
 
     [SerializeField] private float speed, impactDamage, bleedDamage, bleedDuration;
     private int bleedTicks;
@@ -35,9 +31,9 @@ public class WeaponStates: MonoBehaviour
 
     void SetUpBoolLists()
     {
-        ownedWeaponsList = new List<bool>() { ownsWeapon1, ownsWeapon2, ownsWeapon3, ownsWeapon4 };
-        upgradedWeaponsList = new List<bool>() { weapon1HasBeenUpgraded, weapon2HasBeenUpgraded, weapon3HasBeenUpgraded, weapon4HasBeenUpgraded };
-        savedSpeedAmountsList = new List<int>() { savedSpeedAmount1, savedSpeedAmount2, savedSpeedAmount3, savedSpeedAmount4 };
+        ownedWeaponsList = new List<bool>(new bool[4]);
+        upgradedWeaponsList = new List<bool>(new bool[4]);
+        savedSpeedAmountsList = new List<int>(new int[4]);
 
         ownedWeaponsList[0] = true;
     }

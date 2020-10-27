@@ -188,6 +188,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 3417982164426582271, guid: 753b99c18b998f84bb3a5c86508776e5,
+        type: 3}
+      propertyPath: ownedWeaponsList.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3417982164426582264, guid: 753b99c18b998f84bb3a5c86508776e5, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 753b99c18b998f84bb3a5c86508776e5, type: 3}
@@ -2212,7 +2217,7 @@ PrefabInstance:
     - target: {fileID: 1009075717142670542, guid: 1ef1b201a3367b1479db9b184712a677,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4901740970412203402, guid: 1ef1b201a3367b1479db9b184712a677,
         type: 3}
