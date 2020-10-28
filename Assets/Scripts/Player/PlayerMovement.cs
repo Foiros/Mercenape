@@ -54,6 +54,7 @@ public class PlayerMovement : MonoBehaviour
         //PlayerAnimator = transform.GetComponent<Animator>();
         boxCollider = transform.GetComponent<BoxCollider>();
         capsuleCollider = transform.GetComponent<CapsuleCollider>();
+        PlayerRigid2d.centerOfMass = Vector3.zero;
     }
 
     void Update()
@@ -84,7 +85,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (!isPlayerBlock && !isKnockDown)
         {
-            if (Input.GetKey(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.Space))
             {
                 isJumping = true;
                 PlayerJump();
@@ -169,7 +170,7 @@ public class PlayerMovement : MonoBehaviour
     // check collide with wall  
     void CheckCollideWall()
     {
-        float distance = 2f;
+        float distance = .5f;
         if (FaceRight)
         {
            isCollideWall=Physics.Raycast(transform.position, Vector3.right, distance, walllayermask);           
@@ -259,7 +260,6 @@ public class PlayerMovement : MonoBehaviour
             {
                 PlayerRigid2d.MovePosition((Vector3)transform.position + Vector3.right * inputH * MidAirSpeed * Time.deltaTime);
             }
-            
         }
         if (isCollideWall)
         {
