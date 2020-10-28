@@ -67,7 +67,7 @@ public class PlayerMovement : MonoBehaviour
         CheckOnTop();
         CheckGrabWall();
      
-        if (isGrounded || isCollideWall)
+        if (isGrounded)
         {
             PlayerDoubleJump = true;
         }
@@ -343,8 +343,9 @@ public class PlayerMovement : MonoBehaviour
     {             
         if (isKnockDown)
         {
-            animator.SetBool("KnockedDown", true);
+            isGrabWall = false;
 
+            animator.SetBool("KnockedDown", true);
             playerAttack.enabled = false;
 
             if (Input.GetKeyDown(KeyCode.Space)) { getUpCount++; }           
