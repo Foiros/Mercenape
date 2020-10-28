@@ -170,14 +170,17 @@ public class PlayerMovement : MonoBehaviour
     // check collide with wall  
     void CheckCollideWall()
     {
-        float distance = .5f;
+        float distance = 3f;
         if (FaceRight)
         {
-           isCollideWall=Physics.Raycast(transform.position, Vector3.right, distance, walllayermask);           
+           isCollideWall=Physics.Raycast(capsuleCollider.bounds.center, Vector3.right, distance, walllayermask);
+            Debug.DrawRay(capsuleCollider.bounds.center, Vector3.right * distance, Color.yellow);
         }
         else
         {
             isCollideWall=Physics.Raycast(transform.position, Vector3.left, distance, walllayermask);
+            Debug.DrawRay(capsuleCollider.bounds.center, Vector3.left * distance, Color.yellow);
+
         }
     }
 
@@ -227,7 +230,7 @@ public class PlayerMovement : MonoBehaviour
         if (inputV == 0)
         {
 
-            PlayerRigid2d.velocity = new Vector3(PlayerRigid2d.velocity.x, 0, 0);
+            PlayerRigid2d.velocity = new Vector3(0, 0, 0);
         }
         else
         {
@@ -243,7 +246,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (inputV > 0)
                 {
-                    PlayerRigid2d.velocity = new Vector3(PlayerRigid2d.velocity.x, 0, 0);
+                    PlayerRigid2d.velocity = new Vector3(0, 0, 0);
                 }
                 else if (inputV < 0)
                 {
