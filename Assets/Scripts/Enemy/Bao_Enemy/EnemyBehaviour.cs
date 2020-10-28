@@ -109,7 +109,6 @@ public class EnemyBehaviour : MonoBehaviour
         {
             rb.velocity = new Vector3(-speed, rb.velocity.y, 0);
         }
-        print(IsFacingRight());
     }
 
     // Fix a bug that enemy stick to something when colliding
