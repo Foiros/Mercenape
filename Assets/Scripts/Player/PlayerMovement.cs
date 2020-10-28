@@ -233,11 +233,24 @@ public class PlayerMovement : MonoBehaviour
         {
             if (!isOnTop)
             {
-                PlayerRigid2d.velocity += (new Vector3(0, 1, 0) * PlayerClimbSpeed *inputV* Time.deltaTime);
+                PlayerRigid2d.velocity += (new Vector3(0, 1, 0) * PlayerClimbSpeed * inputV * Time.deltaTime);
+                if (isGrounded && inputV < 0)
+                {
+                    isGrabWall = false;
+                }
             }
             else
             {
-                PlayerRigid2d.velocity = new Vector3(PlayerRigid2d.velocity.x, 0, 0);
+                if (inputV > 0)
+                {
+                    PlayerRigid2d.velocity = new Vector3(PlayerRigid2d.velocity.x, 0, 0);
+                }
+                else if (inputV < 0)
+                {
+                    PlayerRigid2d.velocity += (new Vector3(0, 1, 0) * PlayerClimbSpeed * inputV * Time.deltaTime);
+
+                }
+
                 if (Input.GetKey(KeyCode.Space))
                 {
                     PlayerRigid2d.velocity += new Vector3(0.0f, 1.0f, 0.0f) * PlayerDoubleJumpPow;
