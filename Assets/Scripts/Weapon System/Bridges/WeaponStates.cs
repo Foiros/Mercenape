@@ -8,12 +8,12 @@ public class WeaponStates: MonoBehaviour
     private StatsCalculator calculator;
 
     private List<AbstractWeapon> weapons;
-    [SerializeField] private List<bool> ownedWeaponsList , upgradedWeaponsList;
+    [SerializeField]private List<bool> ownedWeaponsList , upgradedWeaponsList;
     [SerializeField] private List<int> savedSpeedAmountsList;
 
     private int weaponID;
 
-    [SerializeField] private float weaponSpeed, weaponImpactDamage, bleedDamage, bleedDuration;
+    [SerializeField] private float speed, impactDamage, bleedDamage, bleedDuration;
     private int bleedTicks;
 
     void Awake()
@@ -43,10 +43,8 @@ public class WeaponStates: MonoBehaviour
     // Function for setting the upgrade status of a weapon. 
     public void WhatWeaponWasUpgraded(int id) { upgradedWeaponsList[id] = true; }
 
-    public void UpdateStats(float speed, float damage) { weaponSpeed = speed; weaponImpactDamage = damage; }
-
     // This function sets up the weapon to be used in level scenes. 
-    private void SetUpWeapon()
+    void SetUpWeapon()
     {
         AbstractWeapon weaponsArray = weapons[weaponID];
 
@@ -57,6 +55,8 @@ public class WeaponStates: MonoBehaviour
         calculator.SetRequestFromActualWeapon(true);
         calculator.CalculateStats();
 
+        speed = calculator.GetSpeed();
+        impactDamage = calculator.GetImpactDamage();
         bleedDamage = weaponsArray.GetBleedDamage();
         bleedDuration = weaponsArray.GetBleedDuration();
         bleedTicks = weaponsArray.GetBleedTicks();
@@ -67,13 +67,11 @@ public class WeaponStates: MonoBehaviour
     {
         WeaponsData data = SaveManager.LoadWeapons();
 
-        if(data != null)
-        {
-            weaponID = data.weaponID;
-            ownedWeaponsList = data.ownedWeaponsList;
-            upgradedWeaponsList = data.upgradedWeaponsList;
-            savedSpeedAmountsList = data.savedSpeedAmountsList;
-        }
+        weaponID = data.weaponID;
+        
+        if(data.ownedWeaponsList != null) { ownedWeaponsList = data.ownedWeaponsList; }
+        if(data.upgradedWeaponsList != null) { upgradedWeaponsList = data.upgradedWeaponsList; }
+        if(data.savedSpeedAmountsList != null) { savedSpeedAmountsList = data.savedSpeedAmountsList; }
     }
 
     // Set functions
@@ -87,8 +85,8 @@ public class WeaponStates: MonoBehaviour
     public List<bool> GetOwnedWeapons() { return ownedWeaponsList; }
     public List<bool> GetUpgradedWeapons() { return upgradedWeaponsList; }
     public List<int> GetSavedSpeeds() { return savedSpeedAmountsList; }
-    public float GetWeaponSpeed() { return weaponSpeed; }
-    public float GetWeaponImpactDamage() { return weaponImpactDamage; }
+    public float GetWeaponSpeed() { return speed; }
+    public float GetWeaponImpactDamage() { return impactDamage; }
     public float GetWeaponBleedDamage() { return bleedDamage; }
     public float GetBleedDuration() { return bleedDuration; }
     public int GetWeaponBleedTicks() { return bleedTicks; }

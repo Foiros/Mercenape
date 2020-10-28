@@ -169,8 +169,8 @@ public class UseUpgrades : MonoBehaviour
         calculator.CalculateStats();
 
         float weight = weapons[weaponID].GetWeight();
-        float speed = weaponStates.GetWeaponSpeed();
-        float damage = weaponStates.GetWeaponImpactDamage();
+        float speed = calculator.GetSpeed();
+        float damage = calculator.GetImpactDamage();
 
         weaponWeightText.text = " Weight: " + weight;
         weaponSpeedText.text = "Speed: " + speed;

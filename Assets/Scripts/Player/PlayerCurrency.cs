@@ -50,13 +50,10 @@ public class PlayerCurrency : MonoBehaviour
     {
         CurrencyData data = SaveManager.LoadCurrency();
 
-        if(data != null)
-        {
-            playerKarma = data.playerKarma;
-            playerGold = data.playerMoney;
-            playerUpgrade = data.speedUpgrades;
-        }
-        
+        playerKarma = data.playerKarma;
+        playerGold = data.playerMoney;
+        playerUpgrade = data.speedUpgrades;
+
        /* updateCurrency(playerGold);
         updateKarma(playerKarma);
         updateUpgrades(playerUpgrade);*/
