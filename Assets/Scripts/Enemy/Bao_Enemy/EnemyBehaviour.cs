@@ -38,6 +38,7 @@ public class EnemyBehaviour : MonoBehaviour
 
         healthBarUI = transform.GetChild(1).gameObject;
         barHealth = healthBarUI.GetComponent<EnemyHealthBar>();
+        
 
         rb = GetComponent<Rigidbody>();
         boxCollier = GetComponent<BoxCollider>();
@@ -47,6 +48,7 @@ public class EnemyBehaviour : MonoBehaviour
     {
         Invoke("FreezePosY", 0.8f);
 
+        
         //var waveStat = GameObject.Find("EnemySpawner");
         //maxHP += waveStat.GetComponent<EnemySpawnerScript>().wave.enemyIncreasedHP;
         //damage += waveStat.GetComponent<EnemySpawnerScript>().wave.enemyIncreasedDamage;
@@ -97,7 +99,7 @@ public class EnemyBehaviour : MonoBehaviour
         {
             enemyRotation += new Vector3(0, -(Mathf.Sign(rb.velocity.x)) * 180, 0);
             transform.rotation = Quaternion.Euler(0, enemyRotation.y, 0);
-            barHealth.ScaleRightUI(rb);
+            barHealth.ScaleLeftUI(rb);
         }
 
         // Check direction facing and adjust to velocity according to that

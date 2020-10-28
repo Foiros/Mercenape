@@ -341,7 +341,7 @@ public class MowerBehaviour : EnemyBehaviour
         // Also turn healthbar of the generator
         if (!groundInfo || wallInfo)
         {
-            fieldBarHealth.ScaleLeftUI(rb);
+            fieldBarHealth.ScaleRightUI(rb);
 
             if (isRiding)
             {
