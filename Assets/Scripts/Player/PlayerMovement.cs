@@ -207,6 +207,7 @@ public class PlayerMovement : MonoBehaviour
                 if (Input.GetKey(KeyCode.E) && !Input.GetKey(KeyCode.S))
                 {
                     isGrabWall = true;
+                    isJumping = false;
                 }
             }
             else
@@ -214,6 +215,7 @@ public class PlayerMovement : MonoBehaviour
                 if(Input.GetKey(KeyCode.E)&& Input.GetKey(KeyCode.S))
                 {
                     isGrabWall = false;
+                    isJumping = true;
                 }
             }
         }

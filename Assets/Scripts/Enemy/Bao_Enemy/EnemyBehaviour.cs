@@ -93,7 +93,7 @@ public class EnemyBehaviour : MonoBehaviour
         if (currentHP <= 0) { return; }
 
         groundInfo = Physics.Raycast(frontDetection.position, Vector3.down, 10f, LayerMask.GetMask("Ground"));
-        wallInfo = Physics.Raycast(frontDetection.position, transform.right, 2f, LayerMask.GetMask("Wall"));
+        wallInfo = Physics.Raycast(frontDetection.position, transform.right, 1.5f, LayerMask.GetMask("Wall"));
        
         if (!groundInfo || wallInfo)
         {
