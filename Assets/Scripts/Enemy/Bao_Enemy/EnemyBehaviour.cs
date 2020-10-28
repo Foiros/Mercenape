@@ -82,7 +82,7 @@ public class EnemyBehaviour : MonoBehaviour
     // Check if facing right direction
     protected bool IsFacingRight()
     {
-        return transform.rotation.eulerAngles.y == (int)0;
+        return (int)transform.rotation.eulerAngles.y == 0;
     }
 
     // Basic Movement
@@ -108,7 +108,8 @@ public class EnemyBehaviour : MonoBehaviour
         else
         {
             rb.velocity = new Vector3(-speed, rb.velocity.y, 0);
-        }      
+        }
+        print(IsFacingRight());
     }
 
     // Fix a bug that enemy stick to something when colliding

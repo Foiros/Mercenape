@@ -41,7 +41,7 @@ public class EnemySpawnerScript : MonoBehaviour
     private void Start()
     {
         playerCurrency = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCurrency>();
-        gm = GameObject.FindGameObjectWithTag("Player").GetComponent<GameMaster>();
+        gm = GameObject.FindGameObjectWithTag("gamemaster").GetComponent<GameMaster>();
 
         groupCountdown = timeBetweenGroups;
 
@@ -152,7 +152,7 @@ public class EnemySpawnerScript : MonoBehaviour
     // Use this in SpawnWave
     void SpawnEnemy(Transform _enemy)
     {
-        Instantiate(_enemy, transform.position, transform.rotation);
+        Instantiate(_enemy, transform.position, Quaternion.Euler(0, -180, 0));
     }
 
     // Next group more difficult, spawn pattern
