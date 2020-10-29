@@ -24,11 +24,14 @@ public class MowerBehaviour : EnemyBehaviour
     private bool isBackSideHit = false;
     private bool isGeneratorHit = false;
 
+    [SerializeField] private Transform backside;
     private float ridePos;
     [SerializeField] private Transform rideHeight;
 
     private CapsuleCollider capsuleCollider;
     private SphereCollider generatorCollider;
+
+    private Animator animatorMower;
 
     protected override void Start()
     {
@@ -36,16 +39,18 @@ public class MowerBehaviour : EnemyBehaviour
 
         currentState = ForceFieldState.Inactive;
 
-        fieldHealthBarUI = transform.GetChild(2).GetChild(0).gameObject;
+        fieldHealthBarUI = backside.GetChild(0).gameObject;
         fieldBarHealth = fieldHealthBarUI.GetComponent<EnemyHealthBar>();
 
         fieldHP = fieldStat.maxHP;
         fieldBarHealth.UpdateHealthBar(fieldHP, fieldStat.maxHP);
 
-        fieldSprite = transform.GetChild(2).GetComponent<SpriteRenderer>();
+        fieldSprite = backside.GetComponent<SpriteRenderer>();
 
-        capsuleCollider = transform.GetChild(2).GetComponent<CapsuleCollider>();
-        generatorCollider = transform.GetChild(2).GetComponent<SphereCollider>();
+        capsuleCollider = backside.GetComponent<CapsuleCollider>();
+        generatorCollider = backside.GetComponent<SphereCollider>();       
+
+        animatorMower = GetComponent<Animator>();
     }
 
     private void Update()
@@ -99,6 +104,7 @@ public class MowerBehaviour : EnemyBehaviour
                     fieldSprite.enabled = false;
                     generatorCollider.enabled = false;
                     fieldHealthBarUI.SetActive(false);
+                    animatorMower.SetBool("IsActive", false);
 
                     break;
                 }
@@ -141,8 +147,10 @@ public class MowerBehaviour : EnemyBehaviour
 
             if (currentHP <= 0)
             {
-                StopCoroutine("CheckEnemyDeath");
+                capsuleCollider.enabled = false;
                 StartCoroutine("CheckEnemyDeath");
+
+                animatorMower.SetTrigger("Death");
             }
 
             if (!isGenerating)
@@ -317,6 +325,7 @@ public class MowerBehaviour : EnemyBehaviour
         if (currentState != ForceFieldState.Destroyed)
         {
             currentState = ForceFieldState.Generating;
+            animatorMower.SetTrigger("Generating");
 
             isGenerating = false;
         }
@@ -328,6 +337,7 @@ public class MowerBehaviour : EnemyBehaviour
         {
             currentState = ForceFieldState.Active;
             speed = stat.runningSpeed;
+            animatorMower.SetBool("IsActive", true);
 
             isGenerating = false;
         }
@@ -338,6 +348,7 @@ public class MowerBehaviour : EnemyBehaviour
         if (currentState != ForceFieldState.Destroyed)
         {
             currentState = ForceFieldState.Inactive;
+            animatorMower.SetBool("IsActive", false);
 
             isGenerating = false;
         }
@@ -346,6 +357,8 @@ public class MowerBehaviour : EnemyBehaviour
     protected override void Movement()
     {
         base.Movement();
+
+        animatorMower.SetFloat("MovementSpeed", speed / stat.runningSpeed);
 
         // Also turn healthbar of the generator
         if (!groundInfo || wallInfo)
