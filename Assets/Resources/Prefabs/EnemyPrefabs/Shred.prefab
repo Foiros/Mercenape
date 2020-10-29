@@ -12,7 +12,7 @@ Animator:
   m_Avatar: {fileID: 9000000, guid: 1575fda9a06a6c04f9e6b4f8f0c4eec3, type: 3}
   m_Controller: {fileID: 9100000, guid: 08c9f2706f8203e46ae7bfab05e350f6, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 1
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
@@ -100,9 +100,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 1575fda9a06a6c04f9e6b4f8f0c4eec3,
         type: 3}
       propertyPath: m_Name
-      value: shred 1
+      value: Shred Model
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5866666021909216657, guid: 1575fda9a06a6c04f9e6b4f8f0c4eec3, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 1575fda9a06a6c04f9e6b4f8f0c4eec3, type: 3}
 --- !u!1001 &6008763409599780095
 PrefabInstance:

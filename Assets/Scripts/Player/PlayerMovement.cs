@@ -27,7 +27,6 @@ public class PlayerMovement : MonoBehaviour
     public Transform PlayerUnderPos, PlayerAbovePos;
     public float CheckRadius;
     
-    bool isOnTop;
     public float PlayerClimbSpeed;
 
     public bool isPlayerBlock = false;
@@ -40,13 +39,26 @@ public class PlayerMovement : MonoBehaviour
 
     public Animator animator;
 
-    public float slideSpeed;
     public bool isCollideWall;
 
-    bool isGrabWall = false;
-    bool isJumping = false;
+    public bool isGrabWall = false;
+    public bool isJumping = false;
 
+    //Start Hash ID 
+    [HideInInspector]
+    public int isJumping_animBool,
+        isGrounded_animBool,
+        isGrabWall_animBool,
+        knockedDown_animBool,
+        blocking_animBool,
+        isRunning_animBool;
 
+    [HideInInspector]
+    public int inputH_animFloat,
+        inputV_animFloat,
+        vSpeed_animafloat;
+
+    //end Hash ID
     void Awake()
     {
         playerAttack = transform.GetComponent<PlayerAttackTrigger>();
@@ -55,14 +67,27 @@ public class PlayerMovement : MonoBehaviour
         boxCollider = transform.GetComponent<BoxCollider>();
         capsuleCollider = transform.GetComponent<CapsuleCollider>();
         PlayerRigid2d.centerOfMass = Vector3.zero;
+
+
+        //HashID animator parameters for performances
+        isJumping_animBool = Animator.StringToHash("isJumping");
+        isGrounded_animBool = Animator.StringToHash("isGrounded");
+        isGrabWall_animBool = Animator.StringToHash("isGrabWall");
+        blocking_animBool = Animator.StringToHash("Blocking");
+        knockedDown_animBool = Animator.StringToHash("KnockedDown");
+        isRunning_animBool = Animator.StringToHash("IsRunning");
+        inputH_animFloat = Animator.StringToHash(" inputH");
+        inputV_animFloat = Animator.StringToHash("inputV");
+        vSpeed_animafloat = Animator.StringToHash("vSpeed");
+       
+
+
     }
 
     void Update()
     {
         CheckKnockDown();
-
         CheckPlayerGrounded();
-        //CheckPlayerGrabWall();       
         CheckCollideWall();
         CheckOnTop();
         CheckGrabWall();
@@ -103,6 +128,16 @@ public class PlayerMovement : MonoBehaviour
 
        
         SetAnimatorPara();
+
+        if (isGrabWall && Input.GetKeyDown(KeyCode.Space))
+        {
+            isJumping = true;
+            isGrabWall = false;
+            PlayerRigid2d.velocity += (Vector3.up * PlayerJumpPow + Vector3.right);
+            
+            
+        }
+
 
     }
 
@@ -154,10 +189,12 @@ public class PlayerMovement : MonoBehaviour
         if (inputH != 0 && !isPlayerBlock)
         {
             animator.SetBool("IsRunning", true);
+            animator.SetBool(isRunning_animBool, true);
         }
         else
         {
             animator.SetBool("IsRunning", false);
+            animator.SetBool(isRunning_animBool, false);
         }
     }
 
@@ -169,7 +206,7 @@ public class PlayerMovement : MonoBehaviour
     // check collide with wall  
     void CheckCollideWall()
     {
-        float distance = 3f;
+        float distance =1.5f;
         if (FaceRight)
         {
            isCollideWall=Physics.Raycast(capsuleCollider.bounds.center, Vector3.right, distance, walllayermask);
@@ -177,22 +214,22 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            isCollideWall=Physics.Raycast(transform.position, Vector3.left, distance, walllayermask);
+            isCollideWall=Physics.Raycast(capsuleCollider.bounds.center, Vector3.left, distance, walllayermask);
             Debug.DrawRay(capsuleCollider.bounds.center, Vector3.left * distance, Color.yellow);
 
         }
     }
 
-    void CheckOnTop()
+    bool CheckOnTop()
     {
-        float distance = 2f;
+        float distance = 1.3f;
         if (FaceRight)
         {
-            isOnTop= (!Physics.Raycast(PlayerAbovePos.position , Vector3.right, distance, walllayermask)&& Physics.Raycast(PlayerUnderPos.position, Vector3.right, distance, walllayermask));
+           return (!Physics.Raycast(PlayerAbovePos.position , Vector3.right, distance, walllayermask)&& Physics.Raycast(PlayerUnderPos.position, Vector3.right, distance, walllayermask));
         }
         else
         {
-            isOnTop = (!Physics.Raycast(PlayerAbovePos.position, Vector3.left, distance, walllayermask) && Physics.Raycast(PlayerUnderPos.position, Vector3.left, distance, walllayermask));
+            return (!Physics.Raycast(PlayerAbovePos.position, Vector3.left, distance, walllayermask) && Physics.Raycast(PlayerUnderPos.position, Vector3.left, distance, walllayermask));
         }
 
     }
@@ -228,6 +265,7 @@ public class PlayerMovement : MonoBehaviour
     //player climb on wall
     void PlayerClimbWal()
     {
+        float xSpeed = 1f;
         if (inputV == 0)
         {
 
@@ -235,9 +273,17 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            if (!isOnTop)
+            if (!CheckOnTop())
             {
-                PlayerRigid2d.velocity += (new Vector3(0, 1, 0) * PlayerClimbSpeed * inputV * Time.deltaTime);
+                if (inputV > 0)
+                {
+                    PlayerRigid2d.velocity += (new Vector3(0, 1, 0) * PlayerClimbSpeed * inputV * Time.deltaTime + Vector3.right * xSpeed * Time.deltaTime);
+                }
+                else if (inputV < 0)
+                {
+                    PlayerRigid2d.velocity += (new Vector3(0, 1, 0) * PlayerClimbSpeed * inputV * Time.deltaTime + Vector3.right * -xSpeed * Time.deltaTime);
+                }
+
                 if (isGrounded && inputV < 0)
                 {
                     isGrabWall = false;
@@ -251,7 +297,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 else if (inputV < 0)
                 {
-                    PlayerRigid2d.velocity += (new Vector3(0, 1, 0) * PlayerClimbSpeed * inputV * Time.deltaTime);
+                    PlayerRigid2d.velocity += (new Vector3(0, 1, 0) * PlayerClimbSpeed * inputV * Time.deltaTime + Vector3.right * -xSpeed * Time.deltaTime);
 
                 }
 
@@ -282,14 +328,14 @@ public class PlayerMovement : MonoBehaviour
         {
             if (isGrounded)
             {
-                if (inputH * transform.localScale.x == -1)
+                if (inputH * transform.localScale.z == -1)
                 {
                     PlayerRigid2d.MovePosition((Vector3)transform.position + Vector3.right * inputH * PlayerSpeed * Time.deltaTime);
                 }
             }
             else if ((!isGrounded))
             {
-                if (inputH * transform.localScale.x == -1)
+                if (inputH * transform.localScale.z == -1)
                 {
                     PlayerRigid2d.MovePosition((Vector3)transform.position + Vector3.right * inputH * MidAirSpeed * Time.deltaTime);
                 }
@@ -347,7 +393,7 @@ public class PlayerMovement : MonoBehaviour
             isGrabWall = false;
 
             animator.SetLayerWeight(1, 0f);
-            animator.SetBool("KnockedDown", true);
+            animator.SetBool(knockedDown_animBool, true);
             playerAttack.enabled = false;
 
             if (Input.GetKeyDown(KeyCode.Space)) { getUpCount++; }
@@ -370,18 +416,16 @@ public class PlayerMovement : MonoBehaviour
 
     void SetAnimatorPara()
     {
-        animator.SetFloat("inputH", Mathf.Abs(inputH));
-        animator.SetFloat("inputV", Mathf.Abs(inputV));
-        animator.SetFloat("vSpeed", PlayerRigid2d.velocity.y);
+        
+        animator.SetFloat(inputH_animFloat, Mathf.Abs(inputH));
+        animator.SetFloat(inputV_animFloat, Mathf.Abs(inputV));
+        animator.SetFloat(vSpeed_animafloat, PlayerRigid2d.velocity.y);
 
-        animator.SetBool("isJumping", isJumping);
-        animator.SetBool("isGrounded", isGrounded);
-
-        animator.SetBool("Blocking", isPlayerBlock);
-
-        animator.SetBool("isGrabWall", isGrabWall);
-
-        animator.SetBool("KnockedDown", isKnockDown);
+        animator.SetBool(isJumping_animBool, isJumping);
+        animator.SetBool(isGrounded_animBool, isGrounded);
+        animator.SetBool(blocking_animBool, isPlayerBlock);
+        animator.SetBool(isGrabWall_animBool, isGrabWall);
+        animator.SetBool(knockedDown_animBool, isKnockDown);
     }
 
 }
