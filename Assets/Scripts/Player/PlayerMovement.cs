@@ -108,7 +108,7 @@ public class PlayerMovement : MonoBehaviour
             InputVertical();
         }
 
-        if (!isPlayerBlock && !isKnockDown)
+        if (!isKnockDown)
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
