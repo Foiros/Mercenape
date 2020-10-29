@@ -68,7 +68,6 @@ public class PlayerMovement : MonoBehaviour
         capsuleCollider = transform.GetComponent<CapsuleCollider>();
         PlayerRigid2d.centerOfMass = Vector3.zero;
 
-
         //HashID animator parameters for performances
         isJumping_animBool = Animator.StringToHash("isJumping");
         isGrounded_animBool = Animator.StringToHash("isGrounded");
@@ -78,14 +77,13 @@ public class PlayerMovement : MonoBehaviour
         isRunning_animBool = Animator.StringToHash("IsRunning");
         inputH_animFloat = Animator.StringToHash("inputH");
         inputV_animFloat = Animator.StringToHash("inputV");
-        vSpeed_animafloat = Animator.StringToHash("vSpeed");
-       
-
-
+        vSpeed_animafloat = Animator.StringToHash("vSpeed");      
     }
 
     void Update()
     {
+        SetAnimatorPara();
+
         CheckKnockDown();
         CheckPlayerGrounded();
         CheckCollideWall();
@@ -95,10 +93,11 @@ public class PlayerMovement : MonoBehaviour
         if (isGrounded)
         {
             PlayerDoubleJump = true;
-        }
-        if (isGrounded)
-        {
             isJumping = false;
+        }
+        else
+        {
+            isJumping = true;
         }
 
         if (!isKnockDown)
@@ -124,22 +123,15 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             PlayerRigid2d.useGravity = true;
-        }
-
-       
-        SetAnimatorPara();
+        }             
 
         if (isGrabWall && Input.GetKeyDown(KeyCode.Space))
         {
             isJumping = true;
             isPlayerBlock = false;
             isGrabWall = false;
-            PlayerRigid2d.velocity += (Vector3.up * PlayerJumpPow + Vector3.right);
-            
-            
+            PlayerRigid2d.velocity += (Vector3.up * PlayerJumpPow + Vector3.right);                      
         }
-
-
     }
 
     void FixedUpdate()
@@ -343,13 +335,8 @@ public class PlayerMovement : MonoBehaviour
                     PlayerRigid2d.MovePosition((Vector3)transform.position + Vector3.right * inputH * MidAirSpeed * Time.deltaTime);
                 }
             }
-
         }
-
-
     }
-
-
 
     private void PlayerJump() // both single and double 
                               // side note could handle jump power by * with the character height. at the moment the vector in middle of the character so 7pixel long
@@ -358,6 +345,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (isGrounded)
         {
+            animator.SetTrigger("JumpStart");
             PlayerRigid2d.velocity += new Vector3(0.0f, 1.0f, 0.0f) * PlayerJumpPow;
             isJumping = true;
             isPlayerBlock = false;
@@ -365,12 +353,15 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (!isGrounded && PlayerDoubleJump)
         {
-
+            //animator.SetTrigger("JumpStart");
+            if (PlayerRigid2d.velocity.y <= 0.1)
+            {
+                PlayerRigid2d.velocity = Vector3.zero;
+            }
             PlayerRigid2d.velocity += new Vector3(0.0f, 1.0f, 0.0f) * PlayerDoubleJumpPow;
             PlayerDoubleJump = false;
             isJumping = true;
             isPlayerBlock = false;
-
         }
     }
     
@@ -378,8 +369,7 @@ public class PlayerMovement : MonoBehaviour
     private void FlipPlayer()
     {
         if (inputH <0  &&  FaceRight == true) { Flip(); }
-        else if (inputH > 0 && FaceRight == false) { Flip(); }
-       
+        else if (inputH > 0 && FaceRight == false) { Flip(); }    
     }
 
     private void Flip()
@@ -420,8 +410,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     void SetAnimatorPara()
-    {
-        
+    {       
         animator.SetFloat(inputH_animFloat, Mathf.Abs(inputH));
         animator.SetFloat(inputV_animFloat, Mathf.Abs(inputV));
         animator.SetFloat(vSpeed_animafloat, PlayerRigid2d.velocity.y);
@@ -432,6 +421,5 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool(isGrabWall_animBool, isGrabWall);
         animator.SetBool(knockedDown_animBool, isKnockDown);
     }
-
 }
 
