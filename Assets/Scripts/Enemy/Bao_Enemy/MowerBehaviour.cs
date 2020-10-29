@@ -127,12 +127,16 @@ public class MowerBehaviour : EnemyBehaviour
     // Backside main mechanic
     public void DamagingBackside(float playerDmg)
     {
+        if (!isDamageable) { return; }
+
         if (currentState == ForceFieldState.Inactive || currentState == ForceFieldState.Destroyed)
         {
+            isDamageable = false;
+            Invoke("ReturnToDamageable", playerMovement.playerAttack.TimeDelayAttack);
+
             speed = stat.runningSpeed / 2;
 
             currentHP -= playerDmg;
-
             barHealth.UpdateHealthBar(currentHP, stat.maxHP);
 
             if (currentHP <= 0)
@@ -165,6 +169,11 @@ public class MowerBehaviour : EnemyBehaviour
     // Only for damaging force field
     public void DamagingForceField(float playerDmg)
     {
+        if (!isDamageable) { return; }
+
+        isDamageable = false;
+        Invoke("ReturnToDamageable", playerMovement.playerAttack.TimeDelayAttack);
+
         fieldHP -= playerDmg;
 
         fieldBarHealth.UpdateHealthBar(fieldHP, fieldStat.maxHP);

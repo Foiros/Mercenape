@@ -12,7 +12,7 @@ public class PlayerAttackTrigger : MonoBehaviour
     
     private List<AbstractWeapon> weapons;
 
-    [SerializeField] private float TimeDelayAttack; // to check if there still countdown time untill player can atk again
+    public float TimeDelayAttack; // to check if there still countdown time untill player can atk again
     public float PlayerDelayAttackTime; // can exchange to weapon atk rate later
 
     public Transform Attackpos;
@@ -20,6 +20,7 @@ public class PlayerAttackTrigger : MonoBehaviour
 
     public LayerMask EnemyLayerMask;
     [SerializeField] private float PlayerDamage;
+    [SerializeField] private Transform edgePos;
 
     public Transform frontPlayerPosition;
     private int weaponID;
@@ -49,17 +50,10 @@ public class PlayerAttackTrigger : MonoBehaviour
         SetWeaponStats();
     }
 
-
-    // Update is called once per frame
-    void Update()
-    {
-        CheckMouseInput();  
-    }
-
     void FixedUpdate()
-    {
+    {      
         if (!playerMovement.isPlayerBlock)
-        { PlayerAttack(); }
+        { PlayerAttack(); }       
     }
 
     void SetWeaponStats()
@@ -85,49 +79,67 @@ public class PlayerAttackTrigger : MonoBehaviour
     public void PlayerAttack()
     {
         // Cannot attack if player is getting up
-        if (PlayerAnimator.GetCurrentAnimatorStateInfo(0).IsTag("BounceBack")) { return; }
+        if (PlayerAnimator.GetCurrentAnimatorStateInfo(0).IsTag("BounceBack")) { return; }       
 
         if (CheckMouseInput() && !IsPlayerAttack)
         {
             IsPlayerAttack = true;
-            PlayerAnimator.SetTrigger("Attack");           
-
+            PlayerAnimator.SetTrigger("Attack");
+            
             // (Holding mouse) When attack anim finish, it continues the next one, not standing still as before
             // weaponSpeed = 1 is normal, = 2 is fast double, etc. (could be less than 1 for slower speed)
-            TimeDelayAttack = (1 / weaponSpeed) * GetAttackAnimLength();
-
-            Collider[] enemiesToDamage = Physics.OverlapBox(Attackpos.position, Attackpos.localScale, Quaternion.identity, EnemyLayerMask);
-
-            for (int i = 0; i < enemiesToDamage.Length; i++)
-            {
-                // Created  and edited by Bao: Detect enemy and attack
-                if (enemiesToDamage[i].GetType() == typeof(CapsuleCollider)) // Mower's back
-                {
-                    // Hit backside but not generator
-                    OnHitEnemy?.Invoke(true, false, enemiesToDamage[i], PlayerDamage);               
-                }
-                else if (enemiesToDamage[i].GetType() == typeof(SphereCollider)) // Mower's generator
-                {
-                    // Hit generator but not backside
-                    OnHitEnemy?.Invoke(false, true, enemiesToDamage[i], PlayerDamage);
-                }
-                else  // Not Mower, meaning Shred
-                {
-                    // None of generator nor backside
-                    OnHitEnemy?.Invoke(false, false, enemiesToDamage[i], PlayerDamage);            
-                }
-
-                // Then bleed enemy (Mower script make sure the generator don't bleed)
-                if (weaponBleedDamage > 0 && bleedTicks > 0)
-                {
-                    OnBleedEnemy?.Invoke(weaponBleedDamage, weaponBleedDuration, bleedTicks, enemiesToDamage[i]);
-                }
-            }
+            TimeDelayAttack = (1 / weaponSpeed) * GetAttackAnimLength();          
         }
         else
         {
             CheckAttackStatus();
         }
+
+        // When attacking
+        if(IsAttackingAnim())
+        {
+            HitEnemy();
+        }
+        
+    }
+
+    // When actually hit enemy with the weapon
+    void HitEnemy()
+    {
+        //Collider[] enemiesToDamage = Physics.OverlapBox(Attackpos.position, Attackpos.localScale, Quaternion.identity, EnemyLayerMask);
+        Collider[] enemiesToDamage = new Collider[10];
+        int numHit = Physics.OverlapSphereNonAlloc(edgePos.position, 0.1f, enemiesToDamage, EnemyLayerMask);
+        
+        for (int i = 0; i < numHit; i++)
+        {         
+            // Created  and edited by Bao: Detect enemy and attack
+            if (enemiesToDamage[i].GetType() == typeof(CapsuleCollider)) // Mower's back
+            {
+                // Hit backside but not generator
+                OnHitEnemy?.Invoke(true, false, enemiesToDamage[i], PlayerDamage);
+            }
+            else if (enemiesToDamage[i].GetType() == typeof(SphereCollider)) // Mower's generator
+            {
+                // Hit generator but not backside
+                OnHitEnemy?.Invoke(false, true, enemiesToDamage[i], PlayerDamage);
+            }
+            else  // Not Mower, meaning Shred
+            {
+                // None of generator nor backside
+                OnHitEnemy?.Invoke(false, false, enemiesToDamage[i], PlayerDamage);
+            }
+
+            // Then bleed enemy (Mower script make sure the generator don't bleed)
+            if (weaponBleedDamage > 0 && bleedTicks > 0)
+            {
+                OnBleedEnemy?.Invoke(weaponBleedDamage, weaponBleedDuration, bleedTicks, enemiesToDamage[i]);
+            }
+        }
+    }
+
+    bool IsAttackingAnim()
+    {
+        return PlayerAnimator.GetCurrentAnimatorStateInfo(1).IsTag("PlayerAttack");
     }
 
     void CheckAttackStatus()
@@ -139,7 +151,7 @@ public class PlayerAttackTrigger : MonoBehaviour
         else if (IsPlayerAttack)
         {
             TimeDelayAttack -= Time.deltaTime;
-        }
+        }      
     }
 
     float GetAttackAnimLength() { return attackAnim.length; }
@@ -147,7 +159,8 @@ public class PlayerAttackTrigger : MonoBehaviour
     void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawWireCube(Attackpos.position, Attackpos.localScale);
+        //Gizmos.DrawWireCube(Attackpos.position, Attackpos.localScale);
+        Gizmos.DrawSphere(edgePos.position, 0.1f);
     }
 
     public void SetWeaponList(List<AbstractWeapon> list) { weapons = list; }

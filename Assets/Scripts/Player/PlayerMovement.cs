@@ -87,7 +87,6 @@ public class PlayerMovement : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                isJumping = true;
                 PlayerJump();
             }  
         }
@@ -311,6 +310,7 @@ public class PlayerMovement : MonoBehaviour
         if (isGrounded)
         {
             PlayerRigid2d.velocity += new Vector3(0.0f, 1.0f, 0.0f) * PlayerJumpPow;
+            isJumping = true;
 
         }
         else if (!isGrounded && PlayerDoubleJump)
@@ -318,9 +318,10 @@ public class PlayerMovement : MonoBehaviour
 
             PlayerRigid2d.velocity += new Vector3(0.0f, 1.0f, 0.0f) * PlayerDoubleJumpPow;
             PlayerDoubleJump = false;
+            isJumping = true;
 
         }
-        }
+    }
     
 
     private void FlipPlayer()
@@ -340,15 +341,20 @@ public class PlayerMovement : MonoBehaviour
     }
    
     void CheckKnockDown()
-    {             
+    {
         if (isKnockDown)
         {
             isGrabWall = false;
 
+            animator.SetLayerWeight(1, 0f);
             animator.SetBool("KnockedDown", true);
             playerAttack.enabled = false;
 
-            if (Input.GetKeyDown(KeyCode.Space)) { getUpCount++; }           
+            if (Input.GetKeyDown(KeyCode.Space)) { getUpCount++; }
+        }
+        else
+        {
+            animator.SetLayerWeight(1, 1f);
         }
     }
 

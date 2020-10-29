@@ -15,6 +15,7 @@ public class EnemyBehaviour : MonoBehaviour
     [SerializeField] protected float currentHP;
 
     protected bool isAttacker = false; // Make sure not all enemy activate function
+    protected bool isDamageable = true;
     
     protected float weaponBleedDamage, weaponBleedDuration;
     protected int bleedTicks, currentBleedTicks;
@@ -39,7 +40,6 @@ public class EnemyBehaviour : MonoBehaviour
         healthBarUI = transform.GetChild(1).gameObject;
         barHealth = healthBarUI.GetComponent<EnemyHealthBar>();
         
-
         rb = GetComponent<Rigidbody>();
         boxCollier = GetComponent<BoxCollider>();
     }
@@ -47,7 +47,6 @@ public class EnemyBehaviour : MonoBehaviour
     protected virtual void Start()
     {
         Invoke("FreezePosY", 0.8f);
-
         
         //var waveStat = GameObject.Find("EnemySpawner");
         //maxHP += waveStat.GetComponent<EnemySpawnerScript>().wave.enemyIncreasedHP;
@@ -122,8 +121,12 @@ public class EnemyBehaviour : MonoBehaviour
     // Take damage from player
     public virtual void TakeDamage(float playerDamage)
     {
-        currentHP -= playerDamage;
+        if (!isDamageable) { return; }
 
+        isDamageable = false;
+        Invoke("ReturnToDamageable", playerMovement.playerAttack.TimeDelayAttack);
+
+        currentHP -= playerDamage;
         barHealth.UpdateHealthBar(currentHP, stat.maxHP);
 
         // If dead
@@ -154,6 +157,11 @@ public class EnemyBehaviour : MonoBehaviour
 
         // Then deal damage to the correct enemy
         TakeDamage(playerDmg);
+    }
+
+    protected void ReturnToDamageable()
+    {
+        isDamageable = true;
     }
 
     // Process when player get knocked down, mainly in Shred and Mower script

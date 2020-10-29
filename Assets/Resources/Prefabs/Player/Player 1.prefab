@@ -1744,7 +1744,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5031870476950794516}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0.0075778672, z: 0}
+  m_LocalPosition: {x: 0.00219, y: 0.03735, z: -0.00436}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8373603787745145627}
@@ -3878,10 +3878,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   PlayerDamage: 5
+  edgePos: {fileID: 1234815713281456676}
   frontPlayerPosition: {fileID: 7007741340632427131}
   weaponSpeed: 0
   weaponBleedDamage: 0
   weaponBleedDuration: 0
+  bleedTicks: 0
   PlayerAnimator: {fileID: 3470843985174671672}
   attackAnim: {fileID: 3434298946185078405, guid: 7d0cd3794cb121147b641d85006362ca,
     type: 3}
@@ -3936,8 +3938,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerSpeed: 30
-  PlayerJumpPow: 5
-  PlayerDoubleJumpPow: 2
+  PlayerJumpPow: 40
+  PlayerDoubleJumpPow: 0
   MidAirSpeed: 20
   groundlayermask:
     serializedVersion: 2
