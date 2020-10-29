@@ -82,7 +82,7 @@ public class PlayerAttackTrigger : MonoBehaviour
         // Cannot attack if player is getting up
         if (PlayerAnimator.GetCurrentAnimatorStateInfo(0).IsTag("BounceBack")) { return; }       
         
-        if (CheckMouseInput() && !IsPlayerAttack &&playerMovement.isGrabWall)
+        if (CheckMouseInput() && !IsPlayerAttack )
         {
             IsPlayerAttack = true;
             PlayerAnimator.SetTrigger("Attack");
