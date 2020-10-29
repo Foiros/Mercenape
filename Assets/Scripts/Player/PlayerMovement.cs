@@ -41,7 +41,7 @@ public class PlayerMovement : MonoBehaviour
 
     public bool isCollideWall;
 
-    bool isGrabWall = false;
+    public bool isGrabWall = false;
     public bool isJumping = false;
 
     //Start Hash ID 

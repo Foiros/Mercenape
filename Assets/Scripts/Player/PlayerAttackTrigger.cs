@@ -38,14 +38,15 @@ public class PlayerAttackTrigger : MonoBehaviour
     void Awake()
     {
         weaponStates = GameObject.FindGameObjectWithTag("GameManager").GetComponent<WeaponStates>();
+        PlayerAnimator = gameObject.GetComponent<Animator>();
+        IsPlayerAttack = false;
+        playerMovement = gameObject.GetComponent<PlayerMovement>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        PlayerAnimator = gameObject.GetComponent<Animator>();
-        IsPlayerAttack = false;
-        playerMovement = gameObject.GetComponent<PlayerMovement>();
+       
 
         SetWeaponStats();
     }
@@ -80,8 +81,8 @@ public class PlayerAttackTrigger : MonoBehaviour
     {
         // Cannot attack if player is getting up
         if (PlayerAnimator.GetCurrentAnimatorStateInfo(0).IsTag("BounceBack")) { return; }       
-
-        if (CheckMouseInput() && !IsPlayerAttack)
+        
+        if (CheckMouseInput() && !IsPlayerAttack &&playerMovement.isGrabWall)
         {
             IsPlayerAttack = true;
             PlayerAnimator.SetTrigger("Attack");
