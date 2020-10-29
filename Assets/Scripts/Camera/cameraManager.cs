@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class cameraManager : MonoBehaviour
 {
@@ -23,14 +24,10 @@ public class cameraManager : MonoBehaviour
 
     public void Zoom()
     {
-        if(zoomIn.activeSelf == true)
+        float priority = zoomIn.gameObject.GetComponent<CinemachineVirtualCamera>().Priority;
+        if( < zoomOut.gameObject.GetComponent<CinemachineVirtualCamera>().Priority)
         {
-            zoomOut.SetActive(true);
-            zoomIn.SetActive(false);
-        } else
-        {
-            zoomOut.SetActive(false);
-            zoomIn.SetActive(true);
+
         }
 
     }
