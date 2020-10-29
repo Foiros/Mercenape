@@ -274,7 +274,7 @@ public class MowerBehaviour : EnemyBehaviour
             StopCoroutine(dmgCoroutine);
 
             // Push player up 
-            //playerMovement.PlayerRigid2d.velocity = Vector3.up * 30;
+            playerMovement.PlayerRigid2d.velocity = Vector3.up * 50;
 
             playerMovement.PlayerBounceUp();
 
