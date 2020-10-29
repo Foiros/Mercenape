@@ -124,7 +124,7 @@ public class EnemyBehaviour : MonoBehaviour
         if (!isDamageable) { return; }
 
         isDamageable = false;
-        Invoke("ReturnToDamageable", playerMovement.playerAttack.TimeDelayAttack);
+        Invoke("ReturnToDamageable", playerMovement.playerAttack.DelayTime());
 
         currentHP -= playerDamage;
         barHealth.UpdateHealthBar(currentHP, stat.maxHP);

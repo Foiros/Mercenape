@@ -76,7 +76,7 @@ public class PlayerMovement : MonoBehaviour
         blocking_animBool = Animator.StringToHash("Blocking");
         knockedDown_animBool = Animator.StringToHash("KnockedDown");
         isRunning_animBool = Animator.StringToHash("IsRunning");
-        inputH_animFloat = Animator.StringToHash(" inputH");
+        inputH_animFloat = Animator.StringToHash("inputH");
         inputV_animFloat = Animator.StringToHash("inputV");
         vSpeed_animafloat = Animator.StringToHash("vSpeed");
        

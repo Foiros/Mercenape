@@ -138,7 +138,7 @@ public class MowerBehaviour : EnemyBehaviour
         if (currentState == ForceFieldState.Inactive || currentState == ForceFieldState.Destroyed)
         {
             isDamageable = false;
-            Invoke("ReturnToDamageable", playerMovement.playerAttack.TimeDelayAttack);
+            Invoke("ReturnToDamageable", playerMovement.playerAttack.DelayTime());
 
             speed = stat.runningSpeed / 2;
 
@@ -180,7 +180,7 @@ public class MowerBehaviour : EnemyBehaviour
         if (!isDamageable) { return; }
 
         isDamageable = false;
-        Invoke("ReturnToDamageable", playerMovement.playerAttack.TimeDelayAttack);
+        Invoke("ReturnToDamageable", playerMovement.playerAttack.DelayTime());
 
         fieldHP -= playerDmg;
 

@@ -89,7 +89,7 @@ public class PlayerAttackTrigger : MonoBehaviour
             
             // (Holding mouse) When attack anim finish, it continues the next one, not standing still as before
             // weaponSpeed = 1 is normal, = 2 is fast double, etc. (could be less than 1 for slower speed)
-            TimeDelayAttack = (1 / weaponSpeed) * GetAttackAnimLength();          
+            TimeDelayAttack = (1 / weaponSpeed) * GetAttackAnimLength();  // = DelayTime()        
         }
         else
         {
@@ -97,7 +97,7 @@ public class PlayerAttackTrigger : MonoBehaviour
         }
 
         // When attacking
-        if(IsAttackingAnim())
+        if (IsAttackingAnim())
         {
             HitEnemy();
         }
@@ -109,7 +109,7 @@ public class PlayerAttackTrigger : MonoBehaviour
     {
         //Collider[] enemiesToDamage = Physics.OverlapBox(Attackpos.position, Attackpos.localScale, Quaternion.identity, EnemyLayerMask);
         Collider[] enemiesToDamage = new Collider[10];
-        int numHit = Physics.OverlapSphereNonAlloc(edgePos.position, 0.1f, enemiesToDamage, EnemyLayerMask);
+        int numHit = Physics.OverlapSphereNonAlloc(edgePos.position, 0.2f, enemiesToDamage, EnemyLayerMask);
         
         for (int i = 0; i < numHit; i++)
         {         
@@ -157,11 +157,13 @@ public class PlayerAttackTrigger : MonoBehaviour
 
     float GetAttackAnimLength() { return attackAnim.length; }
 
+    public float DelayTime() { return (1 / weaponSpeed) * GetAttackAnimLength(); }
+
     void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
         //Gizmos.DrawWireCube(Attackpos.position, Attackpos.localScale);
-        Gizmos.DrawSphere(edgePos.position, 0.1f);
+        Gizmos.DrawSphere(edgePos.position, 0.2f);
     }
 
     public void SetWeaponList(List<AbstractWeapon> list) { weapons = list; }

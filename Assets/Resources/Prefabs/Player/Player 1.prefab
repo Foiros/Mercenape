@@ -3697,11 +3697,10 @@ GameObject:
   - component: {fileID: 7007741340744387839}
   - component: {fileID: 7007741340744387838}
   - component: {fileID: 7007741340744387833}
-  - component: {fileID: 7007741340744387825}
   - component: {fileID: 7007741340744387824}
   - component: {fileID: 7007741340744387826}
   - component: {fileID: 7007741340744387837}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Player 1
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -3768,7 +3767,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 120
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!136 &7007741340744387838
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3796,19 +3795,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.1688081, y: 0.3450482, z: 1}
   m_Center: {x: 0.009191872, y: 0.17915481, z: 6.962492e-11}
---- !u!114 &7007741340744387825
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7890612550837907960}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e7a69556b2b41b4285ad8f8ee4321ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  KarmaQuantity: 10
 --- !u!114 &7007741340744387824
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3849,14 +3835,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbab0713dd68c9e4b8621eee07919e57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gm: {fileID: 0}
+  karma: 0
+  gold: 0
+  speedUpgrades: 0
   moneyText: {fileID: 0}
   upgradeText: {fileID: 0}
   karmaText: {fileID: 0}
   karmaBar: {fileID: 0}
-  playerKarma: 0
-  playerGold: 0
-  playerUpgrade: 0
+  karmaFill: {fileID: 0}
 --- !u!114 &7007741340744387837
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3897,8 +3883,18 @@ MonoBehaviour:
   isKnockDown: 0
   getUpCount: 0
   animator: {fileID: 3470843985174671672}
-  slideSpeed: 0
   isCollideWall: 0
+  isGrabWall: 0
+  isJumping: 0
+  isJumping_animBool: 0
+  isGrounded_animBool: 0
+  isGrabWall_animBool: 0
+  knockedDown_animBool: 0
+  blocking_animBool: 0
+  isRunning_animBool: 0
+  inputH_animFloat: 0
+  inputV_animFloat: 0
+  vSpeed_animafloat: 0
 --- !u!1 &8090755846774300851
 GameObject:
   m_ObjectHideFlags: 0

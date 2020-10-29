@@ -18,10 +18,10 @@ public class EnemyHealthBar : MonoBehaviour
 
     public void UpdateHealthBar(float currentHP, float maxHP)
     {       
-        if (!slider.activeSelf)
+        /*if (!slider.activeSelf)
         {
             StartCoroutine(HealthBarAnimation());
-        }
+        }*/
 
         sliderFunction.value = currentHP / maxHP;       
     }
@@ -36,12 +36,12 @@ public class EnemyHealthBar : MonoBehaviour
         healthBarUI.transform.localScale = new Vector3((Mathf.Sign(rb.velocity.x)) * xScaleUI, healthBarUI.transform.localScale.y);
     }
 
-    private IEnumerator HealthBarAnimation()
+    /*private IEnumerator HealthBarAnimation()
     {
         slider.SetActive(true);
 
         yield return new WaitForSeconds(1f);
 
         slider.SetActive(false);
-    }
+    }*/
 }

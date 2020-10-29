@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3417982164426582265}
-  - component: {fileID: 3417982164426582264}
   - component: {fileID: 3417982164426582271}
   - component: {fileID: 3417982164426582270}
   - component: {fileID: 3417982164426582269}
@@ -35,20 +34,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3417982164426582264
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3417982164426582268}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4293c8cda1a9e164fa11f4b6d1e4c674, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 0
-  impactDamage: 0
 --- !u!114 &3417982164426582271
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61,10 +46,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bf9353344ac8204b92a1b8e2cf530d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponID: 0
   ownedWeaponsList: 
   upgradedWeaponsList: 
   savedSpeedAmountsList: 
+  weaponSpeed: 0
+  weaponImpactDamage: 0
+  bleedDamage: 0
+  bleedDuration: 0
 --- !u!114 &3417982164426582270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77,6 +65,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9495335238a314c45ac2a582f2f2b169, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponWeight: 0
+  weaponSpeed: 0
+  weaponImpactDamage: 0
 --- !u!114 &3417982164426582269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89,7 +80,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7b2a11342aebd349a926d27c6b6b763, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponImages: []
+  chosenWeaponImages: []
+  upgradeImages: []
   weaponModels: []
+  soundAudioclipArray: []
 --- !u!114 &3417982164426582266
 MonoBehaviour:
   m_ObjectHideFlags: 0

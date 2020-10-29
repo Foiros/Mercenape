@@ -13,6 +13,7 @@ public class ShredBehaviour : EnemyBehaviour
     private Animator animatorShred;
 
     private bool isStaggering = false;
+    private bool isAttacking = false;
 
     protected override void Start()
     {
@@ -25,37 +26,41 @@ public class ShredBehaviour : EnemyBehaviour
     {
         // Check if player is knocked down by Shred
         KnockDownProcess();
+
+        ShredCheck();
     }
 
-    // Hit player
-    protected void OnCollisionEnter(Collision col)
+    private void ShredCheck()
     {
-        if (col.gameObject.CompareTag("Player"))
+        // Don't check if dead
+        if (currentHP <= 0) { return; }
+
+        // If player is not in front of Shred's peak, don't attack
+        if(!Physics.Raycast(frontDetection.position, transform.right, 1f, LayerMask.GetMask("Player"))) { return; }
+
+        // If player face against Shred and is blocking
+        if (IsFacingRight() != playerMovement.FaceRight && playerMovement.isPlayerBlock)
         {
-            // If player face against Shred and is blocking
-            if (IsFacingRight() != playerMovement.FaceRight && playerMovement.isPlayerBlock)
-            {
-                playerMovement.animator.SetTrigger("TakingHitBlocking");
-                // Block and immobilize Shred
-                StopCoroutine("StaggerShred");
-                StartCoroutine("StaggerShred");
-            }
-            else
-            {
-                playerMovement.isPlayerBlock = false;
-                ShredAttack();
-            }
+            playerMovement.animator.SetTrigger("TakingHitBlocking");
+            // Block and immobilize Shred
+            StopCoroutine("StaggerShred");
+            StartCoroutine("StaggerShred");
+        }
+        else
+        {
+            playerMovement.isPlayerBlock = false;
+            ShredAttack();
         }
     }
 
     // When Shred attacks and applies damage
     private void ShredAttack()
-    {
-        // If player is not in front of Shred's peak, don't attack
-        if (Mathf.Abs(player.transform.position.x - frontDetection.position.x) > 3f) { return; }
-
+    {       
         // If Shred is staggering, don't attack
         if (isStaggering) { return; }
+
+        // Only attack once
+        if (isAttacking) { return; }
 
         KnockPlayerDown();
 
@@ -78,13 +83,15 @@ public class ShredBehaviour : EnemyBehaviour
     {
         // Pass through player
         rb.useGravity = false;
-        boxCollier.isTrigger = true;  
+        boxCollier.isTrigger = true;
+        isAttacking = true;
         
         yield return new WaitForSeconds(0.7f);
 
         // Return to original states
         boxCollier.isTrigger = false;
         rb.useGravity = true;
+        isAttacking = false;
     }
 
     // Do bleed damage (per sec for now)
@@ -105,16 +112,21 @@ public class ShredBehaviour : EnemyBehaviour
         isStaggering = true;
         animatorShred.SetBool("Staggering", isStaggering);
 
+        speed = -stat.runningSpeed / 1.5f;
+
+        yield return new WaitForSeconds(0.15f);
+
+        rb.isKinematic = true;
         speed = 0;
-        rb.AddForce(transform.right * -10, ForceMode.VelocityChange);
 
         yield return new WaitForSeconds(1.5f);
 
         isStaggering = false;
         animatorShred.SetBool("Staggering", isStaggering);
 
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(0.15f);
 
+        rb.isKinematic = false;
         speed = stat.runningSpeed;
     }
 
