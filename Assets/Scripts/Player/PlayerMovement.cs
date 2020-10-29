@@ -108,7 +108,7 @@ public class PlayerMovement : MonoBehaviour
             InputVertical();
         }
 
-        if (!isPlayerBlock && !isKnockDown)
+        if (!isKnockDown)
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
@@ -132,6 +132,7 @@ public class PlayerMovement : MonoBehaviour
         if (isGrabWall && Input.GetKeyDown(KeyCode.Space))
         {
             isJumping = true;
+            isPlayerBlock = false;
             isGrabWall = false;
             PlayerRigid2d.velocity += (Vector3.up * PlayerJumpPow + Vector3.right);
             
@@ -167,15 +168,17 @@ public class PlayerMovement : MonoBehaviour
     void CheckPlayerBlock()
     {
         if (!isGrounded) { return; }    // Don't check if player is on air
-
-        // check if player click right mouse 
-        if (Input.GetMouseButton(1))
+        if (!isJumping)
         {
-            isPlayerBlock = true;
-        }
-        else
-        {
-            isPlayerBlock = false;
+            // check if player click right mouse 
+            if (Input.GetMouseButton(1))
+            {
+                isPlayerBlock = true;
+            }
+            else
+            {
+                isPlayerBlock = false;
+            }
         }
     }
 
@@ -357,6 +360,7 @@ public class PlayerMovement : MonoBehaviour
         {
             PlayerRigid2d.velocity += new Vector3(0.0f, 1.0f, 0.0f) * PlayerJumpPow;
             isJumping = true;
+            isPlayerBlock = false;
 
         }
         else if (!isGrounded && PlayerDoubleJump)
@@ -365,6 +369,7 @@ public class PlayerMovement : MonoBehaviour
             PlayerRigid2d.velocity += new Vector3(0.0f, 1.0f, 0.0f) * PlayerDoubleJumpPow;
             PlayerDoubleJump = false;
             isJumping = true;
+            isPlayerBlock = false;
 
         }
     }
