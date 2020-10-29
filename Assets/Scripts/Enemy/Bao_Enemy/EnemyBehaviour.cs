@@ -14,8 +14,8 @@ public class EnemyBehaviour : MonoBehaviour
     protected float speed;
     [SerializeField] protected float currentHP;
 
-    protected bool isAttacker = false; // Make sure not all enemy activate function
-    protected bool isDamageable = true;
+    protected bool isAttacker = false;      // Make sure not all enemy activate function
+    protected bool isDamageable = true;     // Receive damage only once per hit
     
     protected float weaponBleedDamage, weaponBleedDuration;
     protected int bleedTicks, currentBleedTicks;
@@ -91,8 +91,8 @@ public class EnemyBehaviour : MonoBehaviour
     {
         if (currentHP <= 0) { return; }
 
-        groundInfo = Physics.Raycast(frontDetection.position, Vector3.down, 10f, LayerMask.GetMask("Ground"));
-        wallInfo = Physics.Raycast(frontDetection.position, transform.right, 1.5f, LayerMask.GetMask("Wall"));
+        groundInfo = Physics.Raycast(frontDetection.position, Vector3.down, 15f, LayerMask.GetMask("Ground"));
+        wallInfo = Physics.Raycast(frontDetection.position, transform.right, 1.2f, LayerMask.GetMask("Wall"));
        
         if (!groundInfo || wallInfo)
         {
@@ -144,8 +144,7 @@ public class EnemyBehaviour : MonoBehaviour
 
         // If dead
         if (currentHP <= 0)
-        {
-            StopCoroutine("CheckEnemyDeath");
+        {          
             StartCoroutine("CheckEnemyDeath");
         }
     }
@@ -190,7 +189,7 @@ public class EnemyBehaviour : MonoBehaviour
         rb.useGravity = false;
         boxCollier.enabled = false;
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(1.5f);
 
         Destroy(gameObject, 0);
 
