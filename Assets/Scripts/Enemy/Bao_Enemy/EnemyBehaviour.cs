@@ -92,7 +92,7 @@ public class EnemyBehaviour : MonoBehaviour
         if (currentHP <= 0) { return; }
 
         groundInfo = Physics.Raycast(frontDetection.position, Vector3.down, 15f, LayerMask.GetMask("Ground"));
-        wallInfo = Physics.Raycast(frontDetection.position, transform.right, 1.2f, LayerMask.GetMask("Wall"));
+        wallInfo = Physics.Raycast(frontDetection.position, transform.right, 3f, LayerMask.GetMask("Wall"));
        
         if (!groundInfo || wallInfo)
         {
@@ -217,7 +217,6 @@ public class EnemyBehaviour : MonoBehaviour
 
     IEnumerator BleedTick()
     {
-        print("bleeding");
         while (currentBleedTicks <= bleedTicks)
         {
             TakeBleedDammage(weaponBleedDamage);

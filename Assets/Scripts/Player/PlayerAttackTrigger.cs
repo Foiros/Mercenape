@@ -108,7 +108,7 @@ public class PlayerAttackTrigger : MonoBehaviour
     void HitEnemy()
     {
         //Collider[] enemiesToDamage = Physics.OverlapBox(Attackpos.position, Attackpos.localScale, Quaternion.identity, EnemyLayerMask);
-        Collider[] enemiesToDamage = new Collider[10];
+        Collider[] enemiesToDamage = new Collider[20];
         int numHit = Physics.OverlapSphereNonAlloc(edgePos.position, 0.2f, enemiesToDamage, EnemyLayerMask);
         
         for (int i = 0; i < numHit; i++)

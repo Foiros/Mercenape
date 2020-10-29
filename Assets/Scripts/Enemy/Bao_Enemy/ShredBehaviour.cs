@@ -34,9 +34,9 @@ public class ShredBehaviour : EnemyBehaviour
     {
         // Don't check if dead
         if (currentHP <= 0) { return; }
-
+        Debug.DrawRay(frontDetection.position, transform.right * 2.75f, Color.red);
         // If player is not in front of Shred's peak, don't attack
-        if(!Physics.Raycast(frontDetection.position, transform.right, 1f, LayerMask.GetMask("Player"))) { return; }
+        if(!Physics.Raycast(frontDetection.position, transform.right, 2.75f, LayerMask.GetMask("Player"))) { return; }
 
         // If player face against Shred and is blocking
         if (IsFacingRight() != playerMovement.FaceRight && playerMovement.isPlayerBlock)
