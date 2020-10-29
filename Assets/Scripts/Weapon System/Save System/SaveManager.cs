@@ -114,8 +114,8 @@ public class CurrencyData
 
     public CurrencyData(PlayerCurrency playerCurrency)
     {
-        playerMoney = playerCurrency.playerGold;
-        playerKarma = playerCurrency.playerKarma;
-        speedUpgrades = playerCurrency.playerUpgrade;
+        playerMoney = playerCurrency.gold;
+        playerKarma = playerCurrency.karma;
+        speedUpgrades = playerCurrency.speedUpgrades;
     }
 }

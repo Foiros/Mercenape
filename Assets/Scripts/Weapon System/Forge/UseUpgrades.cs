@@ -86,7 +86,7 @@ public class UseUpgrades : MonoBehaviour
         weaponCostText.text = "Upgrade Cost: " + upgradeCost;
         weaponImage.sprite = weaponsArray.GetWeaponImage();
 
-        upgradeHolderUpgradeScreen.text = "Speed: " + playerCurrency.playerUpgrade;
+        upgradeHolderUpgradeScreen.text = "Speed: " + playerCurrency.speedUpgrades;
 
         UpdateWeaponStats();
 
@@ -134,14 +134,14 @@ public class UseUpgrades : MonoBehaviour
 
         int speedAmount = calculator.GetSpeedAmount();
 
-        if (arrowButtonName == "Arrow1" && playerCurrency.playerUpgrade > 0)
+        if (arrowButtonName == "Arrow1" && playerCurrency.speedUpgrades > 0)
         {
             upgradeID = upgrades[0].GetID();
 
             speedAmount++;
             amountTexts.text = "" + speedAmount;
             upgradeCost = upgrades[upgradeID].GetUpgradeCost() * speedAmount;
-            playerCurrency.playerUpgrade--;
+            playerCurrency.speedUpgrades--;
         }
         else if (arrowButtonName == "Arrow2" && speedAmount > 0)
         {
@@ -150,11 +150,11 @@ public class UseUpgrades : MonoBehaviour
             speedAmount--;
             amountTexts.text = "" + speedAmount;
             upgradeCost = upgrades[upgradeID].GetUpgradeCost() * speedAmount;
-            playerCurrency.playerUpgrade++;
+            playerCurrency.speedUpgrades++;
         }
 
         weaponCostText.text = "Upgrade Cost: " + upgradeCost;
-        upgradeHolderUpgradeScreen.text = "Speed: " + playerCurrency.playerUpgrade;
+        upgradeHolderUpgradeScreen.text = "Speed: " + playerCurrency.speedUpgrades;
 
         calculator.SetSpeedAmount(speedAmount);
         UpdateWeaponStats();

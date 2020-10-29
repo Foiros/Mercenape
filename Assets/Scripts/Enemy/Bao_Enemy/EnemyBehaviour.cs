@@ -28,7 +28,7 @@ public class EnemyBehaviour : MonoBehaviour
     protected bool wallInfo;
 
     protected GameObject player;
-    protected PlayerStat playerStat;
+    protected PlayerHealth playerHealth;
     protected PlayerMovement playerMovement;
 
     private EnemyLootDrop enemyLoot;
@@ -56,7 +56,7 @@ public class EnemyBehaviour : MonoBehaviour
         barHealth.UpdateHealthBar(currentHP, stat.maxHP);
 
         player = GameObject.FindGameObjectWithTag("Player");
-        playerStat = player.GetComponent<PlayerStat>();
+        playerHealth = player.GetComponent<PlayerHealth>();
         playerMovement = player.GetComponent<PlayerMovement>();
 
         // Subscribe to the OnHitEnemy event in PlayerAttack
@@ -194,7 +194,7 @@ public class EnemyBehaviour : MonoBehaviour
 
         Destroy(gameObject, 0);
 
-        enemyLoot.DropAll();
+        enemyLoot.GiveLoot();
     }
 
     protected void FreezePosY()

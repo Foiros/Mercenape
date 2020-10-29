@@ -19,8 +19,8 @@ public class SmallEnemyBehaviour : EnemyBehaviourNotUsing
                     StartCoroutine("PlayerStun");
                 }
 
-                playerStat.PlayerTakeDamage(enemyDamage);
-                Debug.Log(playerStat.PlayerHP);
+                // playerStat.PlayerTakeDamage(enemyDamage);
+                // Debug.Log(playerStat.PlayerHP);
             }
         }
     }

@@ -21,7 +21,7 @@ public class sceneButton : MonoBehaviour
     public void changeScene()
     {
         //check if player have enough karma
-        if (playerCurrency.playerKarma >= gamemaster.lvMaxKarma && spawner.state == EnemySpawnerScript.SpawnState.Counting)
+        if (playerCurrency.karma >= gamemaster.lvMaxKarma && spawner.state == EnemySpawnerScript.SpawnState.Counting)
         {
             Time.timeScale = 1;
             SceneManager.LoadScene(Scenetoload.name);

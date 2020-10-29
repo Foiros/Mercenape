@@ -82,7 +82,7 @@ public class EnemySpawnerScript : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.O))
         {
-            playerCurrency.playerKarma = gm.lvMaxKarma;
+            playerCurrency.karma = gm.lvMaxKarma;
         }
     }
 
@@ -103,7 +103,7 @@ public class EnemySpawnerScript : MonoBehaviour
     // When player get enough karma
     void CheckWaveEnd()
     {
-        if (playerCurrency.playerKarma >= gm.lvMaxKarma)
+        if (playerCurrency.karma >= gm.lvMaxKarma)
         {
             Time.timeScale = 0;
             completeWaveScreen.SetActive(true);

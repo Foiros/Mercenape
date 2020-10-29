@@ -21,7 +21,7 @@ public class EnemyBehaviourNotUsing : MonoBehaviour
 
     [SerializeField] protected GameObject player;
     protected Rigidbody2D playerRigid;
-    protected PlayerStat playerStat;
+    protected PlayerHealth playerHealth;
     protected PlayerMovement playerMovement;
     protected PlayerAttackTrigger playerAttack;
     protected SpriteRenderer playerRenderer;
@@ -40,7 +40,7 @@ public class EnemyBehaviourNotUsing : MonoBehaviour
         if (player != null)
         {
             playerRigid = player.GetComponent<Rigidbody2D>();
-            playerStat = player.GetComponent<PlayerStat>();
+            playerHealth = player.GetComponent<PlayerHealth>();
             playerMovement = player.GetComponent<PlayerMovement>();
             playerAttack = player.GetComponent<PlayerAttackTrigger>();
             playerRenderer = player.GetComponent<SpriteRenderer>();

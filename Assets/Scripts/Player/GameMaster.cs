@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+// Created by Thuyet Pham.
 public class GameMaster : MonoBehaviour
 {
-   public int lvMaxKarma;
+    public int lvMaxKarma;
     PlayerCurrency playerCurrency;
 
     // Start is called before the first frame update
     void Awake()
     {
         CheckScene4MaxKarma();
-        
     }
 
     // Update is called once per frame
@@ -30,15 +30,9 @@ public class GameMaster : MonoBehaviour
 
         int buildIndex = currentScene.buildIndex;
 
-
-
-
         if (buildIndex > 0)
         {
-
             lvMaxKarma = buildIndex * 1000;
-         
-           
         }
         else
         {
@@ -48,16 +42,12 @@ public class GameMaster : MonoBehaviour
 
     void SwitchLV()
     {
-
-        if (playerCurrency.playerKarma >= lvMaxKarma)
+        if (playerCurrency.karma >= lvMaxKarma)
         {
            
             if (Input.GetKeyDown(KeyCode.H))
             {
-
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-
-
             }
 
         }

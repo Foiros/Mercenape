@@ -32,9 +32,9 @@ public class Money : MonoBehaviour
     // Function to set the starting money.
     void SetStartingCurrency()
     {
-        if(playerCurrency.playerGold > 0)
+        if(playerCurrency.gold > 0)
         {
-            currency = playerCurrency.playerGold;
+            currency = playerCurrency.gold;
         }
         else
         {
@@ -52,7 +52,7 @@ public class Money : MonoBehaviour
 
         currency = newCurrency;
 
-        playerCurrency.playerGold = currency;
+        playerCurrency.gold = currency;
 
         if (currencyHolderShop != null) { currencyHolderShop.text = "Money: " + currency; }
         if (currencyHolderForge != null) { currencyHolderForge.text = "Money: " + currency; }

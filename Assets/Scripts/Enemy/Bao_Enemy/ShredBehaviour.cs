@@ -60,7 +60,7 @@ public class ShredBehaviour : EnemyBehaviour
         KnockPlayerDown();
 
         StartCoroutine("Attacking");
-        playerStat.PlayerTakeDamage(stat.damage);
+        playerHealth.PlayerTakeDamage(stat.damage);
 
         // Check bleed chance of Shred, then apply 
         if (Random.Range(0f, 100f) < bleedChance)
@@ -94,7 +94,7 @@ public class ShredBehaviour : EnemyBehaviour
     
         while(currentCount <= damageCount)
         {
-            playerStat.PlayerHP -= damageAmount;
+            playerHealth.PlayerHP -= damageAmount;
             yield return new WaitForSeconds(damageDuration);
             currentCount++;
         }       

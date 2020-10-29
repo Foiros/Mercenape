@@ -161,7 +161,7 @@ public class MowerBehaviour : EnemyBehaviour
         if (currentState == ForceFieldState.Active)
         {
             // Field Generator will damage back the player and push upward
-            playerStat.PlayerTakeDamage(fieldStat.damage);
+            playerHealth.PlayerTakeDamage(fieldStat.damage);
             playerMovement.PlayerRigid2d.AddForce(new Vector3(Mathf.Sign(player.transform.localScale.x) * -2000, 100), ForceMode.Impulse);
         }
     }
@@ -306,7 +306,7 @@ public class MowerBehaviour : EnemyBehaviour
 
         while (currentCount < damageCount)
         {
-            playerStat.PlayerTakeDamage(damageAmount);
+            playerHealth.PlayerTakeDamage(damageAmount);
             yield return new WaitForSeconds(1.2f);
             currentCount++;           
         }

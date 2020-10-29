@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Created by Arttu Paldán on 28.10.2020:Temporary camera script for play testing. This version of the camera switches between to cameras depending on whether player zooms in or not. 
 public class CameraController : MonoBehaviour
 {
     public GameObject[] cameras;

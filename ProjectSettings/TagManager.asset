@@ -49,6 +49,8 @@ TagManager:
   - WeaponHolder
   - Shop
   - Forge
+  - PlayerUI
+  - ResourceDestination
   layers:
   - Default
   - TransparentFX

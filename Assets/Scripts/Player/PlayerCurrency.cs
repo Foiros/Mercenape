@@ -4,91 +4,98 @@ using UnityEngine;
 using UnityEngine.Assertions.Must;
 using UnityEngine.UI;
 
+// Created by Thuyet Pham.
+// Edited by Arttu Paldán 29.10.2020: Basically I just merged all the diffrent counting script into a one. 
 public class PlayerCurrency : MonoBehaviour
 {
-    public GameMaster gm;
-    //public GameObject Player;
-    //public Image prompt;
+    private GameMaster gameMaster;
+
+    public int karma, gold, speedUpgrades;
+    
     public Text moneyText, upgradeText, karmaText;
+    
     public Slider karmaBar;
-    public int playerKarma, playerGold, playerUpgrade;
-    Transform playerUI;
+    public Image karmaFill;
+
     void Awake()
     {
+        gameMaster = GetComponent<GameMaster>();
+
         LoadSaveFile();
-
-        playerUpgrade = 2;
-       
     }
-    private void Start()
+
+    void Start()
     {
-        playerUI = GameObject.FindGameObjectWithTag("Player").transform.Find("PlayerUI");
-    
-        moneyText = playerUI.Find("moneyText").GetComponent<Text>();
+        SetTexts();
+        SetKarmaBar();
+    }
 
-        upgradeText = playerUI.Find("upgradeText").GetComponent<Text>();
+    void SetTexts()
+    {
+        moneyText.text = gold.ToString();
+        upgradeText.text = speedUpgrades.ToString();
+    }
 
-        karmaText = playerUI.Find("karmaBar").Find("karmaText").GetComponent<Text>();
-
-        karmaBar = playerUI.Find("karmaBar").GetComponent<Slider>();
-
-        gm = GameObject.FindGameObjectWithTag("gamemaster").GetComponent<GameMaster>();
-
-
-        /*karmaBar.maxValue = 1000;
-        if (prompt != null)
-         {
-             prompt.enabled = false;
-         }*/
-
+    void SetKarmaBar()
+    {
+        if (gameMaster != null)
         {
-            // prompt.enabled = false;
+            karmaBar.maxValue = gameMaster.lvMaxKarma;
         }
+        else
+        {
+            karmaBar.maxValue = 1000;
+
+        }
+
+        karmaBar.value = karma;
+        karmaText.text = karma.ToString();
+    }
+
+    public void AddGold(int amount)
+    {
+        gold += amount;
+
+        moneyText.text = gold.ToString();
+    }
+
+    public void AddKarma(int amount)
+    {
+        karma += amount;
+
+        karmaText.text = karma.ToString();
+    }
+
+    public void AddUpgrades(int amount)
+    {
+        speedUpgrades += amount;
+
+        upgradeText.text = speedUpgrades.ToString();
+    }
+
+    public void LoseGold(int amount)
+    {
+        gold -= amount;
+
+        moneyText.text = gold.ToString();
+    }
+
+    public void LoseKarma(int amount)
+    {
+        karma -= amount;
+
+        karmaText.text = karma.ToString();
     }
 
     void LoadSaveFile()
     {
         CurrencyData data = SaveManager.LoadCurrency();
 
-        if(data != null)
+        if (data != null)
         {
-            playerKarma = data.playerKarma;
-            playerGold = data.playerMoney;
-            playerUpgrade = data.speedUpgrades;
+            karma = data.playerKarma;
+            gold = data.playerMoney;
+            speedUpgrades = data.speedUpgrades;
         }
-        
-       /* updateCurrency(playerGold);
-        updateKarma(playerKarma);
-        updateUpgrades(playerUpgrade);*/
-    }
-
-    public void updateCurrency(int amount)
-    {
-        playerGold += amount;
-        if(playerGold <= 0)
-        {
-            playerGold = 0;
-        }
-        
-       // moneyText.text = playerGold.ToString();
-    }
-
-    public void updateKarma(int amount)
-    {
-        playerKarma += amount;
-     //   karmaBar.value = playerKarma;
-      //  karmaText.text = playerKarma.ToString();
-    }
-
-    public void updateUpgrades(int amount)
-    {
-        playerUpgrade += amount;
-        if(playerUpgrade <= 0)
-        {
-            playerUpgrade = 0;
-        }
-       // upgradeText.text = playerUpgrade.ToString();
-
-//      upgradeText.text = playerUpgrade.ToString();
     }
 }

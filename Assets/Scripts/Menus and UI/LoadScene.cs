@@ -25,7 +25,7 @@ public class LoadScene : MonoBehaviour
 
     public void GoToForge()
     { //check if player have enough karma
-        if (playerCurrency.playerKarma >= gamemaster.lvMaxKarma && spawner.state == EnemySpawnerScript.SpawnState.Counting)
+        if (playerCurrency.karma >= gamemaster.lvMaxKarma && spawner.state == EnemySpawnerScript.SpawnState.Counting)
         {
             Time.timeScale = 1;
             SaveManager.SaveCurrency(playerCurrency);
