@@ -8,6 +8,7 @@ public class EnemyLootDrop : MonoBehaviour
     public GameObject floatMoney;
     public GameObject floatKarma;
     public GameObject floatUpgrade;
+    public GameObject healthDrop;
     
     //Ossi: These are the % chance of Health and Upgrade drops.
     public int healthChance = 40;
@@ -16,17 +17,17 @@ public class EnemyLootDrop : MonoBehaviour
     //The value of HP and upgrade orbs. I'm thinking that each enemy has a different multiplier on the value of the orbs they spawn upon death. Something that's swirling in my noggin'.
     public int HPvalue = 15, UPvalue = 1;
 
-    private void InstantiateKarmaDrop()
+    void InstantiateKarmaDrop()
     {
         Instantiate(floatKarma, transform.position, Quaternion.identity);
     }
 
-    private void InstantiateGoldDrop()
+    void InstantiateGoldDrop()
     {
         Instantiate(floatMoney, transform.position, Quaternion.identity);
     }
     
-    private void InstantiateUpgrade()
+    void InstantiateUpgrade()
     {
         int randomSpawn = Random.Range(0, 101);
         if (randomSpawn <= upgradeChance)
@@ -35,10 +36,20 @@ public class EnemyLootDrop : MonoBehaviour
         } 
     }
 
+    void InstantiateHealthDrop()
+    {
+        int randomSpawn = Random.Range(0, 101);
+        if(randomSpawn <= healthChance)
+        {
+            Instantiate(healthDrop, transform.position, Quaternion.identity);
+        }
+    }
+
      public void GiveLoot()
      {
         InstantiateGoldDrop();
         InstantiateKarmaDrop();
         InstantiateUpgrade();
+        InstantiateHealthDrop();
      }
 }
