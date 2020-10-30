@@ -111,7 +111,8 @@ public class PlayerAttackTrigger : MonoBehaviour
         int numHit = Physics.OverlapSphereNonAlloc(edgePos.position, 0.2f, enemiesToDamage, EnemyLayerMask);
         
         for (int i = 0; i < numHit; i++)
-        {            
+        {
+            print(numHit);
             // Created  and edited by Bao: Detect enemy and attack
             if (enemiesToDamage[i].GetType() == typeof(CapsuleCollider)) // Mower's back
             {
