@@ -364,7 +364,7 @@ public class PlayerMovement : MonoBehaviour
     private void PlayerJump() // both single and double 
                               // side note could handle jump power by * with the character height. at the moment the vector in middle of the character so 7pixel long
     {
-        if (animator.GetCurrentAnimatorStateInfo(0).IsTag("BounceBack")) { return; }
+        if (IsBouncingBack()) { return; }
 
         if (isGrounded)
         {
@@ -430,6 +430,11 @@ public class PlayerMovement : MonoBehaviour
         animator.SetTrigger("BounceUp");        
 
         playerAttack.enabled = true;
+    }
+
+    public bool IsBouncingBack()
+    {
+        return animator.GetCurrentAnimatorStateInfo(0).IsTag("BounceBack");
     }
 
     void SetAnimatorPara()

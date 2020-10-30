@@ -172,14 +172,18 @@ public class EnemyBehaviour : MonoBehaviour
     // Knock down player with animation
     protected void KnockPlayerDown()
     {
+        // Don't knock player down again when bouncing back
+        if (playerMovement.IsBouncingBack()) { return; }
+
         if (!playerMovement.animator.GetCurrentAnimatorStateInfo(0).IsTag("KnockedDown"))
         {
             playerMovement.animator.SetTrigger("KnockDown");
+            playerMovement.isKnockDown = true;
+
             isAttacker = true;
         }
 
-        playerMovement.getUpCount = 0;
-        playerMovement.isKnockDown = true;
+        playerMovement.getUpCount = 0;      
     }
 
     protected IEnumerator CheckEnemyDeath()
