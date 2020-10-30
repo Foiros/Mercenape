@@ -32,11 +32,11 @@ public class ShredBehaviour : EnemyBehaviour
 
     private void ShredCheck()
     {
-        // Don't check if dead
-        if (currentHP <= 0) { return; }
-        Debug.DrawRay(frontDetection.position, transform.right * 2.75f, Color.red);
+        // Don't check if dead or is staggering
+        if (currentHP <= 0 || isStaggering) { return; }
+        Debug.DrawRay(frontDetection.position, transform.right * 2.5f, Color.red);
         // If player is not in front of Shred's peak, don't attack
-        if(!Physics.Raycast(frontDetection.position, transform.right, 2.75f, LayerMask.GetMask("Player"))) { return; }
+        if(!Physics.Raycast(frontDetection.position, transform.right, 2.5f, LayerMask.GetMask("Player"))) { return; }
 
         // If player face against Shred and is blocking
         if (IsFacingRight() != playerMovement.FaceRight && playerMovement.isPlayerBlock)
@@ -56,9 +56,6 @@ public class ShredBehaviour : EnemyBehaviour
     // When Shred attacks and applies damage
     private void ShredAttack()
     {       
-        // If Shred is staggering, don't attack
-        if (isStaggering) { return; }
-
         // Only attack once
         if (isAttacking) { return; }
 

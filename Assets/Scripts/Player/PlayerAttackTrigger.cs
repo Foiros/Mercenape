@@ -138,7 +138,7 @@ public class PlayerAttackTrigger : MonoBehaviour
         }
     }
 
-    bool IsAttackingAnim()
+    public bool IsAttackingAnim()
     {
         return PlayerAnimator.GetCurrentAnimatorStateInfo(1).IsTag("PlayerAttack");
     }

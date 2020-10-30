@@ -98,6 +98,7 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             isJumping = true;
+            isPlayerBlock = false;
         }
 
         if (!isKnockDown)
@@ -161,19 +162,18 @@ public class PlayerMovement : MonoBehaviour
 
     void CheckPlayerBlock()
     {
-        if (!isGrounded) { return; }    // Don't check if player is on air
-        if (!isJumping)
+        if (!isGrounded) { return; }    // Don't check if player is on air     
+
+        // check if player click right mouse 
+        if (Input.GetMouseButton(1))
         {
-            // check if player click right mouse 
-            if (Input.GetMouseButton(1))
-            {
-                isPlayerBlock = true;
-            }
-            else
-            {
-                isPlayerBlock = false;
-            }
+            isPlayerBlock = true;
         }
+        else
+        {
+            isPlayerBlock = false;
+        }
+
     }
 
     void InputHorrizontal()
@@ -185,12 +185,12 @@ public class PlayerMovement : MonoBehaviour
 
         if (inputH != 0 && !isPlayerBlock)
         {
-            animator.SetBool("IsRunning", true);
+            //animator.SetBool("IsRunning", true);
             animator.SetBool(isRunning_animBool, true);
         }
         else
         {
-            animator.SetBool("IsRunning", false);
+            //animator.SetBool("IsRunning", false);
             animator.SetBool(isRunning_animBool, false);
         }
     }
@@ -410,7 +410,7 @@ public class PlayerMovement : MonoBehaviour
         {
             isGrabWall = false;
 
-            animator.SetLayerWeight(1, 0f);
+            animator.SetLayerWeight(1, 0.1f);
             animator.SetBool(knockedDown_animBool, true);
             playerAttack.enabled = false;
 
