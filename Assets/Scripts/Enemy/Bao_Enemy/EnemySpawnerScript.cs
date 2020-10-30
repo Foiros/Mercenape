@@ -137,7 +137,14 @@ public class EnemySpawnerScript : MonoBehaviour
         {          
             SpawnEnemy(spawnList[i]);
 
-            yield return new WaitForSeconds(1f / RandomSpawnRate());
+            if (spawnList[i] == enemies[0]) // Shred
+            {
+                yield return new WaitForSeconds(1f / RandomSpawnRate());
+            }
+            else // Mower
+            {
+                yield return new WaitForSeconds(5f);
+            }
         }
 
         state = SpawnState.Waiting;
@@ -194,16 +201,14 @@ public class EnemySpawnerScript : MonoBehaviour
     // Random Mower generator
     private int RandomMower()
     {
-        bool isOneMower = (Random.value > 0.85f);
-
-        if (isOneMower)
+        if (Random.value > 0.85f)   // 85%
         {
             return 1;
         }
-        else
+        else      // else 15%
         {
             return 2;
-        }       
+        }
     }
 
     private float RandomSpawnRate() { return Random.Range(0.2f, 0.5f); }
