@@ -36,7 +36,7 @@ public class PlayerCurrency : MonoBehaviour
         upgradeText.text = speedUpgrades.ToString();
     }
 
-    void SetKarmaBar()
+    public void SetKarmaBar()
     {
         if (gameMaster != null)
         {

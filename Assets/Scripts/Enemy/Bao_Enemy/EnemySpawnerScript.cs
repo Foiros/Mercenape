@@ -219,12 +219,15 @@ public class EnemySpawnerScript : MonoBehaviour
     {
         Time.timeScale = 1;
         completeWaveScreen.SetActive(false);
+        playerCurrency.karma = 0;
     }
 
     public void ForgeButton()
     {
         Time.timeScale = 1;
         SaveManager.SaveCurrency(playerCurrency);
+        playerCurrency.karma = 0;
+        playerCurrency.SetKarmaBar();
         SceneManager.LoadScene("Forge");
     }
 

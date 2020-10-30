@@ -102,7 +102,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   karmaAmount: 20
   destination: {fileID: 0}
-  speed: 35
+  speed: 40
 --- !u!61 &2853103991285243917
 BoxCollider2D:
   m_ObjectHideFlags: 0

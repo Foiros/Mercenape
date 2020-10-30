@@ -15,5 +15,5 @@ MonoBehaviour:
   name: Mower
   damage: 20
   maxHP: 100
-  runningSpeed: 6
+  runningSpeed: 10
   spaceToGetUp: 10
