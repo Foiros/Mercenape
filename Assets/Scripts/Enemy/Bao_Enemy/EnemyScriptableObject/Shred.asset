@@ -16,3 +16,4 @@ MonoBehaviour:
   damage: 10
   maxHP: 30
   runningSpeed: 30
+  spaceToGetUp: 5
