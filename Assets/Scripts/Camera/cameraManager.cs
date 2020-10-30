@@ -25,7 +25,7 @@ public class cameraManager : MonoBehaviour
     public void Zoom()
     {
         float priority = zoomIn.gameObject.GetComponent<CinemachineVirtualCamera>().Priority;
-        // if( < zoomOut.gameObject.GetComponent<CinemachineVirtualCamera>().Priority)
+        if( < zoomOut.gameObject.GetComponent<CinemachineVirtualCamera>().Priority)
         {
 
         }

@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destination: {fileID: 0}
-  speed: 32
+  speed: 35
 --- !u!212 &-2668595407300758868
 SpriteRenderer:
   m_ObjectHideFlags: 0

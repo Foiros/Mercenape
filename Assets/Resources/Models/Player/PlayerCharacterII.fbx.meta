@@ -66,12 +66,7 @@ ModelImporter:
   - first:
       74: -8519270181867604690
     second: SwordAttack
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: DefaultMaterial
-    second: {fileID: 2100000, guid: 5eccaec2247405941be77029f0e4a4df, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 1
     materialName: 0
