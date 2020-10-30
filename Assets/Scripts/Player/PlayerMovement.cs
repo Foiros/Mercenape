@@ -51,7 +51,8 @@ public class PlayerMovement : MonoBehaviour
         isGrabWall_animBool,
         knockedDown_animBool,
         blocking_animBool,
-        isRunning_animBool;
+        isRunning_animBool,
+        isOnTop_animBool;
 
     [HideInInspector]
     public int inputH_animFloat,
@@ -74,6 +75,7 @@ public class PlayerMovement : MonoBehaviour
         isGrabWall_animBool = Animator.StringToHash("isGrabWall");
         blocking_animBool = Animator.StringToHash("Blocking");
         knockedDown_animBool = Animator.StringToHash("KnockedDown");
+        isOnTop_animBool = Animator.StringToHash("isOnTop");
         isRunning_animBool = Animator.StringToHash("IsRunning");
         inputH_animFloat = Animator.StringToHash("inputH");
         inputV_animFloat = Animator.StringToHash("inputV");
@@ -119,12 +121,15 @@ public class PlayerMovement : MonoBehaviour
         if (isGrabWall == true)
         {
             PlayerRigid2d.useGravity = false;
+            PlayerRigid2d.rotation = Quaternion.Euler(5, 90, 0);
             PlayerClimbWal();
         }
         else
         {
             PlayerRigid2d.useGravity = true;
-        }             
+            PlayerRigid2d.rotation = Quaternion.Euler(0, 90, 0);
+
+        }
 
         if (isGrabWall && Input.GetKeyDown(KeyCode.Space))
         {
@@ -246,8 +251,8 @@ public class PlayerMovement : MonoBehaviour
     }
 
     void CheckGrabWall()
-    {      
-        if (isCollideWall)
+    {
+        if (isCollideWall && !CheckColliderAbove())
         {
             if (isGrabWall == false)
             {
@@ -276,7 +281,7 @@ public class PlayerMovement : MonoBehaviour
     //player climb on wall
     void PlayerClimbWal()
     {
-        float xSpeed = 0.5f;
+        float xSpeed = 2f;
         
         if (inputV == 0)
         {
@@ -293,7 +298,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 else if (inputV < 0)
                 {
-                    PlayerRigid2d.velocity += (new Vector3(0, 1, 0) * PlayerClimbSpeed * inputV * Time.deltaTime + Vector3.right * -xSpeed * Time.deltaTime);
+                    PlayerRigid2d.velocity += (new Vector3(0, 1, 0) * PlayerClimbSpeed * inputV * Time.deltaTime + Vector3.right * -2* xSpeed * Time.deltaTime);
                 }
 
                 if (isGrounded && inputV < 0)
@@ -309,7 +314,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 else if (inputV < 0)
                 {
-                    PlayerRigid2d.velocity += (new Vector3(0, 1, 0) * PlayerClimbSpeed * inputV * Time.deltaTime + Vector3.right * -xSpeed * Time.deltaTime);
+                   PlayerRigid2d.velocity += (new Vector3(0, 1, 0) * PlayerClimbSpeed * inputV * Time.deltaTime + Vector3.right * -2* xSpeed * Time.deltaTime);
 
                 }
 
@@ -448,6 +453,7 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool(blocking_animBool, isPlayerBlock);
         animator.SetBool(isGrabWall_animBool, isGrabWall);
         animator.SetBool(knockedDown_animBool, isKnockDown);
+        animator.SetBool(isOnTop_animBool, CheckOnTop());
     }
 }
 
