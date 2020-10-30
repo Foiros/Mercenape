@@ -13,22 +13,32 @@ public class PlayerHealth : MonoBehaviour
     public int PlayerHP;
     public int PlayerMaxHP;
 
+    private GameObject playerUI;
     private Slider hpBar;
     private Image hpFill;
     public Gradient hpGradient;
+
+    [HideInInspector] public Transform spaceTextGrid;
+    [HideInInspector] public Text currentSpace;
+    [HideInInspector] public Text neededSpace;
     
-    public int lostGold;
-    public int lostKarma;
+    private int lostGold;
+    private int lostKarma;
 
 
     void Start()
     {
         playerCurrency = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerCurrency>();
 
-        hpBar = GameObject.FindGameObjectWithTag("PlayerUI").transform.Find("hpBar").GetComponent<Slider>();
-        hpFill = GameObject.FindGameObjectWithTag("PlayerUI").transform.Find("hpBar").Find("hpFill").GetComponent<Image>();
+        playerUI = GameObject.FindGameObjectWithTag("PlayerUI");
+        hpBar = playerUI.transform.Find("hpBar").GetComponent<Slider>();
+        hpFill = playerUI.transform.Find("hpBar").Find("hpFill").GetComponent<Image>();
 
         SetHP();
+
+        spaceTextGrid = playerUI.transform.Find("TextGrid");
+        currentSpace = spaceTextGrid.GetChild(1).GetComponent<Text>();
+        neededSpace = spaceTextGrid.GetChild(3).GetComponent<Text>();
     }
 
     void SetHP()
@@ -79,5 +89,15 @@ public class PlayerHealth : MonoBehaviour
         playerCurrency.LoseKarma(lostKarma);
         
         SaveManager.SaveCurrency(playerCurrency);
+    }
+
+    public void SetCurrentSpace(int count)
+    {
+        currentSpace.text = count.ToString();
+    }
+
+    public void SetNeededSpace(int count)
+    {
+        neededSpace.text = count.ToString();
     }
 }

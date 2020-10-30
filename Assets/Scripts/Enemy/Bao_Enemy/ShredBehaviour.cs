@@ -34,7 +34,7 @@ public class ShredBehaviour : EnemyBehaviour
     {
         // Don't check if dead or is staggering
         if (currentHP <= 0 || isStaggering) { return; }
-        Debug.DrawRay(frontDetection.position, transform.right * 2.5f, Color.red);
+        
         // If player is not in front of Shred's peak, don't attack
         if(!Physics.Raycast(frontDetection.position, transform.right, 2.5f, LayerMask.GetMask("Player"))) { return; }
 
@@ -132,6 +132,8 @@ public class ShredBehaviour : EnemyBehaviour
         base.KnockDownProcess();     // Still normally stun player
         
         if (!isAttacker) { return; }
+
+        playerHealth.SetNeededSpace(stat.spaceToGetUp);
 
         if (playerMovement.getUpCount >= stat.spaceToGetUp)
         {

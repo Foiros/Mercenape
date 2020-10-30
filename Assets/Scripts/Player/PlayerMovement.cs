@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -11,7 +12,7 @@ public class PlayerMovement : MonoBehaviour
     public float MidAirSpeed; // for move left and right while mid air
     [SerializeField] private LayerMask groundlayermask, walllayermask, ladderlayermask;
 
-
+    [HideInInspector] public PlayerHealth playerHealth;
     [HideInInspector] public PlayerAttackTrigger playerAttack;
     [HideInInspector] public Animator PlayerAnimator;
     [HideInInspector] public Rigidbody PlayerRigid2d;
@@ -62,6 +63,7 @@ public class PlayerMovement : MonoBehaviour
     //end Hash ID
     void Awake()
     {
+        playerHealth = transform.GetComponent<PlayerHealth>();
         playerAttack = transform.GetComponent<PlayerAttackTrigger>();
         PlayerRigid2d = transform.GetComponent<Rigidbody>();
         //PlayerAnimator = transform.GetComponent<Animator>();
@@ -419,17 +421,26 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool(knockedDown_animBool, true);
             playerAttack.enabled = false;
 
-            if (Input.GetKeyDown(KeyCode.Space)) { getUpCount++; }
+            playerHealth.spaceTextGrid.gameObject.SetActive(true);
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                getUpCount++;
+                playerHealth.SetCurrentSpace(getUpCount);
+            }
         }
         else
         {
             animator.SetLayerWeight(1, 1f);
+
+            playerHealth.spaceTextGrid.gameObject.SetActive(false);
         }
     }
 
     public void PlayerBounceUp()
     {
         getUpCount = 0;
+        playerHealth.SetCurrentSpace(getUpCount);
         isKnockDown = false;
 
         animator.SetTrigger("BounceUp");        

@@ -183,7 +183,8 @@ public class EnemyBehaviour : MonoBehaviour
             isAttacker = true;
         }
 
-        playerMovement.getUpCount = 0;      
+        playerMovement.getUpCount = 0;
+        playerHealth.SetCurrentSpace(playerMovement.getUpCount);
     }
 
     protected IEnumerator CheckEnemyDeath()

@@ -267,6 +267,8 @@ public class MowerBehaviour : EnemyBehaviour
 
         if (!isAttacker) { return; }
 
+        playerHealth.SetNeededSpace(stat.spaceToGetUp);
+
         if (playerMovement.getUpCount >= stat.spaceToGetUp)
         {
             // Stop dealing damage and get back to original states
