@@ -18,22 +18,7 @@ ModelImporter:
   - first:
       74: -4820106949369482025
     second: Armature|Running_Basic
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Eyesmaterial
-    second: {fileID: 2100000, guid: 20db7356c98fdae479c9db508122c449, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Hairmaterial
-    second: {fileID: 2100000, guid: 05838d56beef3a84faeb39ba31ff791a, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Mainmeshmaterial
-    second: {fileID: 2100000, guid: 5eccaec2247405941be77029f0e4a4df, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 1
     materialName: 0
@@ -72,7 +57,7 @@ ModelImporter:
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
-    importLights: 0
+    importLights: 1
     fileIdsGeneration: 2
     swapUVChannels: 0
     generateSecondaryUV: 0

@@ -66,7 +66,27 @@ ModelImporter:
   - first:
       74: -8519270181867604690
     second: SwordAttack
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: DefaultMaterial
+    second: {fileID: 2100000, guid: 279e5a87634f8604787163f65d4cdbc1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Eyesmaterial
+    second: {fileID: 2100000, guid: 63d4b35e2630d3b45a3bcffb83914573, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Hairmaterial
+    second: {fileID: 2100000, guid: 05838d56beef3a84faeb39ba31ff791a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mainmeshmaterial
+    second: {fileID: 2100000, guid: ff7619964d76f6044b2643f3ee2e67c7, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
