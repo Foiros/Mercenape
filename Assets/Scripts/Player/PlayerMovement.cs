@@ -16,17 +16,17 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector] public Animator PlayerAnimator;
     [HideInInspector] public Rigidbody PlayerRigid2d;
 
-    float inputH, inputV;
-
+    float inputH,inputV; 
+    
     public bool isGrounded;
-
+    
     public bool FaceRight = true;
     public bool PlayerDoubleJump;
 
     public Transform PlayerFrontPos, PlayerBehindPos;
     public Transform PlayerUnderPos, PlayerAbovePos;
     public float CheckRadius;
-
+    
     public float PlayerClimbSpeed;
 
     public bool isPlayerBlock = false;
@@ -44,7 +44,6 @@ public class PlayerMovement : MonoBehaviour
     public bool isGrabWall = false;
     public bool isJumping = false;
 
-    GameObject bounceBackMessage;
     //Start Hash ID 
     [HideInInspector]
     public int isJumping_animBool,
@@ -69,8 +68,6 @@ public class PlayerMovement : MonoBehaviour
         capsuleCollider = transform.GetComponent<CapsuleCollider>();
         PlayerRigid2d.centerOfMass = Vector3.zero;
 
-        bounceBackMessage = GameObject.FindGameObjectWithTag("PlayerUI").transform.GetChild(4).gameObject;
-
         //HashID animator parameters for performances
         isJumping_animBool = Animator.StringToHash("isJumping");
         isGrounded_animBool = Animator.StringToHash("isGrounded");
@@ -80,7 +77,7 @@ public class PlayerMovement : MonoBehaviour
         isRunning_animBool = Animator.StringToHash("IsRunning");
         inputH_animFloat = Animator.StringToHash("inputH");
         inputV_animFloat = Animator.StringToHash("inputV");
-        vSpeed_animafloat = Animator.StringToHash("vSpeed");
+        vSpeed_animafloat = Animator.StringToHash("vSpeed");      
     }
 
     void Update()
@@ -92,7 +89,7 @@ public class PlayerMovement : MonoBehaviour
         CheckCollideWall();
         CheckOnTop();
         CheckGrabWall();
-
+     
         if (isGrounded)
         {
             PlayerDoubleJump = true;
@@ -111,12 +108,12 @@ public class PlayerMovement : MonoBehaviour
             InputVertical();
         }
 
-        if (!isKnockDown && !CheckColliderAbove())
+        if (!isKnockDown&& !CheckColliderAbove())
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 PlayerJump();
-            }
+            }  
         }
 
         if (isGrabWall == true)
@@ -127,29 +124,29 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             PlayerRigid2d.useGravity = true;
-        }
+        }             
 
         if (isGrabWall && Input.GetKeyDown(KeyCode.Space))
         {
             isJumping = true;
             isPlayerBlock = false;
             isGrabWall = false;
-            PlayerRigid2d.velocity += (Vector3.up * PlayerJumpPow + Vector3.right);
+            PlayerRigid2d.velocity += (Vector3.up * PlayerJumpPow + Vector3.right);                      
         }
 
-
+      
     }
 
     void FixedUpdate()
     {
         if (!isPlayerBlock && !isKnockDown)// when player is not blocking they can move
-        {
+        {          
             PlayerMove();
-        }
+        }     
     }
 
     void CheckPlayerGrounded()
-    {
+    {      
         float distance = 1f;
         Debug.DrawRay(boxCollider.bounds.center, Vector3.down * distance, Color.red);
 
@@ -211,19 +208,19 @@ public class PlayerMovement : MonoBehaviour
     {
         inputV = Input.GetAxisRaw("Vertical");
     }
-
+      
     // check collide with wall  
     void CheckCollideWall()
     {
-        float distance = 1.5f;
+        float distance= 1.5f;
         if (FaceRight)
         {
-            isCollideWall = Physics.Raycast(capsuleCollider.bounds.center, Vector3.right, distance, walllayermask);
+           isCollideWall=Physics.Raycast(capsuleCollider.bounds.center, Vector3.right, distance, walllayermask);
             Debug.DrawRay(capsuleCollider.bounds.center, Vector3.right * distance, Color.yellow);
         }
         else
         {
-            isCollideWall = Physics.Raycast(capsuleCollider.bounds.center, Vector3.left, distance, walllayermask);
+            isCollideWall=Physics.Raycast(capsuleCollider.bounds.center, Vector3.left, distance, walllayermask);
             Debug.DrawRay(capsuleCollider.bounds.center, Vector3.left * distance, Color.yellow);
 
         }
@@ -235,7 +232,7 @@ public class PlayerMovement : MonoBehaviour
         if (FaceRight)
         {
             Debug.DrawRay(PlayerAbovePos.position, Vector3.right * distance, Color.yellow);
-            return (!Physics.Raycast(PlayerAbovePos.position, Vector3.right, distance, walllayermask) && Physics.Raycast(PlayerUnderPos.position, Vector3.right, distance, walllayermask));
+            return (!Physics.Raycast(PlayerAbovePos.position , Vector3.right, distance, walllayermask)&& Physics.Raycast(PlayerUnderPos.position, Vector3.right, distance, walllayermask));
 
 
         }
@@ -249,7 +246,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     void CheckGrabWall()
-    {
+    {      
         if (isCollideWall)
         {
             if (isGrabWall == false)
@@ -262,7 +259,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-                if (Input.GetKey(KeyCode.E) && Input.GetKey(KeyCode.S))
+                if(Input.GetKey(KeyCode.E)&& Input.GetKey(KeyCode.S))
                 {
                     isGrabWall = false;
                     isJumping = true;
@@ -280,7 +277,7 @@ public class PlayerMovement : MonoBehaviour
     void PlayerClimbWal()
     {
         float xSpeed = 0.5f;
-
+        
         if (inputV == 0)
         {
 
@@ -390,23 +387,23 @@ public class PlayerMovement : MonoBehaviour
             isPlayerBlock = false;
         }
     }
-
+    
 
     private void FlipPlayer()
     {
-        if (inputH < 0 && FaceRight == true) { Flip(); }
-        else if (inputH > 0 && FaceRight == false) { Flip(); }
+        if (inputH <0  &&  FaceRight == true) { Flip(); }
+        else if (inputH > 0 && FaceRight == false) { Flip(); }    
     }
 
     private void Flip()
     {
         FaceRight = !FaceRight;
-        Vector3 Scale = transform.localScale;
+        Vector3 Scale= transform.localScale;
         Scale.z *= -1;
         //Scale.x *= -1;
         transform.localScale = Scale;
     }
-
+   
     void CheckKnockDown()
     {
         if (isKnockDown)
@@ -416,13 +413,11 @@ public class PlayerMovement : MonoBehaviour
             animator.SetLayerWeight(1, 0.1f);
             animator.SetBool(knockedDown_animBool, true);
             playerAttack.enabled = false;
-            if (bounceBackMessage != null) { bounceBackMessage.SetActive(true); }
-            
+
             if (Input.GetKeyDown(KeyCode.Space)) { getUpCount++; }
         }
         else
         {
-            if (bounceBackMessage != null) { bounceBackMessage.SetActive(false); }
             animator.SetLayerWeight(1, 1f);
         }
     }
@@ -432,7 +427,7 @@ public class PlayerMovement : MonoBehaviour
         getUpCount = 0;
         isKnockDown = false;
 
-        animator.SetTrigger("BounceUp");
+        animator.SetTrigger("BounceUp");        
 
         playerAttack.enabled = true;
     }
@@ -443,7 +438,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     void SetAnimatorPara()
-    {
+    {       
         animator.SetFloat(inputH_animFloat, Mathf.Abs(inputH));
         animator.SetFloat(inputV_animFloat, Mathf.Abs(inputV));
         animator.SetFloat(vSpeed_animafloat, PlayerRigid2d.velocity.y);
@@ -454,9 +449,5 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool(isGrabWall_animBool, isGrabWall);
         animator.SetBool(knockedDown_animBool, isKnockDown);
     }
-
-    
-
-
 }
 
