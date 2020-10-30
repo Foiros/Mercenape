@@ -31,7 +31,7 @@ public class PlayerAttackTrigger : MonoBehaviour
     public AnimationClip attackAnim;
     
     private bool IsPlayerAttack = false;
-
+    
     public event Action<bool, bool, Collider, float> OnHitEnemy;  // 1st bool is Mower backside, 2nd bool is generator
     public event Action<float, float, int, Collider> OnBleedEnemy;  // weaponBleedDamage, weaponBleedDuration, bleedTicks
 
@@ -108,11 +108,10 @@ public class PlayerAttackTrigger : MonoBehaviour
     {
         //Collider[] enemiesToDamage = Physics.OverlapBox(Attackpos.position, Attackpos.localScale, Quaternion.identity, EnemyLayerMask);
         Collider[] enemiesToDamage = new Collider[10];
-        int numHit = Physics.OverlapSphereNonAlloc(edgePos.position, 0.2f, enemiesToDamage, EnemyLayerMask);
+        int numHit = Physics.OverlapSphereNonAlloc(edgePos.position, 0.5f, enemiesToDamage, EnemyLayerMask);
         
         for (int i = 0; i < numHit; i++)
-        {
-            print(numHit);
+        {          
             // Created  and edited by Bao: Detect enemy and attack
             if (enemiesToDamage[i].GetType() == typeof(CapsuleCollider)) // Mower's back
             {
@@ -163,7 +162,7 @@ public class PlayerAttackTrigger : MonoBehaviour
     {
         Gizmos.color = Color.green;
         //Gizmos.DrawWireCube(Attackpos.position, Attackpos.localScale);
-        Gizmos.DrawSphere(edgePos.position, 0.2f);
+        Gizmos.DrawSphere(edgePos.position, 0.5f);
     }
 
     public void SetWeaponList(List<AbstractWeapon> list) { weapons = list; }

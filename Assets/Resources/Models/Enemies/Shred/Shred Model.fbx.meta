@@ -27,7 +27,17 @@ ModelImporter:
   - first:
       74: -4288584346033761471
     second: Armature|StaggeredTakeHit
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: EyesMaterial
+    second: {fileID: 2100000, guid: ba7498a1291dc5a4385dd9c307a5cb05, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MainMeshMaterial
+    second: {fileID: 2100000, guid: 17abdb19c4bc3f34b8b5804716053fe4, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
