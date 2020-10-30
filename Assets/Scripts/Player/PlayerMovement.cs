@@ -18,7 +18,7 @@ public class PlayerMovement : MonoBehaviour
 
     float inputH,inputV; 
     
-    bool isGrounded;
+    public bool isGrounded;
     
     public bool FaceRight = true;
     public bool PlayerDoubleJump;
@@ -107,7 +107,7 @@ public class PlayerMovement : MonoBehaviour
             InputVertical();
         }
 
-        if (!isKnockDown)
+        if (!isKnockDown&& !CheckColliderAbove())
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
@@ -132,6 +132,8 @@ public class PlayerMovement : MonoBehaviour
             isGrabWall = false;
             PlayerRigid2d.velocity += (Vector3.up * PlayerJumpPow + Vector3.right);                      
         }
+
+      
     }
 
     void FixedUpdate()
@@ -144,7 +146,7 @@ public class PlayerMovement : MonoBehaviour
 
     void CheckPlayerGrounded()
     {      
-        float distance = .5f;
+        float distance = 1f;
         Debug.DrawRay(boxCollider.bounds.center, Vector3.down * distance, Color.red);
 
         if (Physics.Raycast(boxCollider.bounds.center, Vector3.down, distance, groundlayermask))
@@ -193,6 +195,15 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    bool CheckColliderAbove()
+    {
+        float distance = 2f;
+        Debug.DrawRay(PlayerAbovePos.position, Vector3.up * distance, Color.yellow);
+        return Physics.Raycast(PlayerAbovePos.position, Vector3.up, distance, walllayermask);
+
+    }
+
+
     void InputVertical()
     {
         inputV = Input.GetAxisRaw("Vertical");
@@ -201,7 +212,7 @@ public class PlayerMovement : MonoBehaviour
     // check collide with wall  
     void CheckCollideWall()
     {
-        float distance =1.5f;
+        float distance= 1.5f;
         if (FaceRight)
         {
            isCollideWall=Physics.Raycast(capsuleCollider.bounds.center, Vector3.right, distance, walllayermask);
@@ -217,14 +228,19 @@ public class PlayerMovement : MonoBehaviour
 
     bool CheckOnTop()
     {
-        float distance = 1.3f;
+        float distance = 1.5f;
         if (FaceRight)
         {
-           return (!Physics.Raycast(PlayerAbovePos.position , Vector3.right, distance, walllayermask)&& Physics.Raycast(PlayerUnderPos.position, Vector3.right, distance, walllayermask));
+            Debug.DrawRay(PlayerAbovePos.position, Vector3.right * distance, Color.yellow);
+            return (!Physics.Raycast(PlayerAbovePos.position , Vector3.right, distance, walllayermask)&& Physics.Raycast(PlayerUnderPos.position, Vector3.right, distance, walllayermask));
+
+
         }
         else
         {
+            Debug.DrawRay(PlayerAbovePos.position, Vector3.left * distance, Color.yellow);
             return (!Physics.Raycast(PlayerAbovePos.position, Vector3.left, distance, walllayermask) && Physics.Raycast(PlayerUnderPos.position, Vector3.left, distance, walllayermask));
+
         }
 
     }
@@ -260,7 +276,8 @@ public class PlayerMovement : MonoBehaviour
     //player climb on wall
     void PlayerClimbWal()
     {
-        float xSpeed = 1f;
+        float xSpeed = 0.5f;
+        
         if (inputV == 0)
         {
 
@@ -303,6 +320,12 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
         }
+    }
+
+
+    void OffsetCapsulCollider()
+    {
+        capsuleCollider.radius = 0.5f;
     }
 
 
