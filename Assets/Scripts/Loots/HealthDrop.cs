@@ -16,9 +16,10 @@ public class HealthDrop : MonoBehaviour
     void OnTriggerEnter(Collider collision)
     {
         if (collision.CompareTag("Player") && playerHealth.PlayerHP != playerHealth.PlayerMaxHP)
-        {
-            playerHealth.GainHealth(healingAmount);
-            Destroy(gameObject);
+        { 
+           playerHealth.GainHealth(healingAmount);
+           Destroy(gameObject);
+
         }
     }
 }
