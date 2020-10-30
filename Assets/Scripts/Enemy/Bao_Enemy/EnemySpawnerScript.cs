@@ -36,12 +36,12 @@ public class EnemySpawnerScript : MonoBehaviour
     [SerializeField] private GameObject completeWaveScreen;
 
     private PlayerCurrency playerCurrency;
-    private GameMaster gm;
+    private GameMaster gameMaster;
 
     private void Start()
     {
-        playerCurrency = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCurrency>();
-        gm = GameObject.FindGameObjectWithTag("gamemaster").GetComponent<GameMaster>();
+        playerCurrency = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerCurrency>();
+        gameMaster = GameObject.FindGameObjectWithTag("gamemaster").GetComponent<GameMaster>();
 
         groupCountdown = timeBetweenGroups;
 
@@ -79,11 +79,7 @@ public class EnemySpawnerScript : MonoBehaviour
             // Otherwise count down
             groupCountdown -= Time.deltaTime;
         }   
-        
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            playerCurrency.karma = gm.lvMaxKarma;
-        }
+              
     }
 
     // Group completed and prepare new group
@@ -103,7 +99,7 @@ public class EnemySpawnerScript : MonoBehaviour
     // When player get enough karma
     void CheckWaveEnd()
     {
-        if (playerCurrency.karma >= gm.lvMaxKarma)
+        if (playerCurrency.karma >= gameMaster.lvMaxKarma)
         {
             Time.timeScale = 0;
             completeWaveScreen.SetActive(true);

@@ -25,7 +25,7 @@ public class GameMaster : MonoBehaviour
     void CheckScene4MaxKarma()
     {
         Scene currentScene = SceneManager.GetActiveScene();
-        playerCurrency = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerCurrency>();
+        playerCurrency = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerCurrency>();
         string sceneName = currentScene.name;
 
         int buildIndex = currentScene.buildIndex;
