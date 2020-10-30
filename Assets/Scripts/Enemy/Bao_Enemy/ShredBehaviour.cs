@@ -119,7 +119,7 @@ public class ShredBehaviour : EnemyBehaviour
         rb.isKinematic = true;
         speed = 0;
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(2f);
 
         isStaggering = false;
         animatorShred.SetBool("Staggering", isStaggering);
@@ -136,7 +136,7 @@ public class ShredBehaviour : EnemyBehaviour
         
         if (!isAttacker) { return; }
 
-        if (playerMovement.getUpCount >= 5)
+        if (playerMovement.getUpCount >= stat.spaceToGetUp)
         {
             playerMovement.PlayerBounceUp();
 

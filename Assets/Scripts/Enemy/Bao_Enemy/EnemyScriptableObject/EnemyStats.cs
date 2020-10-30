@@ -12,5 +12,6 @@ public class EnemyStats : ScriptableObject
     public int damage;
     public float maxHP;
     public float runningSpeed;
+    public int spaceToGetUp;
 
 }

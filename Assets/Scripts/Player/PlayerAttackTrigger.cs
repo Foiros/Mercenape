@@ -100,19 +100,19 @@ public class PlayerAttackTrigger : MonoBehaviour
         if (IsAttackingAnim())
         {
             HitEnemy();
-        }
-        
+        }       
     }
 
     // When actually hit enemy with the weapon
     void HitEnemy()
     {
         //Collider[] enemiesToDamage = Physics.OverlapBox(Attackpos.position, Attackpos.localScale, Quaternion.identity, EnemyLayerMask);
-        Collider[] enemiesToDamage = new Collider[20];
+        Collider[] enemiesToDamage = new Collider[10];
         int numHit = Physics.OverlapSphereNonAlloc(edgePos.position, 0.2f, enemiesToDamage, EnemyLayerMask);
         
         for (int i = 0; i < numHit; i++)
-        {         
+        {
+            print(numHit);
             // Created  and edited by Bao: Detect enemy and attack
             if (enemiesToDamage[i].GetType() == typeof(CapsuleCollider)) // Mower's back
             {

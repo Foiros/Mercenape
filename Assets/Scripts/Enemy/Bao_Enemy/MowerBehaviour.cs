@@ -267,7 +267,7 @@ public class MowerBehaviour : EnemyBehaviour
 
         if (!isAttacker) { return; }
 
-        if (playerMovement.getUpCount >= 10)
+        if (playerMovement.getUpCount >= stat.spaceToGetUp)
         {
             // Stop dealing damage and get back to original states
             StopCoroutine("Attacking");
