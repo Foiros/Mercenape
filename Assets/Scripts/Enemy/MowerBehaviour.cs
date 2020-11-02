@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -114,7 +115,10 @@ public class MowerBehaviour : EnemyBehaviour
     // Special TakerDamage mechanic for Mower
     public override void TakeDamage(float playerDamage)
     {
-        if (isBackSideHit) { DamagingBackside(playerDamage); }
+        if (isBackSideHit)
+        {
+            DamagingBackside(() => { base.TakeDamage(playerDamage); });
+        }
 
         if (isGeneratorHit) { DamagingForceField(playerDamage); }
 
@@ -129,26 +133,21 @@ public class MowerBehaviour : EnemyBehaviour
 
         base.EnemyGetHit(isMowerBackSide, isMowerGenerator, selfCol, playerDmg);
     }
-
+    
     // Backside main mechanic
-    public void DamagingBackside(float playerDmg)
+    public void DamagingBackside(Action TakeDamage)
     {
         if (!isDamageable) { return; }
 
         if (currentState == ForceFieldState.Inactive || currentState == ForceFieldState.Destroyed)
-        {
-            isDamageable = false;
-            Invoke("ReturnToDamageable", playerMovement.playerAttack.DelayTime());
+        {           
+            TakeDamage();
 
             speed = stat.runningSpeed / 2;
-
-            currentHP -= playerDmg;
-            barHealth.UpdateHealthBar(currentHP, stat.maxHP);
 
             if (currentHP <= 0)
             {
                 capsuleCollider.enabled = false;
-                StartCoroutine("CheckEnemyDeath");
 
                 animatorMower.SetTrigger("Death");
             }
@@ -183,8 +182,9 @@ public class MowerBehaviour : EnemyBehaviour
         Invoke("ReturnToDamageable", playerMovement.playerAttack.DelayTime());
 
         fieldHP -= playerDmg;
-
         fieldBarHealth.UpdateHealthBar(fieldHP, fieldStat.maxHP);
+
+        DamagePopUp.Create(backside.transform.position + (Vector3.forward) * -9, playerDmg);
 
         if (fieldHP <= 0)
         {

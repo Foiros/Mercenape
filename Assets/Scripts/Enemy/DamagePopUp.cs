@@ -12,6 +12,7 @@ public class DamagePopUp : MonoBehaviour
         Transform dmgPopUpTransform = Instantiate(GameAssets.instance.damagePopUp, pos, Quaternion.identity);
 
         DamagePopUp damagePopUp = dmgPopUpTransform.GetComponent<DamagePopUp>();
+
         damagePopUp.Setup(damage);
 
         return damagePopUp;
@@ -45,6 +46,7 @@ public class DamagePopUp : MonoBehaviour
         textMesh = transform.GetComponent<TextMeshPro>();
     }
 
+    // Animation
     private void Update()
     {
         transform.position += moveVector * Time.deltaTime;
@@ -62,6 +64,7 @@ public class DamagePopUp : MonoBehaviour
         }
 
         disappearTimer -= Time.deltaTime;
+
         if (disappearTimer <0)
         {
             // Start dissapearing

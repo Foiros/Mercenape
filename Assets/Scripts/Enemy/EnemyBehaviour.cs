@@ -129,12 +129,11 @@ public class EnemyBehaviour : MonoBehaviour
         currentHP -= playerDamage;
         barHealth.UpdateHealthBar(currentHP, stat.maxHP);
 
-        DamagePopUp.Create(transform.position, playerDamage); 
+        DamagePopUp.Create(transform.position + (Vector3.forward) * -9, playerDamage); 
 
         // If dead
         if (currentHP <= 0)
         {
-            StopCoroutine("CheckEnemyDeath");
             StartCoroutine("CheckEnemyDeath");
         }
     }
