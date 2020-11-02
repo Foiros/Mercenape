@@ -9,9 +9,11 @@ public class DamagePopUp : MonoBehaviour
     // Create a Damage Popup
     public static DamagePopUp Create(Vector3 pos, float damage)
     {
-        Transform dmgPopUpTransform = Instantiate(GameAssets.instance.damagePopUp, pos, Quaternion.identity);
+        //Transform dmgPopUpTransform = Instantiate(GameAssets.instance.damagePopUp, pos, Quaternion.identity);
 
-        DamagePopUp damagePopUp = dmgPopUpTransform.GetComponent<DamagePopUp>();
+        GameObject dmgPopUpObj = ObjectPooler.Instance.SpawnFromPool("DamagePopUp", pos, Quaternion.identity);
+
+        DamagePopUp damagePopUp = dmgPopUpObj.GetComponent<DamagePopUp>();
 
         damagePopUp.Setup(damage);
 
@@ -21,11 +23,8 @@ public class DamagePopUp : MonoBehaviour
     public void Setup(float damage)
     {
         textMesh.SetText(damage.ToString());
-        textColor = textMesh.color;
-        disappearTimer = maxDisappearTimer;
-
-        moveVector = new Vector3(Random.Range(-.5f, .5f), 1.5f) * 40; ;
-
+        //textColor = textMesh.color;
+       
         sortingOrder++;
         textMesh.sortingOrder = sortingOrder;
         sortingOrder = 0;
@@ -34,45 +33,20 @@ public class DamagePopUp : MonoBehaviour
     private static int sortingOrder = 0;
 
     private TextMeshPro textMesh;
-    private Color textColor;
-
-    private float disappearTimer;
-    private const float maxDisappearTimer = .8f;
-
-    private Vector3 moveVector;
+    //private Color textColor; 
 
     private void Awake()
     {
-        textMesh = transform.GetComponent<TextMeshPro>();
+        textMesh = transform.GetChild(0).GetComponent<TextMeshPro>();
     }
 
-    // Animation
-    private void Update()
+    private void OnEnable()
     {
-        transform.position += moveVector * Time.deltaTime;
-        moveVector -= moveVector * 8f * Time.deltaTime;
-
-        if (disappearTimer > maxDisappearTimer * 0.5f)
-        {
-            // First half of the popup
-            transform.localScale += Vector3.one * 0.6f * Time.deltaTime;
-        }
-        else
-        {
-            // Second half of the popup
-            transform.localScale -= Vector3.one * 1 * Time.deltaTime;
-        }
-
-        disappearTimer -= Time.deltaTime;
-
-        if (disappearTimer <0)
-        {
-            // Start dissapearing
-            float disSpeed = 7f;
-            textColor.a -= disSpeed * Time.deltaTime;
-            textMesh.color = textColor;
-
-            if(textColor.a <= 0) { Destroy(gameObject); }
-        }
+        Invoke("Sleep", 1.1f);
+    }
+ 
+    private void Sleep()
+    {
+        gameObject.SetActive(false);
     }
 }

@@ -129,7 +129,7 @@ public class EnemyBehaviour : MonoBehaviour
         currentHP -= playerDamage;
         barHealth.UpdateHealthBar(currentHP, stat.maxHP);
 
-        DamagePopUp.Create(transform.position + (Vector3.forward) * -9, playerDamage); 
+        DamagePopUp.Create(PopUpPos(transform), playerDamage); 
 
         // If dead
         if (currentHP <= 0)
@@ -238,4 +238,7 @@ public class EnemyBehaviour : MonoBehaviour
         // Get root because Mower's backside and generator are not actually Mower itself
         return selfCol.gameObject.transform.root.gameObject.GetInstanceID() == this.gameObject.GetInstanceID();
     }
+
+    protected virtual Vector3 PopUpPos(Transform trans) { return Vector3.zero; }
+   
 }

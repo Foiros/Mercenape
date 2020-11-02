@@ -155,4 +155,11 @@ public class ShredBehaviour : EnemyBehaviour
             animatorShred.SetTrigger("Death");
         }
     }
+
+    protected override Vector3 PopUpPos(Transform trans)
+    {
+        var pos = new Vector3(trans.position.x + Random.Range(-1.5f, 1.5f), trans.position.y + 5, -9);
+
+        return pos;
+    }
 }

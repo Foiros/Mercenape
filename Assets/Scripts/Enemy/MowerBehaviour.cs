@@ -184,7 +184,7 @@ public class MowerBehaviour : EnemyBehaviour
         fieldHP -= playerDmg;
         fieldBarHealth.UpdateHealthBar(fieldHP, fieldStat.maxHP);
 
-        DamagePopUp.Create(backside.transform.position + (Vector3.forward) * -9, playerDmg);
+        DamagePopUp.Create(PopUpPos(backside), playerDmg);
 
         if (fieldHP <= 0)
         {
@@ -390,4 +390,10 @@ public class MowerBehaviour : EnemyBehaviour
         }  
     }
 
+    protected override Vector3 PopUpPos(Transform trans)
+    {
+        var pos = new Vector3(trans.position.x + UnityEngine.Random.Range(-4f, 4f), trans.position.y + 8, -9);
+
+        return pos;
+    }
 }

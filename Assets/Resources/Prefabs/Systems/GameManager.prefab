@@ -110,5 +110,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77c9412376516ae4aaffb93137567bdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damagePopUp: {fileID: 8206734239492082086, guid: 9f9ed0b3c82e92a4882d57036ec55e57,
+  damagePopUp: {fileID: 4761182716779327914, guid: 3b3485ce14494ee47b0affa91afff539,
     type: 3}
