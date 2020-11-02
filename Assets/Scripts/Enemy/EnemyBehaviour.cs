@@ -129,6 +129,8 @@ public class EnemyBehaviour : MonoBehaviour
         currentHP -= playerDamage;
         barHealth.UpdateHealthBar(currentHP, stat.maxHP);
 
+        DamagePopUp.Create(transform.position, playerDamage); 
+
         // If dead
         if (currentHP <= 0)
         {
@@ -141,6 +143,7 @@ public class EnemyBehaviour : MonoBehaviour
     public void TakeBleedDammage(float weaponBleedDmg)
     {
         currentHP -= weaponBleedDmg;
+        barHealth.UpdateHealthBar(currentHP, stat.maxHP);
 
         // If dead
         if (currentHP <= 0)

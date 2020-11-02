@@ -128,23 +128,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e540a446a00712f45b2d53e5aaeec4d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemy: {fileID: 7237859923948144618}
-  KarmaDropQuantity: 100
-  goldDrop: {fileID: 5243515410850218913, guid: d65fd8bc710b8774bafdd634afade683,
-    type: 3}
-  KarmaDrop: {fileID: 450763958401993869, guid: cc456ea0021f3334091f822ddba309f2,
-    type: 3}
-  healthDrop: {fileID: 1894584535332837582, guid: fd655d8535685a043a4244e1d452097f,
-    type: 3}
-  upgradeDrop: {fileID: 6106106539920529169, guid: 372244b7ea842e34ba2a93514a5e82bf,
-    type: 3}
   floatMoney: {fileID: 0}
   floatKarma: {fileID: 0}
   floatUpgrade: {fileID: 0}
+  healthDrop: {fileID: 1894584535332837582, guid: fd655d8535685a043a4244e1d452097f,
+    type: 3}
   healthChance: 99
   upgradeChance: 99
-  xOffset: 0
-  yOffset: 0
+  HPvalue: 15
+  UPvalue: 1
 --- !u!54 &4739630094514872579
 Rigidbody:
   m_ObjectHideFlags: 0

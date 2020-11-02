@@ -45,9 +45,7 @@ public class PlayerAttackTrigger : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
-       
-
+    {      
         SetWeaponStats();
     }
 
@@ -86,10 +84,10 @@ public class PlayerAttackTrigger : MonoBehaviour
         {
             IsPlayerAttack = true;
             PlayerAnimator.SetTrigger("Attack");
-            
+
             // (Holding mouse) When attack anim finish, it continues the next one, not standing still as before
             // weaponSpeed = 1 is normal, = 2 is fast double, etc. (could be less than 1 for slower speed)
-            TimeDelayAttack = (1 / weaponSpeed) * GetAttackAnimLength();  // = DelayTime()        
+            TimeDelayAttack = DelayTime();        
         }
         else
         {
@@ -97,7 +95,7 @@ public class PlayerAttackTrigger : MonoBehaviour
         }
 
         // When attacking
-        if (IsAttackingAnim())
+        if (IsPlayerAttack)
         {
             HitEnemy();
         }       
@@ -135,12 +133,7 @@ public class PlayerAttackTrigger : MonoBehaviour
                 OnBleedEnemy?.Invoke(weaponBleedDamage, weaponBleedDuration, bleedTicks, enemiesToDamage[i]);
             }
         }
-    }
-
-    public bool IsAttackingAnim()
-    {
-        return PlayerAnimator.GetCurrentAnimatorStateInfo(1).IsTag("PlayerAttack");
-    }
+    }  
 
     void CheckAttackStatus()
     {
@@ -156,7 +149,10 @@ public class PlayerAttackTrigger : MonoBehaviour
 
     float GetAttackAnimLength() { return attackAnim.length; }
 
-    public float DelayTime() { return (1 / weaponSpeed) * GetAttackAnimLength(); }
+    public float DelayTime()
+    {
+        return (1 / weaponSpeed) * GetAttackAnimLength();
+    }
 
     void OnDrawGizmos()
     {

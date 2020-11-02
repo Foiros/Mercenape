@@ -88,3 +88,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: EnemyUI
+    uniqueID: 3091510769
+    locked: 0
