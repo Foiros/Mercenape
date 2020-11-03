@@ -132,9 +132,7 @@ public class ShredBehaviour : EnemyBehaviour
         base.KnockDownProcess();     // Still normally stun player
         
         if (!isAttacker) { return; }
-
-        playerHealth.SetNeededSpace(stat.spaceToGetUp);
-
+        
         if (playerMovement.getUpCount >= stat.spaceToGetUp)
         {
             playerMovement.PlayerBounceUp();

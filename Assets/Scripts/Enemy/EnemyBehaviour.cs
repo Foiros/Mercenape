@@ -169,6 +169,8 @@ public class EnemyBehaviour : MonoBehaviour
     protected virtual void KnockDownProcess()
     {
         if (!playerMovement.isKnockDown) { return; }
+
+        playerHealth.SetNeededSpace(stat.spaceToGetUp);
     }
 
     // Knock down player with animation

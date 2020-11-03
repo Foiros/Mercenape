@@ -58,59 +58,60 @@ public class MowerBehaviour : EnemyBehaviour
     {
         // Check if player is knocked down by Mower
         KnockDownProcess();
+    }
 
-        // If is riding, stick on the top of Mower
-        if (isRiding)
+    #region Generator State
+    private void Generating()
+    {
+        if (currentState != ForceFieldState.Destroyed)
         {
-            //player.transform.position = new Vector3(transform.position.x +  ridePos, player.transform.position.y, 0);
-        }
+            currentState = ForceFieldState.Generating;
+            animatorMower.SetTrigger("Generating");
 
-        switch (currentState)
-        {
-            case ForceFieldState.Inactive:
-                {
-                    fieldSprite.color = Color.white;
+            fieldSprite.color = Color.yellow;
+            speed = 0;
+            isGenerating = false;
 
-                    break;
-                }
-            case ForceFieldState.Generating:
-                {
-                    fieldSprite.color = Color.yellow;
-                    speed = 0;
-
-                    if (!isGenerating)
-                    {
-                        isGenerating = true;
-
-                        Invoke("ChangeToActiveState", 2f);
-                    }
-
-                    break;
-                }
-            case ForceFieldState.Active:
-                {
-                    fieldSprite.color = Color.red;
-
-                    if (!isGenerating)
-                    {
-                        isGenerating = true;
-
-                        Invoke("ChangeToInactiveState", 5f);
-                    }
-
-                    break;
-                }
-            case ForceFieldState.Destroyed:
-                {
-                    fieldSprite.enabled = false;
-                    generatorCollider.enabled = false;
-                    fieldHealthBarUI.SetActive(false);
-                    animatorMower.SetBool("IsActive", false);
-
-                    break;
-                }
+            Invoke("Active", 2f);
         }
     }
+
+    private void Active()
+    {
+        if (currentState != ForceFieldState.Destroyed)
+        {
+            currentState = ForceFieldState.Active;
+            animatorMower.SetBool("IsActive", true);
+
+            fieldSprite.color = Color.red;
+            speed = stat.runningSpeed;
+
+            Invoke("Inactive", 5f);
+        }
+    }
+
+    private void Inactive()
+    {
+        if (currentState != ForceFieldState.Destroyed)
+        {
+            currentState = ForceFieldState.Inactive;
+            animatorMower.SetBool("IsActive", false);
+
+            fieldSprite.color = Color.white;
+        }
+    }
+
+    private void Destroyed()
+    {
+        currentState = ForceFieldState.Destroyed;       
+        animatorMower.SetBool("IsDestroyed", true);
+
+        speed = stat.runningSpeed;
+        fieldSprite.enabled = false;
+        generatorCollider.enabled = false;
+        fieldHealthBarUI.SetActive(false);
+    }
+    #endregion
 
     // Special TakerDamage mechanic for Mower
     public override void TakeDamage(float playerDamage)
@@ -143,8 +144,8 @@ public class MowerBehaviour : EnemyBehaviour
         {           
             TakeDamage();
 
-            speed = stat.runningSpeed / 2;
-
+            if (currentState == ForceFieldState.Inactive) { speed = stat.runningSpeed / 2; }
+            
             if (currentHP <= 0)
             {
                 capsuleCollider.enabled = false;
@@ -156,7 +157,7 @@ public class MowerBehaviour : EnemyBehaviour
             {
                 isGenerating = true;
 
-                Invoke("ChangeToGeneratingState", 1.5f);
+                Invoke("Generating", 1.5f);
             }
         }
 
@@ -188,8 +189,7 @@ public class MowerBehaviour : EnemyBehaviour
 
         if (fieldHP <= 0)
         {
-            currentState = ForceFieldState.Destroyed;
-            speed = stat.runningSpeed;
+            Destroyed();
         }
     }
 
@@ -213,41 +213,6 @@ public class MowerBehaviour : EnemyBehaviour
         }
     }
 
-    // If player stays on Mower's top
-    private void OnCollisionStay(Collision col)
-    {
-        if (col.gameObject.CompareTag("Player"))
-        {
-            if (player.transform.Find("UnderPlayerPosition").position.y >= rideHeight.position.y)
-            {
-                // Then ride it
-                ridePos = player.transform.position.x - transform.position.x;
-                isRiding = true;
-            }
-        }
-    }
-
-    // When player get out of Mower's back
-    private void OnCollisionExit(Collision col)
-    {
-        if (col.gameObject.CompareTag("Player"))
-        {
-            // Stop riding
-            isRiding = false;
-        }
-    }
-
-    // Fix a bug when player auto ride after being attacked
-    protected override void OnTriggerExit(Collider collision)
-    {
-        base.OnTriggerExit(collision);
-
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            isRiding = false;
-        }
-    }
-
     private void MowerAttack()
     {
         playerMovement.PlayerRigid2d.velocity = Vector3.zero;
@@ -259,40 +224,6 @@ public class MowerBehaviour : EnemyBehaviour
             StopCoroutine(dmgCoroutine);           
         }
         StartCoroutine("Attacking");
-    }
-
-    protected override void KnockDownProcess()
-    {
-        base.KnockDownProcess();     // Still normal stun player
-
-        if (!isAttacker) { return; }
-
-        playerHealth.SetNeededSpace(stat.spaceToGetUp);
-
-        if (playerMovement.getUpCount >= stat.spaceToGetUp)
-        {
-            // Stop dealing damage and get back to original states
-            StopCoroutine("Attacking");
-            StopCoroutine(dmgCoroutine);
-
-            // Push player up 
-            playerMovement.PlayerRigid2d.velocity = Vector3.up * 50;
-
-            playerMovement.PlayerBounceUp();
-
-            isAttacker = false;
-
-            Invoke("ReturnPhysics", 0.5f);
-        }
-    }
-
-    void ReturnPhysics()
-    {
-        boxCollier.isTrigger = false;
-        capsuleCollider.isTrigger = false;
-        rb.useGravity = true;
-        speed = stat.runningSpeed;
-        isAttacking = false;
     }
 
     private IEnumerator Attacking()
@@ -318,42 +249,40 @@ public class MowerBehaviour : EnemyBehaviour
         {
             playerHealth.PlayerTakeDamage(damageAmount);
             yield return new WaitForSeconds(1.2f);
-            currentCount++;           
+            currentCount++;
         }
     }
 
-    private void ChangeToGeneratingState()
+    protected override void KnockDownProcess()
     {
-        if (currentState != ForceFieldState.Destroyed)
-        {
-            currentState = ForceFieldState.Generating;
-            animatorMower.SetTrigger("Generating");
+        base.KnockDownProcess();     // Still normal stun player
 
-            isGenerating = false;
+        if (!isAttacker) { return; }
+
+        if (playerMovement.getUpCount >= stat.spaceToGetUp)
+        {
+            // Stop dealing damage and get back to original states
+            StopCoroutine("Attacking");
+            StopCoroutine(dmgCoroutine);
+
+            // Push player up 
+            playerMovement.PlayerRigid2d.velocity = Vector3.up * 50;
+
+            playerMovement.PlayerBounceUp();
+
+            isAttacker = false;
+
+            Invoke("ReturnPhysics", 0.5f);
         }
     }
 
-    private void ChangeToActiveState()
+    void ReturnPhysics()
     {
-        if (currentState != ForceFieldState.Destroyed)
-        {
-            currentState = ForceFieldState.Active;
-            speed = stat.runningSpeed;
-            animatorMower.SetBool("IsActive", true);
-
-            isGenerating = false;
-        }
-    }
-
-    private void ChangeToInactiveState()
-    {
-        if (currentState != ForceFieldState.Destroyed)
-        {
-            currentState = ForceFieldState.Inactive;
-            animatorMower.SetBool("IsActive", false);
-
-            isGenerating = false;
-        }
+        boxCollier.isTrigger = false;
+        capsuleCollider.isTrigger = false;
+        rb.useGravity = true;
+        speed = stat.runningSpeed;
+        isAttacking = false;
     }
 
     protected override void Movement()
