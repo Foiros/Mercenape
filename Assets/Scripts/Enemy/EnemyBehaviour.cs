@@ -15,7 +15,6 @@ public class EnemyBehaviour : MonoBehaviour
     [SerializeField] protected float currentHP;
 
     protected bool isAttacker = false;      // Make sure not all enemy activate function
-    protected bool isDamageable = true;     // Receive damage only once per hit
     
     protected float weaponBleedDamage, weaponBleedDuration;
     protected int bleedTicks, currentBleedTicks;
@@ -120,12 +119,7 @@ public class EnemyBehaviour : MonoBehaviour
     
     // Take damage from player
     public virtual void TakeDamage(float playerDamage)
-    {
-        if (!isDamageable) { return; }
-
-        isDamageable = false;
-        Invoke("ReturnToDamageable", playerMovement.playerAttack.DelayTime());
-
+    {      
         currentHP -= playerDamage;
         barHealth.UpdateHealthBar(currentHP, stat.maxHP);
 
@@ -160,11 +154,6 @@ public class EnemyBehaviour : MonoBehaviour
         TakeDamage(playerDmg);
     }
 
-    protected void ReturnToDamageable()
-    {
-        isDamageable = true;
-    }
-
     // Process when player get knocked down, mainly in Shred and Mower script
     protected virtual void KnockDownProcess()
     {
@@ -173,19 +162,18 @@ public class EnemyBehaviour : MonoBehaviour
         playerHealth.SetNeededSpace(stat.spaceToGetUp);
     }
 
-    // Knock down player with animation
     protected void KnockPlayerDown()
     {
         // Don't knock player down again when bouncing back
         if (playerMovement.IsBouncingBack()) { return; }
 
-        if (!playerMovement.animator.GetCurrentAnimatorStateInfo(0).IsTag("KnockedDown"))
-        {
-            playerMovement.animator.SetTrigger("KnockDown");
-            playerMovement.isKnockDown = true;
+        // If player is already knocked down, don't do anything
+        if (playerMovement.isKnockDown) { return; }
 
-            isAttacker = true;
-        }
+        playerMovement.animator.SetTrigger("KnockDown");
+        playerMovement.isKnockDown = true;
+
+        isAttacker = true;
 
         playerMovement.getUpCount = 0;
         playerHealth.SetCurrentSpace(playerMovement.getUpCount);

@@ -92,23 +92,17 @@ public class PlayerAttackTrigger : MonoBehaviour
         else
         {
             CheckAttackStatus();
-        }
-
-        // When attacking
-        if (IsPlayerAttack)
-        {
-            HitEnemy();
-        }       
+        }      
     }
 
     // When actually hit enemy with the weapon
-    void HitEnemy()
+    public void HitEnemy()
     {
-        //Collider[] enemiesToDamage = Physics.OverlapBox(Attackpos.position, Attackpos.localScale, Quaternion.identity, EnemyLayerMask);
-        Collider[] enemiesToDamage = new Collider[10];
-        int numHit = Physics.OverlapSphereNonAlloc(edgePos.position, 0.5f, enemiesToDamage, EnemyLayerMask);
+        Collider[] enemiesToDamage = Physics.OverlapBox(Attackpos.position, Attackpos.localScale, Quaternion.identity, EnemyLayerMask);
+        //Collider[] enemiesToDamage = new Collider[10];
+        //int numHit = Physics.OverlapSphereNonAlloc(edgePos.position, 0.5f, enemiesToDamage, EnemyLayerMask);
         
-        for (int i = 0; i < numHit; i++)
+        for (int i = 0; i < enemiesToDamage.Length; i++)
         {          
             // Created  and edited by Bao: Detect enemy and attack
             if (enemiesToDamage[i].GetType() == typeof(CapsuleCollider)) // Mower's back
@@ -157,8 +151,8 @@ public class PlayerAttackTrigger : MonoBehaviour
     void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        //Gizmos.DrawWireCube(Attackpos.position, Attackpos.localScale);
-        Gizmos.DrawSphere(edgePos.position, 0.5f);
+        Gizmos.DrawWireCube(Attackpos.position, Attackpos.localScale);
+        //Gizmos.DrawSphere(edgePos.position, 0.5f);
     }
 
     public void SetWeaponList(List<AbstractWeapon> list) { weapons = list; }

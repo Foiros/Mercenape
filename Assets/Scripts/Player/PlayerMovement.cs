@@ -416,8 +416,7 @@ public class PlayerMovement : MonoBehaviour
         if (isKnockDown)
         {
             isGrabWall = false;
-
-            animator.SetLayerWeight(1, 0.1f);
+           
             animator.SetBool(knockedDown_animBool, true);
             playerAttack.enabled = false;
 
@@ -431,8 +430,6 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            animator.SetLayerWeight(1, 1f);
-
             playerHealth.spaceTextGrid.gameObject.SetActive(false);
         }
     }

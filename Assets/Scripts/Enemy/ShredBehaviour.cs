@@ -30,18 +30,20 @@ public class ShredBehaviour : EnemyBehaviour
         ShredCheck();
     }
 
+    #region Shred Attack
     private void ShredCheck()
     {
         // Don't check if dead or is staggering
         if (currentHP <= 0 || isStaggering) { return; }
         
         // If player is not in front of Shred's peak, don't attack
-        if(!Physics.Raycast(frontDetection.position, transform.right, 2.5f, LayerMask.GetMask("Player"))) { return; }
+        if(!Physics.Raycast(frontDetection.position, transform.right, 3f, LayerMask.GetMask("Player"))) { return; }
 
         // If player face against Shred and is blocking
         if (IsFacingRight() != playerMovement.FaceRight && playerMovement.isPlayerBlock)
         {
             playerMovement.animator.SetTrigger("TakingHitBlocking");
+
             // Block and immobilize Shred
             StopCoroutine("StaggerShred");
             StartCoroutine("StaggerShred");
@@ -53,7 +55,6 @@ public class ShredBehaviour : EnemyBehaviour
         }
     }
 
-    // When Shred attacks and applies damage
     private void ShredAttack()
     {       
         // Only attack once
@@ -83,7 +84,7 @@ public class ShredBehaviour : EnemyBehaviour
         boxCollier.isTrigger = true;
         isAttacking = true;
         
-        yield return new WaitForSeconds(0.7f);
+        yield return new WaitForSeconds(0.8f);
 
         // Return to original states
         boxCollier.isTrigger = false;
@@ -103,7 +104,8 @@ public class ShredBehaviour : EnemyBehaviour
             currentCount++;
         }       
     }
-   
+    #endregion
+
     IEnumerator StaggerShred()
     {
         isStaggering = true;
@@ -116,7 +118,7 @@ public class ShredBehaviour : EnemyBehaviour
         rb.isKinematic = true;
         speed = 0;
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.5f);
 
         isStaggering = false;
         animatorShred.SetBool("Staggering", isStaggering);
