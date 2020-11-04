@@ -18,12 +18,12 @@ public class MowerBehaviour : EnemyBehaviour
 
     private Coroutine dmgCoroutine;
 
-    private bool isAttacking = false;
+    private bool isAttacking;
     private bool isRiding = false;
-    private bool isGenerating = false;
+    private bool isGenerating;
 
-    private bool isBackSideHit = false;
-    private bool isGeneratorHit = false;
+    private bool isBackSideHit;
+    private bool isGeneratorHit;
 
     [SerializeField] private Transform backside;
     private float ridePos;
@@ -34,24 +34,41 @@ public class MowerBehaviour : EnemyBehaviour
 
     private Animator animatorMower;
 
-    protected override void Start()
+    protected override void Awake()
     {
-        base.Start();   // Start both EnemyBehaviour and MowerBehaviour   
-
-        currentState = ForceFieldState.Inactive;
+        base.Awake();
 
         fieldHealthBarUI = backside.GetChild(0).gameObject;
         fieldBarHealth = fieldHealthBarUI.GetComponent<EnemyHealthBar>();
 
-        fieldHP = fieldStat.maxHP;
-        fieldBarHealth.UpdateHealthBar(fieldHP, fieldStat.maxHP);
-
         fieldSprite = backside.GetComponent<SpriteRenderer>();
 
         capsuleCollider = backside.GetComponent<CapsuleCollider>();
-        generatorCollider = backside.GetComponent<SphereCollider>();       
+        generatorCollider = backside.GetComponent<SphereCollider>();
 
         animatorMower = GetComponent<Animator>();
+    }
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+
+        currentState = ForceFieldState.Inactive;
+        Inactive();
+
+        isAttacking = false;
+        isGenerating = false;
+
+        fieldHP = fieldStat.maxHP;
+        fieldBarHealth.UpdateHealthBar(fieldHP, fieldStat.maxHP);
+
+        capsuleCollider.enabled = true;
+
+        animatorMower.SetBool("IsDestroyed", false); ;
+
+        fieldSprite.enabled = true;
+        generatorCollider.enabled = true;
+        fieldHealthBarUI.SetActive(true);
     }
 
     private void Update()
@@ -113,6 +130,17 @@ public class MowerBehaviour : EnemyBehaviour
     }
     #endregion
 
+
+    #region Damaging Mower and override bleed
+    // Check whether backside or generator get hit, then act accordingly
+    protected override void EnemyGetHit(bool isMowerBackSide, bool isMowerGenerator, Collider selfCol, float playerDmg)
+    {
+        this.isBackSideHit = isMowerBackSide;
+        this.isGeneratorHit = isMowerGenerator;
+
+        base.EnemyGetHit(isMowerBackSide, isMowerGenerator, selfCol, playerDmg);
+    }
+
     // Special TakerDamage mechanic for Mower
     public override void TakeDamage(float playerDamage)
     {
@@ -124,16 +152,7 @@ public class MowerBehaviour : EnemyBehaviour
         if (isGeneratorHit) { DamagingForceField(playerDamage); }
 
         // And take no damage if none of them are true
-    }
-
-    // Check whether backside or generator get hit, then act accordingly
-    protected override void EnemyGetHit(bool isMowerBackSide, bool isMowerGenerator, Collider selfCol, float playerDmg)
-    {
-        this.isBackSideHit = isMowerBackSide;
-        this.isGeneratorHit = isMowerGenerator;
-
-        base.EnemyGetHit(isMowerBackSide, isMowerGenerator, selfCol, playerDmg);
-    }
+    }   
     
     // Backside main mechanic
     public void DamagingBackside(Action TakeDamage)
@@ -186,6 +205,22 @@ public class MowerBehaviour : EnemyBehaviour
         }
     }
 
+    public override void ApplyBleeding(float damage, float duration, int ticks, Collider selfCol)
+    {
+        // Don't bleed the generator
+        if (isGeneratorHit) { return; }
+
+        // Don't bleed Mower's front side
+        if (!isBackSideHit) { return; }
+
+        // Only bleed when Inactive or Destroyed
+        if (currentState == ForceFieldState.Inactive || currentState == ForceFieldState.Destroyed)
+        {
+            base.ApplyBleeding(damage, duration, ticks, selfCol);
+        }
+    }
+    #endregion
+
     // When player collides with Mower
     protected void OnCollisionEnter(Collision col)
     {
@@ -197,17 +232,18 @@ public class MowerBehaviour : EnemyBehaviour
                 // Then attack player
                 if (!isAttacking && currentState != ForceFieldState.Generating)
                 {
-                    playerMovement.isPlayerBlock = false;
-
-                    isAttacking = true;
+                    playerMovement.isPlayerBlock = false;   // Cancel block if player is
+                  
                     MowerAttack();
                 }
             }
         }
     }
 
+    #region Mower attack
     private void MowerAttack()
     {
+        isAttacking = true;
         playerMovement.PlayerRigid2d.velocity = Vector3.zero;
 
         KnockPlayerDown();
@@ -245,12 +281,11 @@ public class MowerBehaviour : EnemyBehaviour
             currentCount++;
         }
     }
+    #endregion
 
     protected override void KnockDownProcess()
     {
         base.KnockDownProcess();     // Still normal stun player
-
-        if (!isAttacker) { return; }
 
         if (playerMovement.getUpCount >= stat.spaceToGetUp)
         {
@@ -295,21 +330,6 @@ public class MowerBehaviour : EnemyBehaviour
                 playerMovement.PlayerRigid2d.velocity = Vector3.up * 30;
             }
         }
-    }
-
-    public override void ApplyBleeding(float damage, float duration, int ticks, Collider selfCol)
-    {
-        // Don't bleed the generator
-        if (isGeneratorHit) { return; }
-
-        // Don't bleed Mower's front side
-        if (!isBackSideHit) { return; }
-
-        // Only bleed when Inactive or Destroyed
-        if (currentState == ForceFieldState.Inactive || currentState == ForceFieldState.Destroyed)
-        {
-            base.ApplyBleeding(damage, duration, ticks, selfCol);
-        }  
     }
 
     protected override Vector3 PopUpPos(Transform trans)
