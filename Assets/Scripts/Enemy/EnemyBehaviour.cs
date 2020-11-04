@@ -14,7 +14,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     protected float speed;
     [SerializeField] protected float currentHP;
-    protected int enemyID;
+    protected static int enemyID;
 
     protected float weaponBleedDamage, weaponBleedDuration;
     protected int bleedTicks, currentBleedTicks;
@@ -195,10 +195,8 @@ public class EnemyBehaviour : MonoBehaviour
         if (!playerMovement.isKnockDown) { return; }       
     }
 
-    protected virtual void PlayerUp()
-    {
-    }
-
+    protected virtual void PlayerUp() { }
+    
     protected IEnumerator CheckEnemyDeath()
     {
         speed = 0;

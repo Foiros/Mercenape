@@ -290,13 +290,13 @@ public class MowerBehaviour : EnemyBehaviour
 
     protected override void PlayerUp()
     {
-        // If not Mower 
+        // Stop dealing damage
+        StopCoroutine("Attacking");
+        if (dmgCoroutine != null) { StopCoroutine(dmgCoroutine); }
+        
+        // If not Mower, return 
         if (enemyID != GetInstanceID()) { return; }
         
-        // Stop dealing damage and get back to original states
-        StopCoroutine("Attacking");
-        StopCoroutine(dmgCoroutine);
-
         // Push player up 
         playerMovement.PlayerRigid2d.velocity = Vector3.up * 20;
 
