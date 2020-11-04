@@ -61,7 +61,6 @@ public class PlayerHealth : MonoBehaviour
         newHP = Mathf.Clamp(PlayerHP + gain, 0, PlayerMaxHP);
         PlayerHP = newHP;
         SetCurrentHP(PlayerHP);
-        newHP = 0;
     }
 
     void SetCurrentHP(float HP)

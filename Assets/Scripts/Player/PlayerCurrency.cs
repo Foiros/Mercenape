@@ -11,11 +11,15 @@ public class PlayerCurrency : MonoBehaviour
     private GameMaster gameMaster;
 
     public int karma, gold, speedUpgrades;
+    private int gainedGoldAmount, gainedKarmaAmount, gainedSpeedAmount;
+    private int goldCount, karmaCount, speedCount;
     
     public Text moneyText, upgradeText, karmaText;
-    
-    public Slider karmaBar;
+
+    public Slider karmaBar, moneyBar, upgradeBar;
     public Image karmaFill;
+
+    private bool gainedGold, gainedKarma, gainedUpgrade;
 
     void Awake()
     {
@@ -30,10 +34,24 @@ public class PlayerCurrency : MonoBehaviour
         SetKarmaBar();
     }
 
+    void LateUpdate()
+    {
+        moneyText.text = moneyBar.value.ToString();
+        karmaText.text = karmaBar.value.ToString();
+        upgradeText.text = upgradeBar.value.ToString();
+
+        if (gainedGold) { FillTheCoffers(); }
+        if (gainedKarma) { FillKarma(); }
+        if (gainedUpgrade) { FillUpgrades();  }
+    }
+
     void SetTexts()
     {
-        moneyText.text = gold.ToString();
-        upgradeText.text = speedUpgrades.ToString();
+        moneyBar.value = gold;
+        moneyText.text = moneyBar.value.ToString();
+
+        upgradeBar.value = speedUpgrades;
+        upgradeText.text = upgradeBar.value.ToString();
     }
 
     public void SetKarmaBar()
@@ -54,37 +72,77 @@ public class PlayerCurrency : MonoBehaviour
 
     public void AddGold(int amount)
     {
-        gold += amount;
-
-        moneyText.text = gold.ToString();
+        gainedGold = true;
+        gainedGoldAmount = amount;
     }
 
     public void AddKarma(int amount)
     {
-        karma += amount;
-
-        karmaText.text = karma.ToString();
+        gainedKarma = true;
+        gainedKarmaAmount = amount;
     }
 
     public void AddUpgrades(int amount)
     {
-        speedUpgrades += amount;
-
-        upgradeText.text = speedUpgrades.ToString();
+        gainedUpgrade = true;
+        gainedSpeedAmount = amount;
     }
 
     public void LoseGold(int amount)
     {
         gold -= amount;
-
         moneyText.text = gold.ToString();
     }
 
     public void LoseKarma(int amount)
     {
         karma -= amount;
-
         karmaText.text = karma.ToString();
+    }
+
+    void FillTheCoffers()
+    {
+        if(goldCount != gainedGoldAmount)
+        {
+            gold++;
+            goldCount++;
+            moneyBar.value++;
+        }
+        else
+        {
+            gainedGold = false;
+            goldCount = 0;
+        }
+    }
+
+    void FillKarma()
+    {
+        if (karmaCount != gainedKarmaAmount)
+        {
+            karma++;
+            karmaCount++;
+            karmaBar.value++;
+        }
+        else
+        {
+            gainedKarma = false;
+            karmaCount = 0;
+        }
+    }
+
+    void FillUpgrades()
+    {
+        if (speedCount != gainedSpeedAmount)
+        {
+            speedUpgrades++;
+            speedCount++;
+            upgradeBar.value++;
+        }
+        else
+        {
+            gainedUpgrade = false;
+            speedCount = 0;
+        }
     }
 
     void LoadSaveFile()

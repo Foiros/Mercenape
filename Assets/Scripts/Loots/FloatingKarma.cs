@@ -1,33 +1,35 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class FloatingKarma : MonoBehaviour
 {
-    public int karmaAmount;
     PlayerCurrency playerCurrency;
+    TextMeshPro textMesh;
 
-    public GameObject destination;
-    public float speed;
+    public int karmaAmount;
+
+    public float speed, destroyTime;
+
+    private int sortingOrder;
 
     void Start()
     {
         playerCurrency = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerCurrency>();
-        destination = GameObject.FindGameObjectWithTag("ResourceDestination");
+        
+        textMesh = textMesh = transform.GetChild(0).GetComponent<TextMeshPro>();
+        sortingOrder = 15;
+        textMesh.sortingOrder = sortingOrder;
+        textMesh.SetText(karmaAmount.ToString());
+
+        AddKarma();
+        Destroy(gameObject, destroyTime);
     }
 
     void Update()
     {
-        if (destination != null) //crash if cant find player 
-        {
-            transform.position = Vector3.MoveTowards(transform.position, destination.transform.position, speed * Time.deltaTime);
-        }
-
-        if (transform.position == destination.transform.position)
-        {
-            AddKarma();
-            Destroy(gameObject);
-        }
+        transform.Translate(Vector3.up * speed * Time.deltaTime); 
     }
 
     void AddKarma()

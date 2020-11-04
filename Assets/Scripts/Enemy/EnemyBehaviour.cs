@@ -206,7 +206,7 @@ public class EnemyBehaviour : MonoBehaviour
 
         gameObject.SetActive(false);
 
-        //enemyLoot.GiveLoot();
+        enemyLoot.GiveLoot();
     }
 
     protected void FreezePosY()

@@ -1,39 +1,42 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class FloatingMoney: MonoBehaviour
 {
     PlayerCurrency playerCurrency;
-       
-    private int moneyAmount;
+    TextMeshPro textMesh;
+
+    private int moneyAmount, sortingOrder;
 
     public GameObject destination;
-    public float speed;
+    public float speed, destroyTime;
+
 
     void Start()
     {
         playerCurrency = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerCurrency>();
         destination = GameObject.FindGameObjectWithTag("ResourceDestination");
+
+        moneyAmount = Random.Range(10, 100);
+
+        textMesh = textMesh = transform.GetChild(0).GetComponent<TextMeshPro>();
+        sortingOrder = 15;
+        textMesh.sortingOrder = sortingOrder;
+        textMesh.SetText(moneyAmount.ToString());
+
+        AddMoney();
+        Destroy(gameObject, destroyTime);
     }
 
     void Update()
     {
-        if (destination != null) //crash if cant find player 
-        {
-            transform.position = Vector3.MoveTowards(transform.position, destination.transform.position, speed * Time.deltaTime);
-        }
-
-        if (transform.position == destination.transform.position)
-        {
-            AddMoney();
-            Destroy(gameObject);
-        }
+         transform.Translate(Vector3.up * speed * Time.deltaTime);
     }
 
     void AddMoney()
     {
-        moneyAmount = Random.Range(10, 100);
         playerCurrency.AddGold(moneyAmount);
     }
 }
