@@ -10,8 +10,7 @@ public class PlayerHealth : MonoBehaviour
 {
     private PlayerCurrency playerCurrency;
 
-    public int PlayerHP;
-    public int PlayerMaxHP;
+    public int PlayerHP, PlayerMaxHP, newHP;
 
     private GameObject playerUI;
     private Slider hpBar;
@@ -59,8 +58,10 @@ public class PlayerHealth : MonoBehaviour
 
     public void GainHealth(int gain)
     {
-        PlayerHP += gain;
+        newHP = Mathf.Clamp(PlayerHP + gain, 0, PlayerMaxHP);
+        PlayerHP = newHP;
         SetCurrentHP(PlayerHP);
+        newHP = 0;
     }
 
     void SetCurrentHP(float HP)

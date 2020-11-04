@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 6103337395221654859}
   - component: {fileID: 2012347000940210226}
   - component: {fileID: -7707862311397493577}
-  - component: {fileID: 4457176148220949415}
   m_Layer: 0
   m_Name: HPDrop
   m_TagString: Loot/HPDrop
@@ -30,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 1894584535332837582}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 1}
+  m_LocalScale: {x: 10, y: 10, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -73,7 +72,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 13
+  m_SortingOrder: 12
   m_Sprite: {fileID: 21300000, guid: c735a2a025972a5468bb506b142fd059, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -99,7 +98,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 126
   m_CollisionDetection: 0
 --- !u!135 &2012347000940210226
 SphereCollider:
@@ -112,8 +111,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.2820086
-  m_Center: {x: -0.002676654, y: 0, z: 0}
+  m_Radius: 0.07265876
+  m_Center: {x: -0.0038884224, y: 0.0015586376, z: 0.08512616}
 --- !u!114 &-7707862311397493577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,16 +126,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healingAmount: 20
---- !u!135 &4457176148220949415
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1894584535332837582}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.1
-  m_Center: {x: 0, y: 0, z: 0}
