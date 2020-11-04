@@ -12,14 +12,24 @@ public class ShredBehaviour : EnemyBehaviour
 
     private Animator animatorShred;
 
-    private bool isStaggering = false;
-    private bool isAttacking = false;
+    private bool isStaggering;
+    private bool isAttacking;
 
-    protected override void Start()
+    protected override void Awake()
     {
-        base.Start();   // Start both EnemyBehaviour and ShredBehaviour  
+        base.Awake();
 
         animatorShred = GetComponent<Animator>();
+    }
+
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+
+        rb.isKinematic = false;
+
+        isStaggering = false;
+        isAttacking = false;
     }
 
     private void Update()
@@ -84,7 +94,7 @@ public class ShredBehaviour : EnemyBehaviour
         boxCollier.isTrigger = true;
         isAttacking = true;
         
-        yield return new WaitForSeconds(0.8f);
+        yield return new WaitForSeconds(1f);
 
         // Return to original states
         boxCollier.isTrigger = false;
@@ -131,9 +141,7 @@ public class ShredBehaviour : EnemyBehaviour
 
     protected override void KnockDownProcess()
     {
-        base.KnockDownProcess();     // Still normally stun player
-        
-        if (!isAttacker) { return; }
+        base.KnockDownProcess();     // Still normally stun player      
         
         if (playerMovement.getUpCount >= stat.spaceToGetUp)
         {

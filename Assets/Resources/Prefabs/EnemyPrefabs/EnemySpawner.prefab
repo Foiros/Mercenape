@@ -50,7 +50,7 @@ MonoBehaviour:
     enemyIncreasedDamage: 0
   timeBetweenGroups: 3
   enemies:
-  - {fileID: 3968059661251793688, guid: c6ff37c5d3c199947a5de6f890b28617, type: 3}
-  - {fileID: 3296232098054200580, guid: 0bf43a7844054ab4b98a0d2d02adb2ba, type: 3}
+  - Shred
+  - Mower
   state: 2
   completeWaveScreen: {fileID: 0}

@@ -28,8 +28,8 @@ public class EnemySpawnerScript : MonoBehaviour
     private float groupCountdown;        // Count down to next group
     private float searchCountdown = 1f;  // Count down for searching any alive enemy
 
-    public Transform[] enemies = new Transform[2];
-    private List<Transform> spawnList = new List<Transform>();
+    public string[] enemies = new string[2];
+    private List<string> spawnList = new List<string>();
 
     public SpawnState state = SpawnState.Counting;
 
@@ -153,9 +153,9 @@ public class EnemySpawnerScript : MonoBehaviour
     }
 
     // Use this in SpawnWave
-    void SpawnEnemy(Transform _enemy)
+    void SpawnEnemy(string enemy)
     {
-        Instantiate(_enemy, transform.position, Quaternion.Euler(0, -180, 0));
+        ObjectPooler.Instance.SpawnFromPool(enemy, transform.position, Quaternion.Euler(0, -180, 0));
     }
 
     // Next group more difficult, spawn pattern

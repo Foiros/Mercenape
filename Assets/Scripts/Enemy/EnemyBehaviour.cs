@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -32,27 +33,18 @@ public class EnemyBehaviour : MonoBehaviour
 
     private EnemyLootDrop enemyLoot;
 
-    private void Awake()
+    protected virtual void Awake()
     {       
         enemyRotation = transform.rotation.eulerAngles;
 
         healthBarUI = transform.GetChild(1).gameObject;
         barHealth = healthBarUI.GetComponent<EnemyHealthBar>();
-        
-        rb = GetComponent<Rigidbody>();
+            
         boxCollier = GetComponent<BoxCollider>();
-    }
+        rb = GetComponent<Rigidbody>();
+        rb.centerOfMass = Vector3.zero;
 
-    protected virtual void Start()
-    {
-        Invoke("FreezePosY", 0.8f);
-        
-        //var waveStat = GameObject.Find("EnemySpawner");
-        //maxHP += waveStat.GetComponent<EnemySpawnerScript>().wave.enemyIncreasedHP;
-        //damage += waveStat.GetComponent<EnemySpawnerScript>().wave.enemyIncreasedDamage;
-        speed = stat.runningSpeed;
-        currentHP = stat.maxHP;
-        barHealth.UpdateHealthBar(currentHP, stat.maxHP);
+        enemyLoot = GetComponent<EnemyLootDrop>();
 
         player = GameObject.FindGameObjectWithTag("Player");
         playerHealth = player.GetComponent<PlayerHealth>();
@@ -61,16 +53,18 @@ public class EnemyBehaviour : MonoBehaviour
         // Subscribe to the OnHitEnemy event in PlayerAttack
         playerMovement.playerAttack.OnHitEnemy += EnemyGetHit;
         playerMovement.playerAttack.OnBleedEnemy += ApplyBleeding;
-
-        enemyLoot = GetComponent<EnemyLootDrop>();
     }
 
-    // When enemy die, unsubscibe events
-    protected void OnDisable()
+    protected virtual void OnEnable()
     {
-        // Not to cause error
-        playerMovement.playerAttack.OnHitEnemy -= EnemyGetHit;
-        playerMovement.playerAttack.OnBleedEnemy -= ApplyBleeding;
+        rb.constraints = RigidbodyConstraints.FreezeRotation;
+        Invoke("FreezePosY", 0.8f);
+        rb.useGravity = true;
+        boxCollier.enabled = true;
+
+        speed = stat.runningSpeed;
+        currentHP = stat.maxHP;
+        barHealth.UpdateHealthBar(currentHP, stat.maxHP);
     }
 
     // Movement
@@ -88,7 +82,7 @@ public class EnemyBehaviour : MonoBehaviour
     // Basic Movement
     protected virtual void Movement()
     {
-        if (currentHP <= 0) { return; }
+        if (currentHP <= 0) { return; } // Don't move if dead
 
         groundInfo = Physics.Raycast(frontDetection.position, Vector3.down, 15f, LayerMask.GetMask("Ground"));
         wallInfo = Physics.Raycast(frontDetection.position, transform.right, 3f, LayerMask.GetMask("Wall"));
@@ -111,12 +105,16 @@ public class EnemyBehaviour : MonoBehaviour
         }
     }
 
-    // Fix a bug that enemy stick to something when colliding
-    protected virtual void OnTriggerExit(Collider collision)
-    {     
+    #region Take damage and bleed
+    // Check to see which type of enemy get hit
+    protected virtual void EnemyGetHit(bool isMowerBackSide, bool isMowerGenerator, Collider selfCol, float playerDmg)
+    {
+        if (!IsSelf(selfCol)) { return; }
 
+        // Then deal damage to the correct enemy
+        TakeDamage(playerDmg);
     }
-    
+
     // Take damage from player
     public virtual void TakeDamage(float playerDamage)
     {      
@@ -145,19 +143,37 @@ public class EnemyBehaviour : MonoBehaviour
         }
     }
 
-    // Check to see which type of enemy get hit
-    protected virtual void EnemyGetHit(bool isMowerBackSide, bool isMowerGenerator, Collider selfCol, float playerDmg)
+    public virtual void ApplyBleeding(float damage, float duration, int ticks, Collider selfCol)
     {
         if (!IsSelf(selfCol)) { return; }
 
-        // Then deal damage to the correct enemy
-        TakeDamage(playerDmg);
+        weaponBleedDamage = damage;
+        weaponBleedDuration = duration;
+        bleedTicks = ticks;
+        currentBleedTicks = 1;
+
+        // Stop stacking bleed before begin new bleed
+        StopCoroutine(BleedTick());
+        StartCoroutine(BleedTick());
     }
+
+    IEnumerator BleedTick()
+    {
+        while (currentBleedTicks <= bleedTicks)
+        {
+            TakeBleedDammage(weaponBleedDamage);
+            yield return new WaitForSeconds(weaponBleedDuration);
+            currentBleedTicks++;
+        }
+    }
+    #endregion
 
     // Process when player get knocked down, mainly in Shred and Mower script
     protected virtual void KnockDownProcess()
     {
         if (!playerMovement.isKnockDown) { return; }
+
+        if (!isAttacker) { return; }
 
         playerHealth.SetNeededSpace(stat.spaceToGetUp);
     }
@@ -188,38 +204,14 @@ public class EnemyBehaviour : MonoBehaviour
 
         yield return new WaitForSeconds(1.5f);
 
-        Destroy(gameObject, 0);
+        gameObject.SetActive(false);
 
-        enemyLoot.GiveLoot();
+        //enemyLoot.GiveLoot();
     }
 
     protected void FreezePosY()
     {
         rb.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
-    }
-
-    public virtual void ApplyBleeding(float damage, float duration, int ticks, Collider selfCol) 
-    {
-        if (!IsSelf(selfCol)) { return; }
-
-        weaponBleedDamage = damage;
-        weaponBleedDuration = duration;
-        bleedTicks = ticks;
-        currentBleedTicks = 1;
-
-        // Stop stacking bleed before begin new bleed
-        StopCoroutine(BleedTick());
-        StartCoroutine(BleedTick());
-    }
-
-    IEnumerator BleedTick()
-    {
-        while (currentBleedTicks <= bleedTicks)
-        {
-            TakeBleedDammage(weaponBleedDamage);
-            yield return new WaitForSeconds(weaponBleedDuration);
-            currentBleedTicks++;
-        }
     }
 
     // Check to make sure only the enemy get hit is called, not every enemy
@@ -230,5 +222,5 @@ public class EnemyBehaviour : MonoBehaviour
     }
 
     protected virtual Vector3 PopUpPos(Transform trans) { return Vector3.zero; }
-   
+    
 }
