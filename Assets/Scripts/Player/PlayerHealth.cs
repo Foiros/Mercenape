@@ -26,7 +26,7 @@ public class PlayerHealth : MonoBehaviour
     private int lostKarma;
 
 
-    void Start()
+    void Awake()
     {
         playerCurrency = GameObject.FindGameObjectWithTag("GameManager").GetComponent<PlayerCurrency>();
 

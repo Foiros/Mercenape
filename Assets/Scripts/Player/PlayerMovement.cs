@@ -3,12 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
 
     public float PlayerSpeed; // for move left and right
-    public float PlayerJumpPow, PlayerDoubleJumpPow; // for jump
+    public float PlayerJumpPow; // for jump
     public float MidAirSpeed; // for move left and right while mid air
     [SerializeField] private LayerMask groundlayermask, walllayermask, ladderlayermask;
 
@@ -22,8 +23,6 @@ public class PlayerMovement : MonoBehaviour
     public bool isGrounded;
     
     public bool FaceRight = true;
-    public bool PlayerDoubleJump;
-
     public Transform PlayerFrontPos, PlayerBehindPos;
     public Transform PlayerUnderPos, PlayerAbovePos;
     public float CheckRadius;
@@ -45,6 +44,9 @@ public class PlayerMovement : MonoBehaviour
     public bool isGrabWall = false;
     public bool isJumping = false;
 
+    Text climbPrompt;
+
+
     //Start Hash ID 
     [HideInInspector]
     public int isJumping_animBool,
@@ -61,6 +63,7 @@ public class PlayerMovement : MonoBehaviour
         vSpeed_animafloat;
 
     //end Hash ID
+
     void Awake()
     {
         playerHealth = transform.GetComponent<PlayerHealth>();
@@ -70,6 +73,8 @@ public class PlayerMovement : MonoBehaviour
         boxCollider = transform.GetComponent<BoxCollider>();
         capsuleCollider = transform.GetComponent<CapsuleCollider>();
         PlayerRigid2d.centerOfMass = Vector3.zero;
+        climbPrompt = GameObject.FindGameObjectWithTag("PlayerUI").transform.Find("climbPrompt").GetComponent<Text>();
+
 
         //HashID animator parameters for performances
         isJumping_animBool = Animator.StringToHash("isJumping");
@@ -96,7 +101,7 @@ public class PlayerMovement : MonoBehaviour
      
         if (isGrounded)
         {
-            PlayerDoubleJump = true;
+          
             isJumping = false;
         }
         else
@@ -119,18 +124,28 @@ public class PlayerMovement : MonoBehaviour
                 PlayerJump();
             }  
         }
-
+        if (isCollideWall && !isGrabWall && !isKnockDown)
+        {
+            climbPrompt.gameObject.SetActive(true);
+            climbPrompt.text = "Press E to Grab the Vine";
+        }
+        else
+        {
+            climbPrompt.gameObject.SetActive(false);
+        }
         if (isGrabWall == true)
         {
             PlayerRigid2d.useGravity = false;
             PlayerRigid2d.rotation = Quaternion.Euler(5, 90, 0);
+            climbPrompt.gameObject.SetActive(true);
+            climbPrompt.text = "Press W or S to Climb Up and Climb Down";
             PlayerClimbWal();
         }
         else
         {
             PlayerRigid2d.useGravity = true;
             PlayerRigid2d.rotation = Quaternion.Euler(0, 90, 0);
-
+            climbPrompt.gameObject.SetActive(false);
         }
 
         if (isGrabWall && Input.GetKeyDown(KeyCode.Space))
@@ -141,7 +156,9 @@ public class PlayerMovement : MonoBehaviour
             PlayerRigid2d.velocity += (Vector3.up * PlayerJumpPow + Vector3.right);                      
         }
 
-      
+       
+       
+        
     }
 
     void FixedUpdate()
@@ -219,7 +236,7 @@ public class PlayerMovement : MonoBehaviour
     // check collide with wall  
     void CheckCollideWall()
     {
-        float distance= 1.5f;
+        float distance= 1.8f;
         if (FaceRight)
         {
            isCollideWall=Physics.Raycast(capsuleCollider.bounds.center, Vector3.right, distance, walllayermask);
@@ -235,7 +252,7 @@ public class PlayerMovement : MonoBehaviour
 
     bool CheckOnTop()
     {
-        float distance = 1.5f;
+        float distance = 1.8f;
         if (FaceRight)
         {
             Debug.DrawRay(PlayerAbovePos.position, Vector3.right * distance, Color.yellow);
@@ -322,8 +339,9 @@ public class PlayerMovement : MonoBehaviour
 
                 if (Input.GetKey(KeyCode.Space))
                 {
-                    PlayerRigid2d.velocity += new Vector3(0.0f, 1.0f, 0.0f) * PlayerDoubleJumpPow;
-                    PlayerDoubleJump = false;
+                    isGrabWall = false;
+                    PlayerRigid2d.velocity += new Vector3(0.0f, 1.0f, 0.0f) * PlayerJumpPow;
+                    isJumping = true;
                 }
             }
         }
@@ -381,18 +399,7 @@ public class PlayerMovement : MonoBehaviour
             isPlayerBlock = false;
 
         }
-        else if (!isGrounded && PlayerDoubleJump)
-        {
-            //animator.SetTrigger("JumpStart");
-            if (PlayerRigid2d.velocity.y <= 0.1)
-            {
-                PlayerRigid2d.velocity = Vector3.zero;
-            }
-            PlayerRigid2d.velocity += new Vector3(0.0f, 1.0f, 0.0f) * PlayerDoubleJumpPow;
-            PlayerDoubleJump = false;
-            isJumping = true;
-            isPlayerBlock = false;
-        }
+  
     }
     
 
