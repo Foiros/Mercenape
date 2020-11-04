@@ -14,9 +14,8 @@ public class EnemyBehaviour : MonoBehaviour
 
     protected float speed;
     [SerializeField] protected float currentHP;
+    protected int enemyID;
 
-    protected bool isAttacker = false;      // Make sure not all enemy activate function
-    
     protected float weaponBleedDamage, weaponBleedDuration;
     protected int bleedTicks, currentBleedTicks;
 
@@ -53,6 +52,7 @@ public class EnemyBehaviour : MonoBehaviour
         // Subscribe to the OnHitEnemy event in PlayerAttack
         playerMovement.playerAttack.OnHitEnemy += EnemyGetHit;
         playerMovement.playerAttack.OnBleedEnemy += ApplyBleeding;
+        playerMovement.OnBounceUp += PlayerUp;
     }
 
     protected virtual void OnEnable()
@@ -61,6 +61,7 @@ public class EnemyBehaviour : MonoBehaviour
         Invoke("FreezePosY", 0.8f);
         rb.useGravity = true;
         boxCollier.enabled = true;
+        boxCollier.isTrigger = false;
 
         speed = stat.runningSpeed;
         currentHP = stat.maxHP;
@@ -73,13 +74,11 @@ public class EnemyBehaviour : MonoBehaviour
         Movement();
     }
 
-    // Check if facing right direction
     protected bool IsFacingRight()
     {
         return (int)transform.rotation.eulerAngles.y == 0;
     }
 
-    // Basic Movement
     protected virtual void Movement()
     {
         if (currentHP <= 0) { return; } // Don't move if dead
@@ -168,20 +167,17 @@ public class EnemyBehaviour : MonoBehaviour
     }
     #endregion
 
-    // Process when player get knocked down, mainly in Shred and Mower script
-    protected virtual void KnockDownProcess()
-    {
-        if (!playerMovement.isKnockDown) { return; }
-
-        if (!isAttacker) { return; }
-
-        playerHealth.SetNeededSpace(stat.spaceToGetUp);
-    }
-
     protected void KnockPlayerDown()
     {
         // Don't knock player down again when bouncing back
         if (playerMovement.IsBouncingBack()) { return; }
+
+        if (stat.spaceToGetUp >= playerMovement.getUpNeed)
+        {
+            playerMovement.getUpNeed = stat.spaceToGetUp;
+            playerHealth.SetNeededSpace(stat.spaceToGetUp);
+            enemyID = GetInstanceID();
+        }
 
         // If player is already knocked down, don't do anything
         if (playerMovement.isKnockDown) { return; }
@@ -189,10 +185,18 @@ public class EnemyBehaviour : MonoBehaviour
         playerMovement.animator.SetTrigger("KnockDown");
         playerMovement.isKnockDown = true;
 
-        isAttacker = true;
-
         playerMovement.getUpCount = 0;
-        playerHealth.SetCurrentSpace(playerMovement.getUpCount);
+        playerHealth.SetCurrentSpace(playerMovement.getUpCount);        
+    }
+
+    // Process when player get knocked down, mainly in Shred and Mower script
+    protected virtual void KnockDownProcess()
+    {
+        if (!playerMovement.isKnockDown) { return; }       
+    }
+
+    protected virtual void PlayerUp()
+    {
     }
 
     protected IEnumerator CheckEnemyDeath()

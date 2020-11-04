@@ -205,14 +205,13 @@ public class EnemySpawnerScript : MonoBehaviour
         {
             return 1;
         }
-        else      // else 15%
+        else                   // else 15%
         {
             return 2;
         }
     }
 
     private float RandomSpawnRate() { return Random.Range(0.2f, 0.5f); }
-
 
 
     public void NextWaveButton()

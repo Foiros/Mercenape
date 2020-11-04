@@ -244,8 +244,8 @@ public class MowerBehaviour : EnemyBehaviour
     private void MowerAttack()
     {
         isAttacking = true;
-        playerMovement.PlayerRigid2d.velocity = Vector3.zero;
-
+        playerMovement.PlayerRigid2d.velocity = Vector3.zero;       
+        
         KnockPlayerDown();
 
         if (dmgCoroutine != null)
@@ -285,23 +285,24 @@ public class MowerBehaviour : EnemyBehaviour
 
     protected override void KnockDownProcess()
     {
-        base.KnockDownProcess();     // Still normal stun player
+        base.KnockDownProcess();     // Still normal stun player      
+    }
 
-        if (playerMovement.getUpCount >= stat.spaceToGetUp)
-        {
-            // Stop dealing damage and get back to original states
-            StopCoroutine("Attacking");
-            StopCoroutine(dmgCoroutine);
+    protected override void PlayerUp()
+    {
+        // If not Mower 
+        if (enemyID != GetInstanceID()) { return; }
+        
+        // Stop dealing damage and get back to original states
+        StopCoroutine("Attacking");
+        StopCoroutine(dmgCoroutine);
 
-            // Push player up 
-            playerMovement.PlayerRigid2d.velocity = Vector3.up * 50;
+        // Push player up 
+        playerMovement.PlayerRigid2d.velocity = Vector3.up * 20;
 
-            playerMovement.PlayerBounceUp();
+        Invoke("ReturnPhysics", 0.5f);
 
-            isAttacker = false;
-
-            Invoke("ReturnPhysics", 0.5f);
-        }
+        base.PlayerUp();
     }
 
     void ReturnPhysics()

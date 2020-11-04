@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // Created by Bao 2.11.20: Object pooling, based on Brackeys: https://www.youtube.com/watch?v=tdSmKaJvCoA&ab_channel=Brackeys
+// Go to this prefab and add an item to spawn
 public class ObjectPooler : MonoBehaviour
 {
     [System.Serializable]
@@ -46,6 +47,7 @@ public class ObjectPooler : MonoBehaviour
         }
     }
 
+    // Call ObjectPooler.Instance.SpawnFromPool to spawn
     public GameObject SpawnFromPool(string tag, Vector3 position, Quaternion rotation)
     {
         if(!poolDictionary.ContainsKey(tag))
@@ -60,7 +62,8 @@ public class ObjectPooler : MonoBehaviour
         objectToSpawn.transform.rotation = rotation;
 
         poolDictionary[tag].Enqueue(objectToSpawn);
-
+        
         return objectToSpawn;
     }
+
 }

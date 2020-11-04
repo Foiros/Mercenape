@@ -70,6 +70,7 @@ public class ShredBehaviour : EnemyBehaviour
         // Only attack once
         if (isAttacking) { return; }
 
+
         KnockPlayerDown();
 
         StartCoroutine("Attacking");
@@ -143,12 +144,7 @@ public class ShredBehaviour : EnemyBehaviour
     {
         base.KnockDownProcess();     // Still normally stun player      
         
-        if (playerMovement.getUpCount >= stat.spaceToGetUp)
-        {
-            playerMovement.PlayerBounceUp();
-
-            isAttacker = false;
-        }
+        
     }
 
     public override void TakeDamage(float playerDamage)

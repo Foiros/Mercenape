@@ -33,6 +33,7 @@ public class PlayerMovement : MonoBehaviour
 
     [HideInInspector] public bool isKnockDown = false;
     [HideInInspector] public int getUpCount = 0;
+    [HideInInspector] public int getUpNeed;
 
     BoxCollider boxCollider;
     CapsuleCollider capsuleCollider;
@@ -45,7 +46,6 @@ public class PlayerMovement : MonoBehaviour
     public bool isJumping = false;
 
     Text climbPrompt;
-
 
     //Start Hash ID 
     [HideInInspector]
@@ -61,8 +61,9 @@ public class PlayerMovement : MonoBehaviour
     public int inputH_animFloat,
         inputV_animFloat,
         vSpeed_animafloat;
-
     //end Hash ID
+
+    public event Action OnBounceUp;
 
     void Awake()
     {
@@ -124,6 +125,7 @@ public class PlayerMovement : MonoBehaviour
                 PlayerJump();
             }  
         }
+
         if (isCollideWall && !isGrabWall && !isKnockDown)
         {
             climbPrompt.gameObject.SetActive(true);
@@ -133,6 +135,7 @@ public class PlayerMovement : MonoBehaviour
         {
             climbPrompt.gameObject.SetActive(false);
         }
+
         if (isGrabWall == true)
         {
             PlayerRigid2d.useGravity = false;
@@ -236,7 +239,7 @@ public class PlayerMovement : MonoBehaviour
     // check collide with wall  
     void CheckCollideWall()
     {
-        float distance= 1.8f;
+        float distance= 2f;
         if (FaceRight)
         {
            isCollideWall=Physics.Raycast(capsuleCollider.bounds.center, Vector3.right, distance, walllayermask);
@@ -252,7 +255,7 @@ public class PlayerMovement : MonoBehaviour
 
     bool CheckOnTop()
     {
-        float distance = 1.8f;
+        float distance = 2f;
         if (FaceRight)
         {
             Debug.DrawRay(PlayerAbovePos.position, Vector3.right * distance, Color.yellow);
@@ -433,23 +436,30 @@ public class PlayerMovement : MonoBehaviour
             {
                 getUpCount++;
                 playerHealth.SetCurrentSpace(getUpCount);
+
+                if (getUpCount >= getUpNeed)
+                {
+                    PlayerBounceUp();
+                }
             }
-        }
-        else
-        {
-            playerHealth.spaceTextGrid.gameObject.SetActive(false);
         }
     }
 
     public void PlayerBounceUp()
-    {
-        getUpCount = 0;
-        playerHealth.SetCurrentSpace(getUpCount);
+    {       
         isKnockDown = false;
 
         animator.SetTrigger("BounceUp");        
 
         playerAttack.enabled = true;
+
+        getUpCount = 0;
+        getUpNeed = 0;
+        playerHealth.SetCurrentSpace(getUpCount);
+
+        playerHealth.spaceTextGrid.gameObject.SetActive(false);
+
+        OnBounceUp();
     }
 
     public bool IsBouncingBack()
