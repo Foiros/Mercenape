@@ -138,14 +138,14 @@ public class PlayerMovement : MonoBehaviour
             PlayerRigid2d.useGravity = false;
             PlayerRigid2d.rotation = Quaternion.Euler(5, 90, 0);
             climbPrompt.gameObject.SetActive(true);
-            climbPrompt.text = "Press W or S to Climb Up and Climb Down";
+            climbPrompt.text = "Press W or S to Move Up or Down";
             PlayerClimbWal();
         }
         else
         {
             PlayerRigid2d.useGravity = true;
             PlayerRigid2d.rotation = Quaternion.Euler(0, 90, 0);
-            climbPrompt.gameObject.SetActive(false);
+            
         }
 
         if (isGrabWall && Input.GetKeyDown(KeyCode.Space))
