@@ -84,7 +84,7 @@ public class EnemyBehaviour : MonoBehaviour
         if (currentHP <= 0) { return; } // Don't move if dead
 
         groundInfo = Physics.Raycast(frontDetection.position, Vector3.down, 15f, LayerMask.GetMask("Ground"));
-        wallInfo = Physics.Raycast(frontDetection.position, transform.right, 3f, LayerMask.GetMask("Wall"));
+        wallInfo = Physics.Raycast(frontDetection.position, transform.right, 3.5f, LayerMask.GetMask("Wall"));
        
         if (!groundInfo || wallInfo)
         {
@@ -170,7 +170,7 @@ public class EnemyBehaviour : MonoBehaviour
     protected void KnockPlayerDown()
     {
         // Don't knock player down again when bouncing back
-        if (playerMovement.IsBouncingBack()) { return; }
+        if (playerMovement.animator.GetCurrentAnimatorStateInfo(0).IsTag("BounceBack")) { return; }
 
         if (stat.spaceToGetUp >= playerMovement.getUpNeed)
         {
@@ -189,13 +189,10 @@ public class EnemyBehaviour : MonoBehaviour
         playerHealth.SetCurrentSpace(playerMovement.getUpCount);        
     }
 
-    // Process when player get knocked down, mainly in Shred and Mower script
-    protected virtual void KnockDownProcess()
+    protected virtual void PlayerUp()    // Mainly for Mower now
     {
-        if (!playerMovement.isKnockDown) { return; }       
+        
     }
-
-    protected virtual void PlayerUp() { }
     
     protected IEnumerator CheckEnemyDeath()
     {

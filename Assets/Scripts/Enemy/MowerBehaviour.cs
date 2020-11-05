@@ -73,8 +73,7 @@ public class MowerBehaviour : EnemyBehaviour
 
     private void Update()
     {
-        // Check if player is knocked down by Mower
-        KnockDownProcess();
+        MowerCheck();
     }
 
     #region Generator State
@@ -220,27 +219,29 @@ public class MowerBehaviour : EnemyBehaviour
         }
     }
     #endregion
+   
 
-    // When player collides with Mower
-    protected void OnCollisionEnter(Collision col)
+    #region Mower attack 
+    private void MowerCheck()
     {
-        if (col.gameObject.CompareTag("Player"))
+        // Don't check if dead or is staggering
+        if (currentHP <= 0 || isAttacking) { return; }
+
+        var horizontalDetect = Physics.Raycast(frontDetection.position, transform.right, 3f, LayerMask.GetMask("Player"));
+        var verticalDetect = Physics.Raycast(frontDetection.position + (transform.right * 3f), Vector3.down, 3f, LayerMask.GetMask("Player"));
+        
+        // If player is not in front of Mower's teeth, don't attack
+        if (!horizontalDetect && !verticalDetect) { return; }
+
+        // Then attack player
+        if (currentState != ForceFieldState.Generating)
         {
-            // If player is super near Mower's head
-            if (Mathf.Abs(player.transform.position.x - frontDetection.position.x) <= 1.5f)
-            {
-                // Then attack player
-                if (!isAttacking && currentState != ForceFieldState.Generating)
-                {
-                    playerMovement.isPlayerBlock = false;   // Cancel block if player is
-                  
-                    MowerAttack();
-                }
-            }
+            playerMovement.isPlayerBlock = false;   // Cancel block if player is
+
+            MowerAttack();
         }
     }
-
-    #region Mower attack
+    
     private void MowerAttack()
     {
         isAttacking = true;
@@ -283,11 +284,6 @@ public class MowerBehaviour : EnemyBehaviour
     }
     #endregion
 
-    protected override void KnockDownProcess()
-    {
-        base.KnockDownProcess();     // Still normal stun player      
-    }
-
     protected override void PlayerUp()
     {
         // Stop dealing damage
@@ -298,7 +294,7 @@ public class MowerBehaviour : EnemyBehaviour
         if (enemyID != GetInstanceID()) { return; }
         
         // Push player up 
-        playerMovement.PlayerRigid2d.velocity = Vector3.up * 20;
+        playerMovement.PlayerRigid2d.velocity = Vector3.up * 50;
 
         Invoke("ReturnPhysics", 0.5f);
 

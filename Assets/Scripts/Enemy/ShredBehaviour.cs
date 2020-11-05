@@ -33,10 +33,7 @@ public class ShredBehaviour : EnemyBehaviour
     }
 
     private void Update()
-    {
-        // Check if player is knocked down by Shred
-        KnockDownProcess();
-
+    {      
         ShredCheck();
     }
 
@@ -47,7 +44,7 @@ public class ShredBehaviour : EnemyBehaviour
         if (currentHP <= 0 || isStaggering) { return; }
         
         // If player is not in front of Shred's peak, don't attack
-        if(!Physics.Raycast(frontDetection.position, transform.right, 3f, LayerMask.GetMask("Player"))) { return; }
+        if(!Physics.Raycast(frontDetection.position, transform.right, 3.75f, LayerMask.GetMask("Player"))) { return; }
 
         // If player face against Shred and is blocking
         if (IsFacingRight() != playerMovement.FaceRight && playerMovement.isPlayerBlock)
@@ -137,13 +134,6 @@ public class ShredBehaviour : EnemyBehaviour
 
         rb.isKinematic = false;
         speed = stat.runningSpeed;
-    }
-
-    protected override void KnockDownProcess()
-    {
-        base.KnockDownProcess();     // Still normally stun player      
-        
-        
     }
 
     public override void TakeDamage(float playerDamage)

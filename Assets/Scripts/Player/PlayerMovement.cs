@@ -133,9 +133,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 PlayerJump();
             }  
-        }
-
-        print(isCollidePlatform);   
+        }        
 
         if (isCollideWall && !isGrabWall && !isKnockDown)
         {
