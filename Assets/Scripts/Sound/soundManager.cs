@@ -14,7 +14,6 @@ public static class soundManager
         enemyAttack,
         enemyDie,
         heal,
-
     }
 
     //This is for sound we want to play at different intervals such as footsteps

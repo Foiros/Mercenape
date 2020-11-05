@@ -234,6 +234,7 @@ public class PlayerMovement : MonoBehaviour
         {
             //animator.SetBool("IsRunning", true);
             animator.SetBool(isRunning_animBool, true);
+            if (isGrounded) { soundManager.PlaySound(soundManager.Sound.playerMove, transform.position); }
         }
         else
         {
