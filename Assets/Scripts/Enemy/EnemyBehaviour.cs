@@ -120,7 +120,7 @@ public class EnemyBehaviour : MonoBehaviour
         currentHP -= playerDamage;
         barHealth.UpdateHealthBar(currentHP, stat.maxHP);
 
-        DamagePopUp.Create(PopUpPos(transform), playerDamage); 
+        DamagePopUp.Create(PopUpPos(transform), playerDamage, Color.clear, 15); 
 
         // If dead
         if (currentHP <= 0)
@@ -130,10 +130,12 @@ public class EnemyBehaviour : MonoBehaviour
     }
 
     // Take bleed damage from player's weapon
-    public void TakeBleedDammage(float weaponBleedDmg)
+    public void TakeBleedDammage(float bleedDmg)
     {
-        currentHP -= weaponBleedDmg;
+        currentHP -= bleedDmg;
         barHealth.UpdateHealthBar(currentHP, stat.maxHP);
+
+        DamagePopUp.Create(PopUpPos(transform), bleedDmg, Color.yellow, 10);
 
         // If dead
         if (currentHP <= 0)
@@ -158,6 +160,8 @@ public class EnemyBehaviour : MonoBehaviour
 
     IEnumerator BleedTick()
     {
+        yield return new WaitForSeconds(.2f);
+
         while (currentBleedTicks <= bleedTicks)
         {
             TakeBleedDammage(weaponBleedDamage);

@@ -196,7 +196,7 @@ public class MowerBehaviour : EnemyBehaviour
         fieldHP -= playerDmg;
         fieldBarHealth.UpdateHealthBar(fieldHP, fieldStat.maxHP);
 
-        DamagePopUp.Create(PopUpPos(backside), playerDmg);
+        DamagePopUp.Create(PopUpPos(backside), playerDmg, Color.clear, 14);
 
         if (fieldHP <= 0)
         {

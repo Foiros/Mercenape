@@ -48,7 +48,7 @@ public static class soundManager
                 //Once the lenght of the audioclip is done, the gameobject destroys itself from the scene.
                 Object.Destroy(soundGameObject, audioSource.clip.length);
 
-                Debug.Log(sound + " played");
+                //Debug.Log(sound + " played");
             }
         }
     }
