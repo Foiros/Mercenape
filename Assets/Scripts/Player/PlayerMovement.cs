@@ -18,15 +18,15 @@ public class PlayerMovement : MonoBehaviour
     [HideInInspector] public Animator PlayerAnimator;
     [HideInInspector] public Rigidbody PlayerRigid2d;
 
-    float inputH,inputV; 
-    
+    float inputH, inputV;
+
     public bool isGrounded;
-    
+
     public bool FaceRight = true;
     public Transform PlayerFrontPos, PlayerBehindPos;
     public Transform PlayerUnderPos, PlayerAbovePos;
     public float CheckRadius;
-    
+
     public float PlayerClimbSpeed;
 
     public bool isPlayerBlock = false;
@@ -50,10 +50,10 @@ public class PlayerMovement : MonoBehaviour
     bool canLedgeClimb = true;
     Vector3 playerClimbPos;
     Vector3 destination;
-    float ledgePosX =3.7f;
-    float ledgePosY=4.4f;
+    float ledgePosX = 3.7f;
+    float ledgePosY = 4.4f;
 
-    public float offsetX, offsetY;
+  
 
     //Start Hash ID 
     [HideInInspector]
@@ -95,7 +95,7 @@ public class PlayerMovement : MonoBehaviour
         isRunning_animBool = Animator.StringToHash("IsRunning");
         inputH_animFloat = Animator.StringToHash("inputH");
         inputV_animFloat = Animator.StringToHash("inputV");
-        vSpeed_animafloat = Animator.StringToHash("vSpeed");      
+        vSpeed_animafloat = Animator.StringToHash("vSpeed");
     }
 
     void Update()
@@ -108,10 +108,10 @@ public class PlayerMovement : MonoBehaviour
         CheckOnTop();
         CheckGrabWall();
         CheckCollidePlatform();
-     
+
         if (isGrounded)
         {
-          
+
             isJumping = false;
         }
         else
@@ -127,13 +127,16 @@ public class PlayerMovement : MonoBehaviour
             InputVertical();
         }
 
-        if (!isKnockDown&& !CheckColliderAbove())
+        if (!isKnockDown && !CheckColliderAbove())
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 PlayerJump();
-            }  
-        }        
+            }
+        }
+
+    
+
 
         if (isCollideWall && !isGrabWall && !isKnockDown)
         {
@@ -152,7 +155,6 @@ public class PlayerMovement : MonoBehaviour
         if(canLedgeClimb==true)
         {
             playerClimbPos = transform.position;
-            print(playerClimbPos+" + "+ transform.position);
         }
 
 
@@ -176,7 +178,7 @@ public class PlayerMovement : MonoBehaviour
             isJumping = true;
             isPlayerBlock = false;
             isGrabWall = false;
-            PlayerRigid2d.velocity += (Vector3.up * PlayerJumpPow + Vector3.right);                      
+            PlayerRigid2d.velocity = (Vector3.up * PlayerJumpPow);                      
         }
 
        
@@ -260,7 +262,7 @@ public class PlayerMovement : MonoBehaviour
     // check collide with wall  
     void CheckCollideWall()
     {
-        float distance= 2f;
+        float distance= 1.8f;
         if (FaceRight)
         {
            isCollideWall=Physics.Raycast(capsuleCollider.bounds.center, Vector3.right, distance, walllayermask);
@@ -342,6 +344,9 @@ public class PlayerMovement : MonoBehaviour
     void PlayerClimbWal()
     {
         float xSpeed = 2f;
+        float offsetX = 2.5f;
+        float offsetY = 5f;
+
 
         if (inputV == 0)
         {
@@ -352,19 +357,16 @@ public class PlayerMovement : MonoBehaviour
         {
             if (!CheckOnTop())
             {
-                if (inputV > 0)
-                {
-                    PlayerRigid2d.velocity += (new Vector3(0, 1, 0) * PlayerClimbSpeed * inputV * Time.deltaTime + Vector3.right * xSpeed * Time.deltaTime);
-                }
-                else if (inputV < 0)
-                {
-                    PlayerRigid2d.velocity += (new Vector3(0, 1, 0) * PlayerClimbSpeed * inputV * Time.deltaTime + Vector3.right * -2 * xSpeed * Time.deltaTime);
-                }
+                  if(inputV != 0)
+                    {
+                        PlayerRigid2d.MovePosition((Vector3)transform.position + Vector3.up * inputV * PlayerClimbSpeed * Time.deltaTime + Vector3.right * xSpeed*transform.localScale.z * Time.deltaTime);
+                    }
 
-                if (isGrounded && inputV < 0)
-                {
-                    isGrabWall = false;
-                }
+                    if (isGrounded && inputV < 0)
+                    {
+                        isGrabWall = false;
+                    }
+               
             }
             else
             {
@@ -376,13 +378,12 @@ public class PlayerMovement : MonoBehaviour
                     }
                     else if (inputV < 0)
                     {
-                        PlayerRigid2d.velocity += (new Vector3(0, 1, 0) * PlayerClimbSpeed * inputV * Time.deltaTime + Vector3.right * -2 * xSpeed * Time.deltaTime);
+                        PlayerRigid2d.MovePosition((Vector3)transform.position + Vector3.up * inputV * PlayerClimbSpeed * Time.deltaTime + Vector3.right * xSpeed * transform.localScale.z * Time.deltaTime);
 
                     }
                 }
                 else
                 {
-                    print(playerClimbPos);
                     canLedgeClimb = true;
                     if (FaceRight)
                     {
@@ -393,11 +394,9 @@ public class PlayerMovement : MonoBehaviour
                     else
                     {
                         ledgePosX = transform.position.x - offsetX;
-                        ledgePosY = transform.position.y - offsetY;
+                        ledgePosY = transform.position.y + offsetY;
                     }
                     destination = new Vector3(ledgePosX, ledgePosY, 0);
-                    float journeyLength = Vector3.Distance(playerClimbPos, destination);
-
 
                     if (Input.GetKey(KeyCode.W) || inputV > 0)
                     {
@@ -406,7 +405,7 @@ public class PlayerMovement : MonoBehaviour
                     }
                     else if (inputV < 0)
                     {
-                        PlayerRigid2d.velocity += (new Vector3(0, 1, 0) * PlayerClimbSpeed * inputV * Time.deltaTime + Vector3.right * -2 * xSpeed * Time.deltaTime);
+                        PlayerRigid2d.MovePosition((Vector3)transform.position + Vector3.up * inputV * PlayerClimbSpeed * Time.deltaTime + Vector3.right * xSpeed * transform.localScale.z * Time.deltaTime);
 
                     }
 
@@ -460,7 +459,7 @@ public class PlayerMovement : MonoBehaviour
         if (isGrounded)
         {
             animator.SetTrigger("JumpStart");
-            PlayerRigid2d.velocity += new Vector3(0.0f, 1.0f, 0.0f) * PlayerJumpPow;
+            PlayerRigid2d.velocity = Vector3.up * PlayerJumpPow;
             isJumping = true;
             isPlayerBlock = false;
 

@@ -1437,8 +1437,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 7.5, y: 2.3985329, z: 4.452194}
-  m_Center: {x: 0, y: 0.6664047, z: -9.932536}
+  m_Size: {x: 7.5845203, y: 2.3985329, z: 4.452194}
+  m_Center: {x: -0.04226017, y: 0.6664047, z: -9.932536}
 --- !u!212 &564982059
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2510,6 +2510,21 @@ PrefabInstance:
         type: 3}
       propertyPath: MidAirSpeed
       value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 7007741340744387837, guid: 68b0754ba15f8744a8d1c6c6649a986d,
+        type: 3}
+      propertyPath: offsetX
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7007741340744387837, guid: 68b0754ba15f8744a8d1c6c6649a986d,
+        type: 3}
+      propertyPath: offsetY
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7007741340744387837, guid: 68b0754ba15f8744a8d1c6c6649a986d,
+        type: 3}
+      propertyPath: PlayerClimbSpeed
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 7007741340744387839, guid: 68b0754ba15f8744a8d1c6c6649a986d,
         type: 3}
@@ -4422,13 +4437,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1172266197}
-  m_LocalRotation: {x: -0, y: -0, z: -0.0436194, w: 0.9990483}
+  m_LocalRotation: {x: 0, y: 0, z: -0.095845714, w: 0.99539626}
   m_LocalPosition: {x: 0.24000168, y: -1.4466674, z: 0}
   m_LocalScale: {x: 1.4780359, y: 19.559202, z: 1}
   m_Children: []
   m_Father: {fileID: 986448560}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -5}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -11}
 --- !u!65 &1172266199
 BoxCollider:
   m_ObjectHideFlags: 0
