@@ -51,6 +51,7 @@ TagManager:
   - Forge
   - PlayerUI
   - ResourceDestination
+  - PlayerSpeechBubble
   layers:
   - Default
   - TransparentFX
