@@ -236,7 +236,6 @@ public class PlayerMovement : MonoBehaviour
         {
             //animator.SetBool("IsRunning", true);
             animator.SetBool(isRunning_animBool, true);
-            if (isGrounded) { soundManager.PlaySound(soundManager.Sound.playerMove, transform.position); }
         }
         else
         {
@@ -541,6 +540,11 @@ public class PlayerMovement : MonoBehaviour
         animator.SetBool(isGrabWall_animBool, isGrabWall);
         animator.SetBool(knockedDown_animBool, isKnockDown);
         animator.SetBool(isOnTop_animBool, CheckOnTop());
+    }
+
+    void PlayRunningSound()
+    {
+        soundManager.PlaySound(soundManager.Sound.playerMove, transform.position);
     }
 }
 

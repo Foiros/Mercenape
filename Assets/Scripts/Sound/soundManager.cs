@@ -58,12 +58,12 @@ public static class soundManager
         //This checks if the requested sound is in the Asset Manager array
         switch(sound)
         {
-            case Sound.playerMove:
+            /*case Sound.playerMove:
                 {
                     if (soundtimerDictionary.ContainsKey(sound))
                     {
                         float lastTimeplayed = soundtimerDictionary[sound];
-                        float playerMoveTimerMax = 0.5f;
+                        float playerMoveTimerMax = (0.96f / 4f) * 1.3f;
                         if (lastTimeplayed + playerMoveTimerMax < Time.time)
                         {
                             soundtimerDictionary[sound] = Time.time;
@@ -78,7 +78,7 @@ public static class soundManager
                     {
                         return false;
                     }
-                }
+                }*/
             default: { return true; }
 
         }
