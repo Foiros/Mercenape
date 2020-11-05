@@ -399,7 +399,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 6445589877747816204, guid: 7d0cd3794cb121147b641d85006362ca, type: 3}
+  - {fileID: 2100000, guid: ff7619964d76f6044b2643f3ee2e67c7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2245,7 +2245,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 4425424762683948176, guid: 7d0cd3794cb121147b641d85006362ca, type: 3}
+  - {fileID: 4425424762683948176, guid: d3e055e3d1c794041a43726ee2900cc0, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3058,7 +3058,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 8025347107867558584, guid: 7d0cd3794cb121147b641d85006362ca, type: 3}
+  - {fileID: 2100000, guid: 05838d56beef3a84faeb39ba31ff791a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3528,13 +3528,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7674620549986613225}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: -0, y: 0.00000011920929, z: 0}
+  m_LocalRotation: {x: 0.096020885, y: -0.7024637, z: 0.093005694, w: 0.69905275}
+  m_LocalPosition: {x: 2.1189969, y: 6.4305835, z: 2.8089032}
   m_LocalScale: {x: 12.363458, y: 7.074768, z: 12.363458}
   m_Children: []
   m_Father: {fileID: 7406951217879771970}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 15.362, y: -90.318, z: -0.289}
 --- !u!137 &2099890258548948532
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
@@ -3553,7 +3553,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 5863650252929523565, guid: 7d0cd3794cb121147b641d85006362ca, type: 3}
+  - {fileID: 2100000, guid: 43aca1ad25f647549b666b7e30424096, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3837,7 +3837,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerSpeed: 30
   PlayerJumpPow: 40
-  PlayerDoubleJumpPow: 0
   MidAirSpeed: 20
   groundlayermask:
     serializedVersion: 2
@@ -3848,12 +3847,12 @@ MonoBehaviour:
   ladderlayermask:
     serializedVersion: 2
     m_Bits: 2048
+  playerHealth: {fileID: 0}
   playerAttack: {fileID: 0}
   PlayerAnimator: {fileID: 0}
   PlayerRigid2d: {fileID: 0}
   isGrounded: 0
   FaceRight: 1
-  PlayerDoubleJump: 0
   PlayerFrontPos: {fileID: 7007741340632427131}
   PlayerBehindPos: {fileID: 7007741339062274621}
   PlayerUnderPos: {fileID: 7007741340943696650}
@@ -3863,10 +3862,13 @@ MonoBehaviour:
   isPlayerBlock: 0
   isKnockDown: 0
   getUpCount: 0
+  getUpNeed: 0
   animator: {fileID: 3470843985174671672}
   isCollideWall: 0
   isGrabWall: 0
   isJumping: 0
+  offsetX: 0
+  offsetY: 0
   isJumping_animBool: 0
   isGrounded_animBool: 0
   isGrabWall_animBool: 0
@@ -3891,6 +3893,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerHP: 0
   PlayerMaxHP: 100
+  newHP: 0
   hpGradient:
     serializedVersion: 2
     key0: {r: 0.118242405, g: 0.7830189, b: 0, a: 1}
@@ -3921,6 +3924,8 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   spaceTextGrid: {fileID: 0}
+  currentSpace: {fileID: 0}
+  neededSpace: {fileID: 0}
 --- !u!1 &8090755846774300851
 GameObject:
   m_ObjectHideFlags: 0

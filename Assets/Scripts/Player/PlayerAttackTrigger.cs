@@ -35,6 +35,7 @@ public class PlayerAttackTrigger : MonoBehaviour
     public event Action<bool, bool, Collider, float> OnHitEnemy;  // 1st bool is Mower backside, 2nd bool is generator
     public event Action<float, float, int, Collider> OnBleedEnemy;  // weaponBleedDamage, weaponBleedDuration, bleedTicks
 
+
     void Awake()
     {
         weaponStates = GameObject.FindGameObjectWithTag("GameManager").GetComponent<WeaponStates>();
