@@ -5,35 +5,62 @@ using Cinemachine;
 
 public class cameraManager : MonoBehaviour
 {
-    public GameObject zoomIn, zoomOut;
-    public bool isZoomed = true;
-    // Start is called before the first frame update
+    //Written by Ossi Uusitalo
+    public GameObject mainCam;
+    CinemachineVirtualCamera cineVirtual;
+    CinemachineFramingTransposer cineFrame;
+    public float bottom, zoomIn; // You need to manually type the Ortographic size (ZoomIn) and ScreenY(bottom) from the editor to set the minimum level of zoom.
+    public float top, zoomOut;
 
-    void Update()
+    private void Start()
     {
-        if(isZoomed)
+        cineVirtual = mainCam.GetComponent<CinemachineVirtualCamera>();
+        if(cineVirtual != null)
         {
-            zoomIn.gameObject.GetComponent<CinemachineVirtualCamera>().Priority = 15;
-        } else
-        {
-            zoomIn.gameObject.GetComponent<CinemachineVirtualCamera>().Priority = 5;
-        }
+            Debug.Log("CineVirtual found");
+            
+            cineFrame = cineVirtual.GetCinemachineComponent<CinemachineFramingTransposer>();
+            if (cineFrame != null)
+            {
+                Debug.Log("cineFrame found");
+                //Set the maximum parameters for the zoom out
+                top = cineFrame.m_ScreenY;
+                zoomOut = cineVirtual.m_Lens.OrthographicSize;
 
-        if(Input.GetKeyDown(KeyCode.C))
-        {
-            Zoom();
+                //Then we set the camera on the max zoom in
+                cineVirtual.m_Lens.OrthographicSize = zoomIn;
+                cineFrame.m_ScreenY = bottom;
+            }
         }
     }
 
-    public void Zoom()
+    private void Update()
     {
-        if(isZoomed)
+        //The Screen Y axis and Ortographic size are controlled by the mouse wheel
+        cineFrame.m_ScreenY -= Input.mouseScrollDelta.y / 50;
+        cineVirtual.m_Lens.OrthographicSize -= Input.mouseScrollDelta.y / 10;
+
+        //Parameters
+        if (cineFrame.m_ScreenY > top) 
         {
-            isZoomed = false;
-        } else
+            cineFrame.m_ScreenY = top;
+        }
+        if(cineFrame.m_ScreenY < bottom)
         {
-            isZoomed = true;
+            cineFrame.m_ScreenY = bottom;
+        }
+
+        
+        if(cineVirtual.m_Lens.OrthographicSize > zoomOut)
+        {
+            cineVirtual.m_Lens.OrthographicSize = zoomOut;
+        }
+        if (cineVirtual.m_Lens.OrthographicSize < zoomIn)
+        {
+            cineVirtual.m_Lens.OrthographicSize = zoomIn;
         }
 
     }
+
 }
+
