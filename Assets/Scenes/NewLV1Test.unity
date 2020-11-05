@@ -2524,7 +2524,7 @@ PrefabInstance:
     - target: {fileID: 7007741340744387837, guid: 68b0754ba15f8744a8d1c6c6649a986d,
         type: 3}
       propertyPath: PlayerClimbSpeed
-      value: 500
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7007741340744387839, guid: 68b0754ba15f8744a8d1c6c6649a986d,
         type: 3}
@@ -4437,13 +4437,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1172266197}
-  m_LocalRotation: {x: 0, y: 0, z: -0.095845714, w: 0.99539626}
-  m_LocalPosition: {x: 0.24000168, y: -1.4466674, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0.14822482, w: 0.9889537}
+  m_LocalPosition: {x: 0.23997402, y: -1.4468441, z: 0}
   m_LocalScale: {x: 1.4780359, y: 19.559202, z: 1}
   m_Children: []
   m_Father: {fileID: 986448560}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -11}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -17.048}
 --- !u!65 &1172266199
 BoxCollider:
   m_ObjectHideFlags: 0
