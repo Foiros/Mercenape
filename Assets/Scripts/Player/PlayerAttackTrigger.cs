@@ -35,7 +35,6 @@ public class PlayerAttackTrigger : MonoBehaviour
     public event Action<bool, bool, Collider, float> OnHitEnemy;  // 1st bool is Mower backside, 2nd bool is generator
     public event Action<float, float, int, Collider> OnBleedEnemy;  // weaponBleedDamage, weaponBleedDuration, bleedTicks
 
-
     void Awake()
     {
         weaponStates = GameObject.FindGameObjectWithTag("GameManager").GetComponent<WeaponStates>();
@@ -81,6 +80,9 @@ public class PlayerAttackTrigger : MonoBehaviour
         // Cannot attack if player is getting up
         if (PlayerAnimator.GetCurrentAnimatorStateInfo(0).IsTag("BounceBack")) { return; }       
         
+        // If player is climbing
+        if (playerMovement.isGrabWall || playerMovement.isKnockDown) { return; }
+
         if (CheckMouseInput() && !IsPlayerAttack )
         {
             IsPlayerAttack = true;
@@ -154,6 +156,7 @@ public class PlayerAttackTrigger : MonoBehaviour
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireCube(Attackpos.position, Attackpos.localScale);
+        Gizmos.DrawWireCube(Attackpos.position, Attackpos.localScale * 2); // This shows correct OverlapBox
         //Gizmos.DrawSphere(edgePos.position, 0.5f);
     }
 

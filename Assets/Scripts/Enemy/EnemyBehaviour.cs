@@ -84,7 +84,7 @@ public class EnemyBehaviour : MonoBehaviour
         if (currentHP <= 0) { return; } // Don't move if dead
 
         groundInfo = Physics.Raycast(frontDetection.position, Vector3.down, 15f, LayerMask.GetMask("Ground"));
-        wallInfo = Physics.Raycast(frontDetection.position, transform.right, 3.5f, LayerMask.GetMask("Wall"));
+        wallInfo = Physics.Raycast(frontDetection.position, transform.right, 3.75f, LayerMask.GetMask("Wall"));
        
         if (!groundInfo || wallInfo)
         {
@@ -182,6 +182,7 @@ public class EnemyBehaviour : MonoBehaviour
         // If player is already knocked down, don't do anything
         if (playerMovement.isKnockDown) { return; }
 
+        playerMovement.animator.ResetTrigger("Attack");
         playerMovement.animator.SetTrigger("KnockDown");
         playerMovement.isKnockDown = true;
 

@@ -489,7 +489,6 @@ public class PlayerMovement : MonoBehaviour
             isGrabWall = false;
            
             animator.SetBool(knockedDown_animBool, true);
-            playerAttack.enabled = false;
 
             playerHealth.spaceTextGrid.gameObject.SetActive(true);
 
@@ -511,8 +510,6 @@ public class PlayerMovement : MonoBehaviour
         isKnockDown = false;
 
         animator.SetTrigger("BounceUp");        
-
-        playerAttack.enabled = true;
 
         getUpCount = 0;
         getUpNeed = 0;

@@ -3821,8 +3821,7 @@ MonoBehaviour:
   weaponBleedDuration: 0
   bleedTicks: 0
   PlayerAnimator: {fileID: 3470843985174671672}
-  attackAnim: {fileID: 3434298946185078405, guid: 7d0cd3794cb121147b641d85006362ca,
-    type: 3}
+  attackAnim: {fileID: 7400000, guid: 95644a34a0937784ab05ddba6e5fbf57, type: 2}
 --- !u!114 &7007741340744387837
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3867,8 +3866,6 @@ MonoBehaviour:
   isCollideWall: 0
   isGrabWall: 0
   isJumping: 0
-  offsetX: 0
-  offsetY: 0
   isJumping_animBool: 0
   isGrounded_animBool: 0
   isGrabWall_animBool: 0
