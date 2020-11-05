@@ -46,6 +46,14 @@ public class PlayerMovement : MonoBehaviour
     public bool isJumping = false;
 
     Text climbPrompt;
+    bool isCollidePlatform;
+    bool canLedgeClimb = true;
+    Vector3 playerClimbPos;
+    Vector3 destination;
+    float ledgePosX =3.7f;
+    float ledgePosY=4.4f;
+
+    public float offsetX, offsetY;
 
     //Start Hash ID 
     [HideInInspector]
@@ -99,6 +107,7 @@ public class PlayerMovement : MonoBehaviour
         CheckCollideWall();
         CheckOnTop();
         CheckGrabWall();
+        CheckCollidePlatform();
      
         if (isGrounded)
         {
@@ -126,6 +135,8 @@ public class PlayerMovement : MonoBehaviour
             }  
         }
 
+        print(isCollidePlatform);   
+
         if (isCollideWall && !isGrabWall && !isKnockDown)
         {
             climbPrompt.gameObject.SetActive(true);
@@ -135,6 +146,17 @@ public class PlayerMovement : MonoBehaviour
         {
             climbPrompt.gameObject.SetActive(false);
         }
+
+        if (!isCollidePlatform && !CheckOnTop())
+        {
+            canLedgeClimb = false;
+        }
+        if(canLedgeClimb==true)
+        {
+            playerClimbPos = transform.position;
+            print(playerClimbPos+" + "+ transform.position);
+        }
+
 
         if (isGrabWall == true)
         {
@@ -259,18 +281,35 @@ public class PlayerMovement : MonoBehaviour
         if (FaceRight)
         {
             Debug.DrawRay(PlayerAbovePos.position, Vector3.right * distance, Color.yellow);
-            return (!Physics.Raycast(PlayerAbovePos.position , Vector3.right, distance, walllayermask)&& Physics.Raycast(PlayerUnderPos.position, Vector3.right, distance, walllayermask));
+            return (!Physics.Raycast(PlayerAbovePos.position , Vector3.right, distance, walllayermask)&& Physics.Raycast(capsuleCollider.bounds.center, Vector3.right, distance, walllayermask));
 
 
         }
         else
         {
             Debug.DrawRay(PlayerAbovePos.position, Vector3.left * distance, Color.yellow);
-            return (!Physics.Raycast(PlayerAbovePos.position, Vector3.left, distance, walllayermask) && Physics.Raycast(PlayerUnderPos.position, Vector3.left, distance, walllayermask));
+            return (!Physics.Raycast(PlayerAbovePos.position, Vector3.left, distance, walllayermask) && Physics.Raycast(capsuleCollider.bounds.center, Vector3.left, distance, walllayermask));
 
         }
 
     }
+
+    void CheckCollidePlatform()
+    {
+        float distance = 2f;
+        if (FaceRight)
+        {
+            isCollidePlatform = Physics.Raycast(PlayerAbovePos.position, Vector3.right, distance, groundlayermask);
+           
+        }
+        else
+        {
+            isCollidePlatform = Physics.Raycast(PlayerAbovePos.position, Vector3.left, distance, groundlayermask);
+          
+
+        }
+    }
+
 
     void CheckGrabWall()
     {
@@ -304,7 +343,7 @@ public class PlayerMovement : MonoBehaviour
     void PlayerClimbWal()
     {
         float xSpeed = 2f;
-        
+
         if (inputV == 0)
         {
 
@@ -320,7 +359,7 @@ public class PlayerMovement : MonoBehaviour
                 }
                 else if (inputV < 0)
                 {
-                    PlayerRigid2d.velocity += (new Vector3(0, 1, 0) * PlayerClimbSpeed * inputV * Time.deltaTime + Vector3.right * -2* xSpeed * Time.deltaTime);
+                    PlayerRigid2d.velocity += (new Vector3(0, 1, 0) * PlayerClimbSpeed * inputV * Time.deltaTime + Vector3.right * -2 * xSpeed * Time.deltaTime);
                 }
 
                 if (isGrounded && inputV < 0)
@@ -330,31 +369,56 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-                if (inputV > 0)
+                if (!isCollidePlatform)
                 {
-                    PlayerRigid2d.velocity = new Vector3(0, 0, 0);
+                    if (inputV > 0)
+                    {
+                        PlayerRigid2d.velocity = new Vector3(0, 0, 0);
+                    }
+                    else if (inputV < 0)
+                    {
+                        PlayerRigid2d.velocity += (new Vector3(0, 1, 0) * PlayerClimbSpeed * inputV * Time.deltaTime + Vector3.right * -2 * xSpeed * Time.deltaTime);
+
+                    }
                 }
-                else if (inputV < 0)
+                else
                 {
-                   PlayerRigid2d.velocity += (new Vector3(0, 1, 0) * PlayerClimbSpeed * inputV * Time.deltaTime + Vector3.right * -2* xSpeed * Time.deltaTime);
+                    print(playerClimbPos);
+                    canLedgeClimb = true;
+                    if (FaceRight)
+                    {
+                        ledgePosX = transform.position.x + offsetX;
+                        ledgePosY = transform.position.y + offsetY;
+
+                    }
+                    else
+                    {
+                        ledgePosX = transform.position.x - offsetX;
+                        ledgePosY = transform.position.y - offsetY;
+                    }
+                    destination = new Vector3(ledgePosX, ledgePosY, 0);
+                    float journeyLength = Vector3.Distance(playerClimbPos, destination);
+
+
+                    if (Input.GetKey(KeyCode.W) || inputV > 0)
+                    {
+                        transform.position = destination;
+
+                    }
+                    else if (inputV < 0)
+                    {
+                        PlayerRigid2d.velocity += (new Vector3(0, 1, 0) * PlayerClimbSpeed * inputV * Time.deltaTime + Vector3.right * -2 * xSpeed * Time.deltaTime);
+
+                    }
 
                 }
 
-                if (Input.GetKey(KeyCode.Space))
-                {
-                    isGrabWall = false;
-                    PlayerRigid2d.velocity += new Vector3(0.0f, 1.0f, 0.0f) * PlayerJumpPow;
-                    isJumping = true;
-                }
             }
         }
     }
 
 
-    void OffsetCapsulCollider()
-    {
-        capsuleCollider.radius = 0.5f;
-    }
+ 
 
 
     private void PlayerMove()
