@@ -70,7 +70,6 @@ public class ShredBehaviour : EnemyBehaviour
         // Only attack once
         if (isAttacking) { return; }
 
-
         KnockPlayerDown();
 
         StartCoroutine("Attacking");
