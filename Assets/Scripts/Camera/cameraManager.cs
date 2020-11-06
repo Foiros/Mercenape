@@ -37,8 +37,8 @@ public class cameraManager : MonoBehaviour
     private void Update()
     {
         //The Screen Y axis and Ortographic size are controlled by the mouse wheel
-        cineFrame.m_ScreenY -= Input.mouseScrollDelta.y / 50;
-        cineVirtual.m_Lens.OrthographicSize -= Input.mouseScrollDelta.y / 10;
+        cineFrame.m_ScreenY -= Input.mouseScrollDelta.y;
+        cineVirtual.m_Lens.OrthographicSize -= Input.mouseScrollDelta.y;
 
         //Parameters
         if (cineFrame.m_ScreenY > top) 

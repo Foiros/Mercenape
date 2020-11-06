@@ -4014,40 +4014,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 4305665}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1097010481
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1097010480}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 17772cc3045c6ac4691af053799889bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mainCam: {fileID: 0}
-  bottom: 0
-  zoomIn: 0
-  top: 0
-  zoomOut: 0
---- !u!114 &1097010484
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1097010480}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8ad907bccb9c8e498eafa5d52572ad2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cameras:
-  - {fileID: 581231395}
-  - {fileID: 1916555055}
-  playerTransform: {fileID: 630555030}
-  directionChange: {x: 0, y: 9.3, z: -40}
 --- !u!114 &1097010485
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4084,7 +4050,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   howToAttack: '"I can attack by pressing Mouse 1, wink wink."'
   howToBlock: '"Here''s a hint: by holding Mouse 2, I can block enemy attacks." '
-  messageTime: 3
+  startMessageWait: 3
+  waitBetweenMessages: 3
 --- !u!1 &1131350942
 GameObject:
   m_ObjectHideFlags: 0
@@ -4144,12 +4111,22 @@ PrefabInstance:
     - target: {fileID: 993132672862778062, guid: 2585e651fea0fd04baf7032dde5c4e08,
         type: 3}
       propertyPath: bottom
-      value: 0.64
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 993132672862778062, guid: 2585e651fea0fd04baf7032dde5c4e08,
         type: 3}
       propertyPath: zoomIn
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 993132672862778062, guid: 2585e651fea0fd04baf7032dde5c4e08,
+        type: 3}
+      propertyPath: top
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 993132672862778062, guid: 2585e651fea0fd04baf7032dde5c4e08,
+        type: 3}
+      propertyPath: zoomOut
+      value: 34
       objectReference: {fileID: 0}
     - target: {fileID: 3472100905698634476, guid: 2585e651fea0fd04baf7032dde5c4e08,
         type: 3}
@@ -4180,6 +4157,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Lens.OrthographicSize
       value: 34
+      objectReference: {fileID: 0}
+    - target: {fileID: 3472100906190718268, guid: 2585e651fea0fd04baf7032dde5c4e08,
+        type: 3}
+      propertyPath: m_LookAt
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 3472100906190718269, guid: 2585e651fea0fd04baf7032dde5c4e08,
         type: 3}
