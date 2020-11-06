@@ -178,7 +178,9 @@ public class PlayerMovement : MonoBehaviour
             isJumping = true;
             isPlayerBlock = false;
             isGrabWall = false;
-            PlayerRigid2d.velocity = (Vector3.up * PlayerJumpPow);                      
+            PlayerRigid2d.velocity = Vector3.zero;
+            PlayerRigid2d.velocity = (Vector3.up * PlayerJumpPow + Vector3.right * inputH * MidAirSpeed);
+                print(PlayerRigid2d.velocity);                      
         }
 
        
