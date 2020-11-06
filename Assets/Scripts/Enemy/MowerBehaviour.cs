@@ -68,7 +68,7 @@ public class MowerBehaviour : EnemyBehaviour
 
         fieldSprite.enabled = true;
         generatorCollider.enabled = true;
-        fieldHealthBarUI.SetActive(true);
+        fieldHealthBarUI.SetActive(false);
     }
 
     private void Update()
@@ -193,6 +193,8 @@ public class MowerBehaviour : EnemyBehaviour
     // Only for damaging force field
     public void DamagingForceField(float playerDmg)
     {
+        fieldHealthBarUI.SetActive(true); 
+
         fieldHP -= playerDmg;
         fieldBarHealth.UpdateHealthBar(fieldHP, fieldStat.maxHP);
 
