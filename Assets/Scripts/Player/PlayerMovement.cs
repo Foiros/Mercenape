@@ -156,9 +156,9 @@ public class PlayerMovement : MonoBehaviour
             PlayerRigid2d.velocity += (Vector3.up * PlayerJumpPow + Vector3.right);
         }
 
-
-
-
+       
+       
+        
     }
 
     void FixedUpdate()
