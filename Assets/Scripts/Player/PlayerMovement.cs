@@ -183,9 +183,9 @@ public class PlayerMovement : MonoBehaviour
                 print(PlayerRigid2d.velocity);                      
         }
 
-       
-       
-        
+
+
+
     }
 
     void FixedUpdate()
@@ -344,7 +344,7 @@ public class PlayerMovement : MonoBehaviour
     //player climb on wall
     void PlayerClimbWal()
     {
-        float xSpeed = 2f;
+        float xSpeed = 3f;
         float offsetX = 2.5f;
         float offsetY = 5f;
 
@@ -434,6 +434,23 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         if (isCollideWall)
+        {
+            if (isGrounded)
+            {
+                if (inputH * transform.localScale.z == -1)
+                {
+                    PlayerRigid2d.MovePosition((Vector3)transform.position + Vector3.right * inputH * PlayerSpeed * Time.deltaTime);
+                }
+            }
+            else if ((!isGrounded))
+            {
+                if (inputH * transform.localScale.z == -1)
+                {
+                    PlayerRigid2d.MovePosition((Vector3)transform.position + Vector3.right * inputH * MidAirSpeed * Time.deltaTime);
+                }
+            }
+        }
+        if (isCollidePlatform)
         {
             if (isGrounded)
             {

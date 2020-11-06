@@ -16,6 +16,8 @@ public class PlayerHealth : MonoBehaviour
     private Slider hpBar;
     private Image hpFill;
     public Gradient hpGradient;
+    public Transform hpText;
+    public Text currentHPText, maxHPText;
 
     [HideInInspector] public Transform spaceTextGrid;
     [HideInInspector] public Text currentSpace;
@@ -32,6 +34,10 @@ public class PlayerHealth : MonoBehaviour
         playerUI = GameObject.FindGameObjectWithTag("PlayerUI");
         hpBar = playerUI.transform.Find("hpBar").GetComponent<Slider>();
         hpFill = playerUI.transform.Find("hpBar").Find("hpFill").GetComponent<Image>();
+        hpText = playerUI.transform.Find("hpBar").Find("hpText").transform;
+        currentHPText = hpText.GetChild(0).GetComponent<Text>();
+        maxHPText = hpText.GetChild(1).GetComponent<Text>();
+
 
         SetHP();
 
@@ -44,6 +50,8 @@ public class PlayerHealth : MonoBehaviour
     {
         PlayerHP = PlayerMaxHP;
         hpBar.maxValue = PlayerMaxHP;
+        currentHPText.text = PlayerMaxHP.ToString();
+        maxHPText.text = PlayerMaxHP.ToString();
         hpBar.value = PlayerHP;
         hpFill.color = hpGradient.Evaluate(1f);
     }
@@ -66,6 +74,7 @@ public class PlayerHealth : MonoBehaviour
     void SetCurrentHP(float HP)
     {
         hpBar.value = HP;
+        currentHPText.text = HP.ToString();
         hpFill.color = hpGradient.Evaluate(hpBar.normalizedValue);
     }
 
