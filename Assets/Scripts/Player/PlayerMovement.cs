@@ -179,7 +179,7 @@ public class PlayerMovement : MonoBehaviour
             isPlayerBlock = false;
             isGrabWall = false;
             PlayerRigid2d.velocity = Vector3.zero;
-            PlayerRigid2d.velocity = (Vector3.up * PlayerJumpPow + Vector3.right * inputH * MidAirSpeed);
+            PlayerRigid2d.velocity = (Vector3.up * PlayerJumpPow);
                 print(PlayerRigid2d.velocity);                      
         }
 
@@ -430,7 +430,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else if (!isGrounded)// if player is jumping we can have them some control
             {
-                PlayerRigid2d.MovePosition((Vector3)transform.position + Vector3.right * inputH * MidAirSpeed * Time.deltaTime);
+                PlayerRigid2d.velocity += Vector3.right * inputH * MidAirSpeed * Time.deltaTime;
             }
         }
         if (isCollideWall)
@@ -446,7 +446,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (inputH * transform.localScale.z == -1)
                 {
-                    PlayerRigid2d.MovePosition((Vector3)transform.position + Vector3.right * inputH * MidAirSpeed * Time.deltaTime);
+                    PlayerRigid2d.velocity +=  Vector3.right * inputH * MidAirSpeed * Time.deltaTime;
                 }
             }
         }
