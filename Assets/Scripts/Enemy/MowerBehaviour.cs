@@ -316,10 +316,12 @@ public class MowerBehaviour : EnemyBehaviour
 
         animatorMower.SetFloat("MovementSpeed", speed / stat.runningSpeed);
 
+        if (isNewBorn) { return; }
+
         // Also turn healthbar of the generator
         if (!groundInfo || wallInfo)
         {
-            fieldBarHealth.ScaleRightUI(rb);
+            fieldBarHealth.ScaleLeftUI(rb);
 
             if (isRiding)
             {

@@ -42,8 +42,8 @@ public class ShredBehaviour : EnemyBehaviour
     #region Shred Attack
     private void ShredCheck()
     {
-        // Don't check if dead or is staggering
-        if (currentHP <= 0 || isStaggering) { return; }
+        // Don't check if just born, dead or is staggering
+        if (isNewBorn || currentHP <= 0 || isStaggering) { return; }
         
         // If player is not in front of Shred's peak, don't attack
         if(!Physics.Raycast(frontDetection.position, transform.right, 4.75f, LayerMask.GetMask("Player"))) { return; }
