@@ -3699,6 +3699,7 @@ GameObject:
   - component: {fileID: 7007741340744387833}
   - component: {fileID: 7007741340744387824}
   - component: {fileID: 7007741340744387837}
+  - component: {fileID: 8643970576432497761}
   m_Layer: 12
   m_Name: Player 1
   m_TagString: Player
@@ -3836,6 +3837,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerSpeed: 30
   PlayerJumpPow: 40
+  PlayerDoubleJumpPow: 0
   MidAirSpeed: 20
   groundlayermask:
     serializedVersion: 2
@@ -3846,12 +3848,12 @@ MonoBehaviour:
   ladderlayermask:
     serializedVersion: 2
     m_Bits: 2048
-  playerHealth: {fileID: 0}
   playerAttack: {fileID: 0}
   PlayerAnimator: {fileID: 0}
   PlayerRigid2d: {fileID: 0}
   isGrounded: 0
   FaceRight: 1
+  PlayerDoubleJump: 0
   PlayerFrontPos: {fileID: 7007741340632427131}
   PlayerBehindPos: {fileID: 7007741339062274621}
   PlayerUnderPos: {fileID: 7007741340943696650}
@@ -3875,6 +3877,50 @@ MonoBehaviour:
   inputH_animFloat: 0
   inputV_animFloat: 0
   vSpeed_animafloat: 0
+--- !u!114 &8643970576432497761
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7890612550837907960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45adbb9c58f04254782718d9c1916128, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerHP: 0
+  PlayerMaxHP: 100
+  hpGradient:
+    serializedVersion: 2
+    key0: {r: 0.118242405, g: 0.7830189, b: 0, a: 1}
+    key1: {r: 0.118242405, g: 0.7830189, b: 0, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 1}
+    key3: {r: 0, g: 0, b: 0, a: 1}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 65535
+    atime3: 65535
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  spaceTextGrid: {fileID: 0}
 --- !u!1 &8090755846774300851
 GameObject:
   m_ObjectHideFlags: 0
