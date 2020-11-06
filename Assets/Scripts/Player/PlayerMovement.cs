@@ -430,7 +430,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else if (!isGrounded)// if player is jumping we can have them some control
             {
-                PlayerRigid2d.velocity += Vector3.right * inputH * MidAirSpeed * Time.deltaTime;
+                PlayerRigid2d.MovePosition((Vector3)transform.position + Vector3.right * inputH * MidAirSpeed * Time.deltaTime);
             }
         }
         if (isCollideWall)
@@ -446,11 +446,13 @@ public class PlayerMovement : MonoBehaviour
             {
                 if (inputH * transform.localScale.z == -1)
                 {
-                    PlayerRigid2d.velocity +=  Vector3.right * inputH * MidAirSpeed * Time.deltaTime;
+                    PlayerRigid2d.MovePosition((Vector3)transform.position + Vector3.right * inputH * MidAirSpeed * Time.deltaTime);
                 }
             }
         }
     }
+
+    
 
     private void PlayerJump() 
                               // side note could handle jump power by * with the character height. at the moment the vector in middle of the character so 7pixel long
