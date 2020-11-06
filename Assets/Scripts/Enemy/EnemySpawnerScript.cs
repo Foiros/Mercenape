@@ -134,15 +134,15 @@ public class EnemySpawnerScript : MonoBehaviour
 
         // Spawn
         for (int i = 0; i < spawnList.Count; i++)
-        {          
-            SpawnEnemy(spawnList[i]);
-
+        {                    
             if (spawnList[i] == enemies[0]) // Shred
             {
+                SpawnEnemy(spawnList[i], transform.position + (Vector3.left * 10));
                 yield return new WaitForSeconds(1f / RandomSpawnRate());
             }
             else // Mower
             {
+                SpawnEnemy(spawnList[i], transform.position + (Vector3.left * 20));
                 yield return new WaitForSeconds(5f);
             }
         }
@@ -153,9 +153,9 @@ public class EnemySpawnerScript : MonoBehaviour
     }
 
     // Use this in SpawnWave
-    void SpawnEnemy(string enemy)
+    void SpawnEnemy(string enemy, Vector3 pos)
     {
-        ObjectPooler.Instance.SpawnFromPool(enemy, transform.position, Quaternion.Euler(0, -180, 0));
+        ObjectPooler.Instance.SpawnFromPool(enemy, pos, Quaternion.Euler(0, -180, 0));
     }
 
     // Next group more difficult, spawn pattern
@@ -163,11 +163,13 @@ public class EnemySpawnerScript : MonoBehaviour
     {
         currentGroup++;
 
-        if (currentGroup == 1) { group.shredCount = 3; group.mowerCount = 0; }
+        if (currentGroup == 1) { group.shredCount = 2; group.mowerCount = 0; }
 
-        if (currentGroup == 2) { group.shredCount = 4; group.mowerCount = 1; }
+        if (currentGroup == 2) { group.shredCount = 3; group.mowerCount = 0; }
+
+        if (currentGroup == 3) { group.shredCount = 4; group.mowerCount = 1; }
         
-        if (currentGroup >= 3)
+        if (currentGroup >= 4)
         {
             group.shredCount = Random.Range(4, 6 + 1);
             group.mowerCount = RandomMower();
